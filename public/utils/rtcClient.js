@@ -1,5 +1,6 @@
 const localVideoBox = document.createElement("div");
-localVideoBox.id = "local__videoBox";
+localVideoBox.id = "local__videoBox local-player";
+localVideoBox.className = "player";
 // const remoteVideoBox = document.createElement("div");
 // remoteVideoBox.id = "remote__videoBox";
 
@@ -28,6 +29,12 @@ let options = {
     token: null,
 };
 
+const MicrophoneAudioTrackInitConfig = {
+    AEC: true,
+    ANS: true,
+    AGC: false,
+};
+
 /*
  * When this page is called with parameters in the URL, this procedure
  * attempts to join a Video Call channel using those parameters.
@@ -40,11 +47,28 @@ $(() => {
     options.uid = urlParams.get("uid");
     if (options.appid && options.channel) {
         $("#uid").val(options.uid);
-
         $("#token").val(options.token);
         $("#channel").val(options.channel);
         $("#join-form").submit();
     }
+
+    $("body").on("click", ".player", function (e) {
+        e.preventDefault();
+        const player = e.target.parentElement.parentElement;
+        const uid = Number(player.dataset.uid);
+        // Set user clicked to HQ Stream, Other users will be set to LQ Stream
+        setSomeUserHQStream([uid]);
+        // Control the user interface display as your wish
+        const playerList = [...document.querySelectorAll(".player")].filter(
+            (p) => p !== player
+        );
+        player.style.cssText = "width: 100%;height:100%;";
+        player.parentElement.classList.add("first-player");
+        playerList.forEach((e) => {
+            e.parentElement.classList.remove("first-player");
+            e.style.cssText = "width: 230px;height:230px;";
+        });
+    });
 });
 
 /*
@@ -82,6 +106,16 @@ async function join() {
     client.on("user-published", handleUserPublished);
     client.on("user-unpublished", handleUserUnpublished);
 
+    client.setLowStreamParameter({
+        width: 160,
+        height: 120,
+        framerate: 15,
+        bitrate: 120,
+    });
+
+    await client.enableDualStream();
+    await setSomeUserHQStream();
+
     // Join a channel and create local tracks. Best practice is to use Promise.all and run them concurrently.
     [options.uid, localTracks.audioTrack, localTracks.videoTrack] =
         await Promise.all([
@@ -93,7 +127,7 @@ async function join() {
                 options.uid || null
             ),
             // Create tracks to the local microphone and camera.
-            AgoraRTC.createMicrophoneAudioTrack(),
+            AgoraRTC.createMicrophoneAudioTrack(MicrophoneAudioTrackInitConfig),
             AgoraRTC.createCameraVideoTrack(),
         ]);
 
@@ -108,6 +142,46 @@ async function join() {
     // Publish the local video and audio tracks to the channel.
     await client.publish(Object.values(localTracks));
     console.log("publish success");
+}
+
+async function setSomeUserHQStream(HQStreamUserList = []) {
+    // get a list of all remote users
+    const allUserList = [...Object.keys(remoteUsers)].map(Number);
+    // set default HQStreamUserList
+    if (
+        !HQStreamUserList ||
+        (Array.isArray(HQStreamUserList) && HQStreamUserList.length === 0)
+    ) {
+        if (allUserList.length) {
+            HQStreamUserList = [allUserList[0]];
+        }
+    }
+    // All other elements are the elements of the LQStreamUserList
+    const LQStreamUserList = allUserList.filter(
+        (user) => !HQStreamUserList.includes(user)
+    );
+    const handlePromiseList = [];
+    // Get a queue
+    // The queue settings for all streams
+    LQStreamUserList.forEach(
+        (user) =>
+            void handlePromiseList.push(async () => {
+                console.log(`set user: ${user} to LQ Stream`);
+                const result = await client.setRemoteVideoStreamType(user, 1);
+                return result;
+            })
+    );
+    HQStreamUserList.forEach(
+        (user) =>
+            void handlePromiseList.push(async () => {
+                console.log(`set user: ${user} to HQ Stream`);
+                const result = await client.setRemoteVideoStreamType(user, 0);
+                return result;
+            })
+    );
+    // return a promise.all
+    // promise.all requires an array of promises.
+    return Promise.all(handlePromiseList.map((m) => m()));
 }
 
 /*
@@ -144,6 +218,8 @@ async function leave() {
  */
 async function subscribe(user, mediaType) {
     const uid = user.uid;
+    // Set stream at each subscription
+    await setSomeUserHQStream();
     // subscribe to a remote user
     await client.subscribe(user, mediaType);
     console.log("subscribe success");
