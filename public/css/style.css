@@ -345,6 +345,11 @@ video:hover {
         height: 100%;
     }
 
+    #remote-playerlist > div {
+        width : 130px;
+        height : 130px;
+    }
+
     video {
         /* height: 100px;
         border-radius: 1rem;
