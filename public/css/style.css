@@ -241,6 +241,10 @@
 }
 
 #remote-playerlist > div {
+    margin-bottom: 8px;
+}
+
+#remote-playerlist > div {
     border : 2px solid #fff;
     border-radius: 20px;
     width : 230px;
@@ -348,7 +352,12 @@ video:hover {
     #remote-playerlist > div {
         width : 130px;
         height : 130px;
+        margin-bottom : 6px;
     }
+
+    .player-name {
+        margin : 8px;
+      }
 
     video {
         /* height: 100px;
