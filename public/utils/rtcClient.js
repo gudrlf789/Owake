@@ -1,5 +1,7 @@
-const remoteVideoBox = document.createElement("div");
-remoteVideoBox.id = "remote__videoBox";
+const localVideoBox = document.createElement("div");
+localVideoBox.id = "local__videoBox";
+// const remoteVideoBox = document.createElement("div");
+// remoteVideoBox.id = "remote__videoBox";
 
 let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
@@ -96,11 +98,10 @@ async function join() {
         ]);
 
     // Play the local video track to the local browser and update the UI with the user ID.
-    const localPlayerName = $(
-        `<p id="local-player-name" class="player-name"></p>`
-    );
 
-    localTracks.videoTrack.play("local__video__container");
+    $("#local__video__container").append(localVideoBox);
+
+    localTracks.videoTrack.play(localVideoBox);
 
     $("#local-player-name").text(`localVideo(${options.uid})`);
 
@@ -147,10 +148,15 @@ async function subscribe(user, mediaType) {
     await client.subscribe(user, mediaType);
     console.log("subscribe success");
 
-    $("#remote__video__container").append(remoteVideoBox);
-
     if (mediaType === "video") {
-        user.videoTrack.play(remoteVideoBox);
+        const player = $(`
+          <div id="player-wrapper-${uid}">
+            <p class="player-name">remoteUser(${uid})</p>
+            <div id="player-${uid}" class="player" data-uid="${uid}"></div>
+          </div>
+        `);
+        $("#remote-playerlist").append(player);
+        user.videoTrack.play(`player-${uid}`);
     }
 
     if (mediaType === "audio") {
