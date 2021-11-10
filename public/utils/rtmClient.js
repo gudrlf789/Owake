@@ -118,6 +118,8 @@ const rtmClientFunc = () => {
         messageArea = document.createElement("div");
         userNameArea.className = "userName";
         messageArea.className = "message";
+
+        scrollToBottom();
     }
 };
 

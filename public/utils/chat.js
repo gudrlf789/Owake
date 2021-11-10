@@ -21,6 +21,4 @@ function scrollToBottom() {
     let d = document.querySelector(".messages");
     d.scrollTop = d.scrollHeight;
 }
-
-scrollToBottom();
 mobileDisplayCtr();
