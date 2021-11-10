@@ -1,13 +1,10 @@
 const rtmClientFunc = () => {
     const messageList = document.getElementById("messages");
-    const userNameArea = document.createElement("div");
-    const messageArea = document.createElement("div");
+    let userNameArea;
+    let messageArea;
 
     let channelMessageText = document.getElementById("chat_message");
     let channelMessageSend = document.getElementById("send");
-
-    userNameArea.className = "userName";
-    messageArea.className = "message";
 
     let options = {
         uid: "",
@@ -41,39 +38,49 @@ const rtmClientFunc = () => {
         userName = $("#uid").val();
         await rtmClient.login(options);
         await channel.join().then(() => {
-            messageList.append(
-                "You have successfully joined channel " + channel.channelId
-            );
+            messageAreaFunc();
+
+            messageArea.className = "message";
+            messageArea.textContent =
+                "You have successfully joined channel " + channel.channelId;
+            messageList.append(messageArea);
         });
 
         channel.on("ChannelMessage", function (message, memberId) {
-            messageList.append(
-                "Message received from: " +
-                    memberId +
-                    " Message: " +
-                    JSON.stringify(message)
-            );
+            messageAreaFunc();
+            const msg = JSON.stringify(message.text);
+            messageArea.textContent =
+                "Message received from: " + memberId + " Message: " + msg;
+            messageList.append(messageArea);
         });
         // Display channel member stats
         channel.on("MemberJoined", function (memberId) {
-            messageList.append(memberId + " joined the channel");
+            messageAreaFunc();
+            messageArea.textContent = memberId + " joined the channel";
+            messageList.append(messageArea);
         });
         // Display channel member stats
         channel.on("MemberLeft", function (memberId) {
-            messageList.append(memberId + " left the channel");
+            messageAreaFunc();
+            messageArea.textContent = memberId + " left the channel";
+            messageList.append(messageArea);
         });
     };
 
     // Client Event listeners
     // Display messages from peer
     rtmClient.on("MessageFromPeer", function (message, peerId) {
+        messageAreaFunc();
         userNameArea.textContent = peerId;
         messageArea.textContent = message;
         messageList.append(userNameArea, messageArea);
     });
     // Display connection state changes
     rtmClient.on("ConnectionStateChanged", function (state, reason) {
-        messageList.append("State changed To: " + state + " Reason: " + reason);
+        messageAreaFunc();
+        messageArea.textContent =
+            "State changed To: " + state + " Reason: " + reason;
+        messageList.append(messageArea);
     });
 
     // send channel message
@@ -98,11 +105,19 @@ const rtmClientFunc = () => {
 
         if (channel != null) {
             await channel.sendMessage({ text: channelMessage }).then(() => {
+                messageAreaFunc();
                 userNameArea.textContent = userName;
                 messageArea.textContent = channelMessage;
                 messageList.append(userNameArea, messageArea);
             });
         }
+    }
+
+    function messageAreaFunc() {
+        userNameArea = document.createElement("div");
+        messageArea = document.createElement("div");
+        userNameArea.className = "userName";
+        messageArea.className = "message";
     }
 };
 

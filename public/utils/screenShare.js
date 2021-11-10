@@ -3,29 +3,20 @@ const screenShareBtn = document.querySelector("#shareScreen");
 screenShareBtn.addEventListener("click", screenShareJoin);
 
 async function screenShareJoin() {
-    client.on("user-published", handleUserPublished);
-    client.on("user-unpublished", handleUserUnpublished);
+    const screenClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
-    // join a channel and create local tracks, we can use Promise.all to run them concurrently
-    [options.uid, localTracks.audioTrack, localTracks.videoTrack] =
-        await Promise.all([
-            // join the channel
-            client.join(
-                options.appid,
-                options.channel,
-                options.token || null,
-                options.uid || null
-            ),
-            // ** create local tracks, using microphone and screen
-            //AgoraRTC.createMicrophoneAudioTrack(),
-            AgoraRTC.createScreenVideoTrack(),
-        ]);
+    await screenClient.join(options.appid, options.channel, null);
 
-    // play local video track
-    localTracks.videoTrack.play(localVideoBox);
-    $("#local-player-name").text(`localVideo(${options.uid})`);
+    const screenTrack = await AgoraRTC.createScreenVideoTrack();
+    await screenClient.publish(screenTrack);
+    screenTrack.on("track-ended", () => {
+        LeaveShareScreen(screenClient, screenTrack);
+    });
+}
 
-    // publish local tracks to channel
-    await client.publish(Object.values(localTracks));
-    console.log("publish success");
+function LeaveShareScreen(screenClient, screenTrack) {
+    screenClient.unpublish(screenTrack);
+    screenTrack.stop();
+    screenTrack.close();
+    screenClient.leave();
 }

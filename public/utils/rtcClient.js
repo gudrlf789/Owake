@@ -27,6 +27,7 @@ let options = {
     channel: null,
     uid: null,
     token: null,
+    role: "audience", // host or audience
 };
 
 const MicrophoneAudioTrackInitConfig = {
@@ -51,24 +52,6 @@ $(() => {
         $("#channel").val(options.channel);
         $("#join-form").submit();
     }
-
-    $("body").on("click", ".player", function (e) {
-        e.preventDefault();
-        const player = e.target.parentElement.parentElement;
-        const uid = Number(player.dataset.uid);
-        // Set user clicked to HQ Stream, Other users will be set to LQ Stream
-        setSomeUserHQStream([uid]);
-        // Control the user interface display as your wish
-        const playerList = [...document.querySelectorAll(".player")].filter(
-            (p) => p !== player
-        );
-        player.style.cssText = "width: 100%;height:100%;";
-        player.parentElement.classList.add("first-player");
-        playerList.forEach((e) => {
-            e.parentElement.classList.remove("first-player");
-            e.style.cssText = "width: 230px;height:230px;";
-        });
-    });
 });
 
 /*
@@ -104,17 +87,8 @@ $("#leave").click(function (e) {
 async function join() {
     // Add an event listener to play remote tracks when remote user publishes.
     client.on("user-published", handleUserPublished);
+    client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);
-
-    client.setLowStreamParameter({
-        width: 160,
-        height: 120,
-        framerate: 15,
-        bitrate: 120,
-    });
-
-    await client.enableDualStream();
-    await setSomeUserHQStream();
 
     // Join a channel and create local tracks. Best practice is to use Promise.all and run them concurrently.
     [options.uid, localTracks.audioTrack, localTracks.videoTrack] =
@@ -144,46 +118,6 @@ async function join() {
     console.log("publish success");
 }
 
-async function setSomeUserHQStream(HQStreamUserList = []) {
-    // get a list of all remote users
-    const allUserList = [...Object.keys(remoteUsers)].map(Number);
-    // set default HQStreamUserList
-    if (
-        !HQStreamUserList ||
-        (Array.isArray(HQStreamUserList) && HQStreamUserList.length === 0)
-    ) {
-        if (allUserList.length) {
-            HQStreamUserList = [allUserList[0]];
-        }
-    }
-    // All other elements are the elements of the LQStreamUserList
-    const LQStreamUserList = allUserList.filter(
-        (user) => !HQStreamUserList.includes(user)
-    );
-    const handlePromiseList = [];
-    // Get a queue
-    // The queue settings for all streams
-    LQStreamUserList.forEach(
-        (user) =>
-            void handlePromiseList.push(async () => {
-                console.log(`set user: ${user} to LQ Stream`);
-                const result = await client.setRemoteVideoStreamType(user, 1);
-                return result;
-            })
-    );
-    HQStreamUserList.forEach(
-        (user) =>
-            void handlePromiseList.push(async () => {
-                console.log(`set user: ${user} to HQ Stream`);
-                const result = await client.setRemoteVideoStreamType(user, 0);
-                return result;
-            })
-    );
-    // return a promise.all
-    // promise.all requires an array of promises.
-    return Promise.all(handlePromiseList.map((m) => m()));
-}
-
 /*
  * Stop all local and remote tracks then leave the channel.
  */
@@ -210,17 +144,8 @@ async function leave() {
     console.log("client leaves channel success");
 }
 
-/*
- * Add the local use to a remote channel.
- *
- * @param  {IAgoraRTCRemoteUser} user - The {@link  https://docs.agora.io/en/Voice/API%20Reference/web_ng/interfaces/iagorartcremoteuser.html| remote user} to add.
- * @param {trackMediaType - The {@link https://docs.agora.io/en/Voice/API%20Reference/web_ng/interfaces/itrack.html#trackmediatype | media type} to add.
- */
 async function subscribe(user, mediaType) {
     const uid = user.uid;
-    // Set stream at each subscription
-    await setSomeUserHQStream();
-    // subscribe to a remote user
     await client.subscribe(user, mediaType);
     console.log("subscribe success");
 
@@ -240,25 +165,21 @@ async function subscribe(user, mediaType) {
     }
 }
 
-/*
- * Add a user who has subscribed to the live channel to the local interface.
- *
- * @param  {IAgoraRTCRemoteUser} user - The {@link  https://docs.agora.io/en/Voice/API%20Reference/web_ng/interfaces/iagorartcremoteuser.html| remote user} to add.
- * @param {trackMediaType - The {@link https://docs.agora.io/en/Voice/API%20Reference/web_ng/interfaces/itrack.html#trackmediatype | media type} to add.
- */
 function handleUserPublished(user, mediaType) {
     const id = user.uid;
     remoteUsers[id] = user;
     subscribe(user, mediaType);
 }
 
-/*
- * Remove the user specified from the channel in the local interface.
- *
- * @param  {string} user - The {@link  https://docs.agora.io/en/Voice/API%20Reference/web_ng/interfaces/iagorartcremoteuser.html| remote user} to remove.
- */
 function handleUserUnpublished(user) {
     const id = user.uid;
     delete remoteUsers[id];
     $(`#player-wrapper-${id}`).remove();
+}
+
+// Handle user joined
+function handleUserJoined(user, mediaType) {
+    const id = user.uid;
+    remoteUsers[id] = user;
+    subscribe(user, mediaType);
 }
