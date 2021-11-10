@@ -1,3 +1,5 @@
+const socket = io();
+
 const localVideoBox = document.createElement("div");
 localVideoBox.id = "local__videoBox local-player";
 localVideoBox.className = "player";
@@ -83,13 +85,17 @@ $("#leave").click(function (e) {
 
 //테스트
 $(document).on("click", ".player", (e) => {
-    debugger;
     leave();
     console.log(e.currentTarget.id);
     console.log(e.currentTarget.id.replace("player-",""));
     console.log(remoteUsers)
     console.log(localTracks)
     console.log(options)
+});
+
+socket.on("input_address", (address) => {
+    const momentShare = document.getElementById("momentShare-iframe");
+    momentShare.src = `http://${address}`;
 });
 
 /*
@@ -100,7 +106,8 @@ async function join() {
     client.on("user-published", handleUserPublished);
     client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);
-
+    socket.emit("local_join_room", options.channel);
+    
     // Join a channel and create local tracks. Best practice is to use Promise.all and run them concurrently.
     [options.uid, localTracks.audioTrack, localTracks.videoTrack] =
         await Promise.all([

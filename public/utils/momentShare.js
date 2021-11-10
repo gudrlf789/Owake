@@ -1,3 +1,4 @@
+const momentSocket = io();
 let momentShareActive = false;
 
 const momentShareBtn = document.querySelector("#momentShare");
@@ -17,14 +18,14 @@ searchInput.id = "searchInput";
 momentShare.id = "momentShare-iframe";
 momentShareArea.id = "momentShareArea";
 searchInputBtn.id ="searchInputBtn";
+searchInputBtn.textContent = "Click";
 
 searchInputCtr.append(searchInput, searchInputBtn);
 momentShareArea.append(searchInputCtr, momentShare);
 
-momentShare.src = "https://www.youtube.com/embed/xocBrWHO7NE";
-
 momentShareBtn.addEventListener("click", (e) => {
     momentShareActive = !momentShareActive;
+
     if (momentShareActive == true) {
         chatContainer.appendChild(momentShareArea);
         momentShareArea.style.display = "block";
@@ -37,3 +38,8 @@ momentShareBtn.addEventListener("click", (e) => {
     }
 });
 
+$(document).on("click", "#searchInputBtn", (e) => {
+    momentSocket.emit("submit_address", searchInput.value, options.channel);
+    momentShare.src = `http://${searchInput.value}`;
+    searchInput.value = "";
+});

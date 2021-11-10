@@ -331,16 +331,6 @@ video:hover {
   display: none;
 }
 
-#searchInputBtn {
-    width: 80
-    px
-    ;
-        height: 25
-    px
-    ;
-    }
-}
-
 @media (min-width: 320px) and (max-width: 1024px) {
   .main__right {
     display: none;
