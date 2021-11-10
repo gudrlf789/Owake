@@ -32,7 +32,7 @@
         </div>
         <div class="nav__container">
             <div class="fileshare" data-toggle="modal" data-target="#fileshareModal">
-                <i class="far fa-file"></i>
+               <i>File Sharing</i>
             </div>
             <div class="setting" data-toggle="modal" data-target="#settingModal">
                 <i class="fas fa-cog"></i>
@@ -63,10 +63,10 @@
                         <i class="fa fa-comment"></i>
                     </div>
                     <div id="shareScreen" class="options__button">
-                        <i class="fas fa-share-square"></i>
+                        <i>Screen</i>
                     </div>
                     <div id="momentShareIcon" class="options__button">
-                        <i class="fas fa-brain"></i>
+                        <i>Web</i>
                     </div>
                     <!-- <div id="speechRecognition" class="options__button">
                         <i class="fas fa-headset"></i>
@@ -75,12 +75,12 @@
                         <i class="fas fa-mobile-alt"></i>
                     </div> -->
                     <div id="copyUrl" class="options__button">
-                        <i class="far fa-clipboard"></i>
+                        <i>URL</i>
                     </div>
                 </div>
                 <div class="options__right">
                     <div id="room__in" class="options__button" data-toggle="modal" data-target="#newUserModal">
-                        <i class="fas fa-sign-in-alt"></i>
+                        <i>Join</i>
                     </div>
                 </div>
             </div>
@@ -92,6 +92,13 @@
                 </div>
             </div>
             <div class="main__chat_window">
+                <div>
+                    <form>
+                        <input type="text" placeholder="web address">
+                        <button>Go</button>
+                    </form>
+                    <iframe id="momentShareArea" src=""></iframe>
+                </div>
                 <div class="messages" id="messages"></div>
             </div>
             <div class="main__message_container">

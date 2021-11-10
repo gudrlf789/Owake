@@ -81,6 +81,17 @@ $("#leave").click(function (e) {
     leave();
 });
 
+//테스트
+$(document).on("click", ".player", (e) => {
+    debugger;
+    leave();
+    console.log(e.currentTarget.id);
+    console.log(e.currentTarget.id.replace("player-",""));
+    console.log(remoteUsers)
+    console.log(localTracks)
+    console.log(options)
+});
+
 /*
  * Join a channel, then create local video and audio tracks and publish them to the channel.
  */
