@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+@import "./momentShare.css";
 
 :root {
     --main-darklg: #1d2635;
@@ -158,9 +159,9 @@
 
 .messages {
     display: flex;
+    flex : 1;
     flex-direction: column;
     margin: 1.5rem;
-    flex : 0.2;
     border: 1px solid antiquewhite;
 }
 
@@ -173,7 +174,7 @@
 
 #momentShareArea {
     flex : 0.75;
-    width : 100%;
+    margin : 1.5rem;
     height : 100%;
     background : #fff;
 }
