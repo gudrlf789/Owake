@@ -27,6 +27,10 @@ const MicrophoneAudioTrackInitConfig = {
     AGC: false,
 };
 
+const deviceId = {
+    microphoneId: currentMic.deviceId,
+};
+
 $(() => {
     let urlParams = new URL(location.href).searchParams;
 
@@ -80,8 +84,11 @@ async function join() {
                 options.token || null,
                 options.uid || null
             ),
-            AgoraRTC.createMicrophoneAudioTrack(MicrophoneAudioTrackInitConfig),
-            AgoraRTC.createCameraVideoTrack(),
+            AgoraRTC.createMicrophoneAudioTrack(
+                MicrophoneAudioTrackInitConfig,
+                deviceId
+            ),
+            AgoraRTC.createCameraVideoTrack({ cameraId: currentCam.deviceId }),
         ]);
 
     $("#local__video__container").append(localVideoBox);
@@ -104,6 +111,7 @@ async function leave() {
         }
     }
 
+    localTracks = {};
     remoteUsers = {};
     $("#remote__video__container").html("");
 
@@ -112,6 +120,7 @@ async function leave() {
     $("#local-player-name").text("");
     $("#join").attr("disabled", false);
     $("#leave").attr("disabled", true);
+    //$("#device-wrapper").css("display", "none");
     console.log("client leaves channel success");
 }
 
