@@ -1,24 +1,30 @@
+const momentSocket = io();
 let momentShareActive = false;
 
 const momentShareBtn = document.querySelector("#momentShare");
 const momentShareIcon = document.querySelector(".fa-brain");
 const messagesContainer = document.querySelector(".messages");
 const chatContainer = document.querySelector(".main__chat_window");
-const momentShareArea = document.createElement("div");
+const momentShareArea = document.createElement("i");
 
 const searchInputCtr = document.createElement("div");
 const searchInput = document.createElement("input");
+const searchInputBtnIcon = document.createElement("i");
+const searchInputBtn = document.createElement("div");
 const momentShare = document.createElement("iframe");
 
-searchInputCtr.id = "searchInputCtr";
-searchInput.id = "searchInput";
 momentShare.id = "momentShare-iframe";
 momentShareArea.id = "momentShareArea";
 
-searchInputCtr.appendChild(searchInput);
-momentShareArea.append(searchInputCtr, momentShare);
+searchInputCtr.id = "searchInputCtr";
+searchInput.id = "searchInput";
+searchInputBtn.id = "searchInputBtn";
+searchInputBtnIcon.id = "searchInputBtnIcon";
+searchInputBtnIcon.className = "fas fa-search";
 
-momentShare.src = "https://www.youtube.com/embed/xocBrWHO7NE";
+searchInputBtn.appendChild(searchInputBtnIcon);
+searchInputCtr.append(searchInput, searchInputBtn);
+momentShareArea.append(searchInputCtr, momentShare);
 
 momentShareBtn.addEventListener("click", (e) => {
     momentShareActive = !momentShareActive;
@@ -31,5 +37,21 @@ momentShareBtn.addEventListener("click", (e) => {
         momentShareArea.style.display = "none";
         momentShareIcon.style.color = "#fff";
         messagesContainer.style.flex = "1";
+    }
+});
+
+$(document).on("click", "#searchInputBtn", (e) => {
+    if (searchInput.value.length !== 0) {
+        momentSocket.emit("submit_address", searchInput.value, options.channel);
+        momentShare.src = `http://${searchInput.value}`;
+        searchInput.value = "";
+    }
+});
+
+$(document).on("keydown", "#searchInput", (e) => {
+    if (e.which === 13 && searchInput.value.length !== 0) {
+        momentSocket.emit("submit_address", searchInput.value, options.channel);
+        momentShare.src = `http://${searchInput.value}`;
+        searchInput.value = "";
     }
 });

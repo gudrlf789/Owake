@@ -10,13 +10,19 @@
 }
 
 #searchInputCtr {
-    flex : 0.1;
-    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 #searchInput {
-    float: right;
     margin: 5px;
     border: 2px solid;
     border-radius: 20px;
+}
+
+#searchInputBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
