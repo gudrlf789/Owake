@@ -18,9 +18,7 @@ function mobileDisplayCtr() {
 }
 
 function scrollToBottom() {
-    let d = document.querySelector(".main__chat_window");
+    let d = document.querySelector(".messages");
     d.scrollTop = d.scrollHeight;
 }
-
-scrollToBottom();
 mobileDisplayCtr();
