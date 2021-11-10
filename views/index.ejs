@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="bootstrap.min.css">
 
     <script src="AgoraRTC_N.js"></script>
+    <script src="agora-rtm-sdk.js"></script>
+
     <!-- Jquery -->
     <script src="jquery-3.4.1.min.js"></script>
     <!-- Bootstrap -->
@@ -60,11 +62,11 @@
                     <div id="showChat" class="options__button">
                         <i class="fa fa-comment"></i>
                     </div>
-                    <!-- <div id="speechRecognition" class="options__button">
-                        <i class="fas fa-headset"></i>
-                    </div>
                     <div id="shareScreen" class="options__button">
                         <i class="fas fa-share-square"></i>
+                    </div>
+                    <!-- <div id="speechRecognition" class="options__button">
+                        <i class="fas fa-headset"></i>
                     </div>
                     <div id="flipCamera" class="options__button">
                         <i class="fas fa-mobile-alt"></i>
@@ -99,13 +101,15 @@
         </div>
     </div>
 
-
-
     <script src="rtcClient.js"></script>
+    <script src="rtmClient.js" type="module"></script>
+
     <script src="speechRecognition.js"></script>
+    <script src="screenShare.js"></script>
     <script src="fileShare.js"></script>
     <script src="muteUtils.js"></script>
     <script src="copyUrl.js"></script>
+    <script src="chat.js"></script>
 </body>
 
 </html>
