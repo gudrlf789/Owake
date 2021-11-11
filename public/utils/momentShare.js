@@ -12,7 +12,6 @@ const searchInputCtr = document.createElement("div");
 const searchInput = document.createElement("input");
 const searchInputBtn = document.createElement("button");
 const searchInputBtnIcon = document.createElement("i");
-const searchInputBtn = document.createElement("div");
 const momentShare = document.createElement("iframe");
 
 momentShare.id = "momentShare-iframe";
@@ -31,9 +30,7 @@ searchInputCtr.append(searchInput, searchInputBtn);
 momentShareArea.append(searchInputCtr, momentShare);
 
 momentShareBtn.addEventListener("click", (e) => {
-    debugger;
     momentShareActive = !momentShareActive;
-    console.log(momentShareActive)
 
     if (momentShareActive == true) {
         chatContainer.appendChild(momentShareArea);
