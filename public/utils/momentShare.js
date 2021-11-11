@@ -10,12 +10,9 @@ const momentShareArea = document.createElement("i");
 
 const searchInputCtr = document.createElement("div");
 const searchInput = document.createElement("input");
-<<<<<<< HEAD
 const searchInputBtn = document.createElement("button");
-=======
 const searchInputBtnIcon = document.createElement("i");
 const searchInputBtn = document.createElement("div");
->>>>>>> upstream/agora_DC
 const momentShare = document.createElement("iframe");
 
 momentShare.id = "momentShare-iframe";
@@ -23,11 +20,6 @@ momentShareArea.id = "momentShareArea";
 searchInputBtn.id ="searchInputBtn";
 searchInputBtn.textContent = "Click";
 
-<<<<<<< HEAD
-searchInputCtr.append(searchInput, searchInputBtn);
-momentShareArea.append(searchInputCtr, momentShare);
-
-=======
 searchInputCtr.id = "searchInputCtr";
 searchInput.id = "searchInput";
 searchInputBtn.id = "searchInputBtn";
@@ -38,9 +30,10 @@ searchInputBtn.appendChild(searchInputBtnIcon);
 searchInputCtr.append(searchInput, searchInputBtn);
 momentShareArea.append(searchInputCtr, momentShare);
 
->>>>>>> upstream/agora_DC
 momentShareBtn.addEventListener("click", (e) => {
+    debugger;
     momentShareActive = !momentShareActive;
+    console.log(momentShareActive)
 
     if (momentShareActive == true) {
         chatContainer.appendChild(momentShareArea);
@@ -55,11 +48,6 @@ momentShareBtn.addEventListener("click", (e) => {
 });
 
 $(document).on("click", "#searchInputBtn", (e) => {
-<<<<<<< HEAD
-    momentSocket.emit("submit_address", searchInput.value, options.channel);
-    momentShare.src = `http://${searchInput.value}`;
-    searchInput.value = "";
-=======
     if (searchInput.value.length !== 0) {
         momentSocket.emit("submit_address", searchInput.value, options.channel);
         momentShare.src = `http://${searchInput.value}`;
@@ -73,5 +61,4 @@ $(document).on("keydown", "#searchInput", (e) => {
         momentShare.src = `http://${searchInput.value}`;
         searchInput.value = "";
     }
->>>>>>> upstream/agora_DC
 });
