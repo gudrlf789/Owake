@@ -1,28 +1,28 @@
 #momentShareArea {
-    display : flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #momentShare-iframe {
-    flex : 0.9;
-    width : 100%;
-    height : 100%;
+  flex: 0.9;
+  width: 100%;
+  height: 100%;
 }
 
 #searchInputCtr {
-    display: flex;
-    flex-direction: row-reverse;
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 #searchInput {
-    margin: 5px;
-    border: 2px solid;
-    border-radius: 20px;
+  margin: 5px;
+  border: 2px solid;
+  border-radius: 20px;
 }
 
 #searchInputBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
