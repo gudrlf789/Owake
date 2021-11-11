@@ -5,6 +5,8 @@ localVideoBox.id = "local__videoBox local-player";
 localVideoBox.className = "player";
 
 let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+let currentMic; // the microphone you are using
+let currentCam; // the camera you are using
 
 let localTracks = {
     videoTrack: null,
@@ -25,10 +27,6 @@ const MicrophoneAudioTrackInitConfig = {
     AEC: true,
     ANS: true,
     AGC: false,
-};
-
-const deviceId = {
-    microphoneId: currentMic.deviceId,
 };
 
 $(() => {
@@ -95,7 +93,7 @@ async function join() {
             ),
             AgoraRTC.createMicrophoneAudioTrack(
                 MicrophoneAudioTrackInitConfig,
-                deviceId
+                { microphoneId: currentMic.deviceId }
             ),
             AgoraRTC.createCameraVideoTrack({ cameraId: currentCam.deviceId }),
         ]);
