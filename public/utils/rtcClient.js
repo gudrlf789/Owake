@@ -67,11 +67,10 @@ $("#leave").click(function (e) {
 $(document).on("click", ".player", (e) => {
     const localUid = document.getElementById("local__videoBox local-player").uid;
     const remoteUid = e.currentTarget.id.replace("player-","");
-    let remoteTag = document.getElementById(`player-wrapper-${e.currentTarget.id.replace("player-","")}`);
+    let remoteTag = document.getElementById(`player-wrapper-${remoteUid}`);
     
     if(e.currentTarget.id != "local__videoBox local-player"){
-        debugger;
-        localTracks.videoTrack.stop();
+        totalUsers[localUid].videoTrack.stop();
         document.getElementById("local__videoBox local-player").remove();
         totalUsers[remoteUid].videoTrack.stop();
         
