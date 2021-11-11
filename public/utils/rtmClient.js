@@ -39,14 +39,13 @@ const rtmClientFunc = () => {
         await rtmClient.login(options);
         await channel.join().then(() => {
             messageAreaFunc();
-
             messageArea.className = "message";
             messageArea.textContent =
                 "You have successfully joined channel " + channel.channelId;
             messageList.append(messageArea);
         });
 
-        channel.on("ChannelMessage", function (message, memberId) {
+        channel.on("ChannelMessage", function (message, memberId, e) {
             messageAreaFunc();
             const msg = JSON.stringify(message.text);
             messageArea.textContent =

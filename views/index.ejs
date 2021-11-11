@@ -25,6 +25,7 @@
     <%- include("./settings") %>
         <%- include("./fileshare") %>
             <%- include("./newuser") %>
+                <%- include("./profile") %>
 </head>
 
 <body>
@@ -34,7 +35,8 @@
         </div>
         <div class="nav__container">
             <div class="fileshare" data-toggle="modal" data-target="#fileshareModal">
-               <i>File Sharing</i>
+                <i class="far fa-file"></i>
+                <span>File Share</span>
             </div>
             <!-- <div class="setting" data-toggle="modal" data-target="#settingModal">
                 <i class="fas fa-cog"></i>
@@ -57,18 +59,23 @@
                 <div class="options__left">
                     <div id="muteVideo" class="options__button">
                         <i id="videoIcon" class="fas fa-video"></i>
+                        <span>Cam</span>
                     </div>
                     <div id="muteAudio" class="options__button">
                         <i id="audioIcon" class="fa fa-microphone"></i>
+                        <span>Mic</span>
                     </div>
                     <div id="showChat" class="options__button">
                         <i class="fa fa-comment"></i>
+                        <span>Chat</span>
                     </div>
                     <div id="shareScreen" class="options__button">
-                        <i>Screen</i>
+                        <i class="fas fa-share-square"></i>
+                        <span>Screen</span>
                     </div>
                     <div id="momentShare" class="options__button">
-                        <i>Web</i>
+                        <i class="fas fa-brain"></i>
+                        <span>Web</span>
                     </div>
                     <!-- <div id="speechRecognition" class="options__button">
                         <i class="fas fa-headset"></i>
@@ -77,12 +84,14 @@
                         <i class="fas fa-mobile-alt"></i>
                     </div> -->
                     <div id="copyUrl" class="options__button">
-                        <i>URL</i>
+                        <i class="far fa-clipboard"></i>
+                        <span>Url</span>
                     </div>
                 </div>
                 <div class="options__right">
                     <div id="room__in" class="options__button" data-toggle="modal" data-target="#newUserModal">
-                        <i>Join</i>
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
                     </div>
                 </div>
             </div>
@@ -110,12 +119,13 @@
     <script src="rtmClient.js" type="module"></script>
 
     <script src="momentShare.js"></script>
-    <script src="speechRecognition.js"></script>
+    <!-- <script src="speechRecognition.js"></script> -->
     <script src="screenShare.js"></script>
     <script src="fileShare.js"></script>
     <script src="muteUtils.js"></script>
     <script src="copyUrl.js"></script>
     <script src="chat.js"></script>
+    <script src="recodingDeviceCtrl.js"></script>
 </body>
 
 </html>

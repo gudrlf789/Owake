@@ -22,14 +22,14 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", socket => {
-    socket.on("local_join_room", (roomName) => {
-      socket.join(roomName);
-    });
-
-    socket.on("submit_address", (address, roomName) => {
-      socket.to(roomName).emit("input_address", address);
-    });
-});
+    socket.on("join-room", (roomName) => {
+        socket.join(roomName);
+      });
+  
+      socket.on("submit_address", (address, roomName) => {
+        socket.to(roomName).emit("input_address", address);
+      });
+})
 
 server.listen(port, () => {
     console.log(`Server Listen... ${port}`);
