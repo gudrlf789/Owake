@@ -5,8 +5,6 @@ localVideoBox.id = "local__videoBox local-player";
 localVideoBox.className = "player";
 
 let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-let currentMic; // the microphone you are using
-let currentCam; // the camera you are using
 
 let localTracks = {
     videoTrack: null,
@@ -64,7 +62,6 @@ $("#leave").click(function (e) {
 
 socket.on("input_address", (address) => {
     const momentShare = document.getElementById("momentShare-iframe");
-    console.log(address);
     momentShare.src = `https://${address}`;
 });
 
@@ -115,7 +112,7 @@ async function leave() {
     $("#local-player-name").text("");
     $("#join").attr("disabled", false);
     $("#leave").attr("disabled", true);
-    //$("#device-wrapper").css("display", "none");
+
     console.log("client leaves channel success");
 }
 
