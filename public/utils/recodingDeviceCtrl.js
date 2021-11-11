@@ -3,8 +3,9 @@ let cams = []; // all cameras devices you can use
 
 let volumeAnimation;
 
-$(async () => {
-    $("#media-device-test").modal("show");
+const deviceSettingModal = document.querySelector("#deviceSettingModal");
+
+deviceSettingModal.addEventListener("click", async (e) => {
     $(".cam-list").delegate("a", "click", function (e) {
         switchCamera(this.text);
     });
