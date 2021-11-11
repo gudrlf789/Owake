@@ -13,6 +13,8 @@ let localTracks = {
     audioTrack: null,
 };
 
+let totalUsers = {};
+
 let remoteUsers = {};
 
 let options = {
@@ -62,14 +64,27 @@ $("#leave").click(function (e) {
     leave();
 });
 
-//테스트
 $(document).on("click", ".player", (e) => {
-    leave();
-    console.log(e.currentTarget.id);
-    console.log(e.currentTarget.id.replace("player-",""));
-    console.log(remoteUsers)
-    console.log(localTracks)
-    console.log(options)
+    const localUid = document.getElementById("local__videoBox local-player").uid;
+    const remoteUid = e.currentTarget.id.replace("player-","");
+    let remoteTag = document.getElementById(`player-wrapper-${e.currentTarget.id.replace("player-","")}`);
+    
+    if(e.currentTarget.id != "local__videoBox local-player"){
+        debugger;
+        localTracks.videoTrack.stop();
+        document.getElementById("local__videoBox local-player").remove();
+        totalUsers[remoteUid].videoTrack.stop();
+        
+        localVideoBox.uid = remoteUid;
+        remoteTag.id = `player-wrapper-${localUid}`;
+        remoteTag.children[0].textContent = `remoteUser(${localUid})`
+        remoteTag.children[1].id = `player-${localUid}`;
+        totalUsers[localUid].videoTrack.play(`player-${localUid}`);
+
+        $("#local-player-name").text(`localVideo(${remoteUid})`);
+        $("#local__video__container").append(localVideoBox);
+        totalUsers[remoteUid].videoTrack.play(localVideoBox);
+    }
 });
 
 socket.on("input_address", (address) => {
@@ -95,6 +110,12 @@ async function join() {
             AgoraRTC.createCameraVideoTrack(),
         ]);
 
+    totalUsers[options.uid] = {
+        audioTrack : localTracks.audioTrack,
+        videoTrack : localTracks.videoTrack
+    };
+    
+    localVideoBox.uid = client.uid;
     $("#local__video__container").append(localVideoBox);
 
     localTracks.videoTrack.play(localVideoBox);
@@ -117,6 +138,7 @@ async function leave() {
 
     localTracks = {};
     remoteUsers = {};
+    totalUsers = {};
     $("#remote__video__container").html("");
 
     await client.leave();
@@ -137,7 +159,7 @@ async function subscribe(user, mediaType) {
         const player = $(`
           <div id="player-wrapper-${uid}">
             <p class="player-name">remoteUser(${uid})</p>
-            <div id="player-${uid}" class="player" data-uid="${uid}"></div>
+            <div id="player-${uid}" class="player" uid="${uid}"></div>
           </div>
         `);
         $("#remote-playerlist").append(player);
@@ -151,18 +173,21 @@ async function subscribe(user, mediaType) {
 
 function handleUserPublished(user, mediaType) {
     const id = user.uid;
+    totalUsers[id] = user;
     remoteUsers[id] = user;
     subscribe(user, mediaType);
 }
 
 function handleUserUnpublished(user) {
     const id = user.uid;
+    delete totalUsers[id];
     delete remoteUsers[id];
     $(`#player-wrapper-${id}`).remove();
 }
 
 function handleUserJoined(user, mediaType) {
     const id = user.uid;
+    totalUsers[id] = user;
     remoteUsers[id] = user;
     subscribe(user, mediaType);
 }
