@@ -43,7 +43,7 @@ momentShareBtn.addEventListener("click", (e) => {
 $(document).on("click", "#searchInputBtn", (e) => {
     if (searchInput.value.length !== 0) {
         momentSocket.emit("submit_address", searchInput.value, options.channel);
-        momentShare.src = `http://${searchInput.value}`;
+        momentShare.src = `https://${searchInput.value}`;
         searchInput.value = "";
     }
 });
@@ -51,7 +51,7 @@ $(document).on("click", "#searchInputBtn", (e) => {
 $(document).on("keydown", "#searchInput", (e) => {
     if (e.which === 13 && searchInput.value.length !== 0) {
         momentSocket.emit("submit_address", searchInput.value, options.channel);
-        momentShare.src = `http://${searchInput.value}`;
+        momentShare.src = `https://${searchInput.value}`;
         searchInput.value = "";
     }
 });
