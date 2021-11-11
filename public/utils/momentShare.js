@@ -4,17 +4,20 @@ let momentShareActive = false;
 const momentShareBtn = document.querySelector("#momentShare");
 const momentShareIcon = document.querySelector(".fa-brain");
 const messagesContainer = document.querySelector(".messages");
+
 const chatContainer = document.querySelector(".main__chat_window");
 const momentShareArea = document.createElement("i");
 
 const searchInputCtr = document.createElement("div");
 const searchInput = document.createElement("input");
+const searchInputBtn = document.createElement("button");
 const searchInputBtnIcon = document.createElement("i");
-const searchInputBtn = document.createElement("div");
 const momentShare = document.createElement("iframe");
 
 momentShare.id = "momentShare-iframe";
 momentShareArea.id = "momentShareArea";
+searchInputBtn.id ="searchInputBtn";
+searchInputBtn.textContent = "Click";
 
 searchInputCtr.id = "searchInputCtr";
 searchInput.id = "searchInput";
@@ -28,6 +31,7 @@ momentShareArea.append(searchInputCtr, momentShare);
 
 momentShareBtn.addEventListener("click", (e) => {
     momentShareActive = !momentShareActive;
+
     if (momentShareActive == true) {
         chatContainer.appendChild(momentShareArea);
         momentShareArea.style.display = "block";

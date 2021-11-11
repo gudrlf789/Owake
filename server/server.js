@@ -8,6 +8,7 @@ const io = require("socket.io")(server, {
         methods: ["GET", "POST"],
     },
 });
+
 const port = process.env.PORT || 1227;
 
 app.set("view engine", "ejs");
