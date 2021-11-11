@@ -82,11 +82,8 @@ async function join() {
                 options.token || null,
                 options.uid || null
             ),
-            AgoraRTC.createMicrophoneAudioTrack(
-                MicrophoneAudioTrackInitConfig,
-                { microphoneId: currentMic.deviceId }
-            ),
-            AgoraRTC.createCameraVideoTrack({ cameraId: currentCam.deviceId }),
+            AgoraRTC.createMicrophoneAudioTrack(MicrophoneAudioTrackInitConfig),
+            AgoraRTC.createCameraVideoTrack(),
         ]);
 
     $("#local__video__container").append(localVideoBox);
