@@ -1,7 +1,5 @@
-var mics = []; // all microphones devices you can use
-var cams = []; // all cameras devices you can use
-var currentMic; // the microphone you are using
-var currentCam; // the camera you are using
+let mics = []; // all microphones devices you can use
+let cams = []; // all cameras devices you can use
 
 let volumeAnimation;
 
