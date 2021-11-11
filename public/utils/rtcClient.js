@@ -74,7 +74,7 @@ $(document).on("click", ".player", (e) => {
 
 socket.on("input_address", (address) => {
     const momentShare = document.getElementById("momentShare-iframe");
-    momentShare.src = `http://${address}`;
+    momentShare.src = `https://${address}`;
 });
 
 async function join() {
