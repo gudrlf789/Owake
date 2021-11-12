@@ -26,6 +26,7 @@
         <%- include("./fileshare") %>
             <%- include("./newuser") %>
                 <%- include("./profile") %>
+                    <%- include("./deviceSettings") %>
 </head>
 
 <body>
@@ -38,10 +39,10 @@
                 <i class="far fa-file"></i>
                 <span>File Share</span>
             </div>
-            <!-- <div class="deviceSetting" data-toggle="modal" data-target="#deviceSettingModal">
+            <div class="deviceSetting" id="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal">
                 <i class="fas fa-cog"></i>
                 <span>Device Setting</span>
-            </div> -->
+            </div>
         </div>
     </div>
     <div class="main">
@@ -118,6 +119,8 @@
 
     <script src="rtcClient.js"></script>
     <script src="rtmClient.js" type="module"></script>
+
+    <script src="recodingDeviceCtrl.js" type="module"></script>
     <script src="momentShare.js"></script>
     <script src="screenShare.js"></script>
     <script src="fileShare.js"></script>

@@ -11,9 +11,6 @@ let localTracks = {
     audioTrack: null,
 };
 
-let currentMic; // the microphone you are using
-let currentCam; // the camera you are using
-let volumeAnimation;
 let totalUsers = {};
 let remoteUsers = {};
 
