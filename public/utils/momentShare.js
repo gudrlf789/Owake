@@ -7,27 +7,26 @@ const messagesContainer = document.querySelector(".messages");
 const chatContainer = document.querySelector(".main__chat_window");
 
 const momentShareArea = document.createElement("i");
-const searchInputCtr = document.createElement("div");
+const iFrameContainer = document.createElement("div");
 const searchInput = document.createElement("input");
-
 const searchInputBtn = document.createElement("div");
 const searchInputBtnIcon = document.createElement("i");
 const momentShare = document.createElement("iframe");
 
 momentShare.id = "momentShare-iframe";
+momentShare.name = "iFrame";
 momentShareArea.id = "momentShareArea";
-
-searchInputCtr.id = "searchInputCtr";
+iFrameContainer.id = "iFrameContainer";
 searchInput.id = "searchInput";
-
 searchInputBtn.id = "searchInputBtn";
 searchInputBtnIcon.id = "searchInputBtnIcon";
+
 searchInputBtnIcon.className = "fas fa-search";
 
 searchInputBtn.appendChild(searchInputBtnIcon);
 
-searchInputCtr.append(searchInput, searchInputBtn);
-momentShareArea.append(searchInputCtr, momentShare);
+iFrameContainer.append(searchInput, searchInputBtn);
+momentShareArea.append(iFrameContainer, momentShare);
 
 momentShareBtn.addEventListener("click", (e) => {
     momentShareActive = !momentShareActive;

@@ -216,12 +216,6 @@
   color: antiquewhite;
 }
 
-#momentShareArea {
-  flex: 0.75;
-  margin: 1.5rem;
-  height: 100%;
-  background: #fff;
-}
 
 .userName {
   color: #fff;

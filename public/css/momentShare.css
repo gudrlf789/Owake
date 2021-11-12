@@ -1,17 +1,28 @@
+#momentShare-iframe {
+  border : none;
+}
+
 #momentShareArea {
   display: flex;
   flex-direction: column;
 }
 
 #momentShare-iframe {
-  flex: 0.9;
   width: 100%;
   height: 100%;
 }
 
-#searchInputCtr {
+#momentShareArea {
+  flex: 0.8;
+  margin: 1.5rem;
+  height: 100%;
+  background: #fff;
+}
+
+#iFrameContainer {
   display: flex;
   flex-direction: row-reverse;
+  border: 1px solid #000;
 }
 
 #searchInput {
