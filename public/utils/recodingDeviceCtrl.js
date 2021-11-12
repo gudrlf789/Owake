@@ -5,6 +5,7 @@ let currentCam; // the camera you are using
 let volumeAnimation;
 
 const deviceSettingBtn = document.querySelector("#deviceSettingBtn");
+const dropdownItem = document.querySelector(".dropdown-item");
 
 deviceSettingBtn.addEventListener("click", async (e) => {
     $(".cam-list").delegate("a", "click", function (e) {
@@ -28,9 +29,11 @@ async function mediaDeviceTest() {
     currentMic = mics[0];
     $(".mic-input").val(currentMic.label);
     mics.forEach((mic) => {
-        $(".mic-list").append(
-            `<a class="dropdown-item" href="#">${mic.label}</a>`
-        );
+        if (mic.label != dropdownItem.value) {
+            $(".mic-list").append(
+                `<a class="dropdown-item" href="#">${mic.label}</a>`
+            );
+        }
     });
 
     // get cameras
@@ -38,9 +41,11 @@ async function mediaDeviceTest() {
     currentCam = cams[0];
     $(".cam-input").val(currentCam.label);
     cams.forEach((cam) => {
-        $(".cam-list").append(
-            `<a class="dropdown-item" href="#">${cam.label}</a>`
-        );
+        if (cam.label != dropdownItem.value) {
+            $(".cam-list").append(
+                `<a class="dropdown-item" href="#">${cam.label}</a>`
+            );
+        }
     });
 }
 
