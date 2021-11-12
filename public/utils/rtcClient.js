@@ -11,8 +11,10 @@ let localTracks = {
     audioTrack: null,
 };
 
+let currentMic; // the microphone you are using
+let currentCam; // the camera you are using
+let volumeAnimation;
 let totalUsers = {};
-
 let remoteUsers = {};
 
 let options = {
@@ -63,18 +65,20 @@ $("#leave").click(function (e) {
 });
 
 $(document).on("click", ".player", (e) => {
-    const localUid = document.getElementById("local__videoBox local-player").uid;
-    const remoteUid = e.currentTarget.id.replace("player-","");
+    const localUid = document.getElementById(
+        "local__videoBox local-player"
+    ).uid;
+    const remoteUid = e.currentTarget.id.replace("player-", "");
     let remoteTag = document.getElementById(`player-wrapper-${remoteUid}`);
-    
-    if(e.currentTarget.id != "local__videoBox local-player"){
+
+    if (e.currentTarget.id != "local__videoBox local-player") {
         totalUsers[localUid].videoTrack.stop();
         document.getElementById("local__videoBox local-player").remove();
         totalUsers[remoteUid].videoTrack.stop();
-        
+
         localVideoBox.uid = remoteUid;
         remoteTag.id = `player-wrapper-${localUid}`;
-        remoteTag.children[0].textContent = `remoteUser(${localUid})`
+        remoteTag.children[0].textContent = `remoteUser(${localUid})`;
         remoteTag.children[1].id = `player-${localUid}`;
         totalUsers[localUid].videoTrack.play(`player-${localUid}`);
 
@@ -108,10 +112,10 @@ async function join() {
         ]);
 
     totalUsers[options.uid] = {
-        audioTrack : localTracks.audioTrack,
-        videoTrack : localTracks.videoTrack
+        audioTrack: localTracks.audioTrack,
+        videoTrack: localTracks.videoTrack,
     };
-    
+
     localVideoBox.uid = client.uid;
     $("#local__video__container").append(localVideoBox);
 
@@ -136,6 +140,7 @@ async function leave() {
     localTracks = {};
     remoteUsers = {};
     totalUsers = {};
+
     $("#remote__video__container").html("");
 
     await client.leave();
