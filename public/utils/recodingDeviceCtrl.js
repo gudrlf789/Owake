@@ -29,11 +29,9 @@ async function mediaDeviceTest() {
     currentMic = mics[0];
     $(".mic-input").val(currentMic.label);
     mics.forEach((mic) => {
-        if (mic.label != dropdownItem.value) {
-            $(".mic-list").append(
-                `<a class="dropdown-item" href="#">${mic.label}</a>`
-            );
-        }
+        $(".mic-list").append(
+            `<a class="dropdown-item" href="#">${mic.label}</a>`
+        );
     });
 
     // get cameras
@@ -41,11 +39,9 @@ async function mediaDeviceTest() {
     currentCam = cams[0];
     $(".cam-input").val(currentCam.label);
     cams.forEach((cam) => {
-        if (cam.label != dropdownItem.value) {
-            $(".cam-list").append(
-                `<a class="dropdown-item" href="#">${cam.label}</a>`
-            );
-        }
+        $(".cam-list").append(
+            `<a class="dropdown-item" href="#">${cam.label}</a>`
+        );
     });
 }
 
