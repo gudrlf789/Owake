@@ -15,7 +15,7 @@ deviceSettingBtn.addEventListener("click", async (e) => {
         switchMicrophone(this.text);
     });
 
-    await mediaDeviceTest();
+    await mediaDevice();
     volumeAnimation = requestAnimationFrame(setVolumeWave);
 });
 
@@ -23,44 +23,28 @@ $("#deviceSettingModal").on("hidden.bs.modal", function (e) {
     cancelAnimationFrame(volumeAnimation);
 });
 
-async function mediaDeviceTest() {
+async function mediaDevice() {
     const micList = document.querySelector(".mic-list");
     const camList = document.querySelector(".cam-list");
-    // get mics
+
     mics = await AgoraRTC.getMicrophones();
     currentMic = mics[0];
     $(".mic-input").val(currentMic.label);
     mics.forEach((mic) => {
-        console.log(mic.label);
-        for (let i = 0; i < micList.childElementCount; i++) {
-            if (micList[i] == mic.label) {
-                return;
-            }
-        }
-
         $(".mic-list").append(
             `<a class="dropdown-item" href="#">${mic.label}</a>`
         );
     });
-    console.log(micList);
 
     // get cameras
     cams = await AgoraRTC.getCameras();
     currentCam = cams[0];
     $(".cam-input").val(currentCam.label);
-
     cams.forEach((cam) => {
-        console.log(cam.label);
-        for (let i = 0; i < camList.childElementCount; i++) {
-            if (camList[i] == cam.label) {
-                return;
-            }
-        }
         $(".cam-list").append(
             `<a class="dropdown-item" href="#">${cam.label}</a>`
         );
     });
-    console.log(camList);
 }
 
 async function switchCamera(label) {

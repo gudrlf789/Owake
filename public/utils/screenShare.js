@@ -8,7 +8,13 @@ async function screenShareJoin() {
     await screenClient.join(options.appid, options.channel, null);
     socket.emit("join_room", options.channel);
 
-    const screenTrack = await AgoraRTC.createScreenVideoTrack();
+    const screenTrack = await AgoraRTC.createScreenVideoTrack({
+        streamID: options.uid,
+        audio: false,
+        video: false,
+        screen: true,
+        mediaSource: "screen", // 'screen', 'application', 'window'
+    });
     await screenClient.publish(screenTrack);
     screenTrack.on("track-ended", () => {
         LeaveShareScreen(screenClient, screenTrack);
