@@ -20,13 +20,20 @@ let options = {
     channel: null,
     uid: null,
     token: null,
-    role: "audience", // host or audience
 };
 
 const MicrophoneAudioTrackInitConfig = {
     AEC: true,
     ANS: true,
     AGC: false,
+};
+
+window.onload = async () => {
+    // 새로고침시에 세션스토리지에 값이 저장되었는지 확인 후
+    // 값이 존재하면 해당 채널, uid  값으로 재접속
+    if (window.sessionStorage.length != 0) {
+        await join();
+    }
 };
 
 $(() => {
@@ -99,7 +106,6 @@ socket.on("input_address", (address) => {
 
 async function join() {
     client.on("user-published", handleUserPublished);
-    client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);
     socket.emit("join-room", options.channel);
 
@@ -107,9 +113,9 @@ async function join() {
         await Promise.all([
             client.join(
                 options.appid,
-                options.channel,
+                options.channel || window.sessionStorage.getItem("channel"),
                 options.token || null,
-                options.uid || null
+                options.uid || window.sessionStorage.getItem("uid") || null
             ),
             AgoraRTC.createMicrophoneAudioTrack(MicrophoneAudioTrackInitConfig),
             AgoraRTC.createCameraVideoTrack(),
@@ -120,6 +126,12 @@ async function join() {
         videoTrack: localTracks.videoTrack,
     };
 
+    //처음 트랙 생성시 채널,uid 값 세션 스토리지에 저장
+    if (window.sessionStorage.length == 0) {
+        window.sessionStorage.setItem("channel", options.channel);
+        window.sessionStorage.setItem("uid", options.uid);
+    }
+
     localVideoBox.uid = client.uid;
     $("#local__video__container").append(localVideoBox);
 
@@ -129,8 +141,6 @@ async function join() {
 
     await client.publish(Object.values(localTracks));
     console.log("publish success");
-
-    videoReflash();
 }
 
 async function leave() {
@@ -150,6 +160,8 @@ async function leave() {
     $("#remote__video__container").html("");
 
     await client.leave();
+    //세션 스토리지 clear
+    window.sessionStorage.clear();
 
     $("#local-player-name").text("");
     $("#join").attr("disabled", false);
@@ -199,14 +211,3 @@ function handleUserJoined(user, mediaType) {
     remoteUsers[id] = user;
     subscribe(user, mediaType);
 }
-
-function videoReflash() {
-    let myVideo = document.getElementsByTagName("video")[0];
-    myVideo.load();
-    myVideo.play();
-}
-
-reflash.addEventListener("click", (e) => {
-    e.preventDefault();
-    videoReflash();
-});
