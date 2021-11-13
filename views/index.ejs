@@ -26,7 +26,7 @@
         <%- include("./fileshare") %>
             <%- include("./newuser") %>
                 <%- include("./profile") %>
-                    <%- include("./deviceSettings") %>
+
 </head>
 
 <body>
@@ -79,16 +79,20 @@
                         <i class="fas fa-brain"></i>
                         <span>Web</span>
                     </div>
+                    <div id="reflash" class="options__button">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Reflash</span>
+                    </div>
                     <!-- <div id="speechRecognition" class="options__button">
                         <i class="fas fa-headset"></i>
                     </div>
                     <div id="flipCamera" class="options__button">
                         <i class="fas fa-mobile-alt"></i>
                     </div> -->
-                    <div id="copyUrl" class="options__button">
+                    <!-- <div id="copyUrl" class="options__button">
                         <i class="far fa-clipboard"></i>
                         <span>Url</span>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="options__right">
                     <div id="room__in" class="options__button" data-toggle="modal" data-target="#newUserModal">

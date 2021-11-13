@@ -13,6 +13,7 @@ let localTracks = {
 
 let totalUsers = {};
 let remoteUsers = {};
+let lSusers = {};
 
 let options = {
     appid: "50b9cd9de2d54849a139e3db52e7928a",
@@ -44,16 +45,22 @@ $(() => {
 
 $("#join-form").submit(async function (e) {
     e.preventDefault();
-    $("#join").attr("disabled", true);
-    try {
-        options.token = $("#token").val();
-        options.channel = $("#channel").val();
-        options.uid = $("#uid").val();
-        await join();
-    } catch (error) {
-        console.error(error);
-    } finally {
-        $("#leave").attr("disabled", false);
+    const nickname = $("#uid").val();
+    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    if (korean.test(nickname)) {
+        return alert("You can only type in English.");
+    } else {
+        $("#join").attr("disabled", true);
+        try {
+            options.token = $("#token").val();
+            options.channel = $("#channel").val();
+            options.uid = nickname;
+            await join();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            $("#leave").attr("disabled", false);
+        }
     }
 });
 
@@ -122,6 +129,8 @@ async function join() {
 
     await client.publish(Object.values(localTracks));
     console.log("publish success");
+
+    videoReflash();
 }
 
 async function leave() {
@@ -175,6 +184,7 @@ function handleUserPublished(user, mediaType) {
     totalUsers[id] = user;
     remoteUsers[id] = user;
     subscribe(user, mediaType);
+    videoReflash();
 }
 
 function handleUserUnpublished(user) {
@@ -189,4 +199,16 @@ function handleUserJoined(user, mediaType) {
     totalUsers[id] = user;
     remoteUsers[id] = user;
     subscribe(user, mediaType);
+    videoReflash();
 }
+
+function videoReflash() {
+    let myVideo = document.getElementsByTagName("video")[0];
+    myVideo.load();
+    myVideo.play();
+}
+
+reflash.addEventListener("click", (e) => {
+    e.preventDefault();
+    videoReflash();
+});
