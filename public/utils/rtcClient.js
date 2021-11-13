@@ -130,6 +130,9 @@ async function join() {
     if (window.sessionStorage.length == 0) {
         window.sessionStorage.setItem("channel", options.channel);
         window.sessionStorage.setItem("uid", options.uid);
+    }else{
+        $("#join").attr("disabled", true);
+        $("#leave").attr("disabled", false);
     }
 
     localVideoBox.uid = client.uid;
