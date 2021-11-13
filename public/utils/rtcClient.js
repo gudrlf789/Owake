@@ -184,7 +184,6 @@ function handleUserPublished(user, mediaType) {
     totalUsers[id] = user;
     remoteUsers[id] = user;
     subscribe(user, mediaType);
-    videoReflash();
 }
 
 function handleUserUnpublished(user) {
@@ -199,7 +198,6 @@ function handleUserJoined(user, mediaType) {
     totalUsers[id] = user;
     remoteUsers[id] = user;
     subscribe(user, mediaType);
-    videoReflash();
 }
 
 function videoReflash() {
