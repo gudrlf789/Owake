@@ -15,7 +15,7 @@ deviceSettingBtn.addEventListener("click", async (e) => {
         switchMicrophone(this.text);
     });
 
-    await mediaDeviceTest();
+    await mediaDevice();
     volumeAnimation = requestAnimationFrame(setVolumeWave);
 });
 
@@ -23,8 +23,10 @@ $("#deviceSettingModal").on("hidden.bs.modal", function (e) {
     cancelAnimationFrame(volumeAnimation);
 });
 
-async function mediaDeviceTest() {
-    // get mics
+async function mediaDevice() {
+    const micList = document.querySelector(".mic-list");
+    const camList = document.querySelector(".cam-list");
+
     mics = await AgoraRTC.getMicrophones();
     currentMic = mics[0];
     $(".mic-input").val(currentMic.label);

@@ -4,7 +4,7 @@ const localVideoBox = document.createElement("div");
 localVideoBox.id = "local__videoBox local-player";
 localVideoBox.className = "player";
 
-let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+let client = AgoraRTC.createClient({ mode: "rtc", codec: "h264" });
 
 let localTracks = {
     videoTrack: null,
@@ -19,7 +19,7 @@ let options = {
     appid: "50b9cd9de2d54849a139e3db52e7928a",
     channel: null,
     uid: null,
-    token: null
+    token: null,
 };
 
 const MicrophoneAudioTrackInitConfig = {
@@ -31,22 +31,32 @@ const MicrophoneAudioTrackInitConfig = {
 $(document).ready(async () => {
     // 새로고침시에 세션스토리지에 값이 저장되었는지 확인 후
     // 값이 존재하면 해당 채널, uid  값으로 재접속
-    if(window.sessionStorage.length != 0){
+    if (window.sessionStorage.length != 0) {
         await join();
     }
 });
 
 $(() => {
-    let urlParams = new URL(location.href).searchParams;
-
-    options.channel = urlParams.get("channel");
-    options.token = urlParams.get("token");
-    options.uid = urlParams.get("uid");
-    if (options.appid && options.channel) {
-        $("#uid").val(options.uid);
-        $("#token").val(options.token);
-        $("#channel").val(options.channel);
-        $("#join-form").submit();
+    if (location.protocol === "http:") {
+        if (location.href == "http://localhost:1227/") {
+            if (options.appid && options.channel) {
+                $("#join-form").submit();
+                videoReflash();
+            }
+        } else {
+            location.replace(
+                `https:${location.href.substring(location.protocol.length)}`
+            );
+            if (options.appid && options.channel) {
+                $("#join-form").submit();
+                videoReflash();
+            }
+        }
+    } else {
+        if (options.appid && options.channel) {
+            $("#join-form").submit();
+            videoReflash();
+        }
     }
 });
 
@@ -127,10 +137,10 @@ async function join() {
     };
 
     //처음 트랙 생성시 채널,uid 값 세션 스토리지에 저장
-    if(window.sessionStorage.length == 0){
+    if (window.sessionStorage.length == 0) {
         window.sessionStorage.setItem("channel", options.channel);
         window.sessionStorage.setItem("uid", options.uid);
-    }else{
+    } else {
         $("#join").attr("disabled", true);
         $("#leave").attr("disabled", false);
     }
@@ -199,6 +209,7 @@ function handleUserPublished(user, mediaType) {
     totalUsers[id] = user;
     remoteUsers[id] = user;
     subscribe(user, mediaType);
+    videoReflash();
 }
 
 function handleUserUnpublished(user) {
@@ -207,3 +218,14 @@ function handleUserUnpublished(user) {
     delete remoteUsers[id];
     $(`#player-wrapper-${id}`).remove();
 }
+
+async function videoReflash() {
+    let myVideo = document.getElementsByTagName("video")[0];
+    myVideo.load();
+    myVideo.play();
+}
+
+reflash.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await videoReflash();
+});

@@ -24,10 +24,6 @@ $("#muteVideo").click(function (e) {
 
 async function muteAudio() {
     if (!localTracks.audioTrack) return;
-    /**
-     * After calling setMuted to mute an audio or video track, the SDK stops sending the audio or video stream. Users whose tracks are muted are not counted as users sending streams.
-     * Calling setEnabled to disable a track, the SDK stops audio or video capture
-     */
     await localTracks.audioTrack.setMuted(true);
     localTrackState.audioTrackMuted = true;
     audioIcon.className = "fa fa-microphone-slash";
