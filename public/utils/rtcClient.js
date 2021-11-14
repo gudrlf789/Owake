@@ -4,7 +4,7 @@ const localVideoBox = document.createElement("div");
 localVideoBox.id = "local__videoBox local-player";
 localVideoBox.className = "player";
 
-let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+let client = AgoraRTC.createClient({ mode: "rtc", codec: "h264" });
 
 let localTracks = {
     videoTrack: null,
@@ -37,16 +37,26 @@ window.onload = async () => {
 };
 
 $(() => {
-    let urlParams = new URL(location.href).searchParams;
-
-    options.channel = urlParams.get("channel");
-    options.token = urlParams.get("token");
-    options.uid = urlParams.get("uid");
-    if (options.appid && options.channel) {
-        $("#uid").val(options.uid);
-        $("#token").val(options.token);
-        $("#channel").val(options.channel);
-        $("#join-form").submit();
+    if (location.protocol === "http:") {
+        if (location.href == "http://localhost:1227/") {
+            if (options.appid && options.channel) {
+                $("#join-form").submit();
+                videoReflash();
+            }
+        } else {
+            location.replace(
+                `https:${location.href.substring(location.protocol.length)}`
+            );
+            if (options.appid && options.channel) {
+                $("#join-form").submit();
+                videoReflash();
+            }
+        }
+    } else {
+        if (options.appid && options.channel) {
+            $("#join-form").submit();
+            videoReflash();
+        }
     }
 });
 
@@ -130,7 +140,7 @@ async function join() {
     if (window.sessionStorage.length == 0) {
         window.sessionStorage.setItem("channel", options.channel);
         window.sessionStorage.setItem("uid", options.uid);
-    }else{
+    } else {
         $("#join").attr("disabled", true);
         $("#leave").attr("disabled", false);
     }
@@ -199,6 +209,7 @@ function handleUserPublished(user, mediaType) {
     totalUsers[id] = user;
     remoteUsers[id] = user;
     subscribe(user, mediaType);
+    videoReflash();
 }
 
 function handleUserUnpublished(user) {
@@ -208,9 +219,13 @@ function handleUserUnpublished(user) {
     $(`#player-wrapper-${id}`).remove();
 }
 
-function handleUserJoined(user, mediaType) {
-    const id = user.uid;
-    totalUsers[id] = user;
-    remoteUsers[id] = user;
-    subscribe(user, mediaType);
+async function videoReflash() {
+    let myVideo = document.getElementsByTagName("video")[0];
+    myVideo.load();
+    myVideo.play();
 }
+
+reflash.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await videoReflash();
+});
