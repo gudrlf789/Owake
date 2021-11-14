@@ -212,6 +212,7 @@ function handleUserPublished(user, mediaType) {
     const id = user.uid;
     totalUsers[id] = user;
     remoteUsers[id] = user;
+
     subscribe(user, mediaType);
     videoReflash();
 }

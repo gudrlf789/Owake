@@ -81,7 +81,6 @@ channelMessageSend.addEventListener("click", (e) => {
 
 channelMessageText.addEventListener("keydown", (e) => {
     if (e.which === 13 && channelMessageText.value.length !== 0) {
-        console.log(channelMessageText.value);
         channelMessageFunc();
         channelMessageText.value = "";
     }
@@ -96,6 +95,7 @@ async function channelMessageFunc() {
             userNameArea.textContent = userName;
             messageArea.textContent = channelMessage;
             messageList.append(userNameArea, messageArea);
+            scrollToBottom();
         });
     }
 }
