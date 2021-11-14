@@ -28,13 +28,13 @@ const MicrophoneAudioTrackInitConfig = {
     AGC: false,
 };
 
-window.onload = async () => {
+$(document).ready(async () => {
     // 새로고침시에 세션스토리지에 값이 저장되었는지 확인 후
     // 값이 존재하면 해당 채널, uid  값으로 재접속
     if (window.sessionStorage.length != 0) {
         await join();
     }
-};
+});
 
 $(() => {
     if (location.protocol === "http:") {

@@ -1,19 +1,13 @@
-const screenShareBtn = document.querySelector("#shareScreen");
-const screenClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+const screenShareBtn = document.getElementById("shareScreen");
 
 screenShareBtn.addEventListener("click", screenShareJoin);
 
-function screenShareJoin() {
-    screenClient.join(options.appid, options.channel, null);
-    socket.emit("join_room", options.channel);
-    const screenTrack = AgoraRTC.createScreenVideoTrack({
-        streamID: options.uid,
-        audio: false,
-        video: false,
-        screen: true,
-        mediaSource: "screen", // 'screen', 'application', 'window'
-    });
-    screenClient.publish(screenTrack);
+async function screenShareJoin() {
+    const screenClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+    await screenClient.join(options.appid, options.channel, null);
+    
+    const screenTrack = await AgoraRTC.createScreenVideoTrack();
+    await screenClient.publish(screenTrack);
     screenTrack.on("track-ended", () => {
         LeaveShareScreen(screenClient, screenTrack);
     });
