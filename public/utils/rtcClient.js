@@ -13,13 +13,13 @@ let localTracks = {
 
 let totalUsers = {};
 let remoteUsers = {};
-let lSusers = {};
 
 let options = {
     appid: "50b9cd9de2d54849a139e3db52e7928a",
     channel: null,
     uid: null,
     token: null,
+    nickName: null,
 };
 
 const MicrophoneAudioTrackInitConfig = {
@@ -39,39 +39,38 @@ window.onload = async () => {
 $(() => {
     if (location.protocol === "http:") {
         if (location.href == "http://localhost:1227/") {
-            if (options.appid && options.channel) {
-                $("#join-form").submit();
-                videoReflash();
-            }
+            joinConfig();
+            videoReflash();
         } else {
             location.replace(
                 `https:${location.href.substring(location.protocol.length)}`
             );
-            if (options.appid && options.channel) {
-                $("#join-form").submit();
-                videoReflash();
-            }
-        }
-    } else {
-        if (options.appid && options.channel) {
-            $("#join-form").submit();
+            joinConfig();
             videoReflash();
         }
+    } else {
+        joinConfig();
+        videoReflash();
     }
 });
 
+function joinConfig() {
+    if (options.appid && options.channel) {
+        $("#join-form").submit();
+    }
+}
+
 $("#join-form").submit(async function (e) {
     e.preventDefault();
-    const nickname = $("#uid").val();
+    options.nickName = $("#nickName").val();
+    options.uid = Number($("#nickName").val());
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-    if (korean.test(nickname)) {
-        return alert("You can only type in English.");
+    if (!Number($("#nickName").val())) {
+        return alert("You can only type in Number");
     } else {
         $("#join").attr("disabled", true);
         try {
-            options.token = $("#token").val();
             options.channel = $("#channel").val();
-            options.uid = nickname;
             await join();
         } catch (error) {
             console.error(error);
@@ -98,12 +97,14 @@ $(document).on("click", ".player", (e) => {
         totalUsers[remoteUid].videoTrack.stop();
 
         localVideoBox.uid = remoteUid;
+
         remoteTag.id = `player-wrapper-${localUid}`;
         remoteTag.children[0].textContent = `remoteUser(${localUid})`;
         remoteTag.children[1].id = `player-${localUid}`;
         totalUsers[localUid].videoTrack.play(`player-${localUid}`);
 
-        $("#local-player-name").text(`localVideo(${remoteUid})`);
+        //$("#local-player-name").text(`Nickname : (${remoteUid})`);
+        $("#local-player-name").text(`Nickname : ${options.nickName}`);
         $("#local__video__container").append(localVideoBox);
         totalUsers[remoteUid].videoTrack.play(localVideoBox);
     }
@@ -116,6 +117,7 @@ socket.on("input_address", (address) => {
 
 async function join() {
     client.on("user-published", handleUserPublished);
+    client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);
     socket.emit("join-room", options.channel);
 
@@ -125,7 +127,10 @@ async function join() {
                 options.appid,
                 options.channel || window.sessionStorage.getItem("channel"),
                 options.token || null,
-                options.uid || window.sessionStorage.getItem("uid") || null
+                options.uid || window.sessionStorage.getItem("uid") || null,
+                options.nickName ||
+                    window.sessionStorage.getItem("nickname") ||
+                    null
             ),
             AgoraRTC.createMicrophoneAudioTrack(MicrophoneAudioTrackInitConfig),
             AgoraRTC.createCameraVideoTrack(),
@@ -140,6 +145,7 @@ async function join() {
     if (window.sessionStorage.length == 0) {
         window.sessionStorage.setItem("channel", options.channel);
         window.sessionStorage.setItem("uid", options.uid);
+        window.sessionStorage.setItem("nickname", options.nickName);
     } else {
         $("#join").attr("disabled", true);
         $("#leave").attr("disabled", false);
@@ -147,10 +153,8 @@ async function join() {
 
     localVideoBox.uid = client.uid;
     $("#local__video__container").append(localVideoBox);
-
     localTracks.videoTrack.play(localVideoBox);
-
-    $("#local-player-name").text(`localVideo(${options.uid})`);
+    $("#local-player-name").text(`Nickname : ${options.uid}`);
 
     await client.publish(Object.values(localTracks));
     console.log("publish success");
@@ -217,6 +221,13 @@ function handleUserUnpublished(user) {
     delete totalUsers[id];
     delete remoteUsers[id];
     $(`#player-wrapper-${id}`).remove();
+}
+
+// Handle user joined
+function handleUserJoined(user, mediaType) {
+    const id = user.uid;
+    remoteUsers[id] = user;
+    subscribe(user, mediaType);
 }
 
 async function videoReflash() {

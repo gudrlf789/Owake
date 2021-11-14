@@ -6,36 +6,21 @@ const rtmClientFunc = () => {
     let channelMessageText = document.getElementById("chat_message");
     let channelMessageSend = document.getElementById("send");
 
-    let options = {
-        uid: "",
-        token: "",
-    };
+    const join = document.querySelector("button#join");
 
     let channel;
     let userName;
 
-    const appID = "50b9cd9de2d54849a139e3db52e7928a";
-
-    $(() => {
-        let urlParams = new URL(location.href).searchParams;
-
-        options.channel = urlParams.get("channel");
-        options.token = urlParams.get("token");
-        options.uid = urlParams.get("uid");
-        if (options.appid && options.channel) {
-            $("#uid").val(options.uid);
-            $("#token").val(options.token);
-            $("#channel").val(options.channel);
-        }
-    });
-
     // Initialize rtmClient
-    let rtmClient = AgoraRTM.createInstance(appID);
+    let rtmClient = AgoraRTM.createInstance(options.appid);
 
-    document.getElementById("join").onclick = async function () {
+    join.addEventListener("click", async (e) => {
         channel = rtmClient.createChannel($("#channel").val());
-        options.uid = $("#uid").val();
-        userName = $("#uid").val();
+
+        options.channel = $("#channel").val();
+        options.uid = $("#nickName").val();
+        userName = $("#nickName").val();
+
         await rtmClient.login(options);
         await channel.join().then(() => {
             messageAreaFunc();
@@ -64,7 +49,7 @@ const rtmClientFunc = () => {
             messageArea.textContent = memberId + " left the channel";
             messageList.append(messageArea);
         });
-    };
+    });
 
     // Client Event listeners
     // Display messages from peer
