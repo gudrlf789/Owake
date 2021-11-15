@@ -13,13 +13,13 @@ let localTracks = {
 
 let totalUsers = {};
 let remoteUsers = {};
+let lSusers = {};
 
 let options = {
     appid: "50b9cd9de2d54849a139e3db52e7928a",
     channel: null,
     uid: null,
     token: null,
-    nickName: null,
 };
 
 const MicrophoneAudioTrackInitConfig = {
@@ -40,17 +40,14 @@ $(() => {
     if (location.protocol === "http:") {
         if (location.href == "http://localhost:1227/") {
             joinConfig();
-            videoReflash();
         } else {
             location.replace(
                 `https:${location.href.substring(location.protocol.length)}`
             );
             joinConfig();
-            videoReflash();
         }
     } else {
         joinConfig();
-        videoReflash();
     }
 });
 
@@ -62,15 +59,16 @@ function joinConfig() {
 
 $("#join-form").submit(async function (e) {
     e.preventDefault();
-    options.nickName = $("#uid").val();
-    options.uid = Number($("#uid").val());
+    const nickname = $("#uid").val();
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-    if (!Number($("#uid").val())) {
-        return alert("You can only type in Number");
+    if (korean.test(nickname)) {
+        return alert("You can only type in English.");
     } else {
         $("#join").attr("disabled", true);
         try {
+            options.token = $("#token").val();
             options.channel = $("#channel").val();
+            options.uid = nickname;
             await join();
         } catch (error) {
             console.error(error);
@@ -97,14 +95,12 @@ $(document).on("click", ".player", (e) => {
         totalUsers[remoteUid].videoTrack.stop();
 
         localVideoBox.uid = remoteUid;
-
         remoteTag.id = `player-wrapper-${localUid}`;
-        remoteTag.children[0].textContent = `remoteUser(${localUid})`;
+        remoteTag.children[0].textContent = `user: ${localUid}`;
         remoteTag.children[1].id = `player-${localUid}`;
         totalUsers[localUid].videoTrack.play(`player-${localUid}`);
 
-        //$("#local-player-name").text(`Nickname : (${remoteUid})`);
-        $("#local-player-name").text(`Nickname : ${options.nickName}`);
+        $("#local-player-name").text(`user: ${remoteUid}`);
         $("#local__video__container").append(localVideoBox);
         totalUsers[remoteUid].videoTrack.play(localVideoBox);
     }
@@ -117,7 +113,6 @@ socket.on("input_address", (address) => {
 
 async function join() {
     client.on("user-published", handleUserPublished);
-    client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);
     socket.emit("join-room", options.channel);
 
@@ -127,10 +122,7 @@ async function join() {
                 options.appid,
                 options.channel || window.sessionStorage.getItem("channel"),
                 options.token || null,
-                options.uid || window.sessionStorage.getItem("uid") || null,
-                options.nickName ||
-                    window.sessionStorage.getItem("nickname") ||
-                    null
+                options.uid || window.sessionStorage.getItem("uid") || null
             ),
             AgoraRTC.createMicrophoneAudioTrack(MicrophoneAudioTrackInitConfig),
             AgoraRTC.createCameraVideoTrack(),
@@ -145,7 +137,6 @@ async function join() {
     if (window.sessionStorage.length == 0) {
         window.sessionStorage.setItem("channel", options.channel);
         window.sessionStorage.setItem("uid", options.uid);
-        window.sessionStorage.setItem("nickname", options.nickName);
     } else {
         $("#join").attr("disabled", true);
         $("#leave").attr("disabled", false);
@@ -153,8 +144,10 @@ async function join() {
 
     localVideoBox.uid = client.uid;
     $("#local__video__container").append(localVideoBox);
+
     localTracks.videoTrack.play(localVideoBox);
-    $("#local-player-name").text(`Nickname : ${options.uid}`);
+
+    $("#local-player-name").text(`user: ${options.uid}`);
 
     await client.publish(Object.values(localTracks));
     console.log("publish success");
@@ -195,7 +188,7 @@ async function subscribe(user, mediaType) {
     if (mediaType === "video") {
         const player = $(`
           <div id="player-wrapper-${uid}">
-            <p class="player-name">remoteUser(${uid})</p>
+            <p class="player-name">user: ${uid}</p>
             <div id="player-${uid}" class="player" uid="${uid}"></div>
           </div>
         `);
@@ -212,9 +205,7 @@ function handleUserPublished(user, mediaType) {
     const id = user.uid;
     totalUsers[id] = user;
     remoteUsers[id] = user;
-
     subscribe(user, mediaType);
-    videoReflash();
 }
 
 function handleUserUnpublished(user) {
@@ -223,21 +214,3 @@ function handleUserUnpublished(user) {
     delete remoteUsers[id];
     $(`#player-wrapper-${id}`).remove();
 }
-
-// Handle user joined
-function handleUserJoined(user, mediaType) {
-    const id = user.uid;
-    remoteUsers[id] = user;
-    subscribe(user, mediaType);
-}
-
-async function videoReflash() {
-    let myVideo = document.getElementsByTagName("video")[0];
-    myVideo.load();
-    myVideo.play();
-}
-
-reflash.addEventListener("click", async (e) => {
-    e.preventDefault();
-    await videoReflash();
-});

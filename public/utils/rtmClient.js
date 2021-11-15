@@ -1,9 +1,3 @@
-$(document).ready(async () => {
-    if (window.sessionStorage.length != 0) {
-        await joinRtm();
-    }
-});
-
 const messageList = document.getElementById("messages");
 let userNameArea;
 let messageArea;
@@ -11,16 +5,40 @@ let messageArea;
 let channelMessageText = document.getElementById("chat_message");
 let channelMessageSend = document.getElementById("send");
 
+let options = {
+    uid: "",
+    token: "",
+};
+
 let channel;
 let userName;
 
+const appID = "50b9cd9de2d54849a139e3db52e7928a";
+
+$(() => {
+    let urlParams = new URL(location.href).searchParams;
+
+    options.channel = urlParams.get("channel");
+    options.token = urlParams.get("token");
+    options.uid = urlParams.get("uid");
+    if (options.appid && options.channel) {
+        $("#uid").val(options.uid);
+        $("#token").val(options.token);
+        $("#channel").val(options.channel);
+    }
+});
+
+$(document).ready(async () => {
+    if(window.sessionStorage.length != 0){
+        await joinRtm();
+    }
+});
+
 // Initialize rtmClient
-let rtmClient = AgoraRTM.createInstance(options.appid);
+let rtmClient = AgoraRTM.createInstance(appID);
 
 async function joinRtm() {
-    channel = rtmClient.createChannel(
-        $("#channel").val() || window.sessionStorage.getItem("channel")
-    );
+    channel = rtmClient.createChannel($("#channel").val() || window.sessionStorage.getItem("channel"));
     options.uid = $("#uid").val() || window.sessionStorage.getItem("uid");
     userName = $("#uid").val() || window.sessionStorage.getItem("uid");
     await rtmClient.login(options);
@@ -57,13 +75,15 @@ document.getElementById("join").onclick = async function () {
     await joinRtm();
 };
 
+// Client Event listeners
+// Display messages from peer
 rtmClient.on("MessageFromPeer", function (message, peerId) {
     messageAreaFunc();
     userNameArea.textContent = peerId;
     messageArea.textContent = message;
     messageList.append(userNameArea, messageArea);
 });
-
+// Display connection state changes
 rtmClient.on("ConnectionStateChanged", function (state, reason) {
     messageAreaFunc();
     messageArea.textContent =
@@ -71,6 +91,7 @@ rtmClient.on("ConnectionStateChanged", function (state, reason) {
     messageList.append(messageArea);
 });
 
+// send channel message
 channelMessageSend.addEventListener("click", (e) => {
     if (channelMessageText.value.length !== 0) {
         console.log(channelMessageText.value);
@@ -81,6 +102,7 @@ channelMessageSend.addEventListener("click", (e) => {
 
 channelMessageText.addEventListener("keydown", (e) => {
     if (e.which === 13 && channelMessageText.value.length !== 0) {
+        console.log(channelMessageText.value);
         channelMessageFunc();
         channelMessageText.value = "";
     }
