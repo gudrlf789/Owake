@@ -36,14 +36,10 @@ $(async () => {
 });
 
 $(() => {
-    joinConfig();
-});
-
-function joinConfig() {
     if (options.appid && options.channel) {
         $("#join-form").submit();
     }
-}
+});
 
 $("#join-form").submit(async function (e) {
     e.preventDefault();
@@ -218,5 +214,6 @@ function handleUserUnpublished(user) {
     const id = user.uid;
     delete totalUsers[id];
     delete remoteUsers[id];
+
     revertLocalTrackToMain(id);
 }

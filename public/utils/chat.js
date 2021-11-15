@@ -1,24 +1,25 @@
 function mobileDisplayCtr() {
-    const showChat = document.querySelector("#showChat");
-    const backBtn = document.querySelector(".header__back");
+    let messagesActive = false;
 
-    backBtn.addEventListener("click", () => {
-        document.querySelector(".main__left").style.display = "flex";
-        document.querySelector(".main__left").style.flex = "1";
-        document.querySelector(".main__right").style.display = "none";
-        document.querySelector(".header__back").style.display = "none";
-    });
+    const showChat = document.querySelector("#showChat");
+    const mainRight = document.querySelector(".main__right");
 
     showChat.addEventListener("click", () => {
-        document.querySelector(".main__right").style.display = "flex";
-        document.querySelector(".main__right").style.flex = "1";
-        document.querySelector(".main__left").style.display = "none";
-        document.querySelector(".header__back").style.display = "block";
+        messagesActive = !messagesActive;
+        messagesActive ? messageEnable() : messageDisable();
     });
+
+    function messageEnable() {
+        mainRight.style.display = "flex";
+        mainRight.style.flex = "1";
+    }
+    function messageDisable() {
+        mainRight.style.display = "none";
+    }
 }
 
 function scrollToBottom() {
-    let d = document.querySelector(".messages");
-    d.scrollTop = d.scrollHeight;
+    let messages = document.querySelector(".messages");
+    messages.scrollTop = messages.scrollHeight;
 }
 mobileDisplayCtr();

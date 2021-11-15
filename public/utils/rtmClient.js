@@ -5,37 +5,17 @@ let messageArea;
 let channelMessageText = document.getElementById("chat_message");
 let channelMessageSend = document.getElementById("send");
 
-let options = {
-    uid: "",
-    token: "",
-};
-
 let channel;
 let userName;
 
-const appID = "50b9cd9de2d54849a139e3db52e7928a";
-
-$(() => {
-    let urlParams = new URL(location.href).searchParams;
-
-    options.channel = urlParams.get("channel");
-    options.token = urlParams.get("token");
-    options.uid = urlParams.get("uid");
-    if (options.appid && options.channel) {
-        $("#uid").val(options.uid);
-        $("#token").val(options.token);
-        $("#channel").val(options.channel);
-    }
-});
-
-$(document).ready(async () => {
+$(async () => {
     if(window.sessionStorage.length != 0){
         await joinRtm();
     }
 });
 
 // Initialize rtmClient
-let rtmClient = AgoraRTM.createInstance(appID);
+let rtmClient = AgoraRTM.createInstance(options.appid);
 
 async function joinRtm() {
     channel = rtmClient.createChannel($("#channel").val() || window.sessionStorage.getItem("channel"));
