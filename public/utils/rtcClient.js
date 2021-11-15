@@ -13,7 +13,6 @@ let localTracks = {
 
 let totalUsers = {};
 let remoteUsers = {};
-let lSusers = {};
 
 let options = {
     appid: "50b9cd9de2d54849a139e3db52e7928a",
@@ -28,7 +27,7 @@ const MicrophoneAudioTrackInitConfig = {
     AGC: false,
 };
 
-$(document).ready(async () => {
+$(async () => {
     // 새로고침시에 세션스토리지에 값이 저장되었는지 확인 후
     // 값이 존재하면 해당 채널, uid  값으로 재접속
     if (window.sessionStorage.length != 0) {

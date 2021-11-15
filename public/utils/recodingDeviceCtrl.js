@@ -30,7 +30,6 @@ async function mediaDevice() {
     mics = await AgoraRTC.getMicrophones();
     currentMic = mics[0];
     $(".mic-input").val(currentMic.label);
-    debugger;
     mics.forEach((mic) => {
         $(".mic-list").append(
             `<a class="dropdown-item" href="#">${mic.label}</a>`

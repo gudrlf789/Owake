@@ -4,7 +4,11 @@ const path = require("path");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
+const dotenv = require("dotenv");
+dotenv.config();
 const port = process.env.PORT || 1227;
+const host = process.env.HOST;
+const agoraId = process.env.AGORA_ID;
 
 app.set("view engine", "ejs");
 
