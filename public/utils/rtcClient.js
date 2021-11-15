@@ -4,7 +4,7 @@ const localVideoBox = document.createElement("div");
 localVideoBox.id = "local__videoBox local-player";
 localVideoBox.className = "player";
 
-let client = AgoraRTC.createClient({ mode: "rtc", codec: "h264" });
+let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
 let localTracks = {
     videoTrack: null,
