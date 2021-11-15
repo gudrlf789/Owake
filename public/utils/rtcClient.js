@@ -40,17 +40,14 @@ $(() => {
     if (location.protocol === "http:") {
         if (location.href == "http://localhost:1227/") {
             joinConfig();
-            videoReflash();
         } else {
             location.replace(
                 `https:${location.href.substring(location.protocol.length)}`
             );
             joinConfig();
-            videoReflash();
         }
     } else {
         joinConfig();
-        videoReflash();
     }
 });
 
@@ -117,7 +114,6 @@ socket.on("input_address", (address) => {
 
 async function join() {
     client.on("user-published", handleUserPublished);
-    client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);
     socket.emit("join-room", options.channel);
 
@@ -214,7 +210,6 @@ function handleUserPublished(user, mediaType) {
     remoteUsers[id] = user;
 
     subscribe(user, mediaType);
-    videoReflash();
 }
 
 function handleUserUnpublished(user) {
@@ -223,21 +218,3 @@ function handleUserUnpublished(user) {
     delete remoteUsers[id];
     $(`#player-wrapper-${id}`).remove();
 }
-
-// Handle user joined
-function handleUserJoined(user, mediaType) {
-    const id = user.uid;
-    remoteUsers[id] = user;
-    subscribe(user, mediaType);
-}
-
-async function videoReflash() {
-    let myVideo = document.getElementsByTagName("video")[0];
-    myVideo.load();
-    myVideo.play();
-}
-
-reflash.addEventListener("click", async (e) => {
-    e.preventDefault();
-    await videoReflash();
-});
