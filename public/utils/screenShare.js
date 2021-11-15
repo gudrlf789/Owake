@@ -11,10 +11,24 @@ function LeaveShareScreen(screenClient, screenTrack) {
 
 async function screenShareJoin() {
     const screenClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-    await screenClient.join(options.appid, options.channel || window.sessionStorage.getItem("channel"), null, `${options.uid}Screen` || `${window.sessionStorage.getItem("uid")}Screen`);
-    
-    const screenTrack = await AgoraRTC.createScreenVideoTrack();
+    await screenClient.join(
+        options.appid,
+        options.channel || window.sessionStorage.getItem("channel"),
+        null,
+        `${options.uid}Screen` ||
+            `${window.sessionStorage.getItem("uid")}Screen`
+    );
+
+    const screenTrack = await AgoraRTC.createScreenVideoTrack({
+        streamID: options.uid,
+        audio: false,
+        video: false,
+        screen: true,
+        mediaSource: "screen", // 'screen', 'application', 'window'
+    });
+
     await screenClient.publish(screenTrack);
+
     screenTrack.on("track-ended", () => {
         LeaveShareScreen(screenClient, screenTrack);
     });

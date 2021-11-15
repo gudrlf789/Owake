@@ -36,18 +36,7 @@ $(async () => {
 });
 
 $(() => {
-    if (location.protocol === "http:") {
-        if (location.href == "http://localhost:1227/") {
-            joinConfig();
-        } else {
-            location.replace(
-                `https:${location.href.substring(location.protocol.length)}`
-            );
-            joinConfig();
-        }
-    } else {
-        joinConfig();
-    }
+    joinConfig();
 });
 
 function joinConfig() {
@@ -166,7 +155,7 @@ async function leave() {
     remoteUsers = {};
     totalUsers = {};
 
-    $("#remote__video__container").html("");
+    $("#remote-playerlist").html("");
 
     await client.leave();
     //세션 스토리지 clear
@@ -200,6 +189,24 @@ async function subscribe(user, mediaType) {
     }
 }
 
+function revertLocalTrackToMain(leftUid) {
+    const localUid = document.getElementById(
+        "local__videoBox local-player"
+    ).uid;
+
+    if (localUid == leftUid) {
+        localVideoBox.uid = options.uid;
+        totalUsers[options.uid].videoTrack.stop();
+        $("#local-player-name").text(`user: ${options.uid}`);
+        $("#local__video__container").append(localVideoBox);
+        totalUsers[options.uid].videoTrack.play(localVideoBox);
+
+        $(`#player-wrapper-${options.uid}`).remove();
+    } else {
+        $(`#player-wrapper-${leftUid}`).remove();
+    }
+}
+
 function handleUserPublished(user, mediaType) {
     const id = user.uid;
     totalUsers[id] = user;
@@ -211,5 +218,5 @@ function handleUserUnpublished(user) {
     const id = user.uid;
     delete totalUsers[id];
     delete remoteUsers[id];
-    $(`#player-wrapper-${id}`).remove();
+    revertLocalTrackToMain(id);
 }
