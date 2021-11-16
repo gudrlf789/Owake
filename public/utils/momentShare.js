@@ -76,15 +76,3 @@ $(document).on("keydown", "#searchInput", (e) => {
         searchInput.value = "";
     }
 });
-
-mouseDragBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    mouseDrag = !mouseDrag;
-    if (mouseDrag) {
-        mouseDragBtnIcon.className = "far fa-hand-rock";
-        $("#momentShareArea").draggable().draggable("enable");
-    } else {
-        mouseDragBtnIcon.className = "far fa-hand-paper";
-        $("#momentShareArea").draggable("disable");
-    }
-});
