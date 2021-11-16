@@ -13,7 +13,6 @@ let localTracks = {
 
 let totalUsers = {};
 let remoteUsers = {};
-let lSusers = {};
 
 let options = {
     appid: "50b9cd9de2d54849a139e3db52e7928a",
@@ -28,7 +27,7 @@ const MicrophoneAudioTrackInitConfig = {
     AGC: false,
 };
 
-$(document).ready(async () => {
+$(async () => {
     // 새로고침시에 세션스토리지에 값이 저장되었는지 확인 후
     // 값이 존재하면 해당 채널, uid  값으로 재접속
     if (window.sessionStorage.length != 0) {
@@ -37,25 +36,10 @@ $(document).ready(async () => {
 });
 
 $(() => {
-    if (location.protocol === "http:") {
-        if (location.href == "http://localhost:1227/") {
-            joinConfig();
-        } else {
-            location.replace(
-                `https:${location.href.substring(location.protocol.length)}`
-            );
-            joinConfig();
-        }
-    } else {
-        joinConfig();
-    }
-});
-
-function joinConfig() {
     if (options.appid && options.channel) {
         $("#join-form").submit();
     }
-}
+});
 
 $("#join-form").submit(async function (e) {
     e.preventDefault();
@@ -167,7 +151,7 @@ async function leave() {
     remoteUsers = {};
     totalUsers = {};
 
-    $("#remote__video__container").html("");
+    $("#remote-playerlist").html("");
 
     await client.leave();
     //세션 스토리지 clear
@@ -201,6 +185,24 @@ async function subscribe(user, mediaType) {
     }
 }
 
+function revertLocalTrackToMain(leftUid) {
+    const localUid = document.getElementById(
+        "local__videoBox local-player"
+    ).uid;
+
+    if (localUid == leftUid) {
+        localVideoBox.uid = options.uid;
+        totalUsers[options.uid].videoTrack.stop();
+        $("#local-player-name").text(`user: ${options.uid}`);
+        $("#local__video__container").append(localVideoBox);
+        totalUsers[options.uid].videoTrack.play(localVideoBox);
+
+        $(`#player-wrapper-${options.uid}`).remove();
+    } else {
+        $(`#player-wrapper-${leftUid}`).remove();
+    }
+}
+
 function handleUserPublished(user, mediaType) {
     const id = user.uid;
     totalUsers[id] = user;
@@ -212,5 +214,6 @@ function handleUserUnpublished(user) {
     const id = user.uid;
     delete totalUsers[id];
     delete remoteUsers[id];
-    $(`#player-wrapper-${id}`).remove();
+
+    revertLocalTrackToMain(id);
 }

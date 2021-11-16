@@ -4,33 +4,14 @@ let currentMic; // the microphone you are using
 let currentCam; // the camera you are using
 let volumeAnimation;
 
-const deviceSettingBtn = document.querySelector("#deviceSettingBtn");
+const deviceSettingBtn = document.getElementById("deviceSettingBtn");
 const dropdownItem = document.querySelector(".dropdown-item");
 
-deviceSettingBtn.addEventListener("click", async (e) => {
-    $(".cam-list").delegate("a", "click", function (e) {
-        switchCamera(this.text);
-    });
-    $(".mic-list").delegate("a", "click", function (e) {
-        switchMicrophone(this.text);
-    });
-    volumeAnimation = requestAnimationFrame(setVolumeWave);
-});
-
 $(async () => {
-    await mediaDevice();
-});
-
-$("#deviceSettingModal").on("hidden.bs.modal", function (e) {
-    cancelAnimationFrame(volumeAnimation);
-});
-
-async function mediaDevice() {
     // get mics
     mics = await AgoraRTC.getMicrophones();
     currentMic = mics[0];
     $(".mic-input").val(currentMic.label);
-    debugger;
     mics.forEach((mic) => {
         $(".mic-list").append(
             `<a class="dropdown-item" href="#">${mic.label}</a>`
@@ -46,7 +27,21 @@ async function mediaDevice() {
             `<a class="dropdown-item" href="#">${cam.label}</a>`
         );
     });
-}
+});
+
+deviceSettingBtn.addEventListener("click", async (e) => {
+    $(".cam-list").delegate("a", "click", function (e) {
+        switchCamera(this.text);
+    });
+    $(".mic-list").delegate("a", "click", function (e) {
+        switchMicrophone(this.text);
+    });
+    volumeAnimation = requestAnimationFrame(setVolumeWave);
+});
+
+$("#deviceSettingModal").on("hidden.bs.modal", function (e) {
+    cancelAnimationFrame(volumeAnimation);
+});
 
 async function switchCamera(label) {
     currentCam = cams.find((cam) => cam.label === label);
