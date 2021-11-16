@@ -92,7 +92,7 @@ $(document).on("click", ".player", (e) => {
 
 socket.on("input_address", (address) => {
     const momentShare = document.getElementById("momentShare-iframe");
-    momentShare.src = `https://${address}`;
+    momentShare.src = `https://${address.replace(/^(https?:\/\/)?(www\.)?/,"")}`;
 });
 
 async function join() {
