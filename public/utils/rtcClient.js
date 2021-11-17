@@ -88,6 +88,10 @@ $(document).on("click", ".player", (e) => {
         $("#local__video__container").append(localVideoBox);
         totalUsers[remoteUid].videoTrack.play(localVideoBox);
     }
+
+    if(localVideoBox.childNodes[0].id.includes(options.uid)){
+        localVideoBox.childNodes[0].childNodes[0].style.objectFit = 'contain';
+    }
 });
 
 socket.on("input_address", (address) => {
