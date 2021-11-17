@@ -74,6 +74,29 @@
     #showChat {
         display: flex;
     }
+    .options {
+        position: absolute;
+        right : 0;
+        bottom: 0;
+        background-color: transparent !important;
+        flex-direction: column;
+    }
+
+    .options__left {
+        display : block !important;
+        margin-bottom: 5px;
+    }
+    
+    .main__right {
+        margin-bottom: 0;
+    }
+    #remote__video__container {
+        height : 65% !important;
+    }
+
+    .options__button {
+        margin-bottom : 4px !important;
+    }
 }
 
 @media (min-width: 768px) {

@@ -89,14 +89,17 @@ $(document).on("click", ".player", (e) => {
         totalUsers[remoteUid].videoTrack.play(localVideoBox);
     }
 
-    if(localVideoBox.childNodes[0].id.includes(options.uid)){
-        localVideoBox.childNodes[0].childNodes[0].style.objectFit = 'contain';
+    if (localVideoBox.childNodes[0].id.includes(options.uid)) {
+        localVideoBox.childNodes[0].childNodes[0].style.objectFit = "contain";
     }
 });
 
 socket.on("input_address", (address) => {
     const momentShare = document.getElementById("momentShare-iframe");
-    momentShare.src = `https://${address.replace(/^(https?:\/\/)?(www\.)?/,"")}`;
+    momentShare.src = `https://${address.replace(
+        /^(https?:\/\/)?(www\.)?/,
+        ""
+    )}`;
 });
 
 async function join() {

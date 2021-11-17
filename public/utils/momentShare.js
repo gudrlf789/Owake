@@ -55,7 +55,7 @@ $(document).on("click", "#searchInputBtn", (e) => {
         momentShare.src = `https://${searchInput.value.replace(
             /^(https?:\/\/)?(www\.)?/,
             ""
-        )}/?gws_rd=ssl`;
+        )}/webhp?igu=1`;
         searchInput.value = "";
     }
 });
@@ -66,7 +66,7 @@ $(document).on("keydown", "#searchInput", (e) => {
         momentShare.src = `https://${searchInput.value.replace(
             /^(https?:\/\/)?(www\.)?/,
             ""
-        )}/?gws_rd=ssl`;
+        )}/webhp?igu=1`;
         searchInput.value = "";
     }
 });
