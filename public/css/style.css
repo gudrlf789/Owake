@@ -307,10 +307,6 @@ video:hover {
     cursor: pointer;
 }
 
-#flipCamera {
-    display: none;
-}
-
 @media (max-width: 768px) {
     .main__right {
         display: none;
@@ -382,9 +378,6 @@ video:hover {
 
     #shareScreen {
         display: none;
-    }
-    #flipCamera {
-        display: flex;
     }
     #speechRecognition {
         display: none;

@@ -42,26 +42,3 @@
   justify-content: center;
   cursor: pointer;
 }
-
-#mouseDragBtn {
-  position: absolute;
-  right: 0;
-  margin-right: 20px;
-  margin-top: 5px;
-  cursor: pointer;
-}
-
-#mouseDragBtn > i {
-  font-size: x-large;
-}
-
-#mouseDragBtn > i:hover {
-  color : rosybrown;
-}
-
-@media (max-width: 768px) {
-    #momentShareArea {
-      width : 300px !important;
-      height : 400px !important;
-    }
-}

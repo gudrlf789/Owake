@@ -57,7 +57,7 @@
     display: none;
 }
 
-@media all and (max-width: 768px) {
+@media (max-width: 768px) {
     .main__right {
         display : none;
         position: absolute;
@@ -76,7 +76,7 @@
     }
 }
 
-@media all and (min-width: 768px) {
+@media (min-width: 768px) {
     .main__right {
         display : flex !important;
         flex : 0.3 !important;
