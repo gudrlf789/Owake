@@ -70,3 +70,4 @@ $(document).on("keydown", "#searchInput", (e) => {
         searchInput.value = "";
     }
 });
+
