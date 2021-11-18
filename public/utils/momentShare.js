@@ -54,7 +54,6 @@ $(document).on("click", "#searchInputBtn", (e) => {
     if (searchInput.value.length !== 0) {
         momentSocket.emit("submit_address", searchInput.value, options.channel);
         searchUrlStringCheck();
-        //youtubeUrlReplarce(searchInput.value);
     }
 });
 
@@ -62,7 +61,6 @@ $(document).on("keydown", "#searchInput", (e) => {
     if (e.which === 13 && searchInput.value.length !== 0) {
         momentSocket.emit("submit_address", searchInput.value, options.channel);
         searchUrlStringCheck();
-        //youtubeUrlReplarce(searchInput.value);
     }
 });
 
@@ -74,15 +72,21 @@ function searchUrlStringCheck() {
     searchInput.value = "";
 }
 
-function youtubeUrlReplarce(search) {
-    console.log(search);
+function urlResult(search) {
+    momentShare.src = "https://" + youtubeUrlReplarce(search);
+    searchInput.value = "";
+}
+
+const youtubeUrlReplarce = (search) => {
+    let str = search;
     const regExp =
         /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    let match = search.match(regExp);
+    let match = str.match(regExp);
     if (match && match[2].length == 11) {
         console.log(match[2]);
         let sepratedID = match[2];
-        let embedUrl = "//www.youtube.com/embed/" + sepratedID;
-        search.value.replace(embedUrl);
+        let embedUrl = "www.youtube.com/embed/" + sepratedID;
+        let result = search.replace(str, embedUrl);
+        return result;
     }
-}
+};
