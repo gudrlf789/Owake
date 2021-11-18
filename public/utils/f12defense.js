@@ -1,5 +1,5 @@
 //F12
-$(document).ready(function () {
+$(() => {
     $(document).bind("keydown", function (e) {
         if (e.keyCode == 123 /* F12 */) {
             e.preventDefault();

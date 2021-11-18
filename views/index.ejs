@@ -36,14 +36,16 @@
             <img class="img__logo" src="logo.svg" alt="">
         </div>
         <div class="nav__container">
-            <div class="fileshare" data-toggle="modal" data-target="#fileshareModal">
+            <!-- <div class="fileshare" data-toggle="modal" data-target="#fileshareModal">
                 <i class="far fa-file"></i>
                 <span>File Share</span>
             </div>
             <div class="deviceSetting" id="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal">
                 <i class="fas fa-cog"></i>
                 <span>Device Setting</span>
-            </div>
+            </div> -->
+
+            <%- include("./dropmenu.ejs") %>
         </div>
     </div>
     <div class="main">
@@ -91,12 +93,12 @@
                         <span>Url</span>
                     </div> -->
                 </div>
-                <div class="options__right">
+                <!-- <div class="options__right">
                     <div id="room__in" class="options__button" data-toggle="modal" data-target="#newUserModal">
                         <i class="fas fa-sign-in-alt"></i>
                         <span>Login</span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="main__right">
@@ -118,7 +120,7 @@
         </div>
     </div>
 
-    <script src="f12defense.js"></script>
+    <!-- <script src="f12defense.js"></script> -->
     <script src="rtcClient.js"></script>
     <script src="rtmClient.js" type="module"></script>
 
@@ -129,6 +131,23 @@
     <script src="muteUtils.js"></script>
     <script src="copyUrl.js"></script>
     <script src="chat.js"></script>
+    <script>
+
+        let dropDown = function () {
+            $('.menu-dropdown').on('click', function () {
+                $('.menu-content').toggleClass('hidden');
+                $('.con, .menu-dropdown').toggleClass('menu-active');
+
+                setTimeout(function () {
+                    $('.menu-content').toggleClass('opacity')
+                }, 300)
+
+            })
+        }
+
+        dropDown();
+
+    </script>
 </body>
 
 </html>

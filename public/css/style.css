@@ -3,6 +3,7 @@
 @import "./momentShare.css";
 @import "./chat.css";
 @import "./bootstrap.min.css";
+@import "../dist/css/dropmenu.css";
 
 :root {
     --main-darklg: #1d2635;
