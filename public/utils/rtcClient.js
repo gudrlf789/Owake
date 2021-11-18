@@ -104,21 +104,30 @@ async function join() {
     client.on("user-unpublished", handleUserUnpublished);
     socket.emit("join-room", options.channel);
 
-    [options.uid, localTracks.audioTrack, localTracks.videoTrack] =
-        await Promise.all([
-            client.join(
-                options.appid,
-                options.channel || window.sessionStorage.getItem("channel"),
-                options.token || null,
-                options.uid || window.sessionStorage.getItem("uid") || null
-            ),
-            AgoraRTC.createMicrophoneAudioTrack(MicrophoneAudioTrackInitConfig),
-            AgoraRTC.createCameraVideoTrack(),
-        ]);
+    const checkDeskTopCamera = await AgoraRTC.getCameras();
+
+    options.uid = await client.join(
+        options.appid,
+        options.channel || window.sessionStorage.getItem("channel"),
+        options.token || null,
+        options.uid || window.sessionStorage.getItem("uid") || null
+    );
+
+    localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack(MicrophoneAudioTrackInitConfig);
+   
+    if(checkDeskTopCamera.length != 0){
+        localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack();
+    }else{
+        localTracks.videoTrack = undefined;
+        localVideoBox.style.backgroundRepeat = "no-repeat"
+        localVideoBox.style.backgroundImage = "url(../img/person.png)";
+        localVideoBox.style.backgroundSize = "contain";
+    }
+    
 
     totalUsers[options.uid] = {
         audioTrack: localTracks.audioTrack,
-        videoTrack: localTracks.videoTrack,
+        videoTrack: checkDeskTopCamera.length != 0 ? localTracks.videoTrack : undefined,
     };
 
     //처음 트랙 생성시 채널,uid 값 세션 스토리지에 저장
@@ -132,13 +141,14 @@ async function join() {
 
     localVideoBox.uid = client.uid;
     $("#local__video__container").append(localVideoBox);
-
-    localTracks.videoTrack.play(localVideoBox);
-
     $("#local-player-name").text(`user: ${options.uid}`);
 
-    await client.publish(Object.values(localTracks));
-    console.log("publish success");
+    if(localTracks.videoTrack){
+        localTracks.videoTrack.play(localVideoBox);
+        await client.publish(Object.values(localTracks));
+    }else{
+        await client.publish(localTracks.audioTrack);
+    }
 }
 
 async function leave() {
@@ -171,8 +181,7 @@ async function leave() {
 async function subscribe(user, mediaType) {
     const uid = user.uid;
     await client.subscribe(user, mediaType);
-    console.log("subscribe success");
-
+    
     if (mediaType === "video") {
         const player = $(`
           <div id="player-wrapper-${uid}">
@@ -186,6 +195,18 @@ async function subscribe(user, mediaType) {
 
     if (mediaType === "audio") {
         user.audioTrack.play();
+        // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에
+        // 아이콘 화면이 나타나게 수정
+        if(!user.hasVideo) {
+            const iconPlayer = $(`
+                <div id="player-wrapper-${uid}">
+                <p class="player-name">user: ${uid}</p>
+                <div id="player-${uid}" class="player" uid="${uid}" 
+                    style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
+                </div>
+            `);
+          $("#remote-playerlist").append(iconPlayer);
+        }
     }
 }
 
