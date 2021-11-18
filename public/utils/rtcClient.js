@@ -74,22 +74,40 @@ $(document).on("click", ".player", (e) => {
     let remoteTag = document.getElementById(`player-wrapper-${remoteUid}`);
 
     if (e.currentTarget.id != "local__videoBox local-player") {
-        totalUsers[localUid].videoTrack.stop();
+        totalUsers[localUid].videoTrack ? totalUsers[localUid].videoTrack.stop() : "";
         document.getElementById("local__videoBox local-player").remove();
-        totalUsers[remoteUid].videoTrack.stop();
+        totalUsers[remoteUid].videoTrack ? totalUsers[remoteUid].videoTrack.stop() : "";
 
         localVideoBox.uid = remoteUid;
         remoteTag.id = `player-wrapper-${localUid}`;
-        remoteTag.children[0].textContent = `user: ${localUid}`;
         remoteTag.children[1].id = `player-${localUid}`;
-        totalUsers[localUid].videoTrack.play(`player-${localUid}`);
+
+        if(totalUsers[localUid].videoTrack){
+            remoteTag.children[0].textContent = `user: ${localUid}`;
+            totalUsers[localUid].videoTrack.play(`player-${localUid}`);
+        }else{
+            remoteTag.children[0].textContent = `user: ${localUid}`;
+            remoteTag.children[0].style.color = "white";
+            remoteTag.children[1].style.backgroundRepeat = "no-repeat";
+            remoteTag.children[1].style.backgroundImage = "url(../img/person.png)";
+            remoteTag.children[1].style.backgroundSize = "contain";
+        }
 
         $("#local-player-name").text(`user: ${remoteUid}`);
-        $("#local__video__container").append(localVideoBox);
-        totalUsers[remoteUid].videoTrack.play(localVideoBox);
+        if(totalUsers[remoteUid].videoTrack){
+            $("#local-player-name").css("color", "black");
+            $("#local__video__container").append(localVideoBox);
+            totalUsers[remoteUid].videoTrack.play(localVideoBox)
+        }else{
+            $("#local-player-name").css("color", "white");
+            localVideoBox.style.backgroundRepeat = "no-repeat"
+            localVideoBox.style.backgroundImage = "url(../img/person.png)";
+            localVideoBox.style.backgroundSize = "contain";
+            $("#local__video__container").append(localVideoBox);
+        }
     }
-
-    if (localVideoBox.childNodes[0].id.includes(options.uid)) {
+    
+    if (localVideoBox.childNodes.length != 0 && localVideoBox.childNodes[0].id) {
         localVideoBox.childNodes[0].childNodes[0].style.objectFit = "contain";
     }
 });
@@ -107,21 +125,30 @@ async function join() {
     client.on("user-unpublished", handleUserUnpublished);
     socket.emit("join-room", options.channel);
 
-    [options.uid, localTracks.audioTrack, localTracks.videoTrack] =
-        await Promise.all([
-            client.join(
-                options.appid,
-                options.channel || window.sessionStorage.getItem("channel"),
-                options.token || null,
-                options.uid || window.sessionStorage.getItem("uid") || null
-            ),
-            AgoraRTC.createMicrophoneAudioTrack(MicrophoneAudioTrackInitConfig),
-            AgoraRTC.createCameraVideoTrack(),
-        ]);
+    const checkDeskTopCamera = await AgoraRTC.getCameras();
+
+    options.uid = await client.join(
+        options.appid,
+        options.channel || window.sessionStorage.getItem("channel"),
+        options.token || null,
+        options.uid || window.sessionStorage.getItem("uid") || null
+    );
+
+    localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack(MicrophoneAudioTrackInitConfig);
+   
+    if(checkDeskTopCamera.length != 0){
+        localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack();
+    }else{
+        localTracks.videoTrack = undefined;
+        localVideoBox.style.backgroundRepeat = "no-repeat"
+        localVideoBox.style.backgroundImage = "url(../img/person.png)";
+        localVideoBox.style.backgroundSize = "contain";
+    }
+    
 
     totalUsers[options.uid] = {
         audioTrack: localTracks.audioTrack,
-        videoTrack: localTracks.videoTrack,
+        videoTrack: checkDeskTopCamera.length != 0 ? localTracks.videoTrack : undefined,
     };
 
     //처음 트랙 생성시 채널,uid 값 세션 스토리지에 저장
@@ -136,12 +163,15 @@ async function join() {
     localVideoBox.uid = client.uid;
     $("#local__video__container").append(localVideoBox);
 
-    localTracks.videoTrack.play(localVideoBox);
-
-    $("#local-player-name").text(`user: ${options.uid}`);
-
-    await client.publish(Object.values(localTracks));
-    console.log("publish success");
+    if(localTracks.videoTrack){
+        $("#local-player-name").text(`user: ${options.uid}`);
+        localTracks.videoTrack.play(localVideoBox);
+        await client.publish(Object.values(localTracks));
+    }else{
+        $("#local-player-name").text(`user: ${options.uid}`);
+        $("#local-player-name").css("color", "white");
+        await client.publish(localTracks.audioTrack);
+    }
 }
 
 async function leave() {
@@ -157,7 +187,8 @@ async function leave() {
     localTracks = {};
     remoteUsers = {};
     totalUsers = {};
-
+    // 로컬트랙 배경이미지 초기화
+    localVideoBox.style.backgroundImage = "";
     $("#remote-playerlist").html("");
 
     await client.leave();
@@ -167,15 +198,12 @@ async function leave() {
     $("#local-player-name").text("");
     $("#join").attr("disabled", false);
     $("#leave").attr("disabled", true);
-
-    console.log("client leaves channel success");
 }
 
 async function subscribe(user, mediaType) {
     const uid = user.uid;
     await client.subscribe(user, mediaType);
-    console.log("subscribe success");
-
+    
     if (mediaType === "video") {
         const player = $(`
           <div id="player-wrapper-${uid}">
@@ -189,6 +217,18 @@ async function subscribe(user, mediaType) {
 
     if (mediaType === "audio") {
         user.audioTrack.play();
+        // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에
+        // 아이콘 화면이 나타나게 수정
+        if(!user.hasVideo && user.hasAudio) {
+            const iconPlayer = $(`
+                <div id="player-wrapper-${uid}">
+                <p class="player-name" style="color: white">user: ${uid}</p>
+                <div id="player-${uid}" class="player" uid="${uid}" 
+                    style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
+                </div>
+            `);
+          $("#remote-playerlist").append(iconPlayer);
+        }
     }
 }
 
@@ -199,10 +239,20 @@ function revertLocalTrackToMain(leftUid) {
 
     if (localUid == leftUid) {
         localVideoBox.uid = options.uid;
-        totalUsers[options.uid].videoTrack.stop();
-        $("#local-player-name").text(`user: ${options.uid}`);
-        $("#local__video__container").append(localVideoBox);
-        totalUsers[options.uid].videoTrack.play(localVideoBox);
+
+        if(totalUsers[options.uid].videoTrack){
+            totalUsers[options.uid].videoTrack.stop();
+            $("#local-player-name").text(`user: ${options.uid}`);
+            $("#local__video__container").append(localVideoBox);
+            totalUsers[options.uid].videoTrack.play(localVideoBox);
+        }else{
+            $("#local-player-name").text(`user: ${options.uid}`);
+            $("#local-player-name").css("color", "white");
+            localVideoBox.style.backgroundRepeat = "no-repeat"
+            localVideoBox.style.backgroundImage = "url(../img/person.png)";
+            localVideoBox.style.backgroundSize = "contain";
+            $("#local__video__container").append(localVideoBox);
+        }
 
         $(`#player-wrapper-${options.uid}`).remove();
     } else {
@@ -221,6 +271,5 @@ function handleUserUnpublished(user) {
     const id = user.uid;
     delete totalUsers[id];
     delete remoteUsers[id];
-
     revertLocalTrackToMain(id);
 }
