@@ -54,6 +54,7 @@ $(document).on("click", "#searchInputBtn", (e) => {
     if (searchInput.value.length !== 0) {
         momentSocket.emit("submit_address", searchInput.value, options.channel);
         searchUrlStringCheck();
+        //youtubeUrlReplarce(searchInput.value);
     }
 });
 
@@ -61,33 +62,27 @@ $(document).on("keydown", "#searchInput", (e) => {
     if (e.which === 13 && searchInput.value.length !== 0) {
         momentSocket.emit("submit_address", searchInput.value, options.channel);
         searchUrlStringCheck();
+        //youtubeUrlReplarce(searchInput.value);
     }
 });
 
 function searchUrlStringCheck() {
-    if (
-        searchInput.value.includes("https://") ||
-        searchInput.value.includes("http://")
-    ) {
-        momentShare.src = `${searchInput.value}/webhp?igu=1`;
-        searchInput.value = "";
-    } else {
-        momentShare.src = `https://${searchInput.value.replace(
-            /^(https?:\/\/)?(www\.)?/,
-            ""
-        )}/webhp?igu=1`;
-        searchInput.value = "";
-    }
+    momentShare.src = `https://${searchInput.value.replace(
+        /^(https?:\/\/)?(www\.)?/,
+        ""
+    )}/webhp?igu=1`;
+    searchInput.value = "";
 }
 
 function youtubeUrlReplarce(search) {
+    console.log(search);
     const regExp =
         /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    let match = value.match(regExp);
+    let match = search.match(regExp);
     if (match && match[2].length == 11) {
         console.log(match[2]);
         let sepratedID = match[2];
         let embedUrl = "//www.youtube.com/embed/" + sepratedID;
-        searchInput.value.replace(/^(https?:\/\/)?(www\.)?/, "" + embedUrl);
+        search.value.replace(embedUrl);
     }
 }
