@@ -45,7 +45,20 @@
                 <span>Device Setting</span>
             </div> -->
 
-            <%- include("./dropmenu.ejs") %>
+            <div class="options__button" id="fileshareBtn" data-toggle="modal" data-target="#fileshareModal">
+                <i class="far fa-folder-open"></i>
+                <span>File</span>
+            </div>
+            <div class="options__button" id="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal">
+                <i class="fas fa-cog"></i>
+                <span>Device</span>
+            </div>
+            <div id="loginBtn" class="options__button" data-toggle="modal" data-target="#newUserModal">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Login</span>
+            </div>
+
+            <!-- <%- include("./dropmenu.ejs") %> -->
         </div>
     </div>
     <div class="main">

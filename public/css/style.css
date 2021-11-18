@@ -90,12 +90,6 @@
     color: skyblue;
 }
 
-.fa-cog {
-    font-size: xx-large;
-    margin-right: 20px;
-    cursor: pointer;
-}
-
 .logo > h3 {
     color: var(--main-light);
 }
@@ -146,7 +140,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: var(--button-color-Cobalt-Blue);
+    /* background-color: var(--button-color-Cobalt-Blue); */
     height: 50px;
     border-radius: 5px;
     color: var(--main-light);
