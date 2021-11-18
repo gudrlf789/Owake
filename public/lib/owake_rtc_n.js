@@ -1,29 +1,3 @@
-/**
- * AgoraWebSDK_N-v4.7.2-0-gf83f608b Copyright AgoraInc.
- */
-
-/*
- @license
- UAParser.js v0.7.28
- Lightweight JavaScript-based User-Agent string parser
- https://github.com/faisalman/ua-parser-js
-
- Copyright ? 2012-2021 Faisal Salman <f@faisalman.com>
- Licensed under MIT License
- *****************************************************************************
- Copyright (c) Microsoft Corporation. All rights reserved.
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use
- this file except in compliance with the License. You may obtain a copy of the
- License at http://www.apache.org/licenses/LICENSE-2.0
-
- THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
- WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
- MERCHANTABLITY OR NON-INFRINGEMENT.
-
- See the Apache Version 2.0 License for specific language governing permissions
- and limitations under the License.
-*****************************************************************************/
 'use strict';!function(ub,hc){"object"==typeof exports&&"undefined"!=typeof module?module.exports=hc():"function"==typeof define&&define.amd?define(hc):(ub="undefined"!=typeof globalThis?globalThis:ub||self).AgoraRTC=hc()}(this,function(){function ub(d,g,a){return d(a={path:g,exports:{},require:function(a,c){throw Error("Dynamic requires are not currently supported by @rollup/plugin-commonjs");}},a.exports),a.exports}function hc(d,g,a){return(d=d.match(g))&&d.length>=a&&wa(d[a],10)}function $c(d,
 g,a){if(d.RTCPeerConnection){d=d.RTCPeerConnection.prototype;var b=d.addEventListener;d.addEventListener=function(c,d){if(c!==g)return b.apply(this,arguments);let e=b=>{(b=a(b))&&d(b)};return this._eventMap=this._eventMap||{},this._eventMap[d]=e,b.apply(this,[c,e])};var c=d.removeEventListener;d.removeEventListener=function(a,b){if(a!==g||!this._eventMap||!this._eventMap[b])return c.apply(this,arguments);let e=this._eventMap[b];return delete this._eventMap[b],c.apply(this,[a,e])};Q(d,"on"+g,{get(){return this["_on"+
 g]},set(a){this["_on"+g]&&(this.removeEventListener(g,this["_on"+g]),delete this["_on"+g]);a&&this.addEventListener(g,this["_on"+g]=a)},enumerable:!0,configurable:!0})}}function Tn(d){return"boolean"!=typeof d?Error("Argument type: "+typeof d+". Please use a boolean."):($h=d,d?"adapter.js logging disabled":"adapter.js logging enabled")}function Un(d){return"boolean"!=typeof d?Error("Argument type: "+typeof d+". Please use a boolean."):(ai=!d,"adapter.js deprecation warnings "+(d?"disabled":"enabled"))}
