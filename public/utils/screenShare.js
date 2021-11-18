@@ -29,11 +29,6 @@ async function screenShareJoin() {
 
     await screenClient.publish(screenTrack);
 
-    const videoScreenID = document.getElementById(
-        `player-${options.uid}Screen`
-    );
-    console.log("videoScreenID::::::::::::::::" + videoScreenID);
-
     screenTrack.on("track-ended", () => {
         LeaveShareScreen(screenClient, screenTrack);
     });

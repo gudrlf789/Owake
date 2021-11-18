@@ -6,13 +6,12 @@ const momentShareBtn = document.querySelector("#momentShare");
 const momentShareIcon = document.querySelector(".fa-brain");
 const messagesContainer = document.querySelector(".messages");
 const chatContainer = document.querySelector(".main__chat_window");
+const localVideoContainer = document.querySelector("#local__video__container");
 
 const momentShareArea = document.createElement("i");
 const iFrameContainer = document.createElement("div");
 const searchInput = document.createElement("input");
 const searchInputBtn = document.createElement("div");
-const mouseDragBtn = document.createElement("div");
-const mouseDragBtnIcon = document.createElement("i");
 const searchInputBtnIcon = document.createElement("i");
 const momentShare = document.createElement("iframe");
 
@@ -25,17 +24,13 @@ iFrameContainer.id = "iFrameContainer";
 searchInput.id = "searchInput";
 searchInputBtn.id = "searchInputBtn";
 searchInputBtnIcon.id = "searchInputBtnIcon";
-mouseDragBtn.id = "mouseDragBtn";
 
 searchInputBtnIcon.className = "fas fa-search";
-mouseDragBtnIcon.className = "far fa-hand-paper";
 
-mouseDragBtn.appendChild(mouseDragBtnIcon);
 searchInputBtn.appendChild(searchInputBtnIcon);
-
-iFrameContainer.append(searchInput, searchInputBtn, mouseDragBtn);
+iFrameContainer.append(searchInput, searchInputBtn);
 momentShareArea.append(iFrameContainer, momentShare);
-
+momentShareArea.append(momentShare);
 momentShare.frameborder = "0";
 
 momentShareBtn.addEventListener("click", (e) => {
@@ -44,7 +39,7 @@ momentShareBtn.addEventListener("click", (e) => {
 });
 
 function momentShareEnable() {
-    $(".main").append(momentShareArea);
+    localVideoContainer.append(momentShareArea);
     momentShareArea.style.display = "block";
     momentShareIcon.style.color = "#000";
 }
@@ -72,7 +67,6 @@ $(document).on("keydown", "#searchInput", (e) => {
             /^(https?:\/\/)?(www\.)?/,
             ""
         )}/webhp?igu=1`;
-
         searchInput.value = "";
     }
 });

@@ -57,9 +57,9 @@
     display: none;
 }
 
-@media all and (max-width: 768px) {
+@media (max-width: 768px) {
     .main__right {
-        display : none;
+        display: none;
         position: absolute;
         left: 0;
         bottom: 0;
@@ -67,6 +67,7 @@
         background: none;
         margin-bottom: 80px;
     }
+
     .messages {
         border: none;
     }
@@ -74,12 +75,40 @@
     #showChat {
         display: flex;
     }
+
+    .options {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background-color: transparent !important;
+        flex-direction: column;
+    }
+
+    .options__left {
+        display: block !important;
+        margin-bottom: 5px;
+    }
+
+    .main__right {
+        margin-bottom: 0;
+        width: 60%;
+        margin-left: 30px;
+    }
+
+    #remote__video__container {
+        height: 65% !important;
+    }
+
+    .options__button {
+        margin-bottom: 4px !important;
+        background-color: transparent !important;
+    }
 }
 
-@media all and (min-width: 768px) {
+@media (min-width: 768px) {
     .main__right {
-        display : flex !important;
-        flex : 0.3 !important;
+        display: flex !important;
+        flex: 0.3 !important;
     }
 
     #showChat {
