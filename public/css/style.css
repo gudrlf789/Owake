@@ -3,7 +3,6 @@
 @import "./momentShare.css";
 @import "./chat.css";
 @import "./bootstrap.min.css";
-@import "../dist/css/dropmenu.css";
 
 :root {
     --main-darklg: #1d2635;
@@ -204,11 +203,14 @@
 }
 
 .player-name {
-    color: #000;
+    color: #fff;
     font-weight: 700;
-    margin: 25px;
+    margin: 15px;
     position: absolute;
-    z-index: 10;
+    z-index: 1;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--main-darklg);
 }
 
 #remote__video__container {
