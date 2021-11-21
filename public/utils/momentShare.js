@@ -65,10 +65,10 @@ $(document).on("keydown", "#searchInput", (e) => {
 });
 
 function searchUrlStringCheck() {
-    momentShare.src = `https://${searchInput.value.replace(
+    momentShare.src = `https://www.google.com/search?igu=1&ei=&q=${searchInput.value.replace(
         /^(https?:\/\/)?(www\.)?/,
         ""
-    )}/webhp?igu=1`;
+    )}`;
     searchInput.value = "";
 }
 
