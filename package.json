@@ -1,12 +1,12 @@
 {
-    "name": "DC_Agora",
+    "name": "Owake",
     "version": "1.0.0",
     "description": "",
     "main": "server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "nodemon server/server.js",
-        "start": "node server/server.js"
+        "dev": "nodemon --experimental-modules server/server.js",
+        "start": "node --experimental-modules server/server.js"
     },
     "keywords": [],
     "author": "",
@@ -15,6 +15,7 @@
         "cross-env": "^7.0.3",
         "dotenv": "^10.0.0",
         "ejs": "^3.1.6",
+        "esm": "^3.2.25",
         "express": "^4.17.1",
         "fs": "^0.0.1-security",
         "nodemon": "^2.0.14",
