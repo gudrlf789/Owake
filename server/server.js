@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
+const cors = require("cors");
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -11,6 +12,12 @@ const host = process.env.HOST;
 const agoraId = process.env.AGORA_ID;
 
 app.set("view engine", "ejs");
+
+app.use(
+    cors({
+        origin: "*",
+    })
+);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
