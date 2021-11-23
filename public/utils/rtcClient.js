@@ -202,6 +202,8 @@ async function leave() {
     $("#remote-playerlist").html("");
 
     await client.leave();
+    socket.emit("leave-room", options.channel);
+
     //세션 스토리지 clear
     window.sessionStorage.clear();
 
