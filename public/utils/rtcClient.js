@@ -232,7 +232,7 @@ async function subscribe(user, mediaType) {
         if (!user.hasVideo && user.hasAudio) {
             const iconPlayer = $(`
                 <div id="player-wrapper-${uid}">
-                <p class="player-name" style="color: white">user: ${uid}</p>
+                <p class="player-name" style="color: white">${uid}</p>
                 <div id="player-${uid}" class="player" uid="${uid}" 
                     style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
                 </div>
