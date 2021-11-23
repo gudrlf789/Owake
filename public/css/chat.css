@@ -57,6 +57,10 @@
     display: none;
 }
 
+#remote__message__container {
+    margin-left : auto;
+}
+
 @media (max-width: 768px) {
     .main__right {
         display: none;

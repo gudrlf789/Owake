@@ -64,16 +64,11 @@ $(document).on("keydown", "#searchInput", (e) => {
     }
 });
 
-// function searchUrlStringCheck() {
-//     momentShare.src = `https://www.google.com/search?igu=1&ei=&q=${searchInput.value.replace(
-//         /^(https?:\/\/)?(www\.)?/,
-//         ""
-//     )}`;
-//     searchInput.value = "";
-// }
-
 function searchUrlStringCheck() {
-    momentShare.src = `http://localhost:3001`;
+    momentShare.src = `https://${searchInput.value.replace(
+        /^(https?:\/\/)?(www\.)?/,
+        ""
+    )}`;
     searchInput.value = "";
 }
 

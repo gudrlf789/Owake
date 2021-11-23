@@ -208,9 +208,6 @@
     margin: 15px;
     position: absolute;
     z-index: 1;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: var(--main-darklg);
 }
 
 #remote__video__container {
