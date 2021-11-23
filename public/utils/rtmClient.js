@@ -1,15 +1,21 @@
 const messageList = document.getElementById("messages");
-let userNameArea;
-let messageArea;
-
 let channelMessageText = document.getElementById("chat_message");
 let channelMessageSend = document.getElementById("send");
 
+// Element Create
+const messageContainer = document.createElement("div");
+messageContainer.className = "message__container";
+
+const remoteMessageContainer = document.createElement("div");
+remoteMessageContainer.className = "remote__message__container";
+
+let userNameArea;
+let messageArea;
 let channel;
 let userName;
 
 $(async () => {
-    if(window.sessionStorage.length != 0){
+    if (window.sessionStorage.length != 0) {
         await joinRtm();
     }
 });
@@ -18,7 +24,9 @@ $(async () => {
 let rtmClient = AgoraRTM.createInstance(options.appid);
 
 async function joinRtm() {
-    channel = rtmClient.createChannel($("#channel").val() || window.sessionStorage.getItem("channel"));
+    channel = rtmClient.createChannel(
+        $("#channel").val() || window.sessionStorage.getItem("channel")
+    );
     options.uid = $("#uid").val() || window.sessionStorage.getItem("uid");
     userName = $("#uid").val() || window.sessionStorage.getItem("uid");
     await rtmClient.login(options);
@@ -33,9 +41,17 @@ async function joinRtm() {
     channel.on("ChannelMessage", function (message, memberId, e) {
         messageAreaFunc();
         const msg = JSON.stringify(message.text);
-        messageArea.textContent =
-            "Message received from: " + memberId + " Message: " + msg;
-        messageList.append(messageArea);
+
+        // Remote User, Remote Messages Naming
+        userNameArea.id = "remote__user";
+        messageArea.id = "remote__message";
+        remoteMessageContainer.id = "remote__message__container";
+
+        userNameArea.textContent = memberId;
+        messageArea.textContent = msg;
+
+        remoteMessageContainer.append(userNameArea, messageArea);
+        messageList.append(remoteMessageContainer);
     });
     // Display channel member stats
     channel.on("MemberJoined", function (memberId) {
@@ -74,7 +90,6 @@ rtmClient.on("ConnectionStateChanged", function (state, reason) {
 // send channel message
 channelMessageSend.addEventListener("click", (e) => {
     if (channelMessageText.value.length !== 0) {
-        console.log(channelMessageText.value);
         channelMessageFunc();
         channelMessageText.value = "";
     }
@@ -82,7 +97,6 @@ channelMessageSend.addEventListener("click", (e) => {
 
 channelMessageText.addEventListener("keydown", (e) => {
     if (e.which === 13 && channelMessageText.value.length !== 0) {
-        console.log(channelMessageText.value);
         channelMessageFunc();
         channelMessageText.value = "";
     }
@@ -96,7 +110,8 @@ async function channelMessageFunc() {
             messageAreaFunc();
             userNameArea.textContent = userName;
             messageArea.textContent = channelMessage;
-            messageList.append(userNameArea, messageArea);
+            messageContainer.append(userNameArea, messageArea);
+            messageList.append(messageContainer);
             scrollToBottom();
         });
     }
