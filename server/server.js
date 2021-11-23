@@ -27,6 +27,10 @@ io.on("connection", (socket) => {
         socket.join(roomName);
     });
 
+    socket.on("leave-room", (roomName) => {
+        socket.leave(roomName);
+    });
+
     socket.on("submit_address", (address, roomName) => {
         socket.to(roomName).emit("input_address", address);
     });
