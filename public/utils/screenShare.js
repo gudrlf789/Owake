@@ -33,14 +33,13 @@ async function screenShareJoin() {
         AgoraRTC.createMicrophoneAudioTrack(),
         AgoraRTC.createScreenVideoTrack(
             {
-                audio: true,
                 encoderConfig: {
                     framerate: 15,
                     height: 720,
                     width: 1280,
                 },
             },
-            "auto"
+            "enable"
         ),
     ]);
 
