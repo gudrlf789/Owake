@@ -33,6 +33,7 @@ async function screenShareJoin() {
         AgoraRTC.createMicrophoneAudioTrack(),
         AgoraRTC.createScreenVideoTrack(
             {
+                audio: true,
                 encoderConfig: {
                     framerate: 15,
                     height: 720,
@@ -45,7 +46,9 @@ async function screenShareJoin() {
 
     if (screenTrack instanceof Array) {
         screenTracks.screenVideoTrack = screenTrack[0];
+        console.log(screenTrack[0]);
         screenTracks.screenAudioTrack = screenTrack[1];
+        console.log(screenTrack[1]);
     } else {
         screenTracks.screenVideoTrack = screenTrack;
     }
