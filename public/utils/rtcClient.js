@@ -13,6 +13,7 @@ let localTracks = {
 
 let totalUsers = {};
 let remoteUsers = {};
+let userList;
 
 let options = {
     appid: "50b9cd9de2d54849a139e3db52e7928a",
@@ -87,7 +88,7 @@ $(document).on("click", ".player", (e) => {
         remoteTag.children[1].id = `player-${localUid}`;
 
         if (totalUsers[localUid].videoTrack) {
-            remoteTag.children[0].textContent = `user: ${localUid}`;
+            remoteTag.children[0].textContent = `${localUid}`;
             totalUsers[localUid].videoTrack.play(`player-${localUid}`);
         } else {
             remoteTag.children[0].textContent = `user: ${localUid}`;

@@ -72,11 +72,6 @@ function searchUrlStringCheck() {
     searchInput.value = "";
 }
 
-function urlResult(search) {
-    momentShare.src = "https://" + youtubeUrlReplarce(search);
-    searchInput.value = "";
-}
-
 const youtubeUrlReplarce = (search) => {
     let str = search;
     const regExp =
