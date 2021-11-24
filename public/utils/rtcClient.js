@@ -13,10 +13,9 @@ let localTracks = {
 
 let totalUsers = {};
 let remoteUsers = {};
-let userList;
 
 let options = {
-    appid: "50b9cd9de2d54849a139e3db52e7928a",
+    appid: "8d4f054da71f427b93df3e27ca31bb54",
     channel: null,
     uid: null,
     token: null,
@@ -255,11 +254,11 @@ function revertLocalTrackToMain(leftUid) {
 
         if (totalUsers[options.uid].videoTrack) {
             totalUsers[options.uid].videoTrack.stop();
-            $("#local-player-name").text(`user: ${options.uid}`);
+            $("#local-player-name").text(`${options.uid}`);
             $("#local__video__container").append(localVideoBox);
             totalUsers[options.uid].videoTrack.play(localVideoBox);
         } else {
-            $("#local-player-name").text(`user: ${options.uid}`);
+            $("#local-player-name").text(`${options.uid}`);
             $("#local-player-name").css("color", "white");
             localVideoBox.style.backgroundRepeat = "no-repeat";
             localVideoBox.style.backgroundImage = "url(../img/person.png)";
