@@ -29,7 +29,11 @@ async function screenShareJoin() {
     );
     
     const screenTrack = await AgoraRTC.createScreenVideoTrack(
-        {},
+        {
+            encoderConfig: {
+                framerate: 29.9
+            },
+        },
         "auto"
     );
     
