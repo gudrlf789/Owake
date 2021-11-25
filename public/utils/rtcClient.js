@@ -90,7 +90,7 @@ $(document).on("click", ".player", (e) => {
             remoteTag.children[0].textContent = `${localUid}`;
             totalUsers[localUid].videoTrack.play(`player-${localUid}`);
         } else {
-            remoteTag.children[0].textContent = `user: ${localUid}`;
+            remoteTag.children[0].textContent = `${localUid}`;
             remoteTag.children[0].style.color = "white";
             remoteTag.children[1].style.backgroundRepeat = "no-repeat";
             remoteTag.children[1].style.backgroundImage =
@@ -100,11 +100,9 @@ $(document).on("click", ".player", (e) => {
 
         $("#local-player-name").text(`${remoteUid}`);
         if (totalUsers[remoteUid].videoTrack) {
-            $("#local-player-name").css("color", "black");
             $("#local__video__container").append(localVideoBox);
             totalUsers[remoteUid].videoTrack.play(localVideoBox);
         } else {
-            $("#local-player-name").css("color", "white");
             localVideoBox.style.backgroundRepeat = "no-repeat";
             localVideoBox.style.backgroundImage = "url(../img/person.png)";
             localVideoBox.style.backgroundSize = "contain";
@@ -179,7 +177,6 @@ async function join() {
         await client.publish(Object.values(localTracks));
     } else {
         $("#local-player-name").text(`${options.uid}`);
-        $("#local-player-name").css("color", "white");
         await client.publish(localTracks.audioTrack);
     }
 }
@@ -259,7 +256,6 @@ function revertLocalTrackToMain(leftUid) {
             totalUsers[options.uid].videoTrack.play(localVideoBox);
         } else {
             $("#local-player-name").text(`${options.uid}`);
-            $("#local-player-name").css("color", "white");
             localVideoBox.style.backgroundRepeat = "no-repeat";
             localVideoBox.style.backgroundImage = "url(../img/person.png)";
             localVideoBox.style.backgroundSize = "contain";
