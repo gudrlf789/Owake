@@ -45,7 +45,6 @@ $(document).ready(function () {
 
     function receiveKey(key) {
         $("#status").text("waiting");
-        socket.emit("create message", "file waiting");
         $.ajax({
             url: "https://send-anywhere.com/web/v1/key/" + key,
             type: "GET",
@@ -56,7 +55,6 @@ $(document).ready(function () {
             .done(function (data) {
                 receiveFile(data.weblink);
                 $("#status").text("done");
-                socket.emit("create message", "file Done");
             })
             .fail(function (xhr, textStatus, error) {
                 $("#receiveForm .form-group").addClass("has-error");
