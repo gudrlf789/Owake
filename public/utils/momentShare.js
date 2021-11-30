@@ -64,22 +64,12 @@ $(document).on("keydown", "#searchInput", (e) => {
 });
 
 function searchUrlStringCheck() {
-    if (searchInput.value.includes("youtube")) {
-        result = momentShare.src =
-            "https://" +
-            youtubeUrlReplarce(
-                searchInput.value.replace(/^(https?:\/\/)?(www\.)?/, "")
-            );
-    } else {
-        result =
-            momentShare.src = `https://owake-proxy.herokuapp.com/?url=https://${searchInput.value.replace(
-                /^(https?:\/\/)?(www\.)?/,
-                ""
-            )}`;
-    }
+    result = momentShare.src = `https://${searchInput.value.replace(
+        /^(https?:\/\/)?(www\.)?/,
+        ""
+    )}`;
 
     searchInput.value = "";
-
     return result;
 }
 
