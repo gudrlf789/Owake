@@ -1,0 +1,15 @@
+#downBtn {
+    position:absolute;
+    color : #fff;
+    top : 10px;
+    right : 10px;
+    z-index: 20;
+}
+
+#upBtn {
+    position: absolute;
+    color : #fff;
+    bottom : -20px;
+    right : 0px;
+    z-index: 20;
+}

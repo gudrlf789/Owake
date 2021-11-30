@@ -24,28 +24,32 @@ $("#muteVideo").click(function (e) {
 
 async function muteAudio() {
     if (!localTracks.audioTrack) return;
-    await localTracks.audioTrack.setMuted(true);
+    totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = false;
     localTrackState.audioTrackMuted = true;
     audioIcon.className = "fa fa-microphone-slash";
+    alert("audio mute activation");
 }
 
 async function unmuteAudio() {
     if (!localTracks.audioTrack) return;
-    await localTracks.audioTrack.setMuted(false);
+    totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = true;
     localTrackState.audioTrackMuted = false;
     audioIcon.className = "fa fa-microphone";
+    alert("audio unmute activation");
 }
 
 async function muteVideo() {
     if (!localTracks.videoTrack) return;
-    await localTracks.videoTrack.setMuted(true);
+    totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = false;
     localTrackState.videoTrackMuted = true;
     videoIcon.className = "fas fa-video-slash";
+    alert("video mute activation");
 }
 
 async function unmuteVideo() {
     if (!localTracks.videoTrack) return;
-    await localTracks.videoTrack.setMuted(false);
+    totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = true;
     localTrackState.videoTrackMuted = false;
     videoIcon.className = "fas fa-video";
+    alert("video unmute activation");
 }

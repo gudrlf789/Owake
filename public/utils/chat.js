@@ -10,11 +10,12 @@ function mobileDisplayCtr() {
     });
 
     function messageEnable() {
+        mainRight.hidden = false;
         mainRight.style.display = "flex";
         mainRight.style.flex = "1";
     }
     function messageDisable() {
-        mainRight.style.display = "none";
+        mainRight.hidden = true;
     }
 }
 

@@ -13,10 +13,9 @@ let localTracks = {
 
 let totalUsers = {};
 let remoteUsers = {};
-let userList;
 
 let options = {
-    appid: "50b9cd9de2d54849a139e3db52e7928a",
+    appid: "8d4f054da71f427b93df3e27ca31bb54",
     channel: null,
     uid: null,
     token: null,
@@ -91,7 +90,7 @@ $(document).on("click", ".player", (e) => {
             remoteTag.children[0].textContent = `${localUid}`;
             totalUsers[localUid].videoTrack.play(`player-${localUid}`);
         } else {
-            remoteTag.children[0].textContent = `user: ${localUid}`;
+            remoteTag.children[0].textContent = `${localUid}`;
             remoteTag.children[0].style.color = "white";
             remoteTag.children[1].style.backgroundRepeat = "no-repeat";
             remoteTag.children[1].style.backgroundImage =
@@ -101,11 +100,9 @@ $(document).on("click", ".player", (e) => {
 
         $("#local-player-name").text(`${remoteUid}`);
         if (totalUsers[remoteUid].videoTrack) {
-            $("#local-player-name").css("color", "black");
             $("#local__video__container").append(localVideoBox);
             totalUsers[remoteUid].videoTrack.play(localVideoBox);
         } else {
-            $("#local-player-name").css("color", "white");
             localVideoBox.style.backgroundRepeat = "no-repeat";
             localVideoBox.style.backgroundImage = "url(../img/person.png)";
             localVideoBox.style.backgroundSize = "contain";
@@ -131,6 +128,7 @@ socket.on("input_address", (address) => {
 
 async function join() {
     client.on("user-published", handleUserPublished);
+    client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);
     socket.emit("join-room", options.channel);
 
@@ -180,7 +178,6 @@ async function join() {
         await client.publish(Object.values(localTracks));
     } else {
         $("#local-player-name").text(`${options.uid}`);
-        $("#local-player-name").css("color", "white");
         await client.publish(localTracks.audioTrack);
     }
 }
@@ -216,6 +213,7 @@ async function leave() {
 async function subscribe(user, mediaType) {
     const uid = user.uid;
     await client.subscribe(user, mediaType);
+    console.log("subscribe success");
 
     if (mediaType === "video") {
         const player = $(`
@@ -225,8 +223,9 @@ async function subscribe(user, mediaType) {
           </div>
         `);
         $("#remote-playerlist").append(player);
-        user.videoTrack.play(`player-${uid}`);
     }
+
+    user.videoTrack.play(`player-${uid}`);
 
     if (mediaType === "audio") {
         user.audioTrack.play();
@@ -255,12 +254,11 @@ function revertLocalTrackToMain(leftUid) {
 
         if (totalUsers[options.uid].videoTrack) {
             totalUsers[options.uid].videoTrack.stop();
-            $("#local-player-name").text(`user: ${options.uid}`);
+            $("#local-player-name").text(`${options.uid}`);
             $("#local__video__container").append(localVideoBox);
             totalUsers[options.uid].videoTrack.play(localVideoBox);
         } else {
-            $("#local-player-name").text(`user: ${options.uid}`);
-            $("#local-player-name").css("color", "white");
+            $("#local-player-name").text(`${options.uid}`);
             localVideoBox.style.backgroundRepeat = "no-repeat";
             localVideoBox.style.backgroundImage = "url(../img/person.png)";
             localVideoBox.style.backgroundSize = "contain";
@@ -273,10 +271,13 @@ function revertLocalTrackToMain(leftUid) {
     }
 }
 
-function handleUserPublished(user, mediaType) {
+function handleUserJoined(user) {
     const id = user.uid;
     totalUsers[id] = user;
     remoteUsers[id] = user;
+}
+
+function handleUserPublished(user, mediaType) {
     subscribe(user, mediaType);
 }
 

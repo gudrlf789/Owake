@@ -18,7 +18,6 @@ const momentShare = document.createElement("iframe");
 searchInput.placeholder = "Please search.";
 searchInput.style.textAlign = "center";
 momentShare.id = "momentShare-iframe";
-momentShare.name = "iFrame";
 momentShareArea.id = "momentShareArea";
 iFrameContainer.id = "iFrameContainer";
 searchInput.id = "searchInput";
@@ -32,7 +31,6 @@ iFrameContainer.append(searchInput, searchInputBtn);
 momentShareArea.append(iFrameContainer, momentShare);
 momentShareArea.append(momentShare);
 momentShare.frameborder = "0";
-momentShare.target = "_parent";
 
 momentShareBtn.addEventListener("click", (e) => {
     momentShareActive = !momentShareActive;
@@ -41,12 +39,12 @@ momentShareBtn.addEventListener("click", (e) => {
 
 function momentShareEnable() {
     localVideoContainer.append(momentShareArea);
-    momentShareArea.style.display = "block";
+    momentShareArea.hidden = false;
     momentShareIcon.style.color = "#000";
 }
 
 function momentShareDisable() {
-    momentShareArea.style.display = "none";
+    momentShareArea.hidden = true;
     momentShareIcon.style.color = "#fff";
 }
 
@@ -65,15 +63,25 @@ $(document).on("keydown", "#searchInput", (e) => {
 });
 
 function searchUrlStringCheck() {
-    momentShare.src = `https://${searchInput.value.replace(
-        /^(https?:\/\/)?(www\.)?/,
-        ""
-    )}`;
+    if (searchInput.value.includes("youtube")) {
+        momentShare.src =
+            "https://" +
+            youtubeUrlReplarce(
+                searchInput.value.replace(/^(https?:\/\/)?(www\.)?/, "")
+            );
+    } else {
+        momentShare.src = `https://owake-proxy.herokuapp.com/?url=https://${searchInput.value.replace(
+            /^(https?:\/\/)?(www\.)?/,
+            ""
+        )}`;
+    }
+
     searchInput.value = "";
 }
 
 const youtubeUrlReplarce = (search) => {
     let str = search;
+    console.log(str);
     const regExp =
         /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     let match = str.match(regExp);
@@ -82,6 +90,7 @@ const youtubeUrlReplarce = (search) => {
         let sepratedID = match[2];
         let embedUrl = "www.youtube.com/embed/" + sepratedID;
         let result = search.replace(str, embedUrl);
+        console.log(result);
         return result;
     }
 };

@@ -9,7 +9,7 @@
         "start": "node --experimental-modules server/server.js"
     },
     "keywords": [],
-    "author": "",
+    "author": "Owake",
     "license": "ISC",
     "dependencies": {
         "cross-env": "^7.0.3",
