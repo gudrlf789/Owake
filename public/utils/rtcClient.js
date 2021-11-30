@@ -53,6 +53,7 @@ $("#join-form").submit(async function (e) {
             options.token = $("#token").val();
             options.channel = $("#channel").val();
             options.uid = nickname;
+            $("#newUserModal").modal("hide");
             await join();
         } catch (error) {
             console.error(error);
@@ -201,6 +202,7 @@ async function leave() {
 
     await client.leave();
     socket.emit("leave-room", options.channel);
+    $("#newUserModal").modal("hide");
 
     //세션 스토리지 clear
     window.sessionStorage.clear();
