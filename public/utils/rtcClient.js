@@ -225,10 +225,9 @@ async function subscribe(user, mediaType) {
           </div>
         `);
         $("#remote-playerlist").append(player);
+        user.videoTrack.play(`player-${uid}`);
     }
-
-    user.videoTrack.play(`player-${uid}`);
-
+    
     if (mediaType === "audio") {
         user.audioTrack.play();
         // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에

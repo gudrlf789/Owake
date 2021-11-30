@@ -25,7 +25,6 @@ $("#muteVideo").click(function (e) {
 async function muteAudio() {
     if (!localTracks.audioTrack) return;
     totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = false;
-    localTrackState.audioTrackMuted = true;
     audioIcon.className = "fa fa-microphone-slash";
     alert("audio mute activation");
 }
@@ -33,15 +32,14 @@ async function muteAudio() {
 async function unmuteAudio() {
     if (!localTracks.audioTrack) return;
     totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = true;
-    localTrackState.audioTrackMuted = false;
     audioIcon.className = "fa fa-microphone";
     alert("audio unmute activation");
 }
 
 async function muteVideo() {
+    debugger;
     if (!localTracks.videoTrack) return;
     totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = false;
-    localTrackState.videoTrackMuted = true;
     videoIcon.className = "fas fa-video-slash";
     alert("video mute activation");
 }
@@ -49,7 +47,6 @@ async function muteVideo() {
 async function unmuteVideo() {
     if (!localTracks.videoTrack) return;
     totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = true;
-    localTrackState.videoTrackMuted = false;
     videoIcon.className = "fas fa-video";
     alert("video unmute activation");
 }
