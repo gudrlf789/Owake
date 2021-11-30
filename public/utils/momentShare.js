@@ -1,6 +1,7 @@
 const momentSocket = io();
 let momentShareActive = false;
 let mouseDrag = false;
+let searchResult;
 
 const momentShareBtn = document.querySelector("#momentShare");
 const momentShareIcon = document.querySelector(".fa-brain");
@@ -50,33 +51,36 @@ function momentShareDisable() {
 
 $(document).on("click", "#searchInputBtn", (e) => {
     if (searchInput.value.length !== 0) {
-        momentSocket.emit("submit_address", searchInput.value, options.channel);
-        searchUrlStringCheck();
+        searchResult = searchUrlStringCheck();
+        momentSocket.emit("submit_address", searchResult, options.channel);
     }
 });
 
 $(document).on("keydown", "#searchInput", (e) => {
     if (e.which === 13 && searchInput.value.length !== 0) {
-        momentSocket.emit("submit_address", searchInput.value, options.channel);
-        searchUrlStringCheck();
+        searchResult = searchUrlStringCheck();
+        momentSocket.emit("submit_address", searchResult, options.channel);
     }
 });
 
 function searchUrlStringCheck() {
     if (searchInput.value.includes("youtube")) {
-        momentShare.src =
+        result = momentShare.src =
             "https://" +
             youtubeUrlReplarce(
                 searchInput.value.replace(/^(https?:\/\/)?(www\.)?/, "")
             );
     } else {
-        momentShare.src = `https://owake-proxy.herokuapp.com/?url=https://${searchInput.value.replace(
-            /^(https?:\/\/)?(www\.)?/,
-            ""
-        )}`;
+        result =
+            momentShare.src = `https://owake-proxy.herokuapp.com/?url=https://${searchInput.value.replace(
+                /^(https?:\/\/)?(www\.)?/,
+                ""
+            )}`;
     }
 
     searchInput.value = "";
+
+    return result;
 }
 
 const youtubeUrlReplarce = (search) => {
