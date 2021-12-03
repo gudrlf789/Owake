@@ -1,0 +1,12 @@
+.left_navbar {
+    display : flex;
+    flex-direction: column;
+    justify-content: center;
+    margin : 20px;
+}
+
+.options-nav {
+    padding : 0.8rem;
+    cursor : pointer;
+    font-weight: 600;
+}

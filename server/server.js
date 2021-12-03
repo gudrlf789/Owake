@@ -22,6 +22,10 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
+app.get("/room", (req, res) => {
+    res.render("room");
+});
+
 io.on("connection", (socket) => {
     socket.on("join-room", (roomName) => {
         socket.join(roomName);

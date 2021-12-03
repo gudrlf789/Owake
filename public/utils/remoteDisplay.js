@@ -8,14 +8,17 @@ upBtn.className = "fas fa-angle-up";
 downBtn.id = "downBtn";
 upBtn.id = "upBtn";
 
-$("#remote-playerlist").append(upBtn);
+$("#video-grid").append(upBtn);
 
 $(document).on("click", "#upBtn", (e) => {
+    upBtn.remove();
     $("#video-grid").append(downBtn);
     $("#remote-playerlist").slideUp("slow");
 });
 
 $(document).on("click", "#downBtn", (e) => {
-    $("#remote-playerlist").slideDown("slow");
     downBtn.remove();
+    $("#video-grid").append(upBtn);
+    $("#remote-playerlist").slideDown("slow");
 });
+

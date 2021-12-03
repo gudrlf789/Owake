@@ -1,0 +1,82 @@
+<div class="modal fade" id="channelCreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Channel Create
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="channelCreate-form">
+                    <div class="row admin-info-group">
+
+                        <div class="col-sm">
+                            <p class="admin-info-text">Admin ID</p>
+                            <input id="adminId" type="text" placeholder="Enter the AdminID" required />
+                        </div>
+                        <div class="col-sm">
+                            <p class="admin-info-text">Admin Password</p>
+                            <input id="password" type="text" placeholder="Enter the Password" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row roomSetting-info-group">
+
+                        <div class="col-sm">
+                            <input id="public_active" name="drone" type="radio" value="Public Channel" checked />
+                            <label for="public_active">Public</label>
+                        </div>
+                        <div class="col-sm">
+                            <input id="private_active" name="drone" type="radio" value="Private Channel" />
+                            <label for="private_active">Private</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div class="row category-info-group">
+
+                        <div class="col-sm">
+                            <label for="theme-category">Category</label>
+
+                            <select id="theme-category">
+                                <option value="outdoor">Outdoor</option>
+                                <option value="outdoor">Outdoor</option>
+                                <option value="outdoor">Outdoor</option>
+                                <option value="outdoor">Outdoor</option>
+                                <option value="outdoor">Outdoor</option>
+                                <option value="outdoor">Outdoor</option>
+                                <option value="outdoor">Outdoor</option>
+                                <option value="outdoor">Outdoor</option>
+                                <option value="outdoor">Outdoor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row description-info-group">
+
+                        <div class="col-sm">
+                            <label for="description">Description</label>
+
+                            <textarea name="channel-description" id="channel-description" cols="50"
+                                rows="10"></textarea>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="button-group">
+                        <button id="join" type="submit" class="btn btn-primary btn-sm">
+                            Create
+                        </button>
+                        <button id="update" type="button" class="btn btn-primary btn-sm" disabled>
+                            Update
+                        </button>
+                        <button id="remove" type="button" class="btn btn-primary btn-sm" disabled>
+                            Remove
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
