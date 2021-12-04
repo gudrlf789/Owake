@@ -6,15 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Owake</title>
-    <link rel="stylesheet" href="mainPage.css">
 
-    <!-- jquery -->
-    <script src="jquery-3.4.1.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="bootstrap.bundle.min.js"></script>
+    <%- include("./headparts/meta-parts") %>
+        <%- include("./headparts/favicon-parts") %>
 
-    <%- include("./popup/channelCreate") %>
-        <%- include("./popup/channelJoin") %>
+            <link rel="stylesheet" href="mainPage.css">
+            <!-- jquery -->
+            <script src="jquery-3.4.1.min.js"></script>
+            <!-- Bootstrap -->
+            <script src="bootstrap.bundle.min.js"></script>
+
+            <%- include("./popup/channelCreate") %>
+                <%- include("./popup/channelJoin") %>
 </head>
 
 <body>

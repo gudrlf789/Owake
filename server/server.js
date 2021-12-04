@@ -15,7 +15,19 @@ const firebaseConfig = require('./config/firebaseConfig.js');
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+function redirectSec(req, res, next) {
+    if (req.headers["x-forwarded-proto"] == "http") {
+        var redirect = "https://" + req.headers.host + req.path;
+        console.log("Redirect to:" + redirect);
+        res.redirect(redirect);
+    } else {
+        return next();
+    }
+}
+
 app.set("view engine", "ejs");
+
+app.use(redirectSec);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
