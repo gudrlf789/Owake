@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+@import "./bootstrap.min.css";
 @import "./momentShare.css";
 @import "./chat.css";
-@import "./bootstrap.min.css";
 @import "./remoteDisplay.css";
+@import "./optionsBtn.css";
 
 :root {
     --main-darklg: #1d2635;
@@ -330,18 +331,20 @@ video:hover {
 
     #remote__video__container {
         position: relative;
-        margin-left: auto;
-        display: flex;
         flex-direction: column;
-        overflow-y: auto;
-        flex: none;
-        height: 100%;
+        overflow-x: auto;
+        margin-left : 50px;
+    }
+
+    #remote-playerlist {
+        display : flex;
     }
 
     #remote-playerlist > div {
         width: 130px;
         height: 130px;
-        margin-bottom: 6px;
+        margin-right: 6px;
+        margin-bottom : none;
     }
 
     .player-name {
@@ -379,6 +382,8 @@ video:hover {
     #speechRecognition {
         display: none;
     }
+
+    
 }
 
 /* Animation */

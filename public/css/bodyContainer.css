@@ -1,0 +1,27 @@
+.box-conatiner {
+    display : flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.channel-box {
+    border : 1px solid #000;
+    margin : 3rem;
+    border-radius: 35px;
+    width : 250px;
+    height : 250px;
+}
+
+.channel-options {
+    width : 150px;
+    height : 50px;
+    border: 1px solid #000;
+    margin-right : 10px;
+    text-align: center;
+    cursor : pointer;
+}
+
+.box-options {
+    display : flex;
+    flex-direction: row-reverse;
+}

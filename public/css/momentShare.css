@@ -9,6 +9,7 @@
   height: 100%;
   border-radius: 25px;
   top : 0;
+  z-index: 11;
 }
 
 #momentShareAreaheader {
