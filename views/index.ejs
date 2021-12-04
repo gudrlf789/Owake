@@ -11,10 +11,14 @@
         <%- include("./headparts/favicon-parts") %>
 
             <link rel="stylesheet" href="mainPage.css">
+            <script src="owake_rtc_n.js"></script>
+            <script src="owake_rtm.js"></script>
             <!-- jquery -->
             <script src="jquery-3.4.1.min.js"></script>
             <!-- Bootstrap -->
             <script src="bootstrap.bundle.min.js"></script>
+            <!-- Socket.io -->
+            <script src="/socket.io/socket.io.js"></script>
 
             <%- include("./popup/channelCreate") %>
                 <%- include("./popup/channelJoin") %>
@@ -54,6 +58,7 @@
 
         channelBox.style.width = resultWidth;
         channelBox.style.height = resultHeight;
+
     </script>
 </body>
 
