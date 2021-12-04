@@ -267,16 +267,6 @@
 }
 
 video {
-    /* height: 300px;
-    border-radius: 1rem;
-    margin: 0.5rem;
-    width: 400px;
-    object-fit: cover; */
-    /*
-        transform: rotateY(180deg);
-        -webkit-transform: rotateY(180deg);
-        -moz-transform: rotateY(180deg);
-    */
     animation: show 0.4s ease;
 }
 
@@ -330,8 +320,7 @@ video:hover {
     }
 
     #remote__video__container {
-        position: relative;
-        flex-direction: column;
+        display: -webkit-box;
         overflow-x: auto;
         margin-left : 50px;
     }
