@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
-@import "./bootstrap.min.css";
-@import "./momentShare.css";
-@import "./chat.css";
-@import "./remoteDisplay.css";
-@import "./optionsBtn.css";
+@import "./lib/bootstrap.min.css";
+@import "./channel/momentShare.css";
+@import "./channel/chat.css";
+@import "./channel/remoteDisplay.css";
+@import "./channel/optionsBtn.css";
 
 :root {
     --main-darklg: #1d2635;

@@ -6,9 +6,22 @@ const io = require("socket.io")(server);
 
 const dotenv = require("dotenv");
 dotenv.config();
+
 const port = process.env.PORT || 1227;
 
+function redirectSec(req, res, next) {
+    if (req.headers["x-forwarded-proto"] == "http") {
+        var redirect = "https://" + req.headers.host + req.path;
+        console.log("Redirect to:" + redirect);
+        res.redirect(redirect);
+    } else {
+        return next();
+    }
+}
+
 app.set("view engine", "ejs");
+
+app.use(redirectSec);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));

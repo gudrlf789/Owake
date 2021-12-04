@@ -1,4 +1,4 @@
-function mobileDisplayCtr() {
+export const mobileDisplayCtr = () => {
     let messagesActive = false;
 
     const showChat = document.querySelector("#showChat");
@@ -17,10 +17,9 @@ function mobileDisplayCtr() {
     function messageDisable() {
         mainRight.hidden = true;
     }
-}
+};
 
-function scrollToBottom() {
+export const scrollToBottom = () => {
     let messages = document.querySelector(".messages");
     messages.scrollTop = messages.scrollHeight;
-}
-mobileDisplayCtr();
+};

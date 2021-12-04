@@ -1,3 +1,5 @@
+import { scrollToBottom } from "./parts/chat.js";
+
 const messageList = document.getElementById("messages");
 let channelMessageText = document.getElementById("chat_message");
 let channelMessageSend = document.getElementById("send");
