@@ -21,4 +21,3 @@ $(document).on("click", "#downBtn", (e) => {
     $("#video-grid").append(upBtn);
     $("#remote-playerlist").slideDown("slow");
 });
-
