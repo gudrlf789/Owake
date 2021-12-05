@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, "../public/img")));
 app.use(express.static(path.join(__dirname, "../public/lib")));
 app.use(express.static(path.join(__dirname, "../public/utils")));
 app.use(express.static(path.join(__dirname, "../public/img/favicon")));
+app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../views")));
 app.use(
     bodyParder({

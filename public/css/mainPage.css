@@ -27,10 +27,30 @@
 }
 
 .search-options {
+    display: flex;
+    height: 100%;
+    align-items: center;
     position: relative;
     top : 15px;
     margin-left : auto;
     margin-right : 20px;
+}
+
+.profile {
+    position: relative;
+    border: 1px solid #000;
+    border-radius: 30px;
+    width: 170px;
+    height: 40px;
+    top: 10px;
+}
+
+.profile > p {
+    display : inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .left-nav-container {
@@ -58,5 +78,12 @@
         width : 230px;
         height : 230px;
         margin : 0.5rem;
+    }
+
+    .logo {
+        display : none;
+    }
+    .profile {
+        display : none;
     }
 }
