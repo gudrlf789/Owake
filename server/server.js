@@ -8,10 +8,9 @@ const io = require("socket.io")(server);
 const dotenv = require("dotenv");
 dotenv.config();
 
-const firebase = require('firebase/app');
+const firebase = require('firebase');
 require('firebase/firestore');
 const firebaseConfig = require('./config/firebaseConfig.js');
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
@@ -48,19 +47,19 @@ app.get("/", (req, res) => {
 app.post('/room/register', async (req, res) => {
     const bodyData = req.body;
     const snapshot = await db.collection("RoomList").where("roomName", "==", bodyData.roomName).get();
-    
+
     if(snapshot.empty){
         // doc에 특정 이름을 설정하고 싶을때
-        //db.collection("RoomList").doc(bodyData.roomName).set(bodyData)
-        db.collection("RoomList").add({
+        db.collection("RoomList").doc(bodyData.roomName).set(bodyData)
+        /*db.collection("RoomList").add({
             adminId: bodyData.adminId,
             adminPassword: bodyData.adminPassword,
-            roomName: bodyData.roomName,
             roomType: bodyData.roomType,
+            roomName: bodyData.roomName,
             roomPassword: bodyData.roomPassword,
             roomTheme: bodyData.roomTheme,
-            roomIntroduce: bodyData.roomIntroduce
-        })
+            roomDescription: bodyData.roomDescription
+        })*/
         .then((e) => {
             return res.status(200).json({
                 success: true
