@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const bodyParder = require('body-parser');
+const bodyParder = require("body-parser");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
+const firebase = require("firebase/app");
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -34,17 +35,24 @@ app.use(express.static(path.join(__dirname, "../public/img")));
 app.use(express.static(path.join(__dirname, "../public/lib")));
 app.use(express.static(path.join(__dirname, "../public/utils")));
 app.use(express.static(path.join(__dirname, "../public/img/favicon")));
+app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../views")));
-app.use(bodyParder({
-    extended: true
-}));
+app.use(
+    bodyParder({
+        extended: true,
+    })
+);
 app.use(bodyParder.json());
 
 app.get("/", (req, res) => {
     res.render("index");
 });
 
-app.post('/room/register', async (req, res) => {
+app.get("/room", (req, res, next) => {
+    res.render("room");
+});
+
+app.post("/room/register", async (req, res) => {
     const bodyData = req.body;
     const snapshot = await db.collection("RoomList").where("roomName", "==", bodyData.roomName).get();
 
@@ -63,45 +71,47 @@ app.post('/room/register', async (req, res) => {
         .then((e) => {
             return res.status(200).json({
                 success: true
-            })
-        })
+        }})
         .catch((err) => {
             return res.status(500).json({
                 success: false,
-                error: err
+                error: err,
             });
-        })
-    }else{
+        });
+    } else {
         return res.status(200).json({
-            success : false
+            success: false,
         });
     }
 });
 
-app.post('/room/search', async (req, res) => {
+app.post("/room/search", async (req, res) => {
     const bodyData = req.body;
     const roomArray = [];
 
-    db.collection("RoomList").where('roomName', '>=', bodyData.roomName).where('roomName', '<=', bodyData.roomName + '\uf8ff').get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-           roomArray.push(doc.data());
+    db.collection("RoomList")
+        .where("roomName", ">=", bodyData.roomName)
+        .where("roomName", "<=", bodyData.roomName + "\uf8ff")
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                roomArray.push(doc.data());
+            });
+
+            return res.status(200).json({
+                success: true,
+                roomList: roomArray,
+            });
+        })
+        .catch((err) => {
+            return res.status(500).json({
+                success: false,
+                error: err,
+            });
         });
-
-        return res.status(200).json({
-            success: true,
-            roomList: roomArray
-        })
-    }).catch((err) => {
-        return res.status(500).json({
-            success: false,
-            error: err
-        })
-    });
 });
 
-app.post('/room/update', async (req, res) => {
-
-});
+app.post("/room/update", async (req, res) => {});
 
 io.on("connection", (socket) => {
     socket.on("join-room", (roomName) => {

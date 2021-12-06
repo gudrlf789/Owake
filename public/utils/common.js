@@ -7,6 +7,7 @@ import { momentShare } from "./parts/momentShare.js";
 import { muteOptions } from "./parts/muteUtils.js";
 import { optionsBtnFunc } from "./parts/options-btn.js";
 import { deviceSettings } from "./parts/recodingDeviceCtrl.js";
+import { channelCreate } from "./parts/channelCreate.js";
 
 screenShareFunc();
 remoteDisplay();
@@ -17,3 +18,4 @@ momentShare();
 muteOptions();
 optionsBtnFunc();
 deviceSettings();
+channelCreate();
