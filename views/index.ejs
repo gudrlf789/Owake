@@ -19,9 +19,11 @@
             <script src="bootstrap.bundle.min.js"></script>
             <!-- Socket.io -->
             <script src="/socket.io/socket.io.js"></script>
+            <!-- axios -->
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-            <%- include("./popup/channelCreate") %>
-                <%- include("./popup/channelJoin") %>
+    <%- include("./popup/channelCreate") %>
+        <%- include("./popup/channelJoin") %>
 </head>
 
 <body>
@@ -44,7 +46,6 @@
         </div>
     </div>
 
-    <script src="rtcClient.js"></script>
     <script src="channelCreate.js"></script>
     <script>
         const bodyContainer = document.querySelector(".body-container");
