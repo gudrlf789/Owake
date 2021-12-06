@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const bodyParder = require("body-parser");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
@@ -36,12 +35,10 @@ app.use(express.static(path.join(__dirname, "../public/utils")));
 app.use(express.static(path.join(__dirname, "../public/img/favicon")));
 app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../views")));
-app.use(
-    bodyParder({
-        extended: true,
-    })
-);
-app.use(bodyParder.json());
+app.use(express.urlencoded({
+    extended: true
+}));
+app.use(express.json());
 
 app.get("/", (req, res) => {
     res.render("index");
