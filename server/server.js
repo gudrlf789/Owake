@@ -4,12 +4,11 @@ const path = require("path");
 const bodyParder = require("body-parser");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
-const firebase = require("firebase/app");
 
 const dotenv = require("dotenv");
 dotenv.config();
 
-const firebase = require('firebase');
+const firebase = require("firebase/app");
 require('firebase/firestore');
 const firebaseConfig = require('./config/firebaseConfig.js');
 firebase.initializeApp(firebaseConfig);
@@ -71,16 +70,17 @@ app.post("/room/register", async (req, res) => {
         .then((e) => {
             return res.status(200).json({
                 success: true
-        }})
+            })
+        })
         .catch((err) => {
             return res.status(500).json({
                 success: false,
-                error: err,
+                error: err
             });
-        });
-    } else {
+        })
+    }else{
         return res.status(200).json({
-            success: false,
+            success : false
         });
     }
 });
