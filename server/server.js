@@ -48,6 +48,26 @@ app.get("/room", (req, res, next) => {
     res.render("room");
 });
 
+app.get("/room/list", (req, res) => {
+    const roomArray = [];
+
+    db.collection("RoomList").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+           roomArray.push(doc.data());
+        });
+
+        return res.status(200).json({
+            success: true,
+            roomList: roomArray
+        })
+    }).catch((err) => {
+        return res.status(500).json({
+            success: false,
+            error: err
+        })
+    });
+});
+
 app.post("/room/register", async (req, res) => {
     const bodyData = req.body;
     const snapshot = await db.collection("RoomList").where("roomName", "==", bodyData.roomName).get();
@@ -108,7 +128,27 @@ app.post("/room/search", async (req, res) => {
         });
 });
 
-app.post("/room/update", async (req, res) => {});
+app.post("/room/update", async (req, res) => {
+    const bodyData = req.body;
+
+    db.collection("RoomList").doc(bodyData.roomName).update({
+        roomType: bodyData.roomType,
+        roomPassword: bodyData.roomPassword,
+        roomTheme: bodyData.roomTheme,
+        roomDescription: bodyData.roomDescription
+    })
+    .then((e) => {
+        return res.status(200).json({
+            success: true
+        })
+    })
+    .catch((err) => {
+        return res.status(500).json({
+            success: false,
+            error: err
+        });
+    });
+});
 
 io.on("connection", (socket) => {
     socket.on("join-room", (roomName) => {
