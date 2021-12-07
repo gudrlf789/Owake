@@ -1,9 +1,8 @@
 $("#create").click((e) => {
-    debugger;
     const reqData = {
         adminId: $('#adminId').val(),
         adminPassword: $('#adminPassword').val(),
-        roomType: $(':input:radio[name=drone]:checked').val(),
+        roomType: $('input:radio[name=drone]:checked').val(),
         roomName: $('#channelName').val(),
         roomPassword: $('#channelPassword').val(),
         roomTheme: $('#theme-category').val(),
@@ -12,11 +11,20 @@ $("#create").click((e) => {
 
     axios.post("/room/register", reqData).then((res) => {
         if (res.data.success) {
-            alert("To room setting is success");
+            alert("The channel has been successfully created");
+            $("#channelCreate").modal("hide");
         } else {
             alert(
                 `ChannelName: ${$('#channelName').val()} is already existed. please choice another number`
             );
         }
     });
+});
+
+$("input:radio[name=drone]").change((e) => {
+    if(e.currentTarget.value == "Public"){
+        $("#channelPassword").attr("disabled", true);
+    }else{
+        $("#channelPassword").attr("disabled", false);
+    }
 });
