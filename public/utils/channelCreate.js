@@ -13,6 +13,9 @@ $("#create").click((e) => {
         if (res.data.success) {
             alert("The channel has been successfully created");
             $("#channelCreate").modal("hide");
+            // 자식요소 모두 삭제 후 불러오기
+            $(".box-conatiner").empty();
+            callChannelList();
         } else {
             alert(
                 `ChannelName: ${$('#channelName').val()} is already existed. please choice another number`
