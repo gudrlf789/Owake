@@ -4,14 +4,16 @@ const path = require("path");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
+const firebase = require("firebase/app");
+const firebaseConfig = require("./config/firebaseConfig.js");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const firebase = require("firebase/app");
 require("firebase/firestore");
-const firebaseConfig = require("./config/firebaseConfig.js");
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
+const firebaseDB = db.collection("ChannelList");
 
 function redirectSec(req, res, next) {
     if (req.headers["x-forwarded-proto"] == "http") {
@@ -47,14 +49,14 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
-app.get("/room", (req, res, next) => {
-    res.render("room");
+app.get("/channel", (req, res, next) => {
+    res.render("channel");
 });
 
-app.get("/room/list", (req, res) => {
+app.get("/channel/list", (req, res) => {
     const roomArray = [];
 
-    db.collection("RoomList")
+    firebaseDB
         .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -63,7 +65,7 @@ app.get("/room/list", (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                roomList: roomArray,
+                channelList: roomArray,
             });
         })
         .catch((err) => {
@@ -74,23 +76,22 @@ app.get("/room/list", (req, res) => {
         });
 });
 
-app.post("/room/register", async (req, res) => {
+app.post("/channel/register", async (req, res) => {
     const bodyData = req.body;
-    const snapshot = await db
-        .collection("RoomList")
-        .where("roomName", "==", bodyData.roomName)
+    const snapshot = await firebaseDB
+        .where("channelName", "==", bodyData.channelName)
         .get();
 
     if (snapshot.empty) {
         // doc에 특정 이름을 설정하고 싶을때
-        db.collection("RoomList")
-            .doc(bodyData.roomName)
+        firebaseDB
+            .doc(bodyData.channelName)
             .set(bodyData)
-            /*db.collection("RoomList").add({
+            /*db.collection("ChannelList").add({
             adminId: bodyData.adminId,
             adminPassword: bodyData.adminPassword,
             roomType: bodyData.roomType,
-            roomName: bodyData.roomName,
+            channelName: bodyData.channelName,
             roomPassword: bodyData.roomPassword,
             roomTheme: bodyData.roomTheme,
             roomDescription: bodyData.roomDescription
@@ -113,13 +114,13 @@ app.post("/room/register", async (req, res) => {
     }
 });
 
-app.post("/room/search", async (req, res) => {
+app.post("/channel/search", async (req, res) => {
     const bodyData = req.body;
     const roomArray = [];
 
-    db.collection("RoomList")
-        .where("roomName", ">=", bodyData.roomName)
-        .where("roomName", "<=", bodyData.roomName + "\uf8ff")
+    firebaseDB
+        .where("channelName", ">=", bodyData.channelName)
+        .where("channelName", "<=", bodyData.channelName + "\uf8ff")
         .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -128,7 +129,7 @@ app.post("/room/search", async (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                roomList: roomArray,
+                channelList: roomArray,
             });
         })
         .catch((err) => {
@@ -139,16 +140,16 @@ app.post("/room/search", async (req, res) => {
         });
 });
 
-app.post("/room/update", async (req, res) => {
+app.post("/channel/update", async (req, res) => {
     const bodyData = req.body;
 
-    db.collection("RoomList")
-        .doc(bodyData.roomName)
+    firebaseDB
+        .doc(bodyData.channelName)
         .update({
-            roomType: bodyData.roomType,
-            roomPassword: bodyData.roomPassword,
-            roomTheme: bodyData.roomTheme,
-            roomDescription: bodyData.roomDescription,
+            channelType: bodyData.channelType,
+            channelPassword: bodyData.channelPassword,
+            channelTheme: bodyData.channelTheme,
+            channelDescription: bodyData.channelDescription,
         })
         .then((e) => {
             return res.status(200).json({
@@ -164,16 +165,16 @@ app.post("/room/update", async (req, res) => {
 });
 
 io.on("connection", (socket) => {
-    socket.on("join-room", (roomName) => {
-        socket.join(roomName);
+    socket.on("join-room", (channelName) => {
+        socket.join(channelName);
     });
 
-    socket.on("leave-room", (roomName) => {
-        socket.leave(roomName);
+    socket.on("leave-room", (channelName) => {
+        socket.leave(channelName);
     });
 
-    socket.on("submit_address", (address, roomName) => {
-        socket.to(roomName).emit("input_address", address);
+    socket.on("submit_address", (address, channelName) => {
+        socket.to(channelName).emit("input_address", address);
     });
 });
 

@@ -1,15 +1,17 @@
 $("#create").click((e) => {
+    let channelNumber = 1;
     const reqData = {
-        adminId: $('#adminId').val(),
-        adminPassword: $('#adminPassword').val(),
-        roomType: $('input:radio[name=drone]:checked').val(),
-        roomName: $('#channelName').val(),
-        roomPassword: $('#channelPassword').val(),
-        roomTheme: $('#theme-category').val(),
-        roomDescription: $('#channel-description').val()
+        channelNo: channelNumber,
+        adminId: $("#adminId").val(),
+        adminPassword: $("#adminPassword").val(),
+        channelType: $("input:radio[name=channelRadioBtn]:checked").val(),
+        channelName: $("#channelName").val(),
+        channelPassword: $("#channelPassword").val(),
+        channelTheme: $("#theme-category").val(),
+        channelDescription: $("#channel-description").val(),
     };
 
-    axios.post("/room/register", reqData).then((res) => {
+    axios.post("/channel/register", reqData).then((res) => {
         if (res.data.success) {
             alert("The channel has been successfully created");
             $("#channelCreate").modal("hide");
@@ -18,16 +20,18 @@ $("#create").click((e) => {
             callChannelList();
         } else {
             alert(
-                `ChannelName: ${$('#channelName').val()} is already existed. please choice another number`
+                `ChannelName: ${$(
+                    "#channelName"
+                ).val()} is already existed. please choice another number`
             );
         }
     });
 });
 
-$("input:radio[name=drone]").change((e) => {
-    if(e.currentTarget.value == "Public"){
+$("input:radio[name=channelRadioBtn]").change((e) => {
+    if (e.currentTarget.value == "Public") {
         $("#channelPassword").attr("disabled", true);
-    }else{
+    } else {
         $("#channelPassword").attr("disabled", false);
     }
 });
