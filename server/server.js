@@ -9,7 +9,7 @@ const firebaseConfig = require("./config/firebaseConfig.js");
 const dotenv = require("dotenv");
 dotenv.config();
 
-require("firebase/firestore");
+require('firebase/firestore');
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
@@ -38,11 +38,11 @@ app.use(express.static(path.join(__dirname, "../public/utils/parts")));
 app.use(express.static(path.join(__dirname, "../public/img/favicon")));
 app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../views")));
-app.use(
-    express.urlencoded({
-        extended: true,
-    })
-);
+
+app.use(express.urlencoded({
+    extended: true
+}));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -54,35 +54,30 @@ app.get("/channel", (req, res, next) => {
 });
 
 app.get("/channel/list", (req, res) => {
-    const roomArray = [];
+    const channelArray = [];
 
-    firebaseDB
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                roomArray.push(doc.data());
-            });
-
-            return res.status(200).json({
-                success: true,
-                channelList: roomArray,
-            });
-        })
-        .catch((err) => {
-            return res.status(500).json({
-                success: false,
-                error: err,
-            });
+    db.collection("ChannelList").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            channelArray.push(doc.data());
         });
+
+        return res.status(200).json({
+            success: true,
+            channelList: channelArray
+        })
+    }).catch((err) => {
+        return res.status(500).json({
+            success: false,
+            error: err
+        })
+    });
 });
 
 app.post("/channel/register", async (req, res) => {
     const bodyData = req.body;
-    const snapshot = await firebaseDB
-        .where("channelName", "==", bodyData.channelName)
-        .get();
+    const snapshot = await db.collection("ChannelList").where("channelName", "==", bodyData.channelName).get();
 
-    if (snapshot.empty) {
+    if(snapshot.empty){
         // doc에 특정 이름을 설정하고 싶을때
         firebaseDB
             .doc(bodyData.channelName)
@@ -96,27 +91,27 @@ app.post("/channel/register", async (req, res) => {
             roomTheme: bodyData.roomTheme,
             roomDescription: bodyData.roomDescription
         })*/
-            .then((e) => {
-                return res.status(200).json({
-                    success: true,
-                });
+        .then((e) => {
+            return res.status(200).json({
+                success: true
             })
-            .catch((err) => {
-                return res.status(500).json({
-                    success: false,
-                    error: err,
-                });
+        })
+        .catch((err) => {
+            return res.status(500).json({
+                success: false,
+                error: err
             });
-    } else {
+        })
+    }else{
         return res.status(200).json({
-            success: false,
+            success : false
         });
     }
 });
 
 app.post("/channel/search", async (req, res) => {
     const bodyData = req.body;
-    const roomArray = [];
+    const channelArray = [];
 
     firebaseDB
         .where("channelName", ">=", bodyData.channelName)
@@ -124,12 +119,12 @@ app.post("/channel/search", async (req, res) => {
         .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                roomArray.push(doc.data());
+                channelArray.push(doc.data());
             });
 
             return res.status(200).json({
                 success: true,
-                channelList: roomArray,
+                channelList: channelArray,
             });
         })
         .catch((err) => {
@@ -140,20 +135,61 @@ app.post("/channel/search", async (req, res) => {
         });
 });
 
-app.post("/channel/update", async (req, res) => {
+app.patch("/channel/update", (req, res) => {
     const bodyData = req.body;
 
-    firebaseDB
-        .doc(bodyData.channelName)
-        .update({
-            channelType: bodyData.channelType,
-            channelPassword: bodyData.channelPassword,
-            channelTheme: bodyData.channelTheme,
-            channelDescription: bodyData.channelDescription,
+    db.collection("ChannelList").doc(bodyData.channelName).update({
+        channelType: bodyData.channelType,
+        channelPassword: bodyData.channelPassword,
+        channelCategory: bodyData.channelCategory,
+        channelDescription: bodyData.channelDescription
+    })
+    .then((e) => {
+        return res.status(200).json({
+            success: true
         })
-        .then((e) => {
+    })
+    .catch((err) => {
+        return res.status(500).json({
+            success: false,
+            error: err
+        });
+    });
+});
+
+app.post('/channel/delete', (req, res) => {
+    const bodyData = req.body;
+
+    db.collection("ChannelList").doc(bodyData.channelName).delete()
+    .then((e) => {
+        return res.status(200).json({
+            success: true
+        })
+    })
+    .catch((err) => {
+        return res.status(500).json({
+            success: false,
+            error: err
+        });
+    });
+
+});
+
+app.post("/channel/info", (req, res) => {
+    const bodyData = req.body;
+    const channelArray = [];
+
+    db.collection("ChannelList")
+        .where("adminId", "==", bodyData.adminId)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                channelArray.push(doc.data());
+            });
+
             return res.status(200).json({
                 success: true,
+                adminChannelList: channelArray
             });
         })
         .catch((err) => {

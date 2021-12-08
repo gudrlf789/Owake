@@ -322,6 +322,10 @@ video:hover {
   #remote__video__container {
     display: -webkit-box;
     overflow-x: auto;
+<<<<<<< HEAD
+    margin-left: 50px;
+=======
+>>>>>>> upstream/agora_DC
   }
 
   #remote-playerlist {
