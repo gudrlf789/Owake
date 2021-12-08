@@ -13,8 +13,13 @@ $("#create").click((e) => {
         if (res.data.success) {
             alert("The channel has been successfully created");
             $("#channelCreate").modal("hide");
-            // 자식요소 모두 삭제 후 불러오기
-            $(".box-conatiner").empty();
+            $("#adminId").val("");
+            $("#adminPassword").val("");
+            $("#channelName").val("");
+            $("#channelPassword").val("");
+            $("#theme-category").val("outdoor");
+            $("#channel-description").val("");
+            
             callChannelList();
         } else {
             alert(
@@ -27,6 +32,7 @@ $("#create").click((e) => {
 $("input:radio[name=drone]").change((e) => {
     if(e.currentTarget.value == "Public"){
         $("#channelPassword").attr("disabled", true);
+        $("#channelPassword").val("");
     }else{
         $("#channelPassword").attr("disabled", false);
     }
