@@ -22,8 +22,8 @@
             <!-- axios -->
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-            <%- include("./popup/channelCreate") %>
-                <%- include("./popup/channelJoin") %>
+    <%- include("./popup/channelCreate") %>
+        <%- include("./popup/channelJoin") %>
 </head>
 
 <body>
@@ -49,22 +49,22 @@
         </div>
     </div>
 
-    <%- include('./jsparts/main-parts.ejs') %>
-        <script>
-            /*
-            const bodyContainer = document.querySelector(".body-container");
-            const channelBox = document.querySelector(".channel-box");
-    
-            let bodyContainerWidth = bodyContainer.offsetWidth;
-            let bodyContainerHeight = bodyContainer.offsetHeight;
-    
-            let resultWidth = bodyContainerWidth / 4;
-            let resultHeight = bodyContainerHeight / 4;
-    
-            channelBox.style.width = resultWidth;
-            channelBox.style.height = resultHeight;
-            */
-        </script>
+    <%-
+    <script>
+        /*
+        const bodyContainer = document.querySelector(".body-container");
+        const channelBox = document.querySelector(".channel-box");
+
+        let bodyContainerWidth = bodyContainer.offsetWidth;
+        let bodyContainerHeight = bodyContainer.offsetHeight;
+
+        let resultWidth = bodyContainerWidth / 4;
+        let resultHeight = bodyContainerHeight / 4;
+
+        channelBox.style.width = resultWidth;
+        channelBox.style.height = resultHeight;
+        */
+    </script>
 </body>
 
 </html>
