@@ -1,20 +1,20 @@
+/** Default Module */
 const express = require("express");
 const app = express();
 const path = require("path");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
-const firebase = require("firebase/app");
-const firebaseConfig = require("./config/firebaseConfig.js");
+/** Router */
+const mainRouter = require("../router/main.js");
+const channelRouter = require("../router/channel.js");
+/** Router Set End */
+
+/** Dotenv */
 const dotenv = require("dotenv");
 dotenv.config();
 
-require("firebase/firestore");
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-const firebaseDB = db.collection("ChannelList");
-
+/** https Redirecting Setting */
 function redirectSec(req, res, next) {
     if (req.headers["x-forwarded-proto"] == "http") {
         var redirect = "https://" + req.headers.host + req.path;
@@ -29,15 +29,43 @@ app.set("view engine", "ejs");
 
 app.use(redirectSec);
 
-app.use(express.static(path.join(__dirname, "../public")));
-app.use(express.static(path.join(__dirname, "../public/css")));
-app.use(express.static(path.join(__dirname, "../public/img")));
-app.use(express.static(path.join(__dirname, "../public/lib")));
-app.use(express.static(path.join(__dirname, "../public/utils")));
-app.use(express.static(path.join(__dirname, "../public/utils/parts")));
-app.use(express.static(path.join(__dirname, "../public/img/favicon")));
-app.use(express.static(path.join(__dirname, "../public/img/button")));
-app.use(express.static(path.join(__dirname, "../views")));
+app.use("/", express.static(path.join(__dirname, "../public")));
+app.use("/", express.static(path.join(__dirname, "../public/css")));
+app.use("/", express.static(path.join(__dirname, "../public/img")));
+app.use("/", express.static(path.join(__dirname, "../public/lib")));
+app.use("/", express.static(path.join(__dirname, "../public/utils")));
+app.use("/", express.static(path.join(__dirname, "../public/utils/parts")));
+app.use(
+    "/",
+    express.static(path.join(__dirname, "../public/utils/parts/mainpage"))
+);
+app.use("/", express.static(path.join(__dirname, "../public/img/favicon")));
+app.use("/", express.static(path.join(__dirname, "../public/img/button")));
+app.use("/", express.static(path.join(__dirname, "../views")));
+
+app.use("/channel", express.static(path.join(__dirname, "../public")));
+app.use("/channel", express.static(path.join(__dirname, "../public/css")));
+app.use("/channel", express.static(path.join(__dirname, "../public/img")));
+app.use("/channel", express.static(path.join(__dirname, "../public/lib")));
+app.use("/channel", express.static(path.join(__dirname, "../public/utils")));
+app.use(
+    "/channel",
+    express.static(path.join(__dirname, "../public/utils/parts"))
+);
+app.use(
+    "/channel",
+    express.static(path.join(__dirname, "../public/utils/parts/channel"))
+);
+app.use(
+    "/channel",
+    express.static(path.join(__dirname, "../public/img/favicon"))
+);
+app.use(
+    "/channel",
+    express.static(path.join(__dirname, "../public/img/button"))
+);
+app.use("/channel", express.static(path.join(__dirname, "../views")));
+
 app.use(
     express.urlencoded({
         extended: true,
@@ -45,124 +73,15 @@ app.use(
 );
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.render("index");
-});
-
-app.get("/channel", (req, res, next) => {
-    res.render("channel");
-});
-
-app.get("/channel/list", (req, res) => {
-    const roomArray = [];
-
-    firebaseDB
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                roomArray.push(doc.data());
-            });
-
-            return res.status(200).json({
-                success: true,
-                channelList: roomArray,
-            });
-        })
-        .catch((err) => {
-            return res.status(500).json({
-                success: false,
-                error: err,
-            });
-        });
-});
-
-app.post("/channel/register", async (req, res) => {
-    const bodyData = req.body;
-    const snapshot = await firebaseDB
-        .where("channelName", "==", bodyData.channelName)
-        .get();
-
-    if (snapshot.empty) {
-        // doc에 특정 이름을 설정하고 싶을때
-        firebaseDB
-            .doc(bodyData.channelName)
-            .set(bodyData)
-            /*db.collection("ChannelList").add({
-            adminId: bodyData.adminId,
-            adminPassword: bodyData.adminPassword,
-            roomType: bodyData.roomType,
-            channelName: bodyData.channelName,
-            roomPassword: bodyData.roomPassword,
-            roomTheme: bodyData.roomTheme,
-            roomDescription: bodyData.roomDescription
-        })*/
-            .then((e) => {
-                return res.status(200).json({
-                    success: true,
-                });
-            })
-            .catch((err) => {
-                return res.status(500).json({
-                    success: false,
-                    error: err,
-                });
-            });
-    } else {
-        return res.status(200).json({
-            success: false,
-        });
-    }
-});
-
-app.post("/channel/search", async (req, res) => {
-    const bodyData = req.body;
-    const roomArray = [];
-
-    firebaseDB
-        .where("channelName", ">=", bodyData.channelName)
-        .where("channelName", "<=", bodyData.channelName + "\uf8ff")
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                roomArray.push(doc.data());
-            });
-
-            return res.status(200).json({
-                success: true,
-                channelList: roomArray,
-            });
-        })
-        .catch((err) => {
-            return res.status(500).json({
-                success: false,
-                error: err,
-            });
-        });
-});
-
-app.post("/channel/update", async (req, res) => {
-    const bodyData = req.body;
-
-    firebaseDB
-        .doc(bodyData.channelName)
-        .update({
-            channelType: bodyData.channelType,
-            channelPassword: bodyData.channelPassword,
-            channelTheme: bodyData.channelTheme,
-            channelDescription: bodyData.channelDescription,
-        })
-        .then((e) => {
-            return res.status(200).json({
-                success: true,
-            });
-        })
-        .catch((err) => {
-            return res.status(500).json({
-                success: false,
-                error: err,
-            });
-        });
-});
+/** Routing Settings */
+app.use("/", mainRouter);
+app.use("/list", mainRouter);
+app.use("/register", mainRouter);
+app.use("/update", mainRouter);
+app.use("/remove", mainRouter);
+app.use("/search", mainRouter);
+app.use("/channel", channelRouter);
+/** Routing Setting End */
 
 io.on("connection", (socket) => {
     socket.on("join-room", (channelName) => {

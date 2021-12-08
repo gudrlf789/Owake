@@ -1,9 +1,7 @@
 const callChannelList = () => {
-    axios.get("/channel/list").then((res) => {
+    axios.get("/list").then((res) => {
         // 자식요소 모두 삭제 후 불러오기
         $(".box-conatiner").empty();
-
-        console.log(res.data);
 
         for (data of res.data.channelList) {
             $(".box-conatiner").append(

@@ -3,7 +3,7 @@ $("#remove").click((e) => {
         channelName: $("#channelName").val(),
     };
 
-    axios.post("/room/delete", reqData).then((res) => {
+    axios.post("/delete", reqData).then((res) => {
         if (res.data.success) {
             alert("The channel has been successfully deleted");
             $("#channelCreate").modal("hide");

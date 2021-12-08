@@ -1,0 +1,21 @@
+import { screenShareFunc } from "./parts/channel/screenShare.js";
+import { remoteDisplay } from "./parts/channel/remoteDisplay.js";
+import { mobileDisplayCtr } from "./parts/channel/chat.js";
+import { f12defender } from "./parts/channel/f12defense.js";
+import { fileShare } from "./parts/channel/fileShare.js";
+import { momentShare } from "./parts/channel/momentShare.js";
+import { muteOptions } from "./parts/channel/muteUtils.js";
+import { optionsBtnFunc } from "./parts/channel/options-btn.js";
+import { deviceSettings } from "./parts/channel/recodingDeviceCtrl.js";
+import { responsiveFunc } from "./parts/channel/responsive.js";
+
+screenShareFunc();
+remoteDisplay();
+mobileDisplayCtr();
+f12defender();
+fileShare();
+momentShare();
+muteOptions();
+optionsBtnFunc();
+deviceSettings();
+responsiveFunc();

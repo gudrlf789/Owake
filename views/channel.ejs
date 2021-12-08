@@ -2,25 +2,25 @@
 <html lang="en">
 
 <head>
+    <%- include("./headparts/meta-parts") %>
+        <%- include("./headparts/favicon-parts") %>
 
-    <link rel="stylesheet" href="channel.css">
+            <link rel="stylesheet" href="channel.css">
+            <script src="owake_rtc_n.js"></script>
+            <script src="owake_rtm.js"></script>
 
-    <script src="owake_rtc_n.js"></script>
-    <script src="owake_rtm.js"></script>
+            <!-- Jquery -->
+            <script src="jquery-3.4.1.min.js"></script>
+            <!-- Bootstrap -->
+            <script src="bootstrap.bundle.min.js"></script>
+            <!-- Socket.io -->
+            <script src="/socket.io/socket.io.js"></script>
 
-    <!-- Jquery -->
-    <script src="jquery-3.4.1.min.js"></script>
+            <title>Owake</title>
 
-    <!-- Bootstrap -->
-    <script src="bootstrap.bundle.min.js"></script>
-    <!-- Socket.io -->
-    <script src="/socket.io/socket.io.js"></script>
-
-    <title>Owake</title>
-
-    <%- include("./popup/fileshare") %>
-        <%- include("./popup/newuser") %>
-            <%- include("./popup/deviceSettings") %>
+            <%- include("./popup/fileshare") %>
+                <%- include("./popup/newuser") %>
+                    <%- include("./popup/deviceSettings") %>
 </head>
 
 <body>
