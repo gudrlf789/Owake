@@ -3,23 +3,23 @@ $("#channel-create").click((e) => {
       adminId : "phg"
   }
 
-  axios.post("/room/info", reqData).then((res) => {
+  axios.post("/channel/info", reqData).then((res) => {
       if (res.data.success) {
-          if(res.data.adminRoomList.length > 0) {
+          if(res.data.adminChannelList.length > 0) {
               $("#adminId").attr("disabled", true);
               $("#adminPassword").attr("disabled", true);
               $("#channelName").attr("disabled", true);
               $("#channelPassword").attr("disabled", false);
 
-              for( data of res.data.adminRoomList ){
+              for( data of res.data.adminChannelList ){
                   $("#adminId").val(data.adminId);
                   $("#adminPassword").val(data.adminPassword);
-                  $("#channelName").val(data.roomName);
-                  $("#channelPassword").val(data.roomPassword);
-                  $("#theme-category").val(data.roomTheme);
-                  $("#channel-description").val(data.roomDescription);
+                  $("#channelName").val(data.channelName);
+                  $("#channelPassword").val(data.channelPassword);
+                  $("#theme-category").val(data.channelCategory);
+                  $("#channel-description").val(data.channelDescription);
 
-                  if(data.roomType == "Private"){
+                  if(data.channelType == "Private"){
                       $("#private_active").attr("checked", true);
                   }else{
                       $("#public_active").attr("checked", true);

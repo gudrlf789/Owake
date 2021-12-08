@@ -1,10 +1,10 @@
-.owake-btn {
+.owake-videoRoom-btn {
     display : none;
 }
 
 @media (max-width: 768px) {
 
-    .owake-btn {
+    .owake-videoRoom-btn {
         display : block;
         padding : 1rem;
         width: 67px;

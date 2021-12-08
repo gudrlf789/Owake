@@ -2,14 +2,14 @@ $("#create").click((e) => {
     const reqData = {
         adminId: $('#adminId').val(),
         adminPassword: $('#adminPassword').val(),
-        roomType: $('input:radio[name=drone]:checked').val(),
-        roomName: $('#channelName').val(),
-        roomPassword: $('#channelPassword').val(),
-        roomTheme: $('#theme-category').val(),
-        roomDescription: $('#channel-description').val()
+        channelType: $('input:radio[name=channelRadioBtn]:checked').val(),
+        channelName: $('#channelName').val(),
+        channelPassword: $('#channelPassword').val(),
+        channelCategory: $('#theme-category').val(),
+        channelDescription: $('#channel-description').val()
     };
 
-    axios.post("/room/register", reqData).then((res) => {
+    axios.post("/channel/register", reqData).then((res) => {
         if (res.data.success) {
             alert("The channel has been successfully created");
             $("#channelCreate").modal("hide");
@@ -29,7 +29,7 @@ $("#create").click((e) => {
     });
 });
 
-$("input:radio[name=drone]").change((e) => {
+$("input:radio[name=channelRadioBtn]").change((e) => {
     if(e.currentTarget.value == "Public"){
         $("#channelPassword").attr("disabled", true);
         $("#channelPassword").val("");

@@ -10,25 +10,26 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="channelJoin-form">
+                <div id="channelJoin-Container">
                     <div class="row admin-info-group">
 
                         <div class="col-sm">
                             <p class="admin-info-text">User ID</p>
-                            <input id="userId" type="text" placeholder="Enter the userId" required />
+                            <input id="channelJoin-userId" type="text" placeholder="Enter the userId" required />
                         </div>
                         <div class="col-sm">
                             <p class="admin-info-text">User Password</p>
-                            <input id="userPassword" type="text" placeholder="Enter the Password" />
+                            <input id="channelJoin-userPassword" type="text" placeholder="Enter the Password" />
                         </div>
 
                         <div class="col-sm" style="margin-top: 10px;">
                             <p class="channel-info-text">Channel Name</p>
-                            <input type="text" placeholder="Enter the Channel Name" />
+                            <input id="channelJoin-channelName" type="text" placeholder="Enter the Channel Name" />
                         </div>
                         <div class="col-sm" style="margin-top: 10px;">
                             <p class="channel-info-text">Channel Password</p>
-                            <input type="text" placeholder="Enter the Channel Password" />
+                            <input id="channelJoin-channelPassword" type="text"
+                                placeholder="Enter the Channel Password" />
                         </div>
                     </div>
                     <br><br>
@@ -37,7 +38,7 @@
                             Join
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

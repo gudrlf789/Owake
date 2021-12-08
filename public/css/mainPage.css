@@ -53,13 +53,13 @@
     transform: translate(-50%, -50%);
 }
 
-.left-nav-container {
+/* .left-nav-container {
     flex : 0.1;
     background-color : beige;
-}
+} */
 
 .body-container {
-    flex : 0.9;
+    flex : 1;
     height : 100%;
     margin : 5rem;
 }
