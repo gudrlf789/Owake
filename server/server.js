@@ -102,10 +102,10 @@ app.post("/room/register", async (req, res) => {
     }
 });
 
-app.post("/room/search", async (req, res) => {
+app.post("/room/search", (req, res) => {
     const bodyData = req.body;
     const roomArray = [];
-
+    
     db.collection("RoomList")
         .where("roomName", ">=", bodyData.roomName)
         .where("roomName", "<=", bodyData.roomName + "\uf8ff")
@@ -128,7 +128,7 @@ app.post("/room/search", async (req, res) => {
         });
 });
 
-app.post("/room/update", async (req, res) => {
+app.patch("/room/update", (req, res) => {
     const bodyData = req.body;
 
     db.collection("RoomList").doc(bodyData.roomName).update({
@@ -148,6 +148,49 @@ app.post("/room/update", async (req, res) => {
             error: err
         });
     });
+});
+
+app.post('/room/delete', (req, res) => {
+    const bodyData = req.body;
+
+    db.collection("RoomList").doc(bodyData.roomName).delete()
+    .then((e) => {
+        return res.status(200).json({
+            success: true
+        })
+    })
+    .catch((err) => {
+        return res.status(500).json({
+            success: false,
+            error: err
+        });
+    });
+
+});
+
+app.post("/room/info", (req, res) => {
+    const bodyData = req.body;
+    const roomArray = [];
+
+    db.collection("RoomList")
+        .where("adminId", "==", bodyData.adminId)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                roomArray.push(doc.data());
+            });
+
+            return res.status(200).json({
+                success: true,
+                adminRoomList: roomArray
+            });
+        })
+        .catch((err) => {
+            return res.status(500).json({
+                success: false,
+                error: err,
+            });
+        });
 });
 
 io.on("connection", (socket) => {
