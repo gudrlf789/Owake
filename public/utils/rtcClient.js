@@ -30,6 +30,7 @@ const MicrophoneAudioTrackInitConfig = {
 $(async () => {
     // 새로고침시에 세션스토리지에 값이 저장되었는지 확인 후
     // 값이 존재하면 해당 채널, uid  값으로 재접속
+    debugger;
     if (window.sessionStorage.length != 0) {
         await join();
     }
@@ -131,7 +132,7 @@ async function join() {
     client.on("user-published", handleUserPublished);
     client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);
-    socket.emit("join-room", options.channel);
+    socket.emit("join-room", options.channel || window.sessionStorage.getItem("channel"));
 
     const checkDeskTopCamera = await AgoraRTC.getCameras();
 

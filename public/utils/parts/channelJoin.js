@@ -1,10 +1,8 @@
-function channelCheck() {
-    const joinUserID = document.getElementById("channelJoin-userId");
-    const joinUserPassword = document.getElementById(
-        "channelJoin-userPassword"
-    );
-    const joinChannelName = document.getElementById("channelJoin-channelName");
-    const joinChannelPassword = document.getElementById(
-        "channelJoin-channelPassword"
-    );
-}
+$("#join").click((e) => {
+    const channelName = $("#channelJoin-channelName").val();
+    const userId = $("#channelJoin-userId").val();
+
+    window.sessionStorage.setItem("channel", channelName);
+    window.sessionStorage.setItem("uid", userId);
+    window.location.href="http://localhost:1227/join";
+});
