@@ -1,4 +1,4 @@
-export const f12defender = () => {
+export const f12defense = () => {
     //F12
     $(() => {
         $(document).bind("keydown", function (e) {

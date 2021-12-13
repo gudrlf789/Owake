@@ -84,16 +84,34 @@ app.use("/channel", channelRouter);
 /** Routing Setting End */
 
 io.on("connection", (socket) => {
-    socket.on("join-room", (channelName) => {
-        socket.join(channelName);
+    socket.on("join-room", (roomName) => {
+        console.log("roomName " + roomName);
+        socket.join(roomName);
+    });
+    socket.on("submit_address", (address, roomName) => {
+        socket.to(roomName).emit("input_address", address);
     });
 
-    socket.on("leave-room", (channelName) => {
-        socket.leave(channelName);
+    socket.on("leave-room", (roomName) => {
+        socket.leave(roomName);
     });
 
-    socket.on("submit_address", (address, channelName) => {
-        socket.to(channelName).emit("input_address", address);
+    socket.on("speech message", (msg, roomName) => {
+        console.log(msg);
+        io.to(roomName).emit("send message", {
+            message: msg,
+            user: socket.username,
+        });
+    });
+
+    socket.on("drawing", (data) => {
+        socket.broadcast.emit("drawing", data);
+        console.log(data);
+    });
+
+    socket.on("new user", (user) => {
+        socket.username = user;
+        console.log("User connected - User name: " + socket.username);
     });
 });
 

@@ -1,4 +1,4 @@
-import { scrollToBottom } from "./parts/chat.js";
+import { scrollToBottom } from "./parts/channel/chat.js";
 
 const messageList = document.getElementById("messages");
 let channelMessageText = document.getElementById("chat_message");

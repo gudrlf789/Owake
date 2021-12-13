@@ -1,6 +1,5 @@
 export const screenShareFunc = () => {
     const screenShareBtn = document.querySelector("#shareScreen");
-
     screenShareBtn.addEventListener("click", screenShareJoin);
 
     async function screenShareJoin() {
