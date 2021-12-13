@@ -49,7 +49,7 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
-app.get("/channel", (req, res, next) => {
+app.get("/join", (req, res, next) => {
     res.render("channel");
 });
 
