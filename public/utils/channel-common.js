@@ -22,4 +22,4 @@ remoteDisplay();
 screenShareFunc();
 responsiveFunc();
 whiteBoardFunc();
-speechRecognition();
+// speechRecognition();

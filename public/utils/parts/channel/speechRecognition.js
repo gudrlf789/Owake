@@ -185,6 +185,7 @@ export const speechRecognition = () => {
         content += transcript;
         console.log(content);
         chatMsg.value = content;
+        console.log("options channel", options.channel);
         socket.emit("speech message", chatMsg.value, options.channel);
         chatMsg.value = "";
     };

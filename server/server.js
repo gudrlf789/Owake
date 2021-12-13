@@ -85,7 +85,6 @@ app.use("/channel", channelRouter);
 
 io.on("connection", (socket) => {
     socket.on("join-room", (roomName) => {
-        console.log("roomName " + roomName);
         socket.join(roomName);
     });
     socket.on("submit_address", (address, roomName) => {
@@ -106,7 +105,6 @@ io.on("connection", (socket) => {
 
     socket.on("drawing", (data) => {
         socket.broadcast.emit("drawing", data);
-        console.log(data);
     });
 
     socket.on("new user", (user) => {

@@ -1,5 +1,5 @@
 export const momentShareFunc = () => {
-    const momentSocket = io();
+    let momentSocket = io();
     let momentShareActive = false;
     let searchResult;
 
