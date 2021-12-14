@@ -44,12 +44,7 @@ app.use(express.urlencoded({
 app.use(express.json());
 
 /** Routing Settings */
-app.use("/", mainRouter);
-app.use("/list", mainRouter);
-app.use("/register", mainRouter);
-app.use("/update", mainRouter);
-app.use("/remove", mainRouter);
-app.use("/search", mainRouter);
+app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
     res.render("channel", { title: "Owake Channel" });

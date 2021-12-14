@@ -7,7 +7,7 @@ $("#update").click((e) => {
         channelDescription: $('#channel-description').val()
     };
     
-    axios.patch("/channel/update", reqData).then((res) => {
+    axios.post("/channel/update", reqData).then((res) => {
       if (res.data.success) {
         alert("The channel has been successfully modified");
         $("#channelCreate").modal("hide");

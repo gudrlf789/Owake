@@ -9,7 +9,7 @@ $("#create").click((e) => {
         channelDescription: $('#channel-description').val()
     };
 
-    axios.post("/register", reqData).then((res) => {
+    axios.post("/channel/register", reqData).then((res) => {
         if (res.data.success) {
             alert("The channel has been successfully created");
             $("#channelCreate").modal("hide");

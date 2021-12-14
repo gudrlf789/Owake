@@ -9,11 +9,6 @@ require("firebase/firestore");
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const firebaseCollection = db.collection("ChannelList");
-/** Firebase Settings End */
-
-router.get("/", (req, res, next) => {
-    res.render("index", { title: "Owake" });
-});
 
 router.get("/list", (req, res, next) => {
     const roomArray = [];
@@ -109,12 +104,55 @@ router.post("/update", async (req, res) => {
         .update({
             channelType: bodyData.channelType,
             channelPassword: bodyData.channelPassword,
-            channelTheme: bodyData.channelTheme,
+            channelCategory: bodyData.channelCategory,
             channelDescription: bodyData.channelDescription,
         })
         .then((e) => {
             return res.status(200).json({
                 success: true,
+            });
+        })
+        .catch((err) => {
+            return res.status(500).json({
+                success: false,
+                error: err,
+            });
+        });
+});
+
+router.post('/delete', (req, res) => {
+    const bodyData = req.body;
+
+    firebaseCollection.doc(bodyData.channelName).delete()
+    .then((e) => {
+        return res.status(200).json({
+            success: true
+        })
+    })
+    .catch((err) => {
+        return res.status(500).json({
+            success: false,
+            error: err
+        });
+    });
+
+});
+
+router.post("/info", (req, res) => {
+    const bodyData = req.body;
+    const channelArray = [];
+
+    firebaseCollection
+        .where("adminId", "==", bodyData.adminId)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                channelArray.push(doc.data());
+            });
+
+            return res.status(200).json({
+                success: true,
+                adminChannelList: channelArray
             });
         })
         .catch((err) => {
