@@ -52,7 +52,7 @@ app.use("/remove", mainRouter);
 app.use("/search", mainRouter);
 
 app.get("/", (req, res, next) => {
-    res.render("index", { title: "Owake Channel" });
+    res.render("channel", { title: "Owake Channel" });
 });
 
 app.get("/join", (req, res, next) => {
