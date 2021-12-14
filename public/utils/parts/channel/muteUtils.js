@@ -1,4 +1,4 @@
-export const muteOptions = () => {
+export const muteUtilsFunc = () => {
     const videoIcon = document.getElementById("videoIcon");
     const audioIcon = document.getElementById("audioIcon");
 

@@ -2,7 +2,7 @@ $("#searchIcon").click((e) => {
     const reqData = {
         channelName: $('#searchWord').val(),
     };
-  
+    
     axios.post("/channel/search", reqData).then((res) => {
       if (res.data.success) {
           // 자식요소 모두 삭제 후 불러오기

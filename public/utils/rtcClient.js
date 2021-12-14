@@ -132,6 +132,7 @@ async function join() {
     client.on("user-published", handleUserPublished);
     client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);
+
     socket.emit("join-room", options.channel || window.sessionStorage.getItem("channel"));
 
     const checkDeskTopCamera = await AgoraRTC.getCameras();

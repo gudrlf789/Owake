@@ -1,7 +1,6 @@
-export const momentShare = () => {
-    const momentSocket = io();
+export const momentShareFunc = () => {
+    let momentSocket = io();
     let momentShareActive = false;
-    let mouseDrag = false;
     let searchResult;
 
     const momentShareBtn = document.querySelector("#momentShare");
@@ -10,27 +9,32 @@ export const momentShare = () => {
         "#local__video__container"
     );
 
-    const momentShareArea = document.createElement("i");
-    const iFrameContainer = document.createElement("div");
+    const momentShareArea = document.createElement("div");
+    const searchContainer = document.createElement("div");
     const searchInput = document.createElement("input");
     const searchInputBtn = document.createElement("div");
     const searchInputBtnIcon = document.createElement("i");
     const momentShare = document.createElement("iframe");
+    const searchForm = document.createElement("form");
 
-    searchInput.placeholder = "Please search.";
+    searchInput.placeholder = "Enter The Input URL";
     searchInput.style.textAlign = "center";
     momentShare.id = "momentShare-iframe";
+    momentShare.name = "momentShare";
+    searchForm.target = "momentShare";
+    searchForm.method = "get";
     momentShareArea.id = "momentShareArea";
-    iFrameContainer.id = "iFrameContainer";
+    searchContainer.id = "searchContainer";
     searchInput.id = "searchInput";
     searchInputBtn.id = "searchInputBtn";
     searchInputBtnIcon.id = "searchInputBtnIcon";
 
     searchInputBtnIcon.className = "fas fa-search";
 
+    searchForm.append(searchInput);
     searchInputBtn.appendChild(searchInputBtnIcon);
-    iFrameContainer.append(searchInput, searchInputBtn);
-    momentShareArea.append(iFrameContainer, momentShare);
+    searchContainer.append(searchForm, searchInputBtn);
+    momentShareArea.append(searchContainer, momentShare);
     momentShareArea.append(momentShare);
     momentShare.frameborder = "0";
 
@@ -42,12 +46,12 @@ export const momentShare = () => {
     function momentShareEnable() {
         localVideoContainer.append(momentShareArea);
         momentShareArea.hidden = false;
-        momentShareIcon.style.color = "#000";
+        momentShareBtn.style.color = "#000";
     }
 
     function momentShareDisable() {
         momentShareArea.hidden = true;
-        momentShareIcon.style.color = "#fff";
+        momentShareBtn.style.color = "#fff";
     }
 
     $(document).on("click", "#searchInputBtn", (e) => {
@@ -65,13 +69,22 @@ export const momentShare = () => {
     });
 
     function searchUrlStringCheck() {
-        result = momentShare.src = `https://${searchInput.value.replace(
+        let returnUrl;
+        let url = `https://${searchInput.value.replace(
             /^(https?:\/\/)?(www\.)?/,
             ""
         )}`;
 
-        searchInput.value = "";
-        return result;
+        if (url.includes("youtube")) {
+            returnUrl = searchForm.action =
+                "https://" + youtubeUrlReplarce(url);
+            searchInput.value = "";
+            return returnUrl;
+        } else {
+            returnUrl = searchForm.action = url;
+            searchInput.value = "";
+            return returnUrl;
+        }
     }
 
     const youtubeUrlReplarce = (search) => {

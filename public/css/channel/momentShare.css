@@ -4,12 +4,12 @@
 
 #momentShareArea {
   position: absolute;
-  background: #fff;
+  background: #546362;
   width: 100%;
   height: 100%;
   border-radius: 25px;
   top : 0;
-  z-index: 11;
+  z-index: 8;
 }
 
 #momentShareAreaheader {
@@ -24,7 +24,7 @@
   border-radius: 25px;
 }
 
-#iFrameContainer {
+#searchContainer {
   display: flex;
   justify-content: center;
 }

@@ -1,4 +1,4 @@
-export const deviceSettings = () => {
+export const recodingDeviceCtrl = () => {
     var mics = []; // all microphones devices you can use
     var cams = []; // all cameras devices you can use
     let currentMic; // the microphone you are using

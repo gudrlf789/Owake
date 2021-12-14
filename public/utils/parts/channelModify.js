@@ -6,7 +6,7 @@ $("#update").click((e) => {
         channelCategory: $('#theme-category').val(),
         channelDescription: $('#channel-description').val()
     };
-  
+    
     axios.patch("/channel/update", reqData).then((res) => {
       if (res.data.success) {
         alert("The channel has been successfully modified");
