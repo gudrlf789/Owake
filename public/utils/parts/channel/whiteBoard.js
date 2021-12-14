@@ -69,8 +69,8 @@ export const whiteBoardFunc = () => {
         let drawing = false;
 
         // Event Lisnter
-        colorInput.addEventListener("onchange", getThing);
-        numberInput.addEventListener("onchange", getThing);
+        colorInput.addEventListener("change", changeColorOrSize);
+        numberInput.addEventListener("change", changeColorOrSize);
         clearBtn.addEventListener("click", clearAll);
 
         canvas.addEventListener("mousedown", onMouseDown, false);
@@ -87,17 +87,29 @@ export const whiteBoardFunc = () => {
         function getThing() {
             let color_name = document.getElementById("colorInput").value;
             let size = document.getElementById("numberInput").value;
+
             return {
                 color_name,
                 size,
             };
         }
 
+        function changeColorOrSize() {
+            const { color_name, size } = getThing();
+            
+            current.color = color_name;
+            current.size = size;
+        }
+
         function clearAll() {
             canvas.width = canvas.width;
+            socket.emit("clearAll");
         }
 
         socket.on("drawing", onDrawingEvent);
+        socket.on("clearAll", () => {
+            canvas.width = canvas.width;
+        });
 
         window.addEventListener("resize", onResize, false);
         onResize();
@@ -116,9 +128,7 @@ export const whiteBoardFunc = () => {
             }
             var w = canvas.offsetWidth;
             var h = canvas.offsetHeight;
-
-            console.log(color);
-
+            
             socket.emit("drawing", {
                 x0: x0 / w,
                 y0: y0 / h,
@@ -130,8 +140,7 @@ export const whiteBoardFunc = () => {
 
         function onMouseDown(e) {
             drawing = true;
-            current.x =
-                e.clientX - rect.left || e.touches[0].clientX - rect.left;
+            current.x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
             current.y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
         }
 
@@ -154,6 +163,7 @@ export const whiteBoardFunc = () => {
             if (!drawing) {
                 return;
             }
+ 
             drawLine(
                 current.x,
                 current.y,
@@ -162,8 +172,7 @@ export const whiteBoardFunc = () => {
                 current.color,
                 true
             );
-            current.x =
-                e.clientX - rect.left || e.touches[0].clientX - rect.left;
+            current.x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
             current.y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
         }
 
@@ -181,16 +190,20 @@ export const whiteBoardFunc = () => {
         }
 
         function onDrawingEvent(data) {
-            var w = selectCanvas.offsetWidth;
-            var h = selectCanvas.offsetHeight;
-            console.log(data);
-            drawLine(
-                data.x0 * w,
-                data.y0 * h,
-                data.x1 * w,
-                data.y1 * h,
-                data.color
-            );
+            const w = selectCanvas.offsetWidth;
+            const h = selectCanvas.offsetHeight;
+            
+            const x0 = data.x0 * w;
+            const y0 = data.y0 * h;
+            const x1 = data.x1 * w;
+            const y1 = data.y1 * h;
+
+            context.moveTo(x0, y0);
+            context.lineTo(x1, y1);
+            context.strokeStyle = data.color;
+            //context.lineWidth = editor.size;
+            context.stroke();
+            context.closePath();
         }
 
         // make the canvas fill its parent

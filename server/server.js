@@ -16,7 +16,6 @@ dotenv.config();
 function redirectSec(req, res, next) {
     if (req.headers["x-forwarded-proto"] == "http") {
         var redirect = "https://" + req.headers.host + req.path;
-        console.log("Redirect to:" + redirect);
         res.redirect(redirect);
     } else {
         return next();
@@ -68,6 +67,10 @@ io.on("connection", (socket) => {
 
     socket.on("drawing", (data) => {
         socket.broadcast.emit("drawing", data);
+    });
+
+    socket.on("clearAll", () => {
+        socket.broadcast.emit("clearAll");
     });
 
     socket.on("new user", (user) => {
