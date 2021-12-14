@@ -307,7 +307,54 @@ video:hover {
 
 .owake-btn {
     display: none;
+<<<<<<< HEAD
+  }
+  .main__left {
+    width: 100%;
+    flex: 1;
+  }
+
+  #local__video__container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+  }
+
+  #local__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+  }
+
+  #remote__video__container {
+    display: -webkit-box;
+    overflow-x: auto;
+<<<<<<< HEAD
+    margin-left: 50px;
+=======
+>>>>>>> upstream/agora_DC
+  }
+
+  #remote-playerlist {
+    display: flex;
+  }
+
+  #remote-playerlist > div {
+    width: 130px;
+    height: 130px;
+    margin-right: 6px;
+    margin-bottom: none;
+  }
+
+  .player-name {
+    margin: 8px;
+  }
+=======
 }
+>>>>>>> upstream/agora_DC
 
 @media (max-width: 768px) {
     .main__right {

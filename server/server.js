@@ -6,9 +6,7 @@ const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
 /** Router */
-const mainRouter = require("../router/main.js");
-const channelRouter = require("../router/channel.js");
-/** Router Set End */
+const mainRouter = require("./router/main.js");
 
 /** Dotenv */
 const dotenv = require("dotenv");
@@ -29,59 +27,32 @@ app.set("view engine", "ejs");
 
 app.use(redirectSec);
 
-app.use("/", express.static(path.join(__dirname, "../public")));
-app.use("/", express.static(path.join(__dirname, "../public/css")));
-app.use("/", express.static(path.join(__dirname, "../public/img")));
-app.use("/", express.static(path.join(__dirname, "../public/lib")));
-app.use("/", express.static(path.join(__dirname, "../public/utils")));
-app.use("/", express.static(path.join(__dirname, "../public/utils/parts")));
-app.use(
-    "/",
-    express.static(path.join(__dirname, "../public/utils/parts/mainpage"))
-);
-app.use("/", express.static(path.join(__dirname, "../public/img/favicon")));
-app.use("/", express.static(path.join(__dirname, "../public/img/button")));
-app.use("/", express.static(path.join(__dirname, "../views")));
+app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "../public/css")));
+app.use(express.static(path.join(__dirname, "../public/img")));
+app.use(express.static(path.join(__dirname, "../public/lib")));
+app.use(express.static(path.join(__dirname, "../public/utils")));
+app.use(express.static(path.join(__dirname, "../public/utils/parts")));
+app.use(express.static(path.join(__dirname, "../public/img/favicon")));
+app.use(express.static(path.join(__dirname, "../public/img/button")));
+app.use(express.static(path.join(__dirname, "../views")));
 
-app.use("/channel", express.static(path.join(__dirname, "../public")));
-app.use("/channel", express.static(path.join(__dirname, "../public/css")));
-app.use("/channel", express.static(path.join(__dirname, "../public/img")));
-app.use("/channel", express.static(path.join(__dirname, "../public/lib")));
-app.use("/channel", express.static(path.join(__dirname, "../public/utils")));
-app.use(
-    "/channel",
-    express.static(path.join(__dirname, "../public/utils/parts"))
-);
-app.use(
-    "/channel",
-    express.static(path.join(__dirname, "../public/utils/parts/channel"))
-);
-app.use(
-    "/channel",
-    express.static(path.join(__dirname, "../public/img/favicon"))
-);
-app.use(
-    "/channel",
-    express.static(path.join(__dirname, "../public/img/button"))
-);
-app.use("/channel", express.static(path.join(__dirname, "../views")));
+app.use(express.urlencoded({
+    extended: true
+}));
 
-app.use(
-    express.urlencoded({
-        extended: true,
-    })
-);
 app.use(express.json());
 
 /** Routing Settings */
-app.use("/", mainRouter);
-app.use("/list", mainRouter);
-app.use("/register", mainRouter);
-app.use("/update", mainRouter);
-app.use("/remove", mainRouter);
-app.use("/search", mainRouter);
-app.use("/channel", channelRouter);
-/** Routing Setting End */
+app.use("/channel", mainRouter);
+
+app.get("/", (req, res, next) => {
+    res.render("channel", { title: "Owake Channel" });
+});
+
+app.get("/join", (req, res, next) => {
+    res.render("channel");
+});
 
 io.on("connection", (socket) => {
     socket.on("join-room", (roomName) => {
@@ -93,14 +64,6 @@ io.on("connection", (socket) => {
 
     socket.on("leave-room", (roomName) => {
         socket.leave(roomName);
-    });
-
-    socket.on("speech message", (msg, roomName) => {
-        console.log(msg);
-        io.to(roomName).emit("send message", {
-            message: msg,
-            user: socket.username,
-        });
     });
 
     socket.on("drawing", (data) => {
