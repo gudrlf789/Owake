@@ -69,8 +69,8 @@ export const whiteBoardFunc = () => {
         let drawing = false;
 
         // Event Lisnter
-        colorInput.addEventListener("change", changeColorOrSize);
-        numberInput.addEventListener("change", changeColorOrSize);
+        colorInput.addEventListener("change", getThing);
+        numberInput.addEventListener("change", getThing);
         clearBtn.addEventListener("click", clearAll);
 
         canvas.addEventListener("mousedown", onMouseDown, false);
@@ -94,22 +94,11 @@ export const whiteBoardFunc = () => {
             };
         }
 
-        function changeColorOrSize() {
-            const { color_name, size } = getThing();
-            
-            current.color = color_name;
-            current.size = size;
-        }
-
         function clearAll() {
             canvas.width = canvas.width;
-            socket.emit("clearAll");
         }
 
         socket.on("drawing", onDrawingEvent);
-        socket.on("clearAll", () => {
-            canvas.width = canvas.width;
-        });
 
         window.addEventListener("resize", onResize, false);
         onResize();
@@ -200,7 +189,7 @@ export const whiteBoardFunc = () => {
 
             context.moveTo(x0, y0);
             context.lineTo(x1, y1);
-            context.strokeStyle = data.color;
+            //context.strokeStyle = data.color;
             //context.lineWidth = editor.size;
             context.stroke();
             context.closePath();
