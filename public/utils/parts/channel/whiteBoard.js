@@ -1,4 +1,6 @@
 export const whiteBoardFunc = () => {
+    let whiteboardSocket = io();
+
     // Container Publising...
     const whiteBoardContainer = document.createElement("div");
     const whiteBoardOptionsContainer = document.createElement("div");
@@ -49,11 +51,15 @@ export const whiteBoardFunc = () => {
         whiteBoardContainer.hidden = true;
         whiteBoardBtn.style.color = "#fff";
         whiteBoardContainer.remove();
+
+        whiteboardSocket.emit("leave-whiteboard", window.sessionStorage.getItem("channel"));
     }
     // Container Publising End
 
     function boardDrawStart() {
-        let socket = io();
+        // (임시) 화이트 보드 사용시에 다시 방 입장
+        whiteboardSocket.emit("join-whiteboard", window.sessionStorage.getItem("channel"));
+
         let selectCanvas = document.getElementById("whiteboard-canvas");
         let rect = canvas.getBoundingClientRect();
 
@@ -69,8 +75,8 @@ export const whiteBoardFunc = () => {
         let drawing = false;
 
         // Event Lisnter
-        colorInput.addEventListener("change", getThing);
-        numberInput.addEventListener("change", getThing);
+        colorInput.addEventListener("change", changeColorOrSize);
+        numberInput.addEventListener("change", changeColorOrSize);
         clearBtn.addEventListener("click", clearAll);
 
         canvas.addEventListener("mousedown", onMouseDown, false);
@@ -94,37 +100,42 @@ export const whiteBoardFunc = () => {
             };
         }
 
+        function changeColorOrSize() {
+            const { color_name, size } = getThing();
+            
+            current.color = color_name;
+            current.size = size;
+        }
+
         function clearAll() {
             canvas.width = canvas.width;
         }
 
-        socket.on("drawing", onDrawingEvent);
+        whiteboardSocket.on("drawing", onDrawingEvent);
 
         window.addEventListener("resize", onResize, false);
         onResize();
 
         function drawLine(x0, y0, x1, y1, color, emit) {
-            let editor = getThing();
+            context.beginPath();
             context.moveTo(x0, y0);
             context.lineTo(x1, y1);
-            context.strokeStyle = editor.color_name;
-            context.lineWidth = editor.size;
+            context.strokeStyle = color;
+            context.lineWidth = 2;
             context.stroke();
             context.closePath();
 
-            if (!emit) {
-                return;
-            }
-            var w = canvas.offsetWidth;
-            var h = canvas.offsetHeight;
-            
+            if (!emit) { return; }
+            const w = canvas.offsetWidth;;
+            const h = canvas.offsetHeight;
+
             socket.emit("drawing", {
                 x0: x0 / w,
                 y0: y0 / h,
                 x1: x1 / w,
                 y1: y1 / h,
-                color: color,
-            });
+                color: color
+            }, window.sessionStorage.getItem("channel"));
         }
 
         function onMouseDown(e) {
@@ -134,31 +145,27 @@ export const whiteBoardFunc = () => {
         }
 
         function onMouseUp(e) {
-            if (!drawing) {
-                return;
-            }
+            if (!drawing) { return; }
             drawing = false;
             drawLine(
-                current.x,
-                current.y,
-                e.clientX - rect.left || e.touches[0].clientX - rect.left,
-                e.clientY - rect.top || e.touches[0].clientY - rect.top,
-                current.color,
+                current.x, 
+                current.y, 
+                e.clientX - rect.left || e.touches[0].clientX - rect.left, 
+                e.clientY - rect.top || e.touches[0].clientY - rect.top, 
+                current.color, 
                 true
             );
         }
 
         function onMouseMove(e) {
-            if (!drawing) {
-                return;
-            }
- 
+            if (!drawing) { return; }
+
             drawLine(
-                current.x,
-                current.y,
-                e.clientX - rect.left || e.touches[0].clientX - rect.left,
-                e.clientY - rect.top || e.touches[0].clientY - rect.top,
-                current.color,
+                current.x, 
+                current.y, 
+                e.clientX - rect.left || e.touches[0].clientX - rect.left, 
+                e.clientY - rect.top ||e.touches[0].clientY - rect.top, 
+                current.color, 
                 true
             );
             current.x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
@@ -167,11 +174,11 @@ export const whiteBoardFunc = () => {
 
         // limit the number of events per second
         function throttle(callback, delay) {
-            var previousCall = new Date().getTime();
-            return function () {
-                var time = new Date().getTime();
+            let previousCall = new Date().getTime();
+            return function() {
+                const time = new Date().getTime();
 
-                if (time - previousCall >= delay) {
+                if ((time - previousCall) >= delay) {
                     previousCall = time;
                     callback.apply(null, arguments);
                 }
@@ -179,20 +186,9 @@ export const whiteBoardFunc = () => {
         }
 
         function onDrawingEvent(data) {
-            const w = selectCanvas.offsetWidth;
-            const h = selectCanvas.offsetHeight;
-            
-            const x0 = data.x0 * w;
-            const y0 = data.y0 * h;
-            const x1 = data.x1 * w;
-            const y1 = data.y1 * h;
-
-            context.moveTo(x0, y0);
-            context.lineTo(x1, y1);
-            //context.strokeStyle = data.color;
-            //context.lineWidth = editor.size;
-            context.stroke();
-            context.closePath();
+            const w = canvas.width;
+            const h = canvas.height;
+            drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
         }
 
         // make the canvas fill its parent

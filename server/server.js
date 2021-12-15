@@ -54,23 +54,28 @@ app.get("/join", (req, res, next) => {
 });
 
 io.on("connection", (socket) => {
-    socket.on("join-room", (roomName) => {
-        socket.join(roomName);
-    });
-    socket.on("submit_address", (address, roomName) => {
-        socket.to(roomName).emit("input_address", address);
+    socket.on("join-room", (channelName) => {
+        socket.join(channelName);
     });
 
-    socket.on("leave-room", (roomName) => {
-        socket.leave(roomName);
+    socket.on("submit_address", (address, channelName) => {
+        socket.to(channelName).emit("input_address", address);
     });
 
-    socket.on("drawing", (data) => {
-        socket.broadcast.emit("drawing", data);
+    socket.on("leave-room", (channelName) => {
+        socket.leave(channelName);
     });
 
-    socket.on("clearAll", () => {
-        socket.broadcast.emit("clearAll");
+    socket.on("join-whiteboard", (channelName) => {
+        socket.join(channelName);
+    });
+
+    socket.on("drawing", (data, channelName) => {
+        socket.to(channelName).emit("drawing", data);
+    });
+
+    socket.on("leave-whiteboard", (channelName) => {
+        socket.leave(channelName);
     });
 
     socket.on("new user", (user) => {
