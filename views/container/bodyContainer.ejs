@@ -1,0 +1,37 @@
+<div class="box-options">
+    <div id="channel-create" class="channel-options" data-toggle="modal" data-target="#channelCreate">
+        <p><span>Channel Create</span></p>
+    </div>
+
+    <div id="channel-join" class="channel-options" data-toggle="modal" data-target="#channelJoin">
+        <p><span>Channel Join</span></p>
+    </div>
+</div>
+
+<div class="box-category">
+    <div class="channel-category"></div>
+    <div class="channel-category"></div>
+    <div class="channel-category"></div>
+    <div class="channel-category"></div>
+    <div class="channel-category"></div>
+    <div class="channel-category"></div>
+</div>
+
+<div class="box-conatiner"></div>
+
+<div class="round-navbar">
+    <img src="owake_logo_black.svg" alt="">
+</div>
+
+<div class="toggle-navbar" style="display : none">
+    <div class="options-main-btn">
+        <img src="video-conference.png" alt="" title="Opening channel">
+    </div>
+</div>
+
+<script>
+    const toggleNav = document.querySelector(".round-navbar");
+    toggleNav.addEventListener("click", () => {
+        $(".toggle-navbar").slideToggle("slow");
+    })
+</script>
