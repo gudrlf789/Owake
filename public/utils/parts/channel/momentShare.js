@@ -47,12 +47,23 @@ export const momentShareFunc = () => {
         localVideoContainer.append(momentShareArea);
         momentShareArea.hidden = false;
         momentShareBtn.style.color = "#000";
+        momentSocket.emit("join-web", window.sessionStorage.getItem("channel"));
     }
 
     function momentShareDisable() {
         momentShareArea.hidden = true;
         momentShareBtn.style.color = "#fff";
+        momentSocket.emit("leave-web", options.channel);
     }
+
+    momentSocket.on("input_address", (address) => {
+        const momentShare = document.getElementById("momentShare-iframe");
+        momentShare.src = `https://${address.replace(
+            /^(https?:\/\/)?(www\.)?/,
+            ""
+        )}`;
+    });
+    
 
     $(document).on("click", "#searchInputBtn", (e) => {
         if (searchInput.value.length !== 0) {

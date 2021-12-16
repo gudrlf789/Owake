@@ -46,7 +46,7 @@ app.use(express.json());
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
-    res.render("channel", { title: "Owake Channel" });
+    res.render("channel");
 });
 
 app.get("/join", (req, res, next) => {
@@ -54,7 +54,7 @@ app.get("/join", (req, res, next) => {
 });
 
 io.on("connection", (socket) => {
-    socket.on("join-room", (channelName) => {
+    socket.on("join-web", (channelName) => {
         socket.join(channelName);
     });
 
@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
         socket.to(channelName).emit("input_address", address);
     });
 
-    socket.on("leave-room", (channelName) => {
+    socket.on("leave-web", (channelName) => {
         socket.leave(channelName);
     });
 

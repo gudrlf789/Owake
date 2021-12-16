@@ -1,5 +1,3 @@
-const socket = io();
-
 const localVideoBox = document.createElement("div");
 localVideoBox.id = "local__videoBox local-player";
 localVideoBox.className = "player";
@@ -119,20 +117,10 @@ $(document).on("click", ".player", (e) => {
     }
 });
 
-socket.on("input_address", (address) => {
-    const momentShare = document.getElementById("momentShare-iframe");
-    momentShare.src = `https://${address.replace(
-        /^(https?:\/\/)?(www\.)?/,
-        ""
-    )}`;
-});
-
 async function join() {
     client.on("user-published", handleUserPublished);
     client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);
-
-    socket.emit("join-room", options.channel || window.sessionStorage.getItem("channel"));
 
     const checkDeskTopCamera = await AgoraRTC.getCameras();
 
@@ -202,7 +190,6 @@ async function leave() {
     $("#remote-playerlist").html("");
 
     await client.leave();
-    socket.emit("leave-room", options.channel);
     $("#newUserModal").modal("hide");
 
     //세션 스토리지 clear

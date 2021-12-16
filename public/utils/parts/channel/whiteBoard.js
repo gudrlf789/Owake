@@ -129,7 +129,7 @@ export const whiteBoardFunc = () => {
             const w = canvas.offsetWidth;;
             const h = canvas.offsetHeight;
 
-            socket.emit("drawing", {
+            whiteboardSocket.emit("drawing", {
                 x0: x0 / w,
                 y0: y0 / h,
                 x1: x1 / w,
