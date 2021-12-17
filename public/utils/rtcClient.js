@@ -43,6 +43,12 @@ $("#join-form").submit(async function (e) {
     e.preventDefault();
     const nickname = $("#uid").val();
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+
+    if (nickname === "" || nickname === null || nickname === undefined) {
+        alert("Plaese Enter the UserID");
+        return;
+    }
+
     if (korean.test(nickname)) {
         return alert("You can only type in English.");
     } else {
@@ -213,7 +219,6 @@ async function subscribe(user, mediaType) {
           </div>
         `);
         $("#remote-playerlist").append(player);
-
         user.videoTrack.play(`player-${uid}`);
     }
 

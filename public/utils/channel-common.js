@@ -7,9 +7,7 @@ import { optionsBtn } from "./parts/channel/options-btn.js";
 import { recodingDeviceCtrl } from "./parts/channel/recodingDeviceCtrl.js";
 import { remoteDisplay } from "./parts/channel/remoteDisplay.js";
 import { screenShareFunc } from "./parts/channel/screenShare.js";
-import { responsiveFunc } from "./parts/channel/responsive.js";
 import { whiteBoardFunc } from "./parts/channel/whiteBoard.js";
-import { speechRecognition } from "./parts/channel/speechRecognition.js";
 
 mobileDisplayCtr();
 f12defense();
@@ -20,6 +18,4 @@ optionsBtn();
 recodingDeviceCtrl();
 remoteDisplay();
 screenShareFunc();
-responsiveFunc();
 whiteBoardFunc();
-// speechRecognition();

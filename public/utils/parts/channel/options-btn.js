@@ -1,11 +1,11 @@
 export const optionsBtn = () => {
-    const optionsBtn = document.createElement("img");
+    const owakeBtn = document.createElement("img");
 
-    $("#video-grid").append(optionsBtn);
+    $("#video-grid").append(owakeBtn);
 
-    optionsBtn.className = "options-toggle owake-btn";
-    optionsBtn.id = "options-toggle";
-    optionsBtn.src = "../../img/button/owake_logo.svg";
+    owakeBtn.className = "options-toggle owake-btn";
+    owakeBtn.id = "options-toggle";
+    owakeBtn.src = "../../img/button/owake_logo.svg";
 
     $(document).on("click", "#options-toggle", (e) => {
         $(".options").slideToggle("slow");

@@ -1,14 +1,26 @@
-/** Default Module */
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const path = require("path");
-const server = require("http").createServer(app);
+
+const CORS_fn = (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Methods", "*");
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    if (req.method === "OPTIONS") {
+        res.writeHead(200);
+        res.end();
+        return;
+    }
+};
+
+const server = require("http").createServer(app, CORS_fn);
 const io = require("socket.io")(server);
 
 /** Router */
 const mainRouter = require("./router/main.js");
 
-/** Dotenv */
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -24,6 +36,7 @@ function redirectSec(req, res, next) {
 
 app.set("view engine", "ejs");
 
+app.use(cors());
 app.use(redirectSec);
 
 app.use(express.static(path.join(__dirname, "../public")));
@@ -76,11 +89,6 @@ io.on("connection", (socket) => {
 
     socket.on("leave-whiteboard", (channelName) => {
         socket.leave(channelName);
-    });
-
-    socket.on("new user", (user) => {
-        socket.username = user;
-        console.log("User connected - User name: " + socket.username);
     });
 });
 

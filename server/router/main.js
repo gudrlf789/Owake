@@ -120,22 +120,23 @@ router.post("/update", async (req, res) => {
         });
 });
 
-router.post('/delete', (req, res) => {
+router.post("/delete", (req, res) => {
     const bodyData = req.body;
 
-    firebaseCollection.doc(bodyData.channelName).delete()
-    .then((e) => {
-        return res.status(200).json({
-            success: true
+    firebaseCollection
+        .doc(bodyData.channelName)
+        .delete()
+        .then((e) => {
+            return res.status(200).json({
+                success: true,
+            });
         })
-    })
-    .catch((err) => {
-        return res.status(500).json({
-            success: false,
-            error: err
+        .catch((err) => {
+            return res.status(500).json({
+                success: false,
+                error: err,
+            });
         });
-    });
-
 });
 
 router.post("/info", (req, res) => {

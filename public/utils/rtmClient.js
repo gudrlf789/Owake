@@ -1,4 +1,4 @@
-import { scrollToBottom } from "./parts/channel/chat.js";
+import { scrollToBottom } from "./channel/chat.js";
 
 const messageList = document.getElementById("messages");
 let channelMessageText = document.getElementById("chat_message");
@@ -7,9 +7,6 @@ let channelMessageSend = document.getElementById("send");
 // Element Create
 const messageContainer = document.createElement("div");
 messageContainer.className = "message__container";
-
-const remoteMessageContainer = document.createElement("div");
-remoteMessageContainer.className = "remote__message__container";
 
 let userNameArea;
 let messageArea;
@@ -45,15 +42,10 @@ async function joinRtm() {
         const msg = JSON.stringify(message.text);
 
         // Remote User, Remote Messages Naming
-        userNameArea.id = "remote__user";
-        messageArea.id = "remote__message";
-        remoteMessageContainer.id = "remote__message__container";
-
         userNameArea.textContent = memberId;
         messageArea.textContent = msg;
 
-        remoteMessageContainer.append(userNameArea, messageArea);
-        messageList.append(remoteMessageContainer);
+        messageList.append(userNameArea, messageArea);
     });
     // Display channel member stats
     channel.on("MemberJoined", function (memberId) {
@@ -112,8 +104,7 @@ async function channelMessageFunc() {
             messageAreaFunc();
             userNameArea.textContent = userName;
             messageArea.textContent = channelMessage;
-            messageContainer.append(userNameArea, messageArea);
-            messageList.append(messageContainer);
+            messageList.append(userNameArea, messageArea);
             scrollToBottom();
         });
     }

@@ -4,4 +4,5 @@ $("#channelJoin-btn").click((e) => {
 
     window.sessionStorage.setItem("channel", channelName);
     window.sessionStorage.setItem("uid", userId);
+    window.location.href="http://localhost:1227/join";
 });

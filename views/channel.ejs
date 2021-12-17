@@ -2,25 +2,32 @@
 <html lang="en">
 
 <head>
-    <%- include("./headparts/meta-parts") %>
-    <%- include("./headparts/favicon-parts") %>
+    <!-- meta tag -->
+    <%- include("./headLibrary/metaTag") %>
+        <!-- meta tag end -->
 
-    <link rel="stylesheet" href="channel.css">
-    <script src="owake_rtc_n.js"></script>
-    <script src="owake_rtm.js"></script>
-    <!-- jquery -->
-    <script src="jquery-3.4.1.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="bootstrap.bundle.min.js"></script>
-    <!-- Socket.io -->
-    <script src="/socket.io/socket.io.js"></script>
-    <!-- axios -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <title>Owake</title>
+        <!-- favicon package -->
+        <%- include('./headLibrary/favicon') %>
+            <!-- favicon End -->
 
-    <%- include("./popup/fileshare") %>
-        <%- include("./popup/newuser") %>
-            <%- include("./popup/deviceSettings") %>
+            <link rel="stylesheet" href="channel.css">
+
+            <script src="owake_rtc_n.js"></script>
+            <script src="owake_rtm.js"></script>
+
+            <!-- Jquery -->
+            <script src="jquery-3.4.1.min.js"></script>
+
+            <!-- Bootstrap -->
+            <script src="bootstrap.bundle.min.js"></script>
+            <!-- Socket.io -->
+            <script src="/socket.io/socket.io.js"></script>
+
+            <title>Owake</title>
+
+            <%- include("./popup/fileshare") %>
+                <%- include("./popup/newuser") %>
+                    <%- include("./popup/deviceSettings") %>
 </head>
 
 <body>
@@ -73,11 +80,6 @@
                         <i class="fas fa-chalkboard-teacher"></i>
                         <span>Whiteboard</span>
                     </div>
-                    <!-- <div id="speechRecognition" class="options__button" data-toggle="modal"
-                        data-target="#speechSetting">
-                        <i class="fas fa-headset"></i>
-                        <span>spaeechRecognition</span>
-                    </div> -->
                     <div class="options__button" id="fileshareBtn" data-toggle="modal" data-target="#fileshareModal">
                         <i class="far fa-folder-open"></i>
                         <span>File</span>
@@ -101,24 +103,11 @@
                         <span>다운로드</span>
                     </div>
 
-
                 </div>
-                <!-- <div id="speechRecognition" class="options__button">
-                    <i class="fas fa-headset"></i>
-                </div> -->
-                <!-- <div class="options__right">
-                    <div id="room__in" class="options__button" data-toggle="modal" data-target="#newUserModal">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>Login</span>
-                    </div>
-                </div> -->
             </div>
         </div>
         <div class="main__right">
             <div class="main__header">
-                <!-- <div class="header__back">
-                    <i class="fas fa-angle-left"></i>
-                </div> -->
             </div>
             <div class="main__chat_window">
                 <div class="messages" id="messages"></div>
