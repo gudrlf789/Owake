@@ -89,20 +89,6 @@
                         <i class="fas fa-cog"></i>
                         <span>Device</span>
                     </div>
-
-                    <div id="recoding" class="options__button">
-                        <span>녹화하기</span>
-                    </div>
-                    <div id="recodingStop" class="options__button">
-                        <span>중지하기</span>
-                    </div>
-                    <div id="recodingPreview" class="options__button">
-                        <span>미리보기</span>
-                    </div>
-                    <div id="recodingDownload" class="options__button">
-                        <span>다운로드</span>
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -121,15 +107,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Scripts -->
+    <%- include("./jsparts/channel-parts") %>
 </body>
-<!-- Script Import -->
-<%- include('./jsparts/channel-parts') %>
-
-<script>
-
-    console.log("비디오트랙 : " + localTracks.videoTrack);
-    console.log("오디오 트랙 : " +localTracks.audioTrack);
-
-</script>
 
 </html>
