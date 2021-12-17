@@ -3,11 +3,12 @@
 @import "./mainpage/leftnavbar.css";
 @import "./mainpage/bodyContainer.css";
 @import "./mainpage/channelCreate.css";
+@import "./mainpage/feedContainer.css";
 @import "./lib/bootstrap.min.css";
 
 * {
-    margin : 0;
-    padding : 0;
+    margin: 0;
+    padding: 0;
 }
 
 .logo {
@@ -19,11 +20,11 @@
 }
 
 .inner-container {
-    display : flex;
+    display: flex;
 }
 
 .top-nav-container {
-    display : flex;
+    display: flex;
 }
 
 .search-options {
@@ -31,25 +32,9 @@
     height: 100%;
     align-items: center;
     position: relative;
-    top : 15px;
-    margin-left : auto;
-    margin-right : 20px;
-}
-
-.profile {
-    position: relative;
-    border: 1px solid #000;
-    width: 170px;
-    height: 40px;
-    top: 10px;
-}
-
-.profile > p {
-    display : inline-block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 15px;
+    margin-left: auto;
+    margin-right: 20px;
 }
 
 /* .left-nav-container {
@@ -58,35 +43,44 @@
 } */
 
 .body-container {
-    flex : 1;
-    height : 100%;
-    margin : 5rem;
+    flex: 1;
+    height: 100%;
+    margin: 5rem;
 }
 
 .channel-box {
-    cursor : pointer;
+    cursor: pointer;
+    position: relative;
 }
+
+.channel-inner-text-box {
+    display : flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
 
 /* ================================================================= */
 @media (max-width: 768px) {
     .left-nav-container {
-        display : none;
+        display: none;
     }
 
     .box-conatiner {
-        margin-top : 10px;
+        margin-top: 10px;
     }
 
     .channel-box {
-        width : 230px;
-        height : 230px;
-        margin : 0.5rem;
+        width: 230px;
+        height: 230px;
+        margin: 0.5rem;
     }
 
     .logo {
-        display : none;
+        display: none;
     }
     .profile {
-        display : none;
+        display: none;
     }
 }
