@@ -70,22 +70,15 @@ export const momentShareFunc = () => {
     $(document).on("click", "#searchInputBtn", (e) => {
         if (searchInput.value.length !== 0) {
             searchResult = searchUrlStringCheck();
-            momentSocket.emit(
-                "submit_address",
-                searchResult,
-                options.channel || window.sessionStorage.getItem("channel")
-            );
+            momentSocket.emit("submit_address", searchResult, options.channel || window.sessionStorage.getItem("channel"));
+
         }
     });
 
     $(document).on("keydown", "#searchInput", (e) => {
         if (e.which === 13 && searchInput.value.length !== 0) {
             searchResult = searchUrlStringCheck();
-            momentSocket.emit(
-                "submit_address",
-                searchResult,
-                options.channel || window.sessionStorage.getItem("channel")
-            );
+            momentSocket.emit("submit_address", searchResult, options.channel || window.sessionStorage.getItem("channel"));
         }
     });
 

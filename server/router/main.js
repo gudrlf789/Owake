@@ -153,7 +153,7 @@ router.post("/info", (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                adminChannelList: channelArray,
+                adminChannelList: channelArray
             });
         })
         .catch((err) => {

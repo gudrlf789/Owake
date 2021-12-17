@@ -49,11 +49,9 @@ app.use(express.static(path.join(__dirname, "../public/img/favicon")));
 app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../views")));
 
-app.use(
-    express.urlencoded({
-        extended: true,
-    })
-);
+app.use(express.urlencoded({
+    extended: true
+}));
 
 app.use(express.json());
 
@@ -86,7 +84,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("drawing", (data, channelName) => {
-        socket.broadcast.to(channelName).emit("drawing", data);
+        socket.to(channelName).emit("drawing", data);
     });
 
     socket.on("leave-whiteboard", (channelName) => {

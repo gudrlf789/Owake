@@ -48,6 +48,7 @@ $("#join-form").submit(async function (e) {
         alert("Plaese Enter the UserID");
         return;
     }
+
     if (korean.test(nickname)) {
         return alert("You can only type in English.");
     } else {

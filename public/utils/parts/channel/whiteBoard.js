@@ -1,11 +1,11 @@
 export const whiteBoardFunc = () => {
     let whiteboardSocket = io();
+
     // Container Publising...
     const whiteBoardContainer = document.createElement("div");
     const whiteBoardOptionsContainer = document.createElement("div");
 
     const canvas = document.createElement("canvas");
-
     const clearBtn = document.createElement("input");
     const numberInput = document.createElement("input");
     const colorInput = document.createElement("input");
@@ -56,19 +56,14 @@ export const whiteBoardFunc = () => {
         whiteBoardContainer.hidden = true;
         whiteBoardBtn.style.color = "#fff";
         whiteBoardContainer.remove();
-
-        whiteboardSocket.emit(
-            "leave-whiteboard",
-            window.sessionStorage.getItem("channel")
-        );
+        whiteboardSocket.emit("leave-whiteboard", window.sessionStorage.getItem("channel"));
     }
     // Container Publising End
 
     function boardDrawStart() {
-        whiteboardSocket.emit(
-            "join-whiteboard",
-            window.sessionStorage.getItem("channel")
-        );
+        // (임시) 화이트 보드 사용시에 다시 방 입장
+        whiteboardSocket.emit("join-whiteboard", window.sessionStorage.getItem("channel"));
+
         let selectCanvas = document.getElementById("whiteboard-canvas");
         let rect = canvas.getBoundingClientRect();
 
@@ -111,7 +106,6 @@ export const whiteBoardFunc = () => {
 
         function changeColorOrSize() {
             const { color_name, size } = getThing();
-
             current.color = color_name;
             current.size = size;
         }
@@ -134,29 +128,22 @@ export const whiteBoardFunc = () => {
             context.stroke();
             context.closePath();
 
-            if (!emit) {
-                return;
-            }
-            var w = canvas.offsetWidth;
-            var h = canvas.offsetHeight;
+            if (!emit) { return; }
+            const w = canvas.offsetWidth;;
+            const h = canvas.offsetHeight;
 
-            whiteboardSocket.emit(
-                "drawing",
-                {
-                    x0: x0 / w,
-                    y0: y0 / h,
-                    x1: x1 / w,
-                    y1: y1 / h,
-                    color: color,
-                },
-                window.sessionStorage.getItem("channel")
-            );
+            whiteboardSocket.emit("drawing", {
+                x0: x0 / w,
+                y0: y0 / h,
+                x1: x1 / w,
+                y1: y1 / h,
+                color: color
+            }, window.sessionStorage.getItem("channel"));
         }
 
         function onMouseDown(e) {
             drawing = true;
-            current.x =
-                e.clientX - rect.left || e.touches[0].clientX - rect.left;
+            current.x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
             current.y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
         }
 
@@ -188,8 +175,7 @@ export const whiteBoardFunc = () => {
                 current.color,
                 true
             );
-            current.x =
-                e.clientX - rect.left || e.touches[0].clientX - rect.left;
+            current.x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
             current.y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
         }
 
