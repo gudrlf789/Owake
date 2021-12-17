@@ -53,7 +53,7 @@ export const momentShareFunc = () => {
     function momentShareDisable() {
         momentShareArea.hidden = true;
         momentShareBtn.style.color = "#fff";
-        momentSocket.emit("leave-web", options.channel);
+        momentSocket.emit("leave-web", window.sessionStorage.getItem("channel"));
     }
 
     momentSocket.on("input_address", (address) => {

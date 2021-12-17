@@ -1,4 +1,4 @@
-$("#channelJoin-Container").submit((e) => {
+$("#channelJoin-btn").click((e) => {
     const channelName = $("#channelJoin-channelName").val();
     const userId = $("#channelJoin-userId").val();
 
