@@ -3,7 +3,6 @@
 @import "./channel/momentShare.css";
 @import "./channel/chat.css";
 @import "./lib/bootstrap.min.css";
-@import "./channel/remoteDisplay.css";
 @import "./channel/whiteBoard.css";
 
 :root {
@@ -23,6 +22,7 @@
 .header {
     display: flex;
     height: 8vh;
+    height: calc(var(--vh, 1vh) * 8);
     position: relative;
     width: 100%;
     background-color: var(--main-darklg);
@@ -103,6 +103,7 @@
     position: relative;
     overflow: hidden;
     height: 92vh;
+    height: calc(var(--vh, 1vh) * 92);
     display: flex;
 }
 

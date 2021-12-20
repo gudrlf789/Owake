@@ -8,6 +8,8 @@ import { recodingDeviceCtrl } from "./parts/channel/recodingDeviceCtrl.js";
 import { remoteDisplay } from "./parts/channel/remoteDisplay.js";
 import { screenShareFunc } from "./parts/channel/screenShare.js";
 import { whiteBoardFunc } from "./parts/channel/whiteBoard.js";
+import { mobileReflashClose } from "./parts/channel/mobileReflashClose.js";
+import { responsiveFunc } from "./parts/channel/responsive.js";
 
 mobileDisplayCtr();
 f12defense();
@@ -19,3 +21,5 @@ recodingDeviceCtrl();
 remoteDisplay();
 screenShareFunc();
 whiteBoardFunc();
+mobileReflashClose();
+responsiveFunc();
