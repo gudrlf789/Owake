@@ -13,24 +13,42 @@
                 <div id="channelJoin-Container">
                     <div class="row admin-info-group">
 
-                        <div class="col-sm">
-                            <p class="admin-info-text">User ID</p>
-                            <input id="channelJoin-userId" type="text" placeholder="Enter the userId" required />
-                        </div>
-                        <div class="col-sm">
-                            <p class="admin-info-text">User Password</p>
-                            <input id="channelJoin-userPassword" type="text" placeholder="Enter the Password" />
-                        </div>
-
                         <div class="col-sm" style="margin-top: 10px;">
                             <p class="channel-info-text">Channel Name</p>
                             <input id="channelJoin-channelName" type="text" placeholder="Enter the Channel Name" />
                         </div>
-                        <div class="col-sm" style="margin-top: 10px;">
-                            <p class="channel-info-text">Channel Password</p>
-                            <input id="channelJoin-channelPassword" type="text"
-                                placeholder="Enter the Channel Password" />
+                        <div class="col-sm">
+                            <div>
+                                <p class="public_room_active">Public Room</p>
+                                <input id="public_room_active" type="radio" value="Public" checked />
+                            </div>
+                            <div>
+                                <p class="private_room_active">Private Room</p>
+                                <input id="private_room_active" type="radio" value="Private" />
+                                <div>
+                                    <p>Password</p>
+                                    <input id="channelJoin-privateRoomPassword" type="password" />
+                                </div>
+                            </div>
                         </div>
+
+                        <div class="col-sm">
+                            <p class="nickname-text">Nick Name</p>
+                            <input id="channelJoin-nickName" type="text" placeholder="Enter the Nick Name" required />
+                        </div>
+                        <div class="col-sm">
+                            <p class="user_active">USER</p>
+                            <input id="user_active" type="radio" value="USER" checked />
+                        </div>
+                        <div class="col-sm">
+                            <p class="admin_active">ADMIN</p>
+                            <input id="admin_active" type="radio" value="ADMIN" />
+                        </div>
+                        <div class="col-sm">
+                            <p class="admin-password-text">Admin Password</p>
+                            <input id="channelJoin-adminPassword" type="password" disabled />
+                        </div>
+                        
                     </div>
                     <br><br>
                     <div class="button-group">
