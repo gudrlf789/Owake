@@ -50,11 +50,9 @@ app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../public/img/nav-icon")));
 app.use(express.static(path.join(__dirname, "../views")));
 
-app.use(
-    express.urlencoded({
-        extended: true,
-    })
-);
+app.use(express.urlencoded({
+    extended: true
+}));
 
 app.use(express.json());
 

@@ -1,6 +1,9 @@
-$("#channel-create").click((e) => {
+/*$("#channel-create").click((e) => {
   const reqData = {
-      adminId : "phg"
+      //adminId : "phg"
+      adminId : $('#adminId').val(),
+      channelType: $('input:radio[name=channelRadioBtn]:checked').val(),
+      channelName: $('#channelName').val()
   }
 
   axios.post("/channel/info", reqData).then((res) => {
@@ -42,4 +45,4 @@ $("#channel-create").click((e) => {
           
       }
   });
-});
+});*/

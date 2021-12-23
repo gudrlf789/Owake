@@ -129,6 +129,7 @@ async function join() {
     client.on("user-unpublished", handleUserUnpublished);
 
     const checkDeskTopCamera = await AgoraRTC.getCameras();
+    const checkDeskTopAudio = await AgoraRTC.getMicrophones();
 
     options.uid = await client.join(
         options.appid,
@@ -136,11 +137,17 @@ async function join() {
         options.token || null,
         options.uid || window.sessionStorage.getItem("uid") || null
     );
-
-    localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack(
-        MicrophoneAudioTrackInitConfig
-    );
-
+    
+    // 오디오 디바이스가 없을시
+    if(checkDeskTopAudio.length != 0){
+        localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack(
+            MicrophoneAudioTrackInitConfig
+        );
+    }else{
+        localTracks.audioTrack = undefined;
+    }
+    
+    // 카메라 디바이스가 없을시
     if (checkDeskTopCamera.length != 0) {
         localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack();
     } else {
@@ -151,9 +158,8 @@ async function join() {
     }
 
     totalUsers[options.uid] = {
-        audioTrack: localTracks.audioTrack,
-        videoTrack:
-            checkDeskTopCamera.length != 0 ? localTracks.videoTrack : undefined,
+        audioTrack: checkDeskTopAudio.length != 0 ? localTracks.videoTrack : undefined,
+        videoTrack: checkDeskTopCamera.length != 0 ? localTracks.videoTrack : undefined
     };
 
     //처음 트랙 생성시 채널,uid 값 세션 스토리지에 저장
@@ -168,13 +174,23 @@ async function join() {
     localVideoBox.uid = client.uid;
     $("#local__video__container").append(localVideoBox);
 
-    if (localTracks.videoTrack) {
-        $("#local-player-name").text(`${options.uid}`);
+    $("#local-player-name").text(`${options.uid}`);
+    if (localTracks.videoTrack !== undefined && localTracks.audioTrack !== undefined) {
+
         localTracks.videoTrack.play(localVideoBox);
         await client.publish(Object.values(localTracks));
-    } else {
-        $("#local-player-name").text(`${options.uid}`);
+
+    } else if(localTracks.videoTrack === undefined && localTracks.audioTrack !== undefined) {
+
         await client.publish(localTracks.audioTrack);
+
+    } else if(localTracks.videoTrack !== undefined && localTracks.audioTrack === undefined) {
+
+        localTracks.videoTrack.play(localVideoBox);
+        await client.publish(localTracks.videoTrack);
+
+    }else{
+        alert("인식된 디바이스가 아무것도 없음")
     }
 }
 
