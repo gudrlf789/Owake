@@ -283,7 +283,6 @@ function revertLocalTrackToMain(leftUid) {
 }
 
 function handleUserJoined(user) {
-    debugger;
     const id = user.uid;
     totalUsers[id] = user;
     remoteUsers[id] = user;

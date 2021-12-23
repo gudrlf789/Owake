@@ -47,6 +47,7 @@ app.use(express.static(path.join(__dirname, "../public/utils")));
 app.use(express.static(path.join(__dirname, "../public/utils/parts")));
 app.use(express.static(path.join(__dirname, "../public/img/favicon")));
 app.use(express.static(path.join(__dirname, "../public/img/button")));
+app.use(express.static(path.join(__dirname, "../public/img/nav-icon")));
 app.use(express.static(path.join(__dirname, "../views")));
 
 app.use(express.urlencoded({
@@ -59,7 +60,7 @@ app.use(express.json());
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
-    res.render("channel");
+    res.render("index");
 });
 
 app.get("/join", (req, res, next) => {
