@@ -59,7 +59,7 @@ app.use(express.json());
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
-    res.render("index");
+    res.render("channel");
 });
 
 app.get("/join", (req, res, next) => {
