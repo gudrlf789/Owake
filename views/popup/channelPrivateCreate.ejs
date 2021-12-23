@@ -1,0 +1,78 @@
+<div class="modal fade" id="channelPrivateCreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Channel Create
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="channelCreate-div">
+                    <div class="row admin-info-group">
+
+                        <div class="col-sm">
+                            <p class="admin-info-text">Admin ID</p>
+                            <input id="private_adminId" type="text" placeholder="Enter the AdminID" required />
+                        </div>
+                        <div class="col-sm">
+                            <p class="admin-info-text">Admin Password</p>
+                            <input id="private_adminPassword" type="password" placeholder="Enter the Admin Password" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row roomSetting-info-group">
+                        <div class="col-sm">
+                            <p class="channel-info-text">Channel Password</p>
+                            <input id="private_channelPassword" type="password" placeholder="Enter the Channel Password">
+                        </div>
+                        <div class="col-sm">
+                            <p class="channel-info-text">Channel Name</p>
+                            <input id="private_channelName" type="text" placeholder="Enter the Channel Name">
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row category-info-group">
+
+                        <div class="col-sm">
+                            <label for="theme-category">Category</label>
+
+                            <select id="private_theme-category">
+                                <option value="outdoor">Outdoor</option>
+                                <option value="sport">Sport</option>
+                                <option value="food">Food</option>
+                                <option value="movie">Movie</option>
+                                <option value="game">Game</option>
+                                <option value="coding">Coding</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row description-info-group">
+
+                        <div class="col-sm">
+                            <label for="description">Description</label>
+
+                            <textarea name="channel-description" id="private_channel-description" cols="50"
+                                rows="10"></textarea>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="button-group">
+                        <button id="private_create" type="submit" class="btn btn-primary btn-sm">
+                            Create
+                        </button>
+                        <button id="private_update" type="button" class="btn btn-primary btn-sm">
+                            Update
+                        </button>
+                        <button id="private_remove" type="button" class="btn btn-primary btn-sm">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="modal fade" id="channelJoin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Channel Join
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="channelJoin-Container">
+                    <div class="row admin-info-group">
+
+                        <div class="col-sm" style="margin-top: 10px;">
+                            <p class="channel-info-text">Channel Name</p>
+                            <input id="channelJoin-channelName" type="text" placeholder="Enter the Channel Name" />
+                        </div>
+                        <div class="col-sm">
+                            <div>
+                                <p class="public_room_active">Public Room</p>
+                                <input id="public_room_active" type="radio" value="Public" checked />
+                            </div>
+                            <div>
+                                <p class="private_room_active">Private Room</p>
+                                <input id="private_room_active" type="radio" value="Private" />
+                                <div>
+                                    <p>Password</p>
+                                    <input id="channelJoin-privateRoomPassword" type="password" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm">
+                            <p class="nickname-text">Nick Name</p>
+                            <input id="channelJoin-nickName" type="text" placeholder="Enter the Nick Name" required />
+                        </div>
+                        <div class="col-sm">
+                            <p class="user_active">USER</p>
+                            <input id="user_active" type="radio" value="USER" checked />
+                        </div>
+                        <div class="col-sm">
+                            <p class="admin_active">ADMIN</p>
+                            <input id="admin_active" type="radio" value="ADMIN" />
+                        </div>
+                        <div class="col-sm">
+                            <p class="admin-password-text">Admin Password</p>
+                            <input id="channelJoin-adminPassword" type="password" disabled />
+                        </div>
+                        
+                    </div>
+                    <br><br>
+                    <div class="button-group">
+                        <button id="channelJoin-btn" class="btn btn-primary btn-sm">
+                            Join
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

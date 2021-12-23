@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <%- include("./headparts/meta-parts") %>
+    <%- include("./headparts/favicon-parts") %>
+
+        <link rel="stylesheet" href="mainPage.css">
+
+        <script src="owake_rtc_n.js"></script>
+        <script src="owake_rtm.js"></script>
+        <!-- jquery -->
+        <script src="jquery-3.4.1.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="bootstrap.bundle.min.js"></script>
+        <!-- Socket.io -->
+        <script src="/socket.io/socket.io.js"></script>
+        <!-- axios -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <title>Owake</title>
+
+    <%- include("./popup/channelPrivateCreate") %>
+    <%- include("./popup/channelPublicCreate") %>
+    <%- include("./popup/channelJoin") %>
+</head>
+
+<body>
+
+    <div class="main-container">
+        <div class="top-nav-container">
+            <img class="logo" src="logo_black.svg" alt="">
+            <div class="search-options">
+                <input id="searchWord" type="text">&nbsp;<i id="searchIcon" class="fas fa-search"></i>
+            </div>
+        </div>
+
+        <div class="inner-container">
+            <div class="body-container">
+                <%- include('./container/bodyContainer') %>
+            </div>
+            <div class="feed-container">
+
+            </div>
+        </div>
+    </div>
+
+    <%- include('./jsparts/main-parts.ejs') %>
+</body>
+
+</html>
