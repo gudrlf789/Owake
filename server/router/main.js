@@ -34,27 +34,21 @@ router.get("/list", (req, res, next) => {
 
 router.post("/register", async (req, res) => {
     const bodyData = req.body;
+    const docName = bodyData.adminId+bodyData.adminPassword+bodyData.channelName+bodyData.channelType;
+
     const snapshot = await firebaseCollection
-        .where("channelName", "==", bodyData.channelName)
+        .doc(docName)
         .get();
 
-    if (snapshot.empty) {
+    if (!snapshot.exists) {
+        bodyData.registreTime = firebase.firestore.FieldValue.serverTimestamp();
         // doc에 특정 이름을 설정하고 싶을때
         firebaseCollection
-            .doc(bodyData.channelName)
+            .doc(docName)
             .set(bodyData)
-            /*db.collection("ChannelList").add({
-            adminId: bodyData.adminId,
-            adminPassword: bodyData.adminPassword,
-            roomType: bodyData.roomType,
-            channelName: bodyData.channelName,
-            roomPassword: bodyData.roomPassword,
-            roomTheme: bodyData.roomTheme,
-            roomDescription: bodyData.roomDescription
-        })*/
             .then((e) => {
                 return res.status(200).json({
-                    success: true,
+                    success: true
                 });
             })
             .catch((err) => {
@@ -65,7 +59,7 @@ router.post("/register", async (req, res) => {
             });
     } else {
         return res.status(200).json({
-            success: false,
+            success: false
         });
     }
 });
@@ -98,11 +92,11 @@ router.post("/search", async (req, res) => {
 
 router.post("/update", async (req, res) => {
     const bodyData = req.body;
+    const docName = bodyData.adminId+bodyData.adminPassword+bodyData.channelName+bodyData.channelType;
 
     firebaseCollection
-        .doc(bodyData.channelName)
+        .doc(docName)
         .update({
-            channelType: bodyData.channelType,
             channelPassword: bodyData.channelPassword,
             channelCategory: bodyData.channelCategory,
             channelDescription: bodyData.channelDescription,
@@ -122,9 +116,10 @@ router.post("/update", async (req, res) => {
 
 router.post("/delete", (req, res) => {
     const bodyData = req.body;
+    const docName = bodyData.adminId+bodyData.adminPassword+bodyData.channelName+bodyData.channelType;
 
     firebaseCollection
-        .doc(bodyData.channelName)
+        .doc(docName)
         .delete()
         .then((e) => {
             return res.status(200).json({
@@ -141,20 +136,19 @@ router.post("/delete", (req, res) => {
 
 router.post("/info", (req, res) => {
     const bodyData = req.body;
-    const channelArray = [];
+    const docName = bodyData.adminId+bodyData.adminPassword+bodyData.channelName+bodyData.channelType;
+    const channelInfo = [];
 
     firebaseCollection
-        .where("adminId", "==", bodyData.adminId)
+        .doc(docName)
         .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                channelArray.push(doc.data());
-            });
-
-            return res.status(200).json({
-                success: true,
-                adminChannelList: channelArray
-            });
+        .then((doc) => {
+            if(doc.exists){
+                return res.status(200).json({
+                    success: true,
+                    channelInfo: channelInfo.push(doc.data())
+                });
+            }
         })
         .catch((err) => {
             return res.status(500).json({
