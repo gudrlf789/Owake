@@ -53,12 +53,12 @@
         </div>
         <div class="body-container">
             <div class="search-bar">
-                <input type="text" placeholder="Search Input">
+                <input id="searchWord" type="text" placeholder="Search Input">
                 <img id="searchIcon" src="search_icon.svg" alt="search">
             </div>
             <div class="mobile-top-navbar">
                 <div class="search-icon">
-                    <img src="search_icon.svg" alt="search">
+                    <img id="searchIcon" src="search_icon.svg" alt="search">
                 </div>
                 <div class="menu-icon">
                     <div class="btn-group">
@@ -117,7 +117,8 @@
         const searchInputElement = document.createElement("input");
         let searchActive = false;
 
-        searchInputElement.id = "mobileSearchInput";
+        searchInputElement.id = "searchWord";
+        searchInputElement.className = "mobileSearchInput"
         searchInputElement.placeholder = "Input Search";
 
         let categoryBoxAll = document.querySelector("#All");
@@ -135,6 +136,14 @@
             }
         })
 
+        $(document).on("keydown", ".mobileSearchInput", (e) => {
+            const reqData = {
+                channelName: $(".mobileSearchInput").val(),
+            };
+            if (e.which === 13 && searchInputElement.value.length !== 0) {
+                searchResult(reqData);
+            }
+        });
 
         // Mobiled Category Click Event
         categoryBoxAll.addEventListener("click", (e) => {
