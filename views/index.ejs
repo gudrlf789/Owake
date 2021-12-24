@@ -36,33 +36,31 @@
                 <div class="logo">
                     <img src="logo.svg" alt="logo">
                 </div>
-                <div class="nav-inner-wrapper">
+                <div class="nav-inner-wrapper" id="dashboard">
                     <img src="dashboard.svg" alt="">
                     &nbsp;<p><span>Dashboard</span></p>
                 </div>
 
-                <div class="nav-inner-wrapper">
+                <div class="nav-inner-wrapper" id="channelList">
                     <img src="podcasts.svg" alt="">
                     &nbsp;<p><span>Channel</span></p>
                 </div>
 
-                <div class="nav-inner-wrapper">
+                <div class="nav-inner-wrapper" id="newsfeed">
                     <img src="newsfeed.svg" alt="">
                     &nbsp;<p><span>News Feed</span></p>
                 </div>
 
             </div>
         </div>
-
         <div class="body-container">
             <div class="search-bar">
-                <input id="searchWord" type="text" placeholder="Input the Search Plaese">
+                <input id="searchWord" type="text" placeholder="Search Input">
                 <img id="searchIcon" src="search_icon.svg" alt="search">
             </div>
-
             <div class="mobile-top-navbar">
                 <div class="search-icon">
-                    <img src="search_icon.svg" alt="search">
+                    <img id="searchIcon" src="search_icon.svg" alt="search">
                 </div>
                 <div class="menu-icon">
                     <div class="btn-group">
@@ -72,64 +70,130 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="mainTopDropMenu">
-                            <a class="dropdown-item" href="#">Channel Public Create</a>
-                            <a class="dropdown-item" href="#">Channel Private Create</a>
-                            <a class="dropdown-item" href="#">News Feed Create</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#channelPublicCreate">Public Channel Create</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#channelPrivateCreate">Private Channel Create</a>
+                            <a class="dropdown-item" href="#">Create News Feed</a>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="mobile-category">
-                <div class="category-box"></div>
-                <div class="category-box"></div>
-                <div class="category-box"></div>
-                <div class="category-box"></div>
-                <div class="category-box"></div>
-            </div>
-
-            <div class="top-body-container">
-                <div class="business-course-container">
-                    <d5iv class="business-title-container">
-                        <p class="business-title">
-                            Business Course
-                        </p>
-                        <div class="business-right-subnav">
-                            <button class="business-button" type="button" data-toggle="modal"
-                                data-target="#channelPublicCreate">Channel Create</button>
-                            <button class="business-button" type="button" data-toggle="modal"
-                                data-target="#channelPrivateCreate">Channel Create(Private)</button>
-                            <button class="business-button" type="button" data-toggle="modal"
-                                data-target="#channelJoin">Channel Join</button>
-                        </div>
-                    </d5iv>
-                    <div class="business-box-container">
-                    </div>
+                <div class="category-box" id="All">
+                    <p>All</p>
                 </div>
+                <div class="category-box" id="Business">
+                    <p>Bu</p>
+                </div>
+                <div class="category-box" id="Channel">
+                    <p>Ch</p>
+                </div>
+                <!-- <div class="category-box" id="News">
+                    <p>News</p>
+                </div> -->
             </div>
-            <div class="middle-body-container">
-                <div class="channel-course-container">
-                    <div class="channel-title-container">
-                        <p class="channel-title">
-                            Channel
-                        </p>
-                        <div class="channel-right-subnav">
-                            <button class="channel-button" type="button" data-toggle="modal"
-                                data-target="#channelPublicCreate">Channel Create</button>
-                            <button class="channel-button" type="button" data-toggle="modal"
-                                data-target="#channelPrivateCreate">Channel Create(Private)</button>
-                            <button class="channel-button" type="button" data-toggle="modal"
-                                data-target="#channelJoin">Channel Join</button>
-                        </div>
-                    </div>
-                    <div class="channel-box-container">
-                    </div>
+            
+            <div class="body-container-wrapper">
+                <div class="top-body-container">
+                    <%- include('./businessList') %>
+                </div>
+                <div class="middle-body-container">
+                    <%- include('./channelList') %>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        let dashboard = $("#dashboard");
+        let channelList = $("#channelList");
+        let newsfeed = $("#newsfeed");
+        let bodyContainer = $(".body-container-wrapper");
+        let bodyContainer2 = document.querySelector(".body-container-wrapper");
+        let middleBodyContainer = $(".middle-body-container");
+        let channelBoxContainer = document.querySelector(".channel-box-container");
+        let mobileSearchIcon = document.querySelector(".search-icon");
 
-    <%- include('./jsparts/main-parts.ejs') %>
+        const mobileTopNavbar = document.querySelector(".mobile-top-navbar");
+        const searchInputElement = document.createElement("input");
+        let searchActive = false;
+
+        searchInputElement.id = "searchWord";
+        searchInputElement.className = "mobileSearchInput"
+        searchInputElement.placeholder = "Input Search";
+
+        let categoryBoxAll = document.querySelector("#All");
+        let categoryBoxBu = document.querySelector("#Business");
+        let categoryBoxCh = document.querySelector("#Channel");
+
+        //Mobile Search Events
+        mobileSearchIcon.addEventListener("click", (e) => {
+            searchActive = !searchActive;
+            if (searchActive === true) {
+                mobileTopNavbar.append(searchInputElement)
+            }
+            else {
+                mobileTopNavbar.removeChild(searchInputElement);
+            }
+        })
+
+        $(document).on("keydown", ".mobileSearchInput", (e) => {
+            const reqData = {
+                channelName: $(".mobileSearchInput").val(),
+            };
+            if (e.which === 13 && searchInputElement.value.length !== 0) {
+                searchResult(reqData);
+            }
+        });
+
+        // Mobiled Category Click Event
+        categoryBoxAll.addEventListener("click", (e) => {
+            e.preventDefault();
+            while (bodyContainer2.hasChildNodes()) {
+                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            }
+            bodyContainer.load('/all');
+        })
+
+        categoryBoxBu.addEventListener("click", (e) => {
+            e.preventDefault();
+            while (bodyContainer2.hasChildNodes()) {
+                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            }
+            bodyContainer.load('/business');
+        })
+
+        categoryBoxCh.addEventListener("click", (e) => {
+            e.preventDefault();
+            while (bodyContainer2.hasChildNodes()) {
+                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            }
+            bodyContainer.load('/channelList');
+        })
+        // Mobiled Category Click Event End
+
+        dashboard.click(() => {
+            location.replace("/")
+        })
+
+        channelList.click(() => {
+            while (bodyContainer2.hasChildNodes()) {
+                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            }
+            bodyContainer.load('/channelList');
+        })
+
+        newsfeed.click(() => {
+            while (bodyContainer2.hasChildNodes()) {
+                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            }
+            bodyContainer.load('/newsfeed');
+        })
+
+    </script>
+    <%- include('./jsparts/main-parts') %>
+
 </body>
 
 </html>
