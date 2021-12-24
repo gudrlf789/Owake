@@ -34,17 +34,17 @@
                 <div class="logo">
                     <img src="logo.svg" alt="logo">
                 </div>
-                <div class="nav-inner-wrapper">
+                <div class="nav-inner-wrapper" id="dashboard">
                     <img src="dashboard.svg" alt="">
                     &nbsp;<p><span>Dashboard</span></p>
                 </div>
 
-                <div class="nav-inner-wrapper">
+                <div class="nav-inner-wrapper" id="channelList">
                     <img src="podcasts.svg" alt="">
                     &nbsp;<p><span>Channel</span></p>
                 </div>
 
-                <div class="nav-inner-wrapper">
+                <div class="nav-inner-wrapper" id="newsfeed">
                     <img src="newsfeed.svg" alt="">
                     &nbsp;<p><span>News Feed</span></p>
                 </div>
@@ -54,7 +54,7 @@
 
         <div class="body-container">
             <div class="search-bar">
-                <input type="text" placeholder="Input the Search Plaese"><img src="search_icon.svg" alt="search">
+                <input type="text" placeholder="Search Input"><img src="search_icon.svg" alt="search">
             </div>
 
             <div class="mobile-top-navbar">
@@ -69,9 +69,9 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="mainTopDropMenu">
-                            <a class="dropdown-item" href="#">Channel Public Create</a>
-                            <a class="dropdown-item" href="#">Channel Private Create</a>
-                            <a class="dropdown-item" href="#">News Feed Create</a>
+                            <a class="dropdown-item" href="#">Public Channel Create</a>
+                            <a class="dropdown-item" href="#">Private Channel Create</a>
+                            <a class="dropdown-item" href="#">Create News Feed</a>
                         </div>
                     </div>
                 </div>
@@ -93,11 +93,11 @@
                         </p>
                         <div class="business-right-subnav">
                             <button class="business-button" type="button" data-toggle="modal"
-                                data-target="#channelPublicCreate">Channel Create</button>
+                                data-target="#channelPublicCreate">Create Public Channel</button>
                             <button class="business-button" type="button" data-toggle="modal"
-                                data-target="#channelPrivateCreate">Channel Create(Private)</button>
+                                data-target="#channelPrivateCreate">Create Private Channel</button>
                             <button class="business-button" type="button" data-toggle="modal"
-                                data-target="#channelJoin">Channel Join</button>
+                                data-target="#channelJoin">Join Channel</button>
                         </div>
                     </div>
                     <div class="business-box-container">
@@ -273,16 +273,17 @@
                         </p>
                         <div class="channel-right-subnav">
                             <button class="channel-button" type="button" data-toggle="modal"
-                                data-target="#channelPublicCreate">Channel Create</button>
+                                data-target="#channelPublicCreate">Create Public Channel</button>
                             <button class="channel-button" type="button" data-toggle="modal"
-                                data-target="#channelPrivateCreate">Channel Create(Private)</button>
+                                data-target="#channelPrivateCreate">Create Private Channel</button>
                             <button class="channel-button" type="button" data-toggle="modal"
-                                data-target="#channelJoin">Channel Join</button>
+                                data-target="#channelJoin">Join Channel</button>
                         </div>
                     </div>
                     <div class="channel-box-container">
                         <div class="channel-box">
                             <div class="channel-box-wrapper">
+                                <!-- Mobile App -->
                                 <div class="channel-menu">
                                     <div class="btn-group">
                                         <button type="button"
@@ -292,8 +293,8 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="channelDropDownMenu">
-                                            <a class="dropdown-item" href="#">Channel Update</a>
-                                            <a class="dropdown-item" href="#">Channel Remove</a>
+                                            <a class="dropdown-item" href="#">Update Channel</a>
+                                            <a class="dropdown-item" href="#">Remove Channel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -305,10 +306,10 @@
                                 </div>
                                 <div class="channel-box-footer">
                                     <div class="channel-box-footer-icon">
-                                        <img src="./img/lock.svg" alt="" class="lock-icon">
+                                        <img src="lock.svg" alt="" class="lock-icon">
                                     </div>
                                     <div class="channel-box-footer-users">
-                                        <p><span>Users/20</span></p>
+                                        <p><span>20 / Users</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -324,8 +325,8 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="channelDropDownMenu">
-                                            <a class="dropdown-item" href="#">Channel Update</a>
-                                            <a class="dropdown-item" href="#">Channel Remove</a>
+                                            <a class="dropdown-item" href="#">Update Channel</a>
+                                            <a class="dropdown-item" href="#">Remove Channel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -340,7 +341,7 @@
                                         <img src="./img/lock.svg" alt="" class="lock-icon">
                                     </div>
                                     <div class="channel-box-footer-users">
-                                        <p><span>Users/20</span></p>
+                                        <p><span>20 / Users</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -356,8 +357,8 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="channelDropDownMenu">
-                                            <a class="dropdown-item" href="#">Channel Update</a>
-                                            <a class="dropdown-item" href="#">Channel Remove</a>
+                                            <a class="dropdown-item" href="#">Update Channel</a>
+                                            <a class="dropdown-item" href="#">Remove Channel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -372,7 +373,7 @@
                                         <img src="./img/lock.svg" alt="" class="lock-icon">
                                     </div>
                                     <div class="channel-box-footer-users">
-                                        <p><span>Users/20</span></p>
+                                        <p><span>20 / Users</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -388,8 +389,8 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="channelDropDownMenu">
-                                            <a class="dropdown-item" href="#">Channel Update</a>
-                                            <a class="dropdown-item" href="#">Channel Remove</a>
+                                            <a class="dropdown-item" href="#">Update Channel</a>
+                                            <a class="dropdown-item" href="#">Remove Channel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -404,7 +405,7 @@
                                         <img src="./img/lock.svg" alt="" class="lock-icon">
                                     </div>
                                     <div class="channel-box-footer-users">
-                                        <p><span>Users/20</span></p>
+                                        <p><span>20 / Users</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -420,8 +421,8 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="channelDropDownMenu">
-                                            <a class="dropdown-item" href="#">Channel Update</a>
-                                            <a class="dropdown-item" href="#">Channel Remove</a>
+                                            <a class="dropdown-item" href="#">Update Channel</a>
+                                            <a class="dropdown-item" href="#">Remove Channel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -436,7 +437,7 @@
                                         <img src="./img/lock.svg" alt="" class="lock-icon">
                                     </div>
                                     <div class="channel-box-footer-users">
-                                        <p><span>Users/20</span></p>
+                                        <p><span>20 / Users</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -447,6 +448,26 @@
 
         </div>
     </div>
+    <script>
+        let dashboard = $("#dashboard");
+        let channelList = $("#channelList");
+        let newsfeed = $("#newsfeed");
+
+        dashboard.click(() => {
+            document.body
+            dashboard.load('/dashboard');
+        })
+
+        channelList.click(() => {
+            channelList.load('/channelList');
+        })
+
+        newsfeed.click(() => {
+            newsfeed.load('/newsfeed');
+        })
+
+    </script>
+    <%- include('./jsparts/main-parts') %>
 </body>
 
 </html>

@@ -422,7 +422,21 @@ body {
     overflow-y: auto;
   }
   .business-box-container > .business-box {
-    width: 100%;
+    /* width: 100%; */
+  }
+
+  .business-box {
+    padding : 10px;
+  }
+
+  .business-box-wrapper {
+    display : contents;
+    width : 100%;
+    box-sizing: border-box;
+  }
+  
+  .business-box-wrapper > img{
+    width : 100%;
   }
 
   .business-right-subnav {
