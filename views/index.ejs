@@ -51,12 +51,11 @@
 
             </div>
         </div>
-
         <div class="body-container">
             <div class="search-bar">
-                <input type="text" placeholder="Search Input"><img src="search_icon.svg" alt="search">
+                <input type="text" placeholder="Search Input">
+                <img id="searchIcon" src="search_icon.svg" alt="search">
             </div>
-
             <div class="mobile-top-navbar">
                 <div class="search-icon">
                     <img src="search_icon.svg" alt="search">
@@ -69,8 +68,10 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="mainTopDropMenu">
-                            <a class="dropdown-item" href="#">Public Channel Create</a>
-                            <a class="dropdown-item" href="#">Private Channel Create</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#channelPublicCreate">Public Channel Create</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#channelPrivateCreate">Private Channel Create</a>
                             <a class="dropdown-item" href="#">Create News Feed</a>
                         </div>
                     </div>
@@ -78,396 +79,96 @@
             </div>
 
             <div class="mobile-category">
-                <div class="category-box"></div>
-                <div class="category-box"></div>
-                <div class="category-box"></div>
-                <div class="category-box"></div>
-                <div class="category-box"></div>
+                <div class="category-box" id="All">
+                    <p>All</p>
+                </div>
+                <div class="category-box" id="Business">
+                    <p>Bu</p>
+                </div>
+                <div class="category-box" id="Channel">
+                    <p>Ch</p>
+                </div>
+                <!-- <div class="category-box" id="News">
+                    <p>News</p>
+                </div> -->
             </div>
 
-            <div class="top-body-container">
-                <div class="business-course-container">
-                    <div class="business-title-container">
-                        <p class="business-title">
-                            Business Course
-                        </p>
-                        <div class="business-right-subnav">
-                            <button class="business-button" type="button" data-toggle="modal"
-                                data-target="#channelPublicCreate">Create Public Channel</button>
-                            <button class="business-button" type="button" data-toggle="modal"
-                                data-target="#channelPrivateCreate">Create Private Channel</button>
-                            <button class="business-button" type="button" data-toggle="modal"
-                                data-target="#channelJoin">Join Channel</button>
-                        </div>
-                    </div>
-                    <div class="business-box-container">
-                        <div class="business-box">
-                            <div class="business-box-wrapper">
-                                <img src="KronWorld.png" alt="Kronworld">
-                                <div class="business-box-text">
-                                    <div class="business-box-title">
-                                        <p><span>Kronosa</span></p>
-                                    </div>
-                                    <div class="business-box-description">
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                            industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the
-                                            1500s, when an unknown printer took a galley of type and scrambled it to
-                                            make a type specimen book. It has survived not only five centuries, but
-                                            also
-                                            the leap into electronic typesetting, remaining essentially unchanged.
-                                            It
-                                            was popularised in the 1960s with the release of Letraset sheets
-                                            containing
-                                            Lorem Ipsum passages, and more recently with desktop publishing software
-                                            like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                    </div>
-                                    <div class="business-box-footer">
-                                        <div class="business-name">
-                                            <p><span>Kronosa</span></p>
-                                        </div>
-                                        <div class="business-users">
-                                            <p><span>Users / 20</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="business-box">
-                            <div class="business-box-wrapper">
-                                <img src="KronWorld.png" alt="Kronworld">
-                                <div class="business-box-text">
-                                    <div class="business-box-title">
-                                        <p><span>Cat</span></p>
-                                    </div>
-                                    <div class="business-box-description">
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                            industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the
-                                            1500s, when an unknown printer took a galley of type and scrambled it to
-                                            make a type specimen book. It has survived not only five centuries, but
-                                            also
-                                            the leap into electronic typesetting, remaining essentially unchanged.
-                                            It
-                                            was popularised in the 1960s with the release of Letraset sheets
-                                            containing
-                                            Lorem Ipsum passages, and more recently with desktop publishing software
-                                            like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                    </div>
-                                    <div class="business-box-footer">
-                                        <div class="business-name">
-                                            <p><span>Kronosa</span></p>
-                                        </div>
-                                        <div class="business-users">
-                                            <p><span>Users / 20</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="business-box">
-                            <div class="business-box-wrapper">
-                                <img src="KronWorld.png" alt="Kronworld">
-                                <div class="business-box-text">
-                                    <div class="business-box-title">
-                                        <p><span>Cat</span></p>
-                                    </div>
-                                    <div class="business-box-description">
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                            industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the
-                                            1500s, when an unknown printer took a galley of type and scrambled it to
-                                            make a type specimen book. It has survived not only five centuries, but
-                                            also
-                                            the leap into electronic typesetting, remaining essentially unchanged.
-                                            It
-                                            was popularised in the 1960s with the release of Letraset sheets
-                                            containing
-                                            Lorem Ipsum passages, and more recently with desktop publishing software
-                                            like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                    </div>
-                                    <div class="business-box-footer">
-                                        <div class="business-name">
-                                            <p><span>Kronosa</span></p>
-                                        </div>
-                                        <div class="business-users">
-                                            <p><span>Users / 20</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="business-box">
-                            <div class="business-box-wrapper">
-                                <img src="KronWorld.png" alt="Kronworld">
-                                <div class="business-box-text">
-                                    <div class="business-box-title">
-                                        <p><span>Cat</span></p>
-                                    </div>
-                                    <div class="business-box-description">
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                            industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the
-                                            1500s, when an unknown printer took a galley of type and scrambled it to
-                                            make a type specimen book. It has survived not only five centuries, but
-                                            also
-                                            the leap into electronic typesetting, remaining essentially unchanged.
-                                            It
-                                            was popularised in the 1960s with the release of Letraset sheets
-                                            containing
-                                            Lorem Ipsum passages, and more recently with desktop publishing software
-                                            like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                    </div>
-                                    <div class="business-box-footer">
-                                        <div class="business-name">
-                                            <p><span>Kronosa</span></p>
-                                        </div>
-                                        <div class="business-users">
-                                            <p><span>Users / 20</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="business-box">
-                            <div class="business-box-wrapper">
-                                <img src="./img/cat.jpg" alt="cat">
-                                <div class="business-box-text">
-                                    <div class="business-box-title">
-                                        <p><span>Cat</span></p>
-                                    </div>
-                                    <div class="business-box-description">
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                            industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the
-                                            1500s, when an unknown printer took a galley of type and scrambled it to
-                                            make a type specimen book. It has survived not only five centuries, but
-                                            also
-                                            the leap into electronic typesetting, remaining essentially unchanged.
-                                            It
-                                            was popularised in the 1960s with the release of Letraset sheets
-                                            containing
-                                            Lorem Ipsum passages, and more recently with desktop publishing software
-                                            like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                    </div>
-                                    <div class="business-box-footer">
-                                        <div class="business-name">
-                                            <p><span>Kronosa</span></p>
-                                        </div>
-                                        <div class="business-users">
-                                            <p><span>Users / 20</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+            <div class="body-container-wrapper">
+                <div class="top-body-container">
+                    <%- include('./businessList') %>
+                </div>
+                <div class="middle-body-container">
+                    <%- include('./channelList') %>
                 </div>
             </div>
-            <div class="middle-body-container">
-                <div class="channel-course-container">
-                    <div class="channel-title-container">
-                        <p class="channel-title">
-                            Channel
-                        </p>
-                        <div class="channel-right-subnav">
-                            <button class="channel-button" type="button" data-toggle="modal"
-                                data-target="#channelPublicCreate">Create Public Channel</button>
-                            <button class="channel-button" type="button" data-toggle="modal"
-                                data-target="#channelPrivateCreate">Create Private Channel</button>
-                            <button class="channel-button" type="button" data-toggle="modal"
-                                data-target="#channelJoin">Join Channel</button>
-                        </div>
-                    </div>
-                    <div class="channel-box-container">
-                        <div class="channel-box">
-                            <div class="channel-box-wrapper">
-                                <!-- Mobile App -->
-                                <div class="channel-menu">
-                                    <div class="btn-group">
-                                        <button type="button"
-                                            class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                                            id="channelDropDownMenu" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false" data-reference="parent">
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="channelDropDownMenu">
-                                            <a class="dropdown-item" href="#">Update Channel</a>
-                                            <a class="dropdown-item" href="#">Remove Channel</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="channel-box-title">
-                                    형길아 배고파
-                                </div>
-                                <div class="channel-box-description">
-                                    배고프다고배고프다고배고프다고배고프다고
-                                </div>
-                                <div class="channel-box-footer">
-                                    <div class="channel-box-footer-icon">
-                                        <img src="lock.svg" alt="" class="lock-icon">
-                                    </div>
-                                    <div class="channel-box-footer-users">
-                                        <p><span>20 / Users</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="channel-box">
-                            <div class="channel-box-wrapper">
-                                <div class="channel-menu">
-                                    <div class="btn-group">
-                                        <button type="button"
-                                            class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                                            id="channelDropDownMenu" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false" data-reference="parent">
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="channelDropDownMenu">
-                                            <a class="dropdown-item" href="#">Update Channel</a>
-                                            <a class="dropdown-item" href="#">Remove Channel</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="channel-box-title">
-                                    형길아 배고파
-                                </div>
-                                <div class="channel-box-description">
-                                    배고프다고배고프다고배고프다고배고프다고
-                                </div>
-                                <div class="channel-box-footer">
-                                    <div class="channel-box-footer-icon">
-                                        <img src="./img/lock.svg" alt="" class="lock-icon">
-                                    </div>
-                                    <div class="channel-box-footer-users">
-                                        <p><span>20 / Users</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="channel-box">
-                            <div class="channel-box-wrapper">
-                                <div class="channel-menu">
-                                    <div class="btn-group">
-                                        <button type="button"
-                                            class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                                            id="channelDropDownMenu" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false" data-reference="parent">
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="channelDropDownMenu">
-                                            <a class="dropdown-item" href="#">Update Channel</a>
-                                            <a class="dropdown-item" href="#">Remove Channel</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="channel-box-title">
-                                    형길아 배고파
-                                </div>
-                                <div class="channel-box-description">
-                                    배고프다고배고프다고배고프다고배고프다고
-                                </div>
-                                <div class="channel-box-footer">
-                                    <div class="channel-box-footer-icon">
-                                        <img src="./img/lock.svg" alt="" class="lock-icon">
-                                    </div>
-                                    <div class="channel-box-footer-users">
-                                        <p><span>20 / Users</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="channel-box">
-                            <div class="channel-box-wrapper">
-                                <div class="channel-menu">
-                                    <div class="btn-group">
-                                        <button type="button"
-                                            class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                                            id="channelDropDownMenu" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false" data-reference="parent">
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="channelDropDownMenu">
-                                            <a class="dropdown-item" href="#">Update Channel</a>
-                                            <a class="dropdown-item" href="#">Remove Channel</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="channel-box-title">
-                                    형길아 배고파
-                                </div>
-                                <div class="channel-box-description">
-                                    배고프다고배고프다고배고프다고배고프다고
-                                </div>
-                                <div class="channel-box-footer">
-                                    <div class="channel-box-footer-icon">
-                                        <img src="./img/lock.svg" alt="" class="lock-icon">
-                                    </div>
-                                    <div class="channel-box-footer-users">
-                                        <p><span>20 / Users</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="channel-box">
-                            <div class="channel-box-wrapper">
-                                <div class="channel-menu">
-                                    <div class="btn-group">
-                                        <button type="button"
-                                            class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                                            id="channelDropDownMenu" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false" data-reference="parent">
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="channelDropDownMenu">
-                                            <a class="dropdown-item" href="#">Update Channel</a>
-                                            <a class="dropdown-item" href="#">Remove Channel</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="channel-box-title">
-                                    형길아 배고파
-                                </div>
-                                <div class="channel-box-description">
-                                    배고프다고배고프다고배고프다고배고프다고
-                                </div>
-                                <div class="channel-box-footer">
-                                    <div class="channel-box-footer-icon">
-                                        <img src="./img/lock.svg" alt="" class="lock-icon">
-                                    </div>
-                                    <div class="channel-box-footer-users">
-                                        <p><span>20 / Users</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
     <script>
         let dashboard = $("#dashboard");
         let channelList = $("#channelList");
         let newsfeed = $("#newsfeed");
+        let bodyContainer = $(".body-container-wrapper");
+        let bodyContainer2 = document.querySelector(".body-container-wrapper");
+        let middleBodyContainer = $(".middle-body-container");
+        let channelBoxContainer = document.querySelector(".channel-box-container");
+
+        let categoryBoxAll = document.querySelector("#All");
+        let categoryBoxBu = document.querySelector("#Business");
+        let categoryBoxCh = document.querySelector("#Channel");
+
+        let businessCourseBox = document.querySelector(".business-box");
+        businessCourseBox.addEventListener("click", (e) => {
+            
+        })
+
+
+        // Mobiled Category Click Event
+        categoryBoxAll.addEventListener("click", (e) => {
+            e.preventDefault();
+            while (bodyContainer2.hasChildNodes()) {
+                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            }
+            bodyContainer.load('/all');
+        })
+
+        categoryBoxBu.addEventListener("click", (e) => {
+            e.preventDefault();
+            while (bodyContainer2.hasChildNodes()) {
+                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            }
+            bodyContainer.load('/business');
+        })
+
+        categoryBoxCh.addEventListener("click", (e) => {
+            e.preventDefault();
+            while (bodyContainer2.hasChildNodes()) {
+                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            }
+            bodyContainer.load('/channelList');
+        })
+        // Mobiled Category Click Event End
 
         dashboard.click(() => {
-            document.body
-            dashboard.load('/dashboard');
+            location.replace("/")
         })
 
         channelList.click(() => {
-            channelList.load('/channelList');
+            while (bodyContainer2.hasChildNodes()) {
+                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            }
+            bodyContainer.load('/channelList');
         })
 
         newsfeed.click(() => {
-            newsfeed.load('/newsfeed');
+            while (bodyContainer2.hasChildNodes()) {
+                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            }
+            bodyContainer.load('/newsfeed');
         })
 
     </script>
     <%- include('./jsparts/main-parts') %>
+
 </body>
 
 </html>

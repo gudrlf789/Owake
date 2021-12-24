@@ -70,6 +70,12 @@ body {
   overflow: auto;
 }
 
+.body-container-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
 .search-bar {
   display: flex;
   margin-top: 30px;
@@ -151,6 +157,11 @@ body {
   background-color: #fff;
   border-radius: 11px;
   margin: 10px;
+}
+
+.business-box:hover {
+  color : #ad8aee;
+  cursor : pointer;
 }
 
 .business-box-wrapper {
@@ -249,6 +260,11 @@ body {
   background-color: #fff;
   border-radius: 11px;
   margin: 10px;
+}
+
+.channel-box:hover {
+  color : #ad8aee;
+  cursor : pointer;
 }
 
 .channel-box-wrapper {
@@ -406,6 +422,9 @@ body {
     border: 1px solid #000;
     border-radius: 10px;
     margin-right: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .search-bar {
@@ -415,6 +434,7 @@ body {
   .nav-container {
     display: none;
   }
+
   .business-box-container {
     display: flex;
     flex-direction: column;

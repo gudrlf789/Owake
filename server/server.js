@@ -69,9 +69,18 @@ app.get("/join", (req, res, next) => {
     res.render("channel");
 });
 
+app.get("/all", (req, res, next) => {
+    res.render("all");
+});
+
 app.get("/dashboard", (req, res, next) => {
     res.render("index");
 });
+
+app.get("/business", (req, res, next) => {
+    res.render("businessList");
+});
+
 app.get("/channelList", (req, res, next) => {
     res.render("channelList");
 });
