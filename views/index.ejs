@@ -111,14 +111,28 @@
         let bodyContainer2 = document.querySelector(".body-container-wrapper");
         let middleBodyContainer = $(".middle-body-container");
         let channelBoxContainer = document.querySelector(".channel-box-container");
+        let mobileSearchIcon = document.querySelector(".search-icon");
+
+        const mobileTopNavbar = document.querySelector(".mobile-top-navbar");
+        const searchInputElement = document.createElement("input");
+        let searchActive = false;
+
+        searchInputElement.id = "mobileSearchInput";
+        searchInputElement.placeholder = "Input Search";
 
         let categoryBoxAll = document.querySelector("#All");
         let categoryBoxBu = document.querySelector("#Business");
         let categoryBoxCh = document.querySelector("#Channel");
 
-        let businessCourseBox = document.querySelector(".business-box");
-        businessCourseBox.addEventListener("click", (e) => {
-            
+        //Mobile Search Events
+        mobileSearchIcon.addEventListener("click", (e) => {
+            searchActive = !searchActive;
+            if (searchActive === true) {
+                mobileTopNavbar.append(searchInputElement)
+            }
+            else {
+                mobileTopNavbar.removeChild(searchInputElement);
+            }
         })
 
 
