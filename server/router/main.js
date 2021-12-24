@@ -1,5 +1,6 @@
-let express = require("express");
-let router = express.Router();
+const express = require("express");
+const router = express.Router();
+const bcrypt = require("bcrypt");
 
 /** Firebase Settings */
 const firebase = require("firebase/app");
@@ -32,6 +33,29 @@ router.get("/list", (req, res, next) => {
         });
 });
 
+router.get("/kronosaChannelList", (req, res, next) => {
+    const roomArray = [];
+    firebaseCollection
+        .where("Kronosa", "==", "Y")
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                roomArray.push(doc.data());
+            });
+
+            return res.status(200).json({
+                success: true,
+                channelList: roomArray,
+            });
+        })
+        .catch((err) => {
+            return res.status(500).json({
+                success: false,
+                error: err,
+            });
+        });
+});
+
 router.post("/register", async (req, res) => {
     const bodyData = req.body;
     const docName = bodyData.adminId+bodyData.adminPassword+bodyData.channelName+bodyData.channelType;
@@ -42,6 +66,10 @@ router.post("/register", async (req, res) => {
 
     if (!snapshot.exists) {
         bodyData.registreTime = firebase.firestore.FieldValue.serverTimestamp();
+        bodyData.privateId = docName;
+        bodyData.encryptKey = await bcrypt.hash(docName, 10);
+        bodyData.Kronosa = "N";
+
         // doc에 특정 이름을 설정하고 싶을때
         firebaseCollection
             .doc(docName)

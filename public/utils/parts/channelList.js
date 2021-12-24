@@ -1,3 +1,19 @@
+$(document).on("click", ".channel-box-wrapper", (e) => {
+
+    const channelType = e.currentTarget.children[0].value;
+    const channelName = e.currentTarget.children[1].value;
+    const channelPassword = e.currentTarget.children[2].value;
+
+    if(channelType === "Public"){
+        $("#channelPublicJoin #public-channelName").val(channelName);
+        $("#channelPublicJoin").modal();
+    }else{
+        $("#channelPrivateJoin #private-channelName").val(channelName);
+        $("#channelPrivateJoin #private-passwordChecking").val(channelPassword);
+        $("#channelPrivateJoin").modal();
+    }
+});
+
 const callChannelList = () => {
     axios.get("/channel/list").then((res) => {
         // 자식요소 모두 삭제 후 불러오기
@@ -8,6 +24,9 @@ const callChannelList = () => {
                 $(
                     "<div class='channel-box'>"+
                         "<div class='channel-box-wrapper'>"+
+                            `<input type='hidden' value=${data.channelType} />`+
+                            `<input type='hidden' value=${data.channelName} />`+
+                            `<input type='hidden' value=${data.channelPassword} />`+
                             "<div class='channel-menu'>"+
                                 "<div class='btn-group'>"+
                                     "<button type='button'"+

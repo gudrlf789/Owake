@@ -220,6 +220,9 @@ async function leave() {
     $("#local-player-name").text("");
     $("#join").attr("disabled", false);
     $("#leave").attr("disabled", true);
+    
+    //테스트
+    window.location.href="http://localhost:1227";
 }
 
 async function subscribe(user, mediaType) {
