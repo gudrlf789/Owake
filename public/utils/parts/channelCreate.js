@@ -1,3 +1,13 @@
+function afterAction(typeFlag) {
+    typeFlag === "private" ? $("#channelPrivateCreate").modal("hide") : $("#channelPublicCreate").modal("hide");
+    $(`#${typeFlag}_adminId`).val("");
+    $(`#${typeFlag}_adminPassword`).val("");
+    $(`#${typeFlag}_channelName`).val("");
+    $(`#${typeFlag}_channelPassword`).val("");
+    $(`#${typeFlag}_theme-category`).val("outdoor");
+    $(`#${typeFlag}_channel-description`).val("");
+};
+
 function createChannelData(typeFlag) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
@@ -30,19 +40,13 @@ function createChannelData(typeFlag) {
         }).then((res) => {
             if (res.data.success) {
                 alert("The channel has been successfully created");
-                typeFlag === "private" ? $("#channelPrivateCreate").modal("hide") : $("#channelPublicCreate").modal("hide");
-                $(`#${typeFlag}_adminId`).val("");
-                $(`#${typeFlag}_adminPassword`).val("");
-                $(`#${typeFlag}_channelName`).val("");
-                $(`#${typeFlag}_channelPassword`).val("");
-                $(`#${typeFlag}_theme-category`).val("outdoor");
-                $(`#${typeFlag}_channel-description`).val("");
-                
+                afterAction(typeFlag);
                 callChannelList();
             } else {
                 alert(
                     `ChannelName: ${$(`#${typeFlag}_channelName`).val()} is already existed. please choice another type or channelName`
                 );
+                afterAction(typeFlag);
             }
         });
     }else{

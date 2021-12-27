@@ -70,10 +70,11 @@ router.post("/register", upload.single("image"), async (req, res) => {
     const docName = bodyData.adminId+bodyData.adminPassword+bodyData.channelName+bodyData.channelType;
 
     const snapshot = await firebaseCollection
-        .doc(docName)
+        .where("channelName", "==", bodyData.channelName)
+        .where("channelType", "==", bodyData.channelType)
         .get();
 
-    if (!snapshot.exists) {
+    if (snapshot.empty) {
         bodyData.registreTime = firebase.firestore.FieldValue.serverTimestamp();
         bodyData.privateId = docName;
         bodyData.Kronosa = "N";
