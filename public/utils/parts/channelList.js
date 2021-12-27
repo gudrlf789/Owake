@@ -19,7 +19,6 @@ const callChannelList = () => {
         $(".channel-box-container").empty();
 
         for (data of res.data.channelList) {
-            console.log(data.imageName);
             $(".channel-box-container").append(
                 $(
                     "<div class='channel-box'>" +
