@@ -2,17 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const path = require("path");
-let multer = require("multer");
-
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "./server/uploads");
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    },
-});
-let upload = multer({ storage: storage });
 
 const CORS_fn = (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");

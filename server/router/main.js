@@ -1,15 +1,5 @@
 const express = require("express");
 const router = express.Router();
-let multer = require("multer");
-let storage = multer.diskStorage({
-    destination: function (req, res, cb) {
-        cb(null, "/server/uploads");
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname + "-" + Date.now());
-    },
-});
-let upload = multer({ storage: storage });
 
 /** Firebase Settings */
 const firebase = require("firebase/app");
@@ -65,48 +55,40 @@ router.get("/kronosaChannelList", (req, res, next) => {
         });
 });
 
-router.post("/register", upload.single("profile"), async (req, res) => {
-    try {
-        res.send(req.files);
-        console.log(req.files);
-        const bodyData = req.body;
-        const docName =
-            bodyData.adminId +
-            bodyData.adminPassword +
-            bodyData.channelName +
-            bodyData.channelType;
+router.post("/register", async (req, res) => {
+    const bodyData = req.body;
+    const docName =
+        bodyData.adminId +
+        bodyData.adminPassword +
+        bodyData.channelName +
+        bodyData.channelType;
 
-        const snapshot = await firebaseCollection.doc(docName).get();
+    const snapshot = await firebaseCollection.doc(docName).get();
 
-        if (!snapshot.exists) {
-            bodyData.registreTime =
-                firebase.firestore.FieldValue.serverTimestamp();
-            bodyData.privateId = docName;
-            bodyData.Kronosa = "N";
+    if (!snapshot.exists) {
+        bodyData.registreTime = firebase.firestore.FieldValue.serverTimestamp();
+        bodyData.privateId = docName;
+        bodyData.Kronosa = "N";
 
-            // doc에 특정 이름을 설정하고 싶을때
-            firebaseCollection
-                .doc(docName)
-                .set(bodyData)
-                .then((e) => {
-                    return res.status(200).json({
-                        success: true,
-                    });
-                })
-                .catch((err) => {
-                    return res.status(500).json({
-                        success: false,
-                        error: err,
-                    });
+        // doc에 특정 이름을 설정하고 싶을때
+        firebaseCollection
+            .doc(docName)
+            .set(bodyData)
+            .then((e) => {
+                return res.status(200).json({
+                    success: true,
                 });
-        } else {
-            return res.status(200).json({
-                success: false,
+            })
+            .catch((err) => {
+                return res.status(500).json({
+                    success: false,
+                    error: err,
+                });
             });
-        }
-    } catch (error) {
-        console.log(error);
-        res.send(400);
+    } else {
+        return res.status(200).json({
+            success: false,
+        });
     }
 });
 
