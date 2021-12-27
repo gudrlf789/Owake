@@ -44,18 +44,23 @@ body {
   display: flex;
   flex-direction: row;
   margin-top: 17px;
+  cursor: pointer;
 }
 
-.nav-inner-wrapper > p > span {
+.nav-inner-wrapper>p>span {
   color: #fff;
   font-size: 17px;
+}
+
+.nav-inner-wrapper>p>span:hover {
+  color: #ad8aee;
 }
 
 .logo {
   margin-bottom: 30px;
 }
 
-.logo > img {
+.logo>img {
   width: 130px;
 }
 
@@ -70,12 +75,19 @@ body {
   overflow: auto;
 }
 
+.body-container-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .search-bar {
   display: flex;
   margin-top: 30px;
 }
 
-.search-bar > input {
+.search-bar>input {
   height: 25px;
   width: 200px;
   text-align: center;
@@ -84,15 +96,14 @@ body {
   outline: none;
 }
 
-.search-bar > img {
+.search-bar>img {
   cursor: pointer;
 }
 
 .top-body-container {
   display: flex;
-  margin: 20px;
+  margin: 10px;
   width: 90%;
-  height: 200px;
 }
 
 .middle-body-container {
@@ -129,16 +140,17 @@ body {
   display: flex;
 }
 
-.business-right-subnav > button {
+.business-right-subnav>button {
   margin-right: 10px;
 }
 
-.business-right-subnav > button {
+.business-right-subnav>button {
   font-size: 14px !important;
 }
 
 .business-box-container {
   display: flex;
+  align-items: center;
   overflow-x: auto;
   -ms-overflow-style: none;
 }
@@ -153,6 +165,11 @@ body {
   margin: 10px;
 }
 
+.business-box:hover {
+  color: #ad8aee;
+  cursor: pointer;
+}
+
 .business-box-wrapper {
   position: relative;
   display: flex;
@@ -161,7 +178,7 @@ body {
   margin: 10px;
 }
 
-.business-box-wrapper > img {
+.business-box-wrapper>img {
   width: 40%;
   height: min-content;
   border-radius: 10px;
@@ -190,7 +207,7 @@ body {
   margin-top: 15px;
 }
 
-.business-name > p > span {
+.business-name>p>span {
   font-size: 12px;
 }
 
@@ -198,7 +215,7 @@ body {
   margin-left: auto;
 }
 
-.business-users > p > span {
+.business-users>p>span {
   font-size: 12px;
 }
 
@@ -212,7 +229,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  margin: 10px;
+  /* margin: 10px; */
 }
 
 .channel-title-container {
@@ -229,7 +246,7 @@ body {
   margin-right: 10px;
 }
 
-.channel-right-subnav > button {
+.channel-right-subnav>button {
   font-size: 14px !important;
 }
 
@@ -249,6 +266,11 @@ body {
   background-color: #fff;
   border-radius: 11px;
   margin: 10px;
+}
+
+.channel-box:hover {
+  color: #ad8aee;
+  cursor: pointer;
 }
 
 .channel-box-wrapper {
@@ -280,7 +302,7 @@ body {
   display: flex;
 }
 
-.channel-right-subnav > button {
+.channel-right-subnav>button {
   margin-right: 10px;
 }
 
@@ -298,7 +320,7 @@ body {
   flex: 0.5;
 }
 
-.userList-course-container > p > span {
+.userList-course-container>p>span {
   font-size: 20px;
   font-weight: 500;
 }
@@ -325,7 +347,7 @@ body {
   flex: 0.5;
 }
 
-.newsfeed-course-container > p > span {
+.newsfeed-course-container>p>span {
   font-size: 20px;
   font-weight: 500;
 }
@@ -355,7 +377,7 @@ body {
   align-items: center;
 }
 
-.newsfeed-box-thumbnail > img {
+.newsfeed-box-thumbnail>img {
   width: 100%;
 }
 
@@ -383,7 +405,7 @@ body {
   display: flex;
 }
 
-.submit-container > button {
+.submit-container>button {
   margin-right: 10px;
 }
 
@@ -400,12 +422,24 @@ body {
     display: flex;
   }
 
-  .mobile-category > .category-box {
+  .mobile-category>.category-box {
     width: 50px;
     height: 50px;
     border: 1px solid #000;
     border-radius: 10px;
     margin-right: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mobileSearchInput {
+    width: 150px;
+    height: 30px;
+    position: absolute;
+    left: 60px;
+    text-align: center;
+    border-radius: 10px;
   }
 
   .search-bar {
@@ -415,13 +449,29 @@ body {
   .nav-container {
     display: none;
   }
+
   .business-box-container {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
   }
-  .business-box-container > .business-box {
+
+  .business-box-container>.business-box {
+    /* width: 100%; */
+  }
+
+  .business-box {
+    padding: 10px;
+  }
+
+  .business-box-wrapper {
+    display: contents;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .business-box-wrapper>img {
     width: 100%;
   }
 
@@ -447,7 +497,7 @@ body {
     overflow-y: auto;
   }
 
-  .channel-box-container > .channel-box {
+  .channel-box-container>.channel-box {
     width: 100%;
   }
 
