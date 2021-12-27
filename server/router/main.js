@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
         cb(null, '/server/uploads')
     },
     filename: function(req, file, cb) {
-        cb(null, file.filename + '-' + Date.now());
+        cb(null, file.originalname + '-' + Date.now());
     }
 });
 const upload = multer({ storage: storage });
@@ -66,7 +66,6 @@ router.get("/kronosaChannelList", (req, res, next) => {
 });
 
 router.post("/register", upload.single("image"), async (req, res) => {
-    console.log("확인용 : " + req.file);
     const bodyData = req.body;
     const docName = bodyData.adminId+bodyData.adminPassword+bodyData.channelName+bodyData.channelType;
 

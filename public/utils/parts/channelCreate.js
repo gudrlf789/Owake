@@ -12,7 +12,7 @@ function createChannelData(typeFlag) {
     };
 
     const formData = new FormData();
-    debugger;
+
     formData.append("adminId", $(`#${typeFlag}_adminId`).val());
     formData.append("adminPassword", $(`#${typeFlag}_adminPassword`).val());
     formData.append("channelType", typeFlag === "private" ? "Private" : "Public");
@@ -23,7 +23,6 @@ function createChannelData(typeFlag) {
     formData.append("image", $("#fileTest")[0].files);
     
     if(!korean.test(reqData.adminId)){
-        debugger;
         axios.post("/channel/register", formData, {
             headers : {
                 "Content-Type": "multipart/form-data"
