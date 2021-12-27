@@ -110,7 +110,7 @@
         let channelList = $("#channelList");
         let newsfeed = $("#newsfeed");
         let bodyContainer = $(".body-container-wrapper");
-        let bodyContainer2 = document.querySelector(".body-container-wrapper");
+        
         let middleBodyContainer = $(".middle-body-container");
         let channelBoxContainer = document.querySelector(".channel-box-container");
         let mobileSearchIcon = document.querySelector(".search-icon");
@@ -150,8 +150,8 @@
         // Mobiled Category Click Event
         categoryBoxAll.addEventListener("click", (e) => {
             e.preventDefault();
-            while (bodyContainer2.hasChildNodes()) {
-                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            while (bodyContainer[0].hasChildNodes()) {
+                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
             }
             bodyContainer.load('/all', () => {
                 callChannelKronosaList();
@@ -161,8 +161,8 @@
 
         categoryBoxBu.addEventListener("click", (e) => {
             e.preventDefault();
-            while (bodyContainer2.hasChildNodes()) {
-                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            while (bodyContainer[0].hasChildNodes()) {
+                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
             }
             
             bodyContainer.load('/business', () => {
@@ -172,8 +172,8 @@
 
         categoryBoxCh.addEventListener("click", (e) => {
             e.preventDefault();
-            while (bodyContainer2.hasChildNodes()) {
-                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            while (bodyContainer[0].hasChildNodes()) {
+                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
             }
             bodyContainer.load('/channelList', () => {
                 callChannelList();
@@ -189,15 +189,17 @@
         })
 
         channelList.click(() => {
-            while (bodyContainer2.hasChildNodes()) {
-                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            while (bodyContainer[0].hasChildNodes()) {
+                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
             }
-            bodyContainer.load('/channelList');
+            bodyContainer.load('/channelList', () => {
+                callChannelList();
+            });
         })
 
         newsfeed.click(() => {
-            while (bodyContainer2.hasChildNodes()) {
-                bodyContainer2.removeChild(bodyContainer2.firstChild);
+            while (bodyContainer[0].hasChildNodes()) {
+                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
             }
             bodyContainer.load('/newsfeed');
         })
