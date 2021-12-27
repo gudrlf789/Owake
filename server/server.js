@@ -100,15 +100,6 @@ app.get("/newsfeed", (req, res, next) => {
     res.render("newsfeed");
 });
 
-app.post("/bulk", upload.array("profiles", 4), (req, res) => {
-    try {
-        res.send(req.files);
-    } catch (error) {
-        console.log(error);
-        res.send(400);
-    }
-});
-
 io.on("connection", (socket) => {
     socket.on("join-web", (channelName) => {
         socket.join(channelName);
