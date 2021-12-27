@@ -23,8 +23,8 @@
             <%- include("./popup/channelPublicCreate") %>
                 <%- include("./popup/channelPrivateCreate") %>
                     <%- include("./popup/channelJoin") %>
-                    <%- include("./popup/channelPrivateJoin") %>
-                    <%- include("./popup/channelPublicJoin") %>
+                        <%- include("./popup/channelPrivateJoin") %>
+                            <%- include("./popup/channelPublicJoin") %>
 </head>
 
 <body>
@@ -55,7 +55,7 @@
         </div>
         <div class="body-container">
             <div class="search-bar">
-                <input id="searchWord" type="text" placeholder="Search Input">
+                <input id="searchWord" type="text" placeholder="Search">
                 <img id="searchIcon" src="search_icon.svg" alt="search">
             </div>
             <div class="mobile-top-navbar">
@@ -94,7 +94,7 @@
                     <p>News</p>
                 </div> -->
             </div>
-            
+
             <div class="body-container-wrapper">
                 <div class="top-body-container">
                     <%- include('./businessList') %>
