@@ -63,9 +63,12 @@ router.post("/register", async (req, res) => {
         bodyData.channelName +
         bodyData.channelType;
 
-    const snapshot = await firebaseCollection.doc(docName).get();
+    const snapshot = await firebaseCollection
+        .where("channelName", "==", bodyData.channelName)
+        .where("channelType", "==", bodyData.channelType)
+        .get();
 
-    if (!snapshot.exists) {
+    if (snapshot.empty) {
         bodyData.registreTime = firebase.firestore.FieldValue.serverTimestamp();
         bodyData.privateId = docName;
         bodyData.Kronosa = "N";

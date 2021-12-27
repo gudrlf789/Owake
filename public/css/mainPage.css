@@ -88,8 +88,8 @@ body {
 }
 
 .search-bar>input {
-  height: 25px;
-  width: 200px;
+  height: 30px;
+  width: 20vw;
   text-align: center;
   border-radius: 8px;
   margin-right: 5px;
@@ -436,7 +436,7 @@ body {
   }
 
   .mobileSearchInput {
-    width: 150px;
+    width: 300px;
     height: 30px;
     position: absolute;
     left: 60px;

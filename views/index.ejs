@@ -110,7 +110,7 @@
         let channelList = $("#channelList");
         let newsfeed = $("#newsfeed");
         let bodyContainer = $(".body-container-wrapper");
-        
+
         let middleBodyContainer = $(".middle-body-container");
         let channelBoxContainer = document.querySelector(".channel-box-container");
         let mobileSearchIcon = document.querySelector(".search-icon");
@@ -121,7 +121,7 @@
 
         searchInputElement.id = "searchWord";
         searchInputElement.className = "mobileSearchInput"
-        searchInputElement.placeholder = "Input Search";
+        searchInputElement.placeholder = "Input Search Channel Name";
 
         let categoryBoxAll = document.querySelector("#All");
         let categoryBoxBu = document.querySelector("#Business");
@@ -164,7 +164,7 @@
             while (bodyContainer[0].hasChildNodes()) {
                 bodyContainer[0].removeChild(bodyContainer[0].firstChild);
             }
-            
+
             bodyContainer.load('/business', () => {
                 callChannelKronosaList();
             });

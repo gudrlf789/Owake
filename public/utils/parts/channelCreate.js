@@ -1,3 +1,15 @@
+function afterAction(typeFlag) {
+    typeFlag === "private"
+        ? $("#channelPrivateCreate").modal("hide")
+        : $("#channelPublicCreate").modal("hide");
+    $(`#${typeFlag}_adminId`).val("");
+    $(`#${typeFlag}_adminPassword`).val("");
+    $(`#${typeFlag}_channelName`).val("");
+    $(`#${typeFlag}_channelPassword`).val("");
+    $(`#${typeFlag}_theme-category`).val("outdoor");
+    $(`#${typeFlag}_channel-description`).val("");
+}
+
 function createChannelData(typeFlag) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
@@ -30,10 +42,10 @@ function createChannelData(typeFlag) {
         "channelDescription",
         $(`#${typeFlag}_channel-description`).val()
     );
-    formData.append("image", $("#fileTest")[0].files);
 
     if (!korean.test(reqData.adminId)) {
         axios.post("/channel/register", reqData).then((res) => {
+            $("#fileUploadForm").submit();
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 typeFlag === "private"
@@ -53,6 +65,7 @@ function createChannelData(typeFlag) {
                         `#${typeFlag}_channelName`
                     ).val()} is already existed. please choice another type or channelName`
                 );
+                afterAction(typeFlag);
             }
         });
     } else {
