@@ -11,8 +11,24 @@ function createChannelData(typeFlag) {
         channelDescription: $(`#${typeFlag}_channel-description`).val()
     };
 
+    const formData = new FormData();
+    debugger;
+    formData.append("adminId", $(`#${typeFlag}_adminId`).val());
+    formData.append("adminPassword", $(`#${typeFlag}_adminPassword`).val());
+    formData.append("channelType", typeFlag === "private" ? "Private" : "Public");
+    formData.append("channelName", $(`#${typeFlag}_channelName`).val());
+    formData.append("channelPassword", typeFlag === "private" ? $(`#private_channelPassword`).val() : "");
+    formData.append("channelCategory", $(`#${typeFlag}_theme-category`).val());
+    formData.append("channelDescription", $(`#${typeFlag}_channel-description`).val());
+    formData.append("image", $("#fileTest")[0].files);
+    
     if(!korean.test(reqData.adminId)){
-        axios.post("/channel/register", reqData).then((res) => {
+        debugger;
+        axios.post("/channel/register", formData, {
+            headers : {
+                "Content-Type": "multipart/form-data"
+            }
+        }).then((res) => {
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 typeFlag === "private" ? $("#channelPrivateCreate").modal("hide") : $("#channelPublicCreate").modal("hide");

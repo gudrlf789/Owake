@@ -1,6 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
+const multer = require("multer");
+const storage = multer.diskStorage({
+    destination: function(req, res, cb) {
+        cb(null, '/server/uploads')
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.filename + '-' + Date.now());
+    }
+});
+const upload = multer({ storage: storage });
 
 /** Firebase Settings */
 const firebase = require("firebase/app");
@@ -56,7 +65,8 @@ router.get("/kronosaChannelList", (req, res, next) => {
         });
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", upload.single("image"), async (req, res) => {
+    console.log("확인용 : " + req.file);
     const bodyData = req.body;
     const docName = bodyData.adminId+bodyData.adminPassword+bodyData.channelName+bodyData.channelType;
 
@@ -67,7 +77,6 @@ router.post("/register", async (req, res) => {
     if (!snapshot.exists) {
         bodyData.registreTime = firebase.firestore.FieldValue.serverTimestamp();
         bodyData.privateId = docName;
-        bodyData.encryptKey = await bcrypt.hash(docName, 10);
         bodyData.Kronosa = "N";
 
         // doc에 특정 이름을 설정하고 싶을때
