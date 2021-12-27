@@ -153,7 +153,10 @@
             while (bodyContainer2.hasChildNodes()) {
                 bodyContainer2.removeChild(bodyContainer2.firstChild);
             }
-            bodyContainer.load('/all');
+            bodyContainer.load('/all', () => {
+                callChannelKronosaList();
+                callChannelList();
+            });
         })
 
         categoryBoxBu.addEventListener("click", (e) => {
@@ -161,7 +164,10 @@
             while (bodyContainer2.hasChildNodes()) {
                 bodyContainer2.removeChild(bodyContainer2.firstChild);
             }
-            bodyContainer.load('/business');
+            
+            bodyContainer.load('/business', () => {
+                callChannelKronosaList();
+            });
         })
 
         categoryBoxCh.addEventListener("click", (e) => {
@@ -169,12 +175,17 @@
             while (bodyContainer2.hasChildNodes()) {
                 bodyContainer2.removeChild(bodyContainer2.firstChild);
             }
-            bodyContainer.load('/channelList');
+            bodyContainer.load('/channelList', () => {
+                callChannelList();
+            });
         })
         // Mobiled Category Click Event End
 
         dashboard.click(() => {
-            location.replace("/")
+            bodyContainer.load('/all', () => {
+                callChannelKronosaList();
+                callChannelList();
+            });
         })
 
         channelList.click(() => {
