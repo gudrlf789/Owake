@@ -513,6 +513,10 @@ body {
     width: 100%;
   }
 
+  .channel-box-wrapper {
+    width : 100%;
+  }
+
   .channel-menu {
     display: block;
     margin-left: auto;

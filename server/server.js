@@ -2,6 +2,17 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const path = require("path");
+let multer = require("multer");
+
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "./server/uploads");
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    },
+});
+let upload = multer({ storage: storage });
 
 const CORS_fn = (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -87,6 +98,15 @@ app.get("/channelList", (req, res, next) => {
 
 app.get("/newsfeed", (req, res, next) => {
     res.render("newsfeed");
+});
+
+app.post("/bulk", upload.array("profiles", 4), (req, res) => {
+    try {
+        res.send(req.files);
+    } catch (error) {
+        console.log(error);
+        res.send(400);
+    }
 });
 
 io.on("connection", (socket) => {
