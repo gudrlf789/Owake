@@ -234,6 +234,19 @@ body {
   /* margin: 10px; */
 }
 
+.channel-thumnail {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.channel-thumnail > img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .channel-title-container {
   display: flex;
   justify-content: space-between;

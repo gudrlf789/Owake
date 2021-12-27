@@ -19,6 +19,7 @@ const callChannelList = () => {
         $(".channel-box-container").empty();
 
         for (data of res.data.channelList) {
+            console.log(data.imageName);
             $(".channel-box-container").append(
                 $(
                     "<div class='channel-box'>" +
@@ -39,6 +40,9 @@ const callChannelList = () => {
                         "<a class='dropdown-item' href='#'>Channel Remove</a>" +
                         "</div>" +
                         "</div>" +
+                        "</div>" +
+                        "<div class='channel-thumnail'>" +
+                        `<img src='${data.imageName}' />` +
                         "</div>" +
                         "<div class='channel-box-title'>" +
                         data.channelName +

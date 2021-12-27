@@ -1,5 +1,19 @@
+let moment = require("moment");
+const nowDate = moment().format("YYYY-MM-DD");
+//const nowDateAndTime = moment().format("YYYY-MM-DD h:mm:ss a");
+const fs = require("fs");
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const storage = multer.diskStorage({
+    destination: function (req, res, cb) {
+        cb(null, `./server/uploads/${nowDate}`);
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    },
+});
+const upload = multer({ storage: storage });
 
 /** Firebase Settings */
 const firebase = require("firebase/app");
@@ -9,6 +23,20 @@ require("firebase/firestore");
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const firebaseCollection = db.collection("ChannelList");
+
+//uploads 폴더 없을시 생성
+fs.readdir("./server/uploads", (err) => {
+    if (err) {
+        fs.mkdirSync("./server/uploads");
+    }
+});
+
+//날짜마다 이미지 파일들 관리할수 있게 날짜 폴더 생성
+fs.readdir(`./server/uploads/${nowDate}`, (err) => {
+    if (err) {
+        fs.mkdirSync(`./server/uploads/${nowDate}`);
+    }
+});
 
 router.get("/list", (req, res, next) => {
     const roomArray = [];
@@ -55,7 +83,7 @@ router.get("/kronosaChannelList", (req, res, next) => {
         });
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", upload.single("image"), async (req, res) => {
     const bodyData = req.body;
     const docName =
         bodyData.adminId +

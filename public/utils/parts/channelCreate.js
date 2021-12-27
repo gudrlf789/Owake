@@ -42,10 +42,11 @@ function createChannelData(typeFlag) {
         "channelDescription",
         $(`#${typeFlag}_channel-description`).val()
     );
+    formData.append("image", $("#fileTest")[0].files[0]);
+    formData.append("imageName", $("#fileTest")[0].files[0].name);
 
-    if (!korean.test(reqData.adminId)) {
-        axios.post("/channel/register", reqData).then((res) => {
-            $("#fileUploadForm").submit();
+    if (!korean.test(formData.get("adminId"))) {
+        axios.post("/channel/register", formData).then((res) => {
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 typeFlag === "private"
