@@ -26,8 +26,7 @@
             <title>Owake</title>
 
             <%- include("./popup/fileshare") %>
-                <%- include("./popup/newuser") %>
-                    <%- include("./popup/deviceSettings") %>
+                <%- include("./popup/deviceSettings") %>
 </head>
 
 <body>
@@ -36,11 +35,14 @@
             <img class="img__logo" src="logo.svg" alt="">
         </div>
         <div class="nav__container">
-            <div id="loginBtn" class="options__button" data-toggle="modal" data-target="#newUserModal">
-                <i class="fas fa-sign-in-alt"></i>
-                <span>Login</span>
-            </div>
+            <form id="join-form">
+                <div id="leave" class="options__button">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Leave</span>
+                </div>
+            </form>
         </div>
+    </div>
     </div>
     <div class="main">
         <div class="main__left">
