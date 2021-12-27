@@ -11,16 +11,6 @@ function afterAction(typeFlag) {
 function createChannelData(typeFlag) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
-    const reqData = {
-        adminId: $(`#${typeFlag}_adminId`).val(),
-        adminPassword: $(`#${typeFlag}_adminPassword`).val(),
-        channelType: typeFlag === "private" ? "Private" : "Public",
-        channelName: $(`#${typeFlag}_channelName`).val(),
-        channelPassword: typeFlag === "private" ? $(`#private_channelPassword`).val() : "",
-        channelCategory: $(`#${typeFlag}_theme-category`).val(),
-        channelDescription: $(`#${typeFlag}_channel-description`).val()
-    };
-
     const formData = new FormData();
 
     formData.append("adminId", $(`#${typeFlag}_adminId`).val());
@@ -30,9 +20,10 @@ function createChannelData(typeFlag) {
     formData.append("channelPassword", typeFlag === "private" ? $(`#private_channelPassword`).val() : "");
     formData.append("channelCategory", $(`#${typeFlag}_theme-category`).val());
     formData.append("channelDescription", $(`#${typeFlag}_channel-description`).val());
-    formData.append("image", $("#fileTest")[0].files);
+    formData.append("image", $("#fileTest")[0].files[0]);
+    formData.append("imageName", $("#fileTest")[0].files[0].name);
     
-    if(!korean.test(reqData.adminId)){
+    if(!korean.test(formData.get("adminId"))){
         axios.post("/channel/register", formData, {
             headers : {
                 "Content-Type": "multipart/form-data"
