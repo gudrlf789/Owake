@@ -159,7 +159,7 @@ async function join() {
 
     totalUsers[options.uid] = {
         audioTrack:
-            checkDeskTopAudio.length != 0 ? localTracks.videoTrack : undefined,
+            checkDeskTopAudio.length != 0 ? localTracks.audioTrack : undefined,
         videoTrack:
             checkDeskTopCamera.length != 0 ? localTracks.videoTrack : undefined,
     };

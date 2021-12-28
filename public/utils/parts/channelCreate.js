@@ -6,6 +6,7 @@ function afterAction(typeFlag) {
     $(`#${typeFlag}_channelPassword`).val("");
     $(`#${typeFlag}_theme-category`).val("outdoor");
     $(`#${typeFlag}_file_thumnail`).val("");
+    $(`#${typeFlag}_channel-description`).val("");
 
 }
 
@@ -20,10 +21,7 @@ function createChannelData(typeFlag) {
     formData.append("channelName", $(`#${typeFlag}_channelName`).val());
     formData.append("channelPassword",$(`#${typeFlag}_channelPassword`).val());
     formData.append("channelCategory", $(`#${typeFlag}_theme-category`).val());
-    formData.append(
-        "channelDescription",
-        $(`#${typeFlag}_channel-description`).val()
-    );
+    formData.append("channelDescription", $(`#${typeFlag}_channel-description`).val());
  
     if($(`#${typeFlag}_file_thumnail`)[0].files[0]){
         formData.append("image", $(`#${typeFlag}_file_thumnail`)[0].files[0]);
