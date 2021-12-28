@@ -126,8 +126,9 @@ router.post("/register", upload.single("image"), async (req, res) => {
 router.post("/search", async (req, res) => {
     const bodyData = req.body;
     const roomArray = [];
-
+    
     firebaseCollection
+        .where("channelType", "==", bodyData.channelType)
         .where("channelName", ">=", bodyData.channelName)
         .where("channelName", "<=", bodyData.channelName + "\uf8ff")
         .get()
@@ -138,7 +139,7 @@ router.post("/search", async (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                channelList: roomArray,
+                channelList: roomArray
             });
         })
         .catch((err) => {

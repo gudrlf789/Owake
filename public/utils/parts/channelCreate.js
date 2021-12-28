@@ -5,7 +5,8 @@ function afterAction(typeFlag) {
     $(`#${typeFlag}_channelName`).val("");
     $(`#${typeFlag}_channelPassword`).val("");
     $(`#${typeFlag}_theme-category`).val("outdoor");
-    $(`#${typeFlag}_channel-description`).val("");
+    $(`#${typeFlag}_file_thumnail`).val("");
+
 }
 
 function createChannelData(typeFlag) {
@@ -15,10 +16,7 @@ function createChannelData(typeFlag) {
 
     formData.append("adminId", $(`#${typeFlag}_adminId`).val());
     formData.append("adminPassword", $(`#${typeFlag}_adminPassword`).val());
-    formData.append(
-        "channelType",
-        typeFlag === "private" ? "Private" : "Public"
-    );
+    formData.append("channelType", typeFlag === "private" ? "Private" : "Public");
     formData.append("channelName", $(`#${typeFlag}_channelName`).val());
     formData.append("channelPassword",$(`#${typeFlag}_channelPassword`).val());
     formData.append("channelCategory", $(`#${typeFlag}_theme-category`).val());
