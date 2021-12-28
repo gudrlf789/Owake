@@ -32,9 +32,9 @@ function searchResult(reqData) {
                     $(
                         "<div class='channel-box'>" +
                             "<div class='channel-box-wrapper'>" +
-                            `<input type='hidden' value=${data.channelType} />` +
-                            `<input type='hidden' value=${data.channelName} />` +
-                            `<input type='hidden' value=${data.channelPassword} />` +
+                            `<input type='hidden' value=${data.channelType} >` +
+                            `<input type='hidden' value=${data.channelName} >` +
+                            `<input type='hidden' value=${data.channelPassword} >` +
                             "<div class='channel-menu'>" +
                             "<div class='btn-group'>" +
                             "<button type='button'" +
