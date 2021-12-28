@@ -230,6 +230,16 @@ body {
   font-size: 12px;
 }
 
+.business-button {
+    width: 100px;
+    box-sizing: content-box;
+    border: 1px solid #000;
+    background: #fff;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+
 /* Channel */
 
 .channel-menu {

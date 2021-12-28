@@ -2,7 +2,7 @@ function searchKeyWord() {
 
     const reqData = {
         channelName: $("#searchWord").val(),
-        channelType: $("#select_options_search").val()
+        channelType: $("#select_options_search").val(),
     };
     
     if(reqData.channelType === "Private" && reqData.channelName === ""){
