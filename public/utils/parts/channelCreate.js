@@ -1,7 +1,5 @@
 function afterAction(typeFlag) {
-    typeFlag === "private"
-        ? $("#channelPrivateCreate").modal("hide")
-        : $("#channelPublicCreate").modal("hide");
+    typeFlag === "private" ? $("#channelPrivateCreate").modal("hide") : $("#channelPublicCreate").modal("hide");
     $(`#${typeFlag}_adminId`).val("");
     $(`#${typeFlag}_adminPassword`).val("");
     $(`#${typeFlag}_channelName`).val("");
@@ -12,17 +10,6 @@ function afterAction(typeFlag) {
 
 function createChannelData(typeFlag) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-
-    const reqData = {
-        adminId: $(`#${typeFlag}_adminId`).val(),
-        adminPassword: $(`#${typeFlag}_adminPassword`).val(),
-        channelType: typeFlag === "private" ? "Private" : "Public",
-        channelName: $(`#${typeFlag}_channelName`).val(),
-        channelPassword:
-            typeFlag === "private" ? $(`#private_channelPassword`).val() : "",
-        channelCategory: $(`#${typeFlag}_theme-category`).val(),
-        channelDescription: $(`#${typeFlag}_channel-description`).val(),
-    };
 
     const formData = new FormData();
 
@@ -42,23 +29,17 @@ function createChannelData(typeFlag) {
         "channelDescription",
         $(`#${typeFlag}_channel-description`).val()
     );
-    formData.append("image", $("#fileTest")[0].files[0]);
-    formData.append("imageName", $("#fileTest")[0].files[0].name);
 
-    if (!korean.test(formData.get("adminId"))) {
+    if($("#fileTest")[0].files[0]){
+        formData.append("image", $("#fileTest")[0].files[0]);
+        formData.append("imageName", $("#fileTest")[0].files[0].name);
+    }
+
+    if (!korean.test(formData.get("adminId")) && !korean.test(formData.get("channelName"))) {
         axios.post("/channel/register", formData).then((res) => {
             if (res.data.success) {
                 alert("The channel has been successfully created");
-                typeFlag === "private"
-                    ? $("#channelPrivateCreate").modal("hide")
-                    : $("#channelPublicCreate").modal("hide");
-                $(`#${typeFlag}_adminId`).val("");
-                $(`#${typeFlag}_adminPassword`).val("");
-                $(`#${typeFlag}_channelName`).val("");
-                $(`#${typeFlag}_channelPassword`).val("");
-                $(`#${typeFlag}_theme-category`).val("outdoor");
-                $(`#${typeFlag}_channel-description`).val("");
-
+                afterAction(typeFlag);
                 callChannelList();
             } else {
                 alert(
@@ -70,7 +51,8 @@ function createChannelData(typeFlag) {
             }
         });
     } else {
-        alert("You can only type in English.");
+        alert("You can only type AdminId and channelName in English.");
+        afterAction(typeFlag);
     }
 }
 
