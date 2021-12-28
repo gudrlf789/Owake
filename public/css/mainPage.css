@@ -82,6 +82,16 @@ body {
   width: 100%;
 }
 
+#select_options_search {
+    border-radius: 20px;
+    height: 30px;
+    font-size: 13px;
+    width: 100px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
 .search-bar {
   display: flex;
   margin-top: 30px;
