@@ -23,17 +23,16 @@ $(async () => {
 let rtmClient = AgoraRTM.createInstance(options.appid);
 
 async function joinRtm() {
-    channel = rtmClient.createChannel(
-        $("#channel").val() || window.sessionStorage.getItem("channel")
-    );
-    options.uid = $("#uid").val() || window.sessionStorage.getItem("uid");
-    userName = $("#uid").val() || window.sessionStorage.getItem("uid");
+    channel = rtmClient.createChannel(window.sessionStorage.getItem("channel"));
+    options.uid = window.sessionStorage.getItem("uid");
+    userName = window.sessionStorage.getItem("uid");
     await rtmClient.login(options);
     await channel.join().then(() => {
         messageAreaFunc();
         messageArea.className = "message";
         messageArea.textContent =
-            "You have successfully joined channel " + channel.channelId;
+            "You have successfully joined channel " +
+            window.sessionStorage.getItem("channel");
         messageList.append(messageArea);
     });
 

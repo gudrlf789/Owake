@@ -33,40 +33,6 @@ $(async () => {
     }
 });
 
-$(() => {
-    if (options.appid && options.channel) {
-        $("#join-form").submit();
-    }
-});
-
-$("#join-form").submit(async function (e) {
-    e.preventDefault();
-    const nickname = $("#uid").val();
-    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-
-    if (nickname === "" || nickname === null || nickname === undefined) {
-        alert("Plaese Enter the UserID");
-        return;
-    }
-
-    if (korean.test(nickname)) {
-        return alert("You can only type in English.");
-    } else {
-        $("#join").attr("disabled", true);
-        try {
-            options.token = $("#token").val();
-            options.channel = $("#channel").val();
-            options.uid = nickname;
-            $("#newUserModal").modal("hide");
-            await join();
-        } catch (error) {
-            console.error(error);
-        } finally {
-            $("#leave").attr("disabled", false);
-        }
-    }
-});
-
 $("#leave").click(function (e) {
     leave();
 });
@@ -159,7 +125,7 @@ async function join() {
 
     totalUsers[options.uid] = {
         audioTrack:
-            checkDeskTopAudio.length != 0 ? localTracks.videoTrack : undefined,
+            checkDeskTopAudio.length != 0 ? localTracks.audioTrack : undefined,
         videoTrack:
             checkDeskTopCamera.length != 0 ? localTracks.videoTrack : undefined,
     };
@@ -168,9 +134,6 @@ async function join() {
     if (window.sessionStorage.length == 0) {
         window.sessionStorage.setItem("channel", options.channel);
         window.sessionStorage.setItem("uid", options.uid);
-    } else {
-        $("#join").attr("disabled", true);
-        $("#leave").attr("disabled", false);
     }
 
     localVideoBox.uid = client.uid;
@@ -226,7 +189,7 @@ async function leave() {
     $("#join").attr("disabled", false);
     $("#leave").attr("disabled", true);
 
-    window.location.href = "/";
+    window.location.replace("/");
 }
 
 async function subscribe(user, mediaType) {
