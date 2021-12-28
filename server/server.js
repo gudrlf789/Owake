@@ -3,9 +3,6 @@ const cors = require("cors");
 const app = express();
 const path = require("path");
 
-let moment = require("moment");
-const nowDate = moment().format("YYYY-MM-DD");
-
 const CORS_fn = (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -51,7 +48,7 @@ app.use(express.static(path.join(__dirname, "../public/utils/parts")));
 app.use(express.static(path.join(__dirname, "../public/img/favicon")));
 app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../public/img/nav-icon")));
-app.use(express.static(path.join(__dirname, `./uploads/${nowDate}`)));
+app.use(express.static(path.join(__dirname, "./uploads/")));
 app.use(express.static(path.join(__dirname, "../views")));
 
 app.use(
