@@ -1,8 +1,7 @@
 # firebaseConfig
 
-firebase/
-
-server/config/
+/server/config/
+/server/uploads/
 
 # Logs
 

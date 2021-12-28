@@ -48,8 +48,8 @@ app.use(express.static(path.join(__dirname, "../public/utils/parts")));
 app.use(express.static(path.join(__dirname, "../public/img/favicon")));
 app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../public/img/nav-icon")));
+app.use(express.static(path.join(__dirname, "./uploads/")));
 app.use(express.static(path.join(__dirname, "../views")));
-app.use(express.static(path.join(__dirname, `./uploads/*`)));
 
 app.use(
     express.urlencoded({
