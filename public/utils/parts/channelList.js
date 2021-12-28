@@ -1,9 +1,9 @@
 function checkPassword(channelName, channelPassword) {
-    if(channelPassword !== ""){
+    if (channelPassword !== "") {
         $("#private-channelName").val(channelName);
         $("#private-passwordChecking").val(channelPassword);
         $("#channelPrivateJoin").modal();
-    }else{
+    } else {
         $("#public-channelName").val(channelName);
         $("#channelPublicJoin").modal();
     }
@@ -14,7 +14,7 @@ $(document).on("click", ".channel-box-wrapper", (e) => {
     const channelName = e.currentTarget.children[1].value;
     const channelPassword = e.currentTarget.children[2].value;
 
-    switch(channelType) {
+    switch (channelType) {
         case "Public":
             checkPassword(channelName, channelPassword);
             break;
@@ -22,7 +22,7 @@ $(document).on("click", ".channel-box-wrapper", (e) => {
             checkPassword(channelName, channelPassword);
             break;
         default:
-            break; 
+            break;
     }
 });
 

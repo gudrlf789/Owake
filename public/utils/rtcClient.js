@@ -97,7 +97,7 @@ async function join() {
     const checkDeskTopCamera = await AgoraRTC.getCameras();
     const checkDeskTopAudio = await AgoraRTC.getMicrophones();
 
-    options.uid = await client.join(
+    await client.join(
         options.appid,
         options.channel || window.sessionStorage.getItem("channel"),
         options.token || null,
@@ -129,12 +129,6 @@ async function join() {
         videoTrack:
             checkDeskTopCamera.length != 0 ? localTracks.videoTrack : undefined,
     };
-
-    //처음 트랙 생성시 채널,uid 값 세션 스토리지에 저장
-    if (window.sessionStorage.length == 0) {
-        window.sessionStorage.setItem("channel", options.channel);
-        window.sessionStorage.setItem("uid", options.uid);
-    }
 
     localVideoBox.uid = client.uid;
     $("#local__video__container").append(localVideoBox);
