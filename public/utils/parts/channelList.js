@@ -1,15 +1,28 @@
+function checkPassword(channelName, channelPassword) {
+    if(channelPassword !== ""){
+        $("#private-channelName").val(channelName);
+        $("#private-passwordChecking").val(channelPassword);
+        $("#channelPrivateJoin").modal();
+    }else{
+        $("#public-channelName").val(channelName);
+        $("#channelPublicJoin").modal();
+    }
+}
+
 $(document).on("click", ".channel-box-wrapper", (e) => {
     const channelType = e.currentTarget.children[0].value;
     const channelName = e.currentTarget.children[1].value;
     const channelPassword = e.currentTarget.children[2].value;
 
-    if (channelType === "Public") {
-        $("#channelPublicJoin #public-channelName").val(channelName);
-        $("#channelPublicJoin").modal();
-    } else {
-        $("#channelPrivateJoin #private-channelName").val(channelName);
-        $("#channelPrivateJoin #private-passwordChecking").val(channelPassword);
-        $("#channelPrivateJoin").modal();
+    switch(channelType) {
+        case "Public":
+            checkPassword(channelName, channelPassword);
+            break;
+        case "Private":
+            checkPassword(channelName, channelPassword);
+            break;
+        default:
+            break; 
     }
 });
 
@@ -24,9 +37,9 @@ const callChannelList = () => {
                     $(
                         "<div class='channel-box'>" +
                             "<div class='channel-box-wrapper'>" +
-                            `<input type='hidden' value=${data.channelType} />` +
-                            `<input type='hidden' value=${data.channelName} />` +
-                            `<input type='hidden' value=${data.channelPassword} />` +
+                            `<input type='hidden' value=${data.channelType} >` +
+                            `<input type='hidden' value=${data.channelName} >` +
+                            `<input type='hidden' value=${data.channelPassword} >` +
                             "<div class='channel-menu'>" +
                             "<div class='btn-group'>" +
                             "<button type='button'" +
