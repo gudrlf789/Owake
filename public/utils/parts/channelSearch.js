@@ -1,16 +1,18 @@
-$("#searchIcon").click((e) => {
+function searchKeyWord() {
     const reqData = {
         channelName: $("#searchWord").val(),
+        channelType: $("#select_options_search").val()
     };
     searchResult(reqData);
+}
+
+$("#searchIcon").click((e) => {
+    searchKeyWord();
 });
 
 $("#searchWord").keydown((e) => {
-    const reqData = {
-        channelName: $("#searchWord").val(),
-    };
     if (e.which === 13) {
-        searchResult(reqData);
+        searchKeyWord();
     }
 });
 
