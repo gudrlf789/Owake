@@ -20,10 +20,7 @@ function createChannelData(typeFlag) {
         typeFlag === "private" ? "Private" : "Public"
     );
     formData.append("channelName", $(`#${typeFlag}_channelName`).val());
-    formData.append(
-        "channelPassword",
-        typeFlag === "private" ? $(`#private_channelPassword`).val() : ""
-    );
+    formData.append("channelPassword",$(`#${typeFlag}_channelPassword`).val());
     formData.append("channelCategory", $(`#${typeFlag}_theme-category`).val());
     formData.append(
         "channelDescription",
