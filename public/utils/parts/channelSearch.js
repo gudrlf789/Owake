@@ -19,7 +19,6 @@ function searchResult(reqData) {
         if (res.data.success) {
             // 자식요소 모두 삭제 후 불러오기
             $(".channel-box-container").empty();
-
             for (data of res.data.channelList) {
                 $(".channel-box-container").append(
                     $(
