@@ -26,10 +26,10 @@ function createChannelData(typeFlag) {
         "channelDescription",
         $(`#${typeFlag}_channel-description`).val()
     );
-
-    if($("#fileTest")[0].files[0]){
-        formData.append("image", $("#fileTest")[0].files[0]);
-        formData.append("imageName", $("#fileTest")[0].files[0].name);
+ 
+    if($(`#${typeFlag}_file_thumnail`)[0].files[0]){
+        formData.append("image", $(`#${typeFlag}_file_thumnail`)[0].files[0]);
+        formData.append("imageName", $(`#${typeFlag}_file_thumnail`)[0].files[0].name);
     }
 
     if (!korean.test(formData.get("adminId")) && !korean.test(formData.get("channelName"))) {

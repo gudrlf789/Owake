@@ -13,34 +13,36 @@ const callChannelKronosaList = () => {
         $(".business-box-container").empty();
 
         for (data of res.data.channelList) {
-            $(".business-box-container").append(
-                $(
-                    "<div class='business-box'>" +
-                        "<div class='business-box-wrapper'>" +
-                        `<input type='hidden' value=${data.channelName} />` +
-                        `<input type='hidden' value=${data.channelPassword} />` +
-                        `<img src='KronWorld.png' alt='Kronworld'>` +
-                        "<div class='business-box-text'>" +
-                        "<div class='business-box-title'>" +
-                        "<p><span>" +
-                        data.channelName +
-                        "</span></p>" +
-                        "</div>" +
-                        "<div class='business-box-description'>" +
-                        "</div>" +
-                        "<div class='business-box-footer'>" +
-                        "<div class='business-name'>" +
-                        "<p><span></span></p>" +
-                        "</div>" +
-                        "<div class='business-users'>" +
-                        "<p><span>Users / 20</span></p>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>"
-                )
-            );
+            if(data.channelType === "Public"){
+                $(".business-box-container").append(
+                    $(
+                        "<div class='business-box'>" +
+                            "<div class='business-box-wrapper'>" +
+                            `<input type='hidden' value=${data.channelName} />` +
+                            `<input type='hidden' value=${data.channelPassword} />` +
+                            `<img src='KronWorld.png' alt='Kronworld'>` +
+                            "<div class='business-box-text'>" +
+                            "<div class='business-box-title'>" +
+                            "<p><span>" +
+                            data.channelName +
+                            "</span></p>" +
+                            "</div>" +
+                            "<div class='business-box-description'>" +
+                            "</div>" +
+                            "<div class='business-box-footer'>" +
+                            "<div class='business-name'>" +
+                            "<p><span></span></p>" +
+                            "</div>" +
+                            "<div class='business-users'>" +
+                            "<p><span>Users / 20</span></p>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>"
+                    )
+                );
+            }
         }
     });
 };
