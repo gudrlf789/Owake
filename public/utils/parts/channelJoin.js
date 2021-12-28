@@ -6,7 +6,7 @@ $("#channelJoin-btn").click((e) => {
     window.sessionStorage.setItem("uid", userId);
 
     //테스트
-    window.location.href="http://localhost:1227/join";
+    window.location.href="https://owake.ga/join";
 });
 
 $("#private-channelJoin-btn").click((e) => {
@@ -28,7 +28,7 @@ $("#private-channelJoin-btn").click((e) => {
         window.sessionStorage.setItem("uid", userId);
 
         //테스트
-        window.location.href="http://localhost:1227/join";
+        window.location.href="https://owake.ga/join";
     }
 });
 
