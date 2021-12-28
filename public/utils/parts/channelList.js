@@ -19,7 +19,7 @@ const callChannelList = () => {
         $(".channel-box-container").empty();
 
         for (data of res.data.channelList) {
-            if(data.channelType === "Public"){
+            if (data.channelType === "Public") {
                 $(".channel-box-container").append(
                     $(
                         "<div class='channel-box'>" +
@@ -52,8 +52,12 @@ const callChannelList = () => {
                             "</div>" +
                             "<div class='channel-box-footer'>" +
                             "<div class='channel-box-footer-icon'>" +
-                            "<img src='./img/lock.svg' alt='' class='lock-icon'>" +
-                            "</img>" +
+                            `${
+                                data.channelPassword.length !== 0 ||
+                                data.channelPassword !== ""
+                                    ? "<img src='./img/lock.svg' alt='' class='lock-icon'></img>"
+                                    : "<img src='./img/unlock.svg' alt='' class='unlock-icon'></img>"
+                            }` +
                             "</div>" +
                             "<div class='channel-box-footer-users'>" +
                             "<p><span>20 / Users</span></p>" +
