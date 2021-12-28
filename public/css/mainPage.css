@@ -243,7 +243,10 @@ body {
 /* Channel */
 
 .channel-menu {
-  display: none;
+  position: absolute;
+    right: 0;
+    margin-right: 8px;
+    display : block;
 }
 
 .channel-course-container {
