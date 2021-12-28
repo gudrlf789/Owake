@@ -61,9 +61,17 @@ async function joinRtm() {
     });
 }
 
-document.getElementById("join").onclick = async function () {
+// document.getElementById("join").onclick = async function () {
+//     await joinRtm();
+// };
+
+if (
+    document.getElementById("channelJoin-btn") ||
+    document.getElementById("private-channelJoin-btn") ||
+    document.getElementById("public-channelJoin-btn")
+) {
     await joinRtm();
-};
+}
 
 // Client Event listeners
 // Display messages from peer
