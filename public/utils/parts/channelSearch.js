@@ -1,9 +1,15 @@
 function searchKeyWord() {
+
     const reqData = {
         channelName: $("#searchWord").val(),
         channelType: $("#select_options_search").val(),
     };
-    searchResult(reqData);
+    
+    if(reqData.channelType === "Private" && reqData.channelName === ""){
+        alert("Please Enter Private ChannelName");
+    }else{
+        searchResult(reqData);
+    }
 }
 
 $("#searchIcon").click((e) => {
