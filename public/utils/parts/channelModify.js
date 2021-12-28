@@ -41,3 +41,7 @@ $("#private_update").click((e) => {
 $("#public_update").click((e) => {
   updateChannelData("public");
 });
+
+$(document).on("click", "#test", (e) => {
+  debugger
+});

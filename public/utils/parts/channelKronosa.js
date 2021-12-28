@@ -40,7 +40,7 @@ const callChannelKronosaList = () => {
                             `<input type='hidden' value=${data.channelType} >` +
                             `<input type='hidden' value=${data.channelName} >` +
                             `<input type='hidden' value=${data.channelPassword} >` +
-                            `<img src=${data.imageName} >` +
+                            `<img src='${data.imageName}' />` +
                             "<div class='business-box-text'>" +
                             "<div class='business-box-title'>" +
                             "<p><span>" +
@@ -54,7 +54,6 @@ const callChannelKronosaList = () => {
                             "<p><span></span></p>" +
                             "</div>" +
                             "<div class='business-users'>" +
-                            "<p><span>Users / 20</span></p>" +
                             "</div>" +
                             "</div>" +
                             "</div>" +
