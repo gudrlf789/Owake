@@ -267,8 +267,9 @@ body {
 
 .channel-box-container {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  overflow-x: auto;
+  /* overflow-x: auto; */
   -ms-overflow-style: none;
 }
 
@@ -518,8 +519,6 @@ body {
 
   .channel-box-container {
     flex-direction: column;
-    overflow-x: hidden;
-    overflow-y: auto;
   }
 
   .channel-box-container>.channel-box {
@@ -531,8 +530,10 @@ body {
   }
 
   .channel-menu {
-    display: block;
-    margin-left: auto;
+    position: absolute;
+    right: 0;
+    margin-right: 8px;
+    display : block;
   }
 
   .bottom-container-first-wrapper {
