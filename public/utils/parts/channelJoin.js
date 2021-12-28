@@ -4,9 +4,7 @@ $("#channelJoin-btn").click((e) => {
 
     window.sessionStorage.setItem("channel", channelName);
     window.sessionStorage.setItem("uid", userId);
-
-    //테스트
-    window.location.href="https://owake.ga/join";
+    window.location.href = "/join";
 });
 
 $("#private-channelJoin-btn").click((e) => {
@@ -16,19 +14,17 @@ $("#private-channelJoin-btn").click((e) => {
     const userId = $("#private-nickName").val();
     const password = $("#private-roomPassword").val();
 
-    if(checkingPassword !== password){
+    if (checkingPassword !== password) {
         alert("Wrong Password");
         $("#private-channelName").val("");
         $("#private-passwordChecking").val("");
         $("#private-nickName").val("");
         $("#private-roomPassword").val("");
         $("#channelPrivateJoin").modal("hide");
-    }else{
+    } else {
         window.sessionStorage.setItem("channel", channelName);
         window.sessionStorage.setItem("uid", userId);
-
-        //테스트
-        window.location.href="https://owake.ga/join";
+        window.location.href = "/join";
     }
 });
 
@@ -38,7 +34,5 @@ $("#public-channelJoin-btn").click((e) => {
 
     window.sessionStorage.setItem("channel", channelName);
     window.sessionStorage.setItem("uid", userId);
-
-    //테스트
-    window.location.href="https://owake.ga/join";
+    window.location.href = "/join";
 });

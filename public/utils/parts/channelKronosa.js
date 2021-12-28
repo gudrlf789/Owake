@@ -13,14 +13,14 @@ const callChannelKronosaList = () => {
         $(".business-box-container").empty();
 
         for (data of res.data.channelList) {
-            if(data.channelType === "Public"){
+            if (data.channelType === "Public") {
                 $(".business-box-container").append(
                     $(
                         "<div class='business-box'>" +
                             "<div class='business-box-wrapper'>" +
                             `<input type='hidden' value=${data.channelName} />` +
                             `<input type='hidden' value=${data.channelPassword} />` +
-                            `<img src='KronWorld.png' alt='Kronworld'>` +
+                            `<img src=${data.imageName} alt='Kronworld'>` +
                             "<div class='business-box-text'>" +
                             "<div class='business-box-title'>" +
                             "<p><span>" +

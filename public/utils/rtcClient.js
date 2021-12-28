@@ -226,8 +226,7 @@ async function leave() {
     $("#join").attr("disabled", false);
     $("#leave").attr("disabled", true);
 
-    //테스트
-    window.location.href = "https://owake.ga/";
+    window.location.href = "/";
 }
 
 async function subscribe(user, mediaType) {
