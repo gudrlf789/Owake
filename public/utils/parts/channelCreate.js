@@ -12,7 +12,8 @@ function afterAction(typeFlag) {
 
 function createChannelData(typeFlag) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-
+    const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
+    
     const formData = new FormData();
 
     formData.append("adminId", $(`#${typeFlag}_adminId`).val());
@@ -22,10 +23,15 @@ function createChannelData(typeFlag) {
     formData.append("channelPassword",$(`#${typeFlag}_channelPassword`).val());
     formData.append("channelCategory", $(`#${typeFlag}_theme-category`).val());
     formData.append("channelDescription", $(`#${typeFlag}_channel-description`).val());
- 
+    
     if($(`#${typeFlag}_file_thumnail`)[0].files[0]){
-        formData.append("image", $(`#${typeFlag}_file_thumnail`)[0].files[0]);
-        formData.append("imageName", $(`#${typeFlag}_file_thumnail`)[0].files[0].name);
+        if(imageType.test($(`#${typeFlag}_file_thumnail`)[0].files[0].type)){
+            formData.append("image", $(`#${typeFlag}_file_thumnail`)[0].files[0]);
+            formData.append("imageName", $(`#${typeFlag}_file_thumnail`)[0].files[0].name);
+        }else{
+            alert("You can only select the image file");
+            return;
+        }
     }
 
     if (!korean.test(formData.get("adminId")) && !korean.test(formData.get("channelName"))) {
