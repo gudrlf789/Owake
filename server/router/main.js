@@ -84,7 +84,7 @@ router.get("/kronosaChannelList", (req, res, next) => {
 });
 
 router.post("/register", upload.single("image"), async (req, res) => {
-    const bodyData = req.body;
+    const bodyData = req.body; 
     const docName =
         bodyData.adminId +
         bodyData.adminPassword +
@@ -150,7 +150,7 @@ router.post("/search", async (req, res) => {
         });
 });
 
-router.post("/update", async (req, res) => {
+router.post("/update", upload.single("image"), async (req, res) => {
     const bodyData = req.body;
     const docName =
         bodyData.adminId +
@@ -163,6 +163,7 @@ router.post("/update", async (req, res) => {
         .update({
             channelPassword: bodyData.channelPassword,
             channelCategory: bodyData.channelCategory,
+            imageName : bodyData.imageName,
             channelDescription: bodyData.channelDescription,
         })
         .then((e) => {

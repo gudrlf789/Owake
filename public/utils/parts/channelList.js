@@ -9,10 +9,10 @@ function checkPassword(channelName, channelPassword) {
     }
 }
 
-$(document).on("click", ".channel-box-wrapper", (e) => {
-    const channelType = e.currentTarget.children[0].value;
-    const channelName = e.currentTarget.children[1].value;
-    const channelPassword = e.currentTarget.children[2].value;
+$(document).on("click", ".hidden-data", (e) => {
+    const channelType = e.currentTarget.children[2].value;
+    const channelName = e.currentTarget.children[3].value;
+    const channelPassword = e.currentTarget.children[4].value;
 
     switch (channelType) {
         case "Public":
@@ -26,6 +26,19 @@ $(document).on("click", ".channel-box-wrapper", (e) => {
     }
 });
 
+$(document).on("click", "#channel_updateBtn", (e) => {
+    const adminId = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[0].value;
+    const adminPassword = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[1].value;
+    const channelType = e.currentTarget.children[2].value;
+    const channelName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[3].value;
+
+    $("#update_adminId").val(adminId);
+    $("#update_adminPassword").val(adminPassword);
+    $("#update_channelName").val(channelName);
+    
+    $("#channelUpdate").modal();
+  });
+
 const callChannelList = () => {
     axios.get("/channel/list").then((res) => {
         // 자식요소 모두 삭제 후 불러오기
@@ -37,9 +50,15 @@ const callChannelList = () => {
                     $(
                         "<div class='channel-box'>" +
                             "<div class='channel-box-wrapper'>" +
+                            
+                            "<div class='hidden-data'>" +
+                            `<input type='hidden' value=${data.adminId} >` +
+                            `<input type='hidden' value=${data.adminPassword} >` +
                             `<input type='hidden' value=${data.channelType} >` +
                             `<input type='hidden' value=${data.channelName} >` +
                             `<input type='hidden' value=${data.channelPassword} >` +
+                            "</div>" +
+
                             "<div class='channel-menu'>" +
                             "<div class='dropdown-toggle dropdown-toggle-split'" +
                             "id='mainTopDropMenu' data-toggle='dropdown'" +
@@ -69,6 +88,9 @@ const callChannelList = () => {
                                     : "<img src='./img/unlock.svg' alt='' class='unlock-icon'></img>"
                             }` +
                             "</div>" +
+
+                            "<div>" + "<button id='channel_updateBtn'>업데이트</button>" + "<button>삭제</button>" +
+
                             "<div class='channel-box-footer-users'>" +
                             "</div>" +
                             "</div>" +

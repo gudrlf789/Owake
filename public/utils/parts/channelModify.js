@@ -1,47 +1,49 @@
-function updateChannelData(typeFlag) {
+$("#updateBtn").click((e) => {
   const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+  const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
 
-  const reqData = {
-    adminId: $(`#${typeFlag}_adminId`).val(),
-    adminPassword: $(`#${typeFlag}_adminPassword`).val(),
-    channelType: typeFlag === "private" ? "Private" : "Public",
-    channelName: $(`#${typeFlag}_channelName`).val(),
-    channelPassword: typeFlag === "private" ? $(`#private_channelPassword`).val() : "",
-    channelCategory: $(`#${typeFlag}_theme-category`).val(),
-    channelDescription: $(`#${typeFlag}_channel-description`).val()
-  };
+  const formData = new FormData();
 
-  if(!korean.test(reqData.adminId)){
-    axios.post("/channel/update", reqData).then((res) => {
+  formData.append("adminId", $(`#update_adminId`).val());
+  formData.append("adminPassword", $(`#update_adminPassword`).val());
+  
+  formData.append("channelType", "Public");
+
+  formData.append("channelName", $(`#update_channelName`).val());
+  formData.append("channelPassword",$(`#update_channelPassword`).val());
+  formData.append("channelCategory", $(`#update_theme-category`).val());
+  formData.append("channelDescription", $(`#update_channel-description`).val());
+
+  if($(`#update_file_thumnail`)[0].files[0]){
+    if(imageType.test($(`#update_file_thumnail`)[0].files[0].type)){
+        formData.append("image", $(`#update_file_thumnail`)[0].files[0]);
+        formData.append("imageName", $(`#update_file_thumnail`)[0].files[0].name);
+    }else{
+        alert("You can only select the image file");
+        return;
+    }
+  }
+
+  if (!korean.test(formData.get("adminId")) && !korean.test(formData.get("channelName"))) {
+    debugger;
+    axios.post("/channel/update", formData).then((res) => {
       if (res.data.success) {
         alert("The channel has been successfully modified");
-        typeFlag === "private" ? $("#channelPrivateCreate").modal("hide") : $("#channelPublicCreate").modal("hide");
-        $(`#${typeFlag}_adminId`).val("");
-        $(`#${typeFlag}_adminPassword`).val("");
-        $(`#${typeFlag}_channelName`).val("");
-        $(`#${typeFlag}_channelPassword`).val("");
-        $(`#${typeFlag}_theme-category`).val("outdoor");
-        $(`#${typeFlag}_channel-description`).val("");
+        $("#channelUpdate").modal("hide");
+        $(`#update_adminId`).val("");
+        $(`#update_adminPassword`).val("");
+        $(`#update_channelName`).val("");
+        $(`#update_channelPassword`).val("");
+        $(`#update_theme-category`).val("News");
+        $(`#update_channel-description`).val("");
 
         callChannelList();
       }else{
         alert("The channel hasn't been successfully modified");
-        typeFlag === "private" ? $("#channelPrivateCreate").modal("hide") : $("#channelPublicCreate").modal("hide");
+        $("#channelUpdate").modal("hide");
       }
     });
   }else{
     alert("You can only type in English.");
   }
-}
-
-$("#private_update").click((e) => {
-  updateChannelData("private");
-});
-
-$("#public_update").click((e) => {
-  updateChannelData("public");
-});
-
-$(document).on("click", "#test", (e) => {
-  debugger
 });
