@@ -25,7 +25,8 @@
                     <%- include("./popup/channelJoin") %>
                         <%- include("./popup/channelPrivateJoin") %>
                             <%- include("./popup/channelPublicJoin") %>
-                            <%- include("./popup/channelUpdate") %>
+                                <%- include("./popup/channelUpdate") %>
+                                    <%- include("./popup/channelDelete") %>
 </head>
 
 <body>
@@ -64,36 +65,23 @@
                 <img id="searchIcon" src="search_icon.svg" alt="search">
             </div>
             <div class="mobile-top-navbar">
+                <div class="mobile-search-input-container">
+                    <input class="mobile-search-input" type="text" placeholder="Search a Channel">
+                </div>
                 <div class="search-icon">
                     <img id="searchIcon" src="search_icon.svg" alt="search">
-                </div>
-                <div class="menu-icon">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                            id="mainTopDropMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                            data-reference="parent">
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="mainTopDropMenu">
-                            <a class="dropdown-item" href="#" data-toggle="modal"
-                                data-target="#channelPublicCreate">Create a Public Channel</a>
-                            <a class="dropdown-item" href="#" data-toggle="modal"
-                                data-target="#channelPrivateCreate">Create a Private Channel</a>
-                            <!-- <a class="dropdown-item" href="#">Create News Feed</a> -->
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="mobile-category">
                 <div class="category-box" id="All">
-                    <p>All</p>
+                    <p>All Channel</p>
                 </div>
                 <div class="category-box" id="Business">
-                    <p>Bu</p>
+                    <p>Partner Channel</p>
                 </div>
                 <div class="category-box" id="Channel">
-                    <p>Ch</p>
+                    <p>Public Channel</p>
                 </div>
                 <!-- <div class="category-box" id="News">
                     <p>News</p>
@@ -118,36 +106,21 @@
 
         let middleBodyContainer = $(".middle-body-container");
         let channelBoxContainer = document.querySelector(".channel-box-container");
-        let mobileSearchIcon = document.querySelector(".search-icon");
 
         const mobileTopNavbar = document.querySelector(".mobile-top-navbar");
-        const searchInputElement = document.createElement("input");
-        let searchActive = false;
-
-        searchInputElement.id = "searchWord";
-        searchInputElement.className = "mobileSearchInput"
-        searchInputElement.placeholder = "Search";
+        const searchInput = document.querySelector(".mobile-search-input");
 
         let categoryBoxAll = document.querySelector("#All");
         let categoryBoxBu = document.querySelector("#Business");
         let categoryBoxCh = document.querySelector("#Channel");
 
-        //Mobile Search Events
-        mobileSearchIcon.addEventListener("click", (e) => {
-            searchActive = !searchActive;
-            if (searchActive === true) {
-                mobileTopNavbar.append(searchInputElement)
-            }
-            else {
-                mobileTopNavbar.removeChild(searchInputElement);
-            }
-        })
 
-        $(document).on("keydown", ".mobileSearchInput", (e) => {
+        $(document).on("keydown", ".mobile-search-input", (e) => {
             const reqData = {
-                channelName: $(".mobileSearchInput").val(),
+                channelName: $(".mobile-search-input").val(),
             };
-            if (e.which === 13 && searchInputElement.value.length !== 0) {
+            if (e.which === 13 && searchInput.value.length !== 0) {
+                //channelSearch
                 searchResult(reqData);
             }
         });

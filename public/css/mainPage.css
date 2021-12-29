@@ -345,6 +345,98 @@ body {
   margin-right: 10px;
 }
 
+.channel-box-footer-btn {
+  display : flex;
+}
+
+#channelUpdateBtn {
+  margin-right : 10px;
+}
+
+/* Channel Btn FileBox Btn */
+.filebox {
+  display : flex;
+}
+
+.filebox .upload-name {
+  flex : 1;
+  display: inline-block;
+  height: 40px;
+  padding: 0 10px;
+  vertical-align: middle;
+  border: 1px solid #dddddd;
+  color: #999999;
+  font-size: 12px;
+}
+
+.filebox label {
+  flex : 0.3;
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  vertical-align: middle;
+  background-color: #999999;
+  cursor: pointer;
+  height: 40px;
+  width : 100%;
+  font-size: 12px;
+}
+
+.filebox input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+/* Category CSS */
+.col-sm > label {
+  font-size : 12px;
+}
+
+.col-sm > select {
+  height: 40px;
+  font-size: 12px;
+}
+
+
+/* Radio Btn */
+.choose-wrapper {
+  display : flex;
+  justify-content: space-evenly;
+}
+
+.choose-innner-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin : 12px;
+}
+
+.choose-innner-wrapper > p {
+  font-size : 12px;
+}
+
+/* ChannelDelete CSS */
+#channelDeleteAdminInfo {
+  display : flex;
+}
+
+#channelDeleteAdminInfo > div {
+  margin : 10px;
+}
+
+#channelDeleteChannelInfo {
+  display : flex;
+}
+
+#channelDeleteChannelInfo > div {
+  margin : 10px;
+}
+
 /* Bottom */
 
 .bottom-container-first-wrapper {
@@ -352,91 +444,6 @@ body {
   flex-direction: row;
   flex: 1;
   margin: 10px;
-}
-
-.userList-course-container {
-  position: relative;
-  flex: 0.5;
-}
-
-.userList-course-container>p>span {
-  font-size: 20px;
-  font-weight: 500;
-}
-
-.userList-box-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.userList-box {
-  width: 100%;
-  height: 100px;
-  background-color: #fff;
-  border-radius: 11px;
-  margin: 10px;
-}
-
-/* News Feed */
-
-.newsfeed-course-container {
-  position: relative;
-  flex: 0.5;
-}
-
-.newsfeed-course-container>p>span {
-  font-size: 20px;
-  font-weight: 500;
-}
-
-.newsfeed-box-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-}
-
-.newsfeed-box {
-  position: relative;
-  display: flex;
-  width: 100%;
-  height: 150px;
-  background-color: #fff;
-  border-radius: 11px;
-  margin: 10px;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.newsfeed-box-thumbnail {
-  flex: 0.3;
-  display: flex;
-  align-items: center;
-}
-
-.newsfeed-box-thumbnail>img {
-  width: 100%;
-}
-
-.newsfeed-box-text {
-  position: relative;
-  flex: 0.7;
-  margin: 10px;
-}
-
-.newsfeed-box-description {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.newsfeed-box-footer {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
 }
 
 /* Button Container */
@@ -451,9 +458,20 @@ body {
 @media (max-width: 768px) {
   .mobile-top-navbar {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
     padding: 20px;
+  }
+
+  .mobile-search-input-container {
+    margin-right : 10px;
+  }
+  
+  .mobile-search-input {
+    border-radius: 8px !important;
+    height : 100%;
+  }
+
+  .search-icon {
+    display : flex;
   }
 
   .mobile-category {
@@ -462,23 +480,16 @@ body {
   }
 
   .mobile-category>.category-box {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border: 1px solid #000;
     border-radius: 10px;
     margin-right: 7px;
     display: flex;
     justify-content: center;
+    font-size: 12px;
     align-items: center;
-  }
-
-  .mobileSearchInput {
-    width: 200px;
-    height: 30px;
-    position: absolute;
-    left: 60px;
     text-align: center;
-    border-radius: 10px;
   }
 
   .search-bar {

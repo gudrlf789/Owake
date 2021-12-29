@@ -17,7 +17,7 @@ export const momentShareFunc = () => {
     const momentShare = document.createElement("iframe");
     const searchForm = document.createElement("form");
 
-    searchInput.placeholder = "Enter The Input URL";
+    searchInput.placeholder = "Enter a URL";
     searchInput.style.textAlign = "center";
     momentShare.id = "momentShare-iframe";
     momentShare.name = "momentShare";
