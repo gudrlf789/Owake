@@ -41,17 +41,14 @@ const callChannelList = () => {
                             `<input type='hidden' value=${data.channelName} >` +
                             `<input type='hidden' value=${data.channelPassword} >` +
                             "<div class='channel-menu'>" +
-                            "<div class='btn-group'>" +
-                            "<button type='button'" +
-                            "class='btn btn-secondary dropdown-toggle dropdown-toggle-split'" +
-                            "id='channelDropDownMenu' data-toggle='dropdown' aria-haspopup='true'" +
-                            "aria-expanded='false' data-reference='parent'>" +
+                            "<div class='dropdown-toggle dropdown-toggle-split'" +
+                            "id='mainTopDropMenu' data-toggle='dropdown'" +
+                            "></div>" +
                             "<span class='sr-only'>Toggle Dropdown</span>" +
-                            "</button>" +
-                            "<div class='dropdown-menu' aria-labelledby='channelDropDownMenu'>" +
-                            "<a class='dropdown-item' href='#'>Channel Update</a>" +
-                            "<a class='dropdown-item' href='#'>Channel Remove</a>" +
-                            "</div>" +
+                            "<div class='dropdown-menu' aria-labelledby='mainTopDropMenu'>" +
+                            "<a class='dropdown-item' href='#' data-toggle='modal'" +
+                            "data-target='#channelUpdate'>Update Channel</a>" +
+                            "<a class='dropdown-item' href='#'>Remove Channel</a>" +
                             "</div>" +
                             "</div>" +
                             "<div class='channel-thumnail'>" +

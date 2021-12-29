@@ -1,4 +1,5 @@
-<div class="modal fade" id="channelPublicCreate" tabindex="-1" aria-labelledby="publicChannelModalLabel" aria-hidden="true">
+<div class="modal fade" id="channelPublicCreate" tabindex="-1" aria-labelledby="publicChannelModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -40,13 +41,7 @@
                             <label for="theme-category">Category</label>
 
                             <select id="public_theme-category">
-                                <option value="outdoor">Outdoor</option>
-                                <option value="sport">Sport</option>
-                                <option value="food">Food</option>
-                                <option value="movie">Movie</option>
-                                <option value="game">Game</option>
-                                <option value="coding">Coding</option>
-                                <option value="etc">Etc</option>
+                                <%- include("category") %>
                             </select>
                         </div>
                     </div>

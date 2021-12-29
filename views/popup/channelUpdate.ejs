@@ -1,10 +1,9 @@
-<div class="modal fade" id="channelPrivateCreate" tabindex="-1" aria-labelledby="privateChannelModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="channelUpdate" tabindex="-1" aria-labelledby="updateChannelModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="privateChannelModalLabel">
-                    Create a Private Channel
+                <h5 class="modal-title" id="updateChannelModalLabel">
+                    Update Channel
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -16,23 +15,22 @@
 
                         <div class="col-sm">
                             <p class="admin-info-text">Admin ID</p>
-                            <input id="private_adminId" type="text" placeholder="Enter the AdminID" required />
+                            <input id="public_adminId" type="text" placeholder="Enter the AdminID" required />
                         </div>
                         <div class="col-sm">
                             <p class="admin-info-text">Admin Password</p>
-                            <input id="private_adminPassword" type="password" placeholder="Enter the Admin Password" />
+                            <input id="public_adminPassword" type="password" placeholder="Enter the Admin Password" />
                         </div>
                     </div>
                     <br>
                     <div class="row roomSetting-info-group">
                         <div class="col-sm">
                             <p class="channel-info-text">Channel Name</p>
-                            <input id="private_channelName" type="text" placeholder="Enter the Channel Name">
+                            <input id="public_channelName" type="text" placeholder="Enter the Channel Name">
                         </div>
                         <div class="col-sm">
                             <p class="channel-info-text">Channel Password</p>
-                            <input id="private_channelPassword" type="password"
-                                placeholder="Enter the Channel Password">
+                            <input id="public_channelPassword" type="password" placeholder="Enter the Channel Password">
                         </div>
                     </div>
                     <br><br>
@@ -40,32 +38,31 @@
 
                         <div class="col-sm">
                             <label for="theme-category">Category</label>
-
-                            <select id="private-theme-category">
+                            <select id="public_theme-category">
                                 <%- include("category") %>
                             </select>
                         </div>
                     </div>
 
-                    <input id="private_file_thumnail" type="file" />
+                    <input id="public_file_thumnail" type="file" />
 
                     <div class="row description-info-group">
+
                         <div class="col-sm">
                             <label for="description">Description</label>
-
-                            <textarea style="width:100%" name="channel-description" id="private_channel-description"
+                            <textarea style="width:100%" name="channel-description" id="public_channel-description"
                                 cols="50" rows="10"></textarea>
                         </div>
                     </div>
                     <br><br>
                     <div class="button-group">
-                        <button id="private_create" type="submit" class="btn btn-primary btn-sm">
+                        <button id="public_create" class="btn btn-primary btn-sm">
                             Create
                         </button>
-                        <button id="private_update" type="button" class="btn btn-primary btn-sm">
+                        <button id="public_update" class="btn btn-primary btn-sm">
                             Update
                         </button>
-                        <button id="private_remove" type="button" class="btn btn-primary btn-sm">
+                        <button id="public_remove" class="btn btn-primary btn-sm">
                             Remove
                         </button>
                     </div>
