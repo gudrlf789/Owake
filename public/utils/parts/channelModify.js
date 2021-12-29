@@ -25,7 +25,6 @@ $("#updateBtn").click((e) => {
   }
 
   if (!korean.test(formData.get("adminId")) && !korean.test(formData.get("channelName"))) {
-    debugger;
     axios.post("/channel/update", formData).then((res) => {
       if (res.data.success) {
         alert("The channel has been successfully modified");
