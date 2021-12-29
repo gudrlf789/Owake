@@ -15,16 +15,16 @@
 
                         <div class="col-sm" style="margin-top: 10px;">
                             <p class="channel-info-text">Channel Name</p>
-                            <input id="channelJoin-channelName" type="text" placeholder="Enter the Channel Name" />
+                            <input id="channelJoin-channelName" type="text" placeholder="Enter the Channel Name" >
                         </div>
                         <div class="col-sm">
                             <div>
                                 <p class="public_room_active">Public Room</p>
-                                <input id="public_room_active" type="radio" value="Public" checked />
+                                <input id="public_room_active" type="radio" name="channelTypeRadioBtn" value="Public" checked >
                             </div>
                             <div>
                                 <p class="private_room_active">Private Room</p>
-                                <input id="private_room_active" type="radio" value="Private" />
+                                <input id="private_room_active" type="radio" name="channelTypeRadioBtn" value="Private" >
                                 <div>
                                     <p>Password</p>
                                     <input id="channelJoin-privateRoomPassword" type="password" />
@@ -34,19 +34,19 @@
 
                         <div class="col-sm">
                             <p class="nickname-text">Nick Name</p>
-                            <input id="channelJoin-nickName" type="text" placeholder="Enter the Nick Name" required />
+                            <input id="channelJoin-nickName" type="text" placeholder="Enter the Nick Name" required >
                         </div>
                         <div class="col-sm">
                             <p class="user_active">USER</p>
-                            <input id="user_active" type="radio" value="USER" checked />
+                            <input id="user_active" type="radio" name="userTypeRadioBtn" value="USER" checked >
                         </div>
                         <div class="col-sm">
                             <p class="admin_active">ADMIN</p>
-                            <input id="admin_active" type="radio" value="ADMIN" />
+                            <input id="admin_active" type="radio" name="userTypeRadioBtn" value="ADMIN" >
                         </div>
                         <div class="col-sm">
                             <p class="admin-password-text">Admin Password</p>
-                            <input id="channelJoin-adminPassword" type="password" disabled />
+                            <input id="channelJoin-adminPassword" type="password" disabled >
                         </div>
 
                     </div>

@@ -36,3 +36,12 @@ $("#public-channelJoin-btn").click((e) => {
     window.sessionStorage.setItem("uid", userId);
     window.location.href = "/join";
 });
+
+$("input:radio[name=userTypeRadioBtn]").change((e) => {
+    if (e.currentTarget.value == "ADMIN") {
+        $("#channelJoin-adminPassword").attr("disabled", false);
+    } else {
+        $("#channelJoin-adminPassword").attr("disabled", true);
+        $("#channelJoin-adminPassword").val("");
+    }
+});
