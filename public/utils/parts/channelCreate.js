@@ -35,12 +35,8 @@ function createChannelData(typeFlag) {
                 afterAction(typeFlag);
                 callChannelList();
             } else {
-                alert(
-                    `ChannelName: ${$(
-                        `#${typeFlag}_channelName`
-                    ).val()} is already existed. please choice another type or channelName`
-                );
-                afterAction(typeFlag);
+                alert(`ChannelName: ${$(`#${typeFlag}_channelName`).val()} is already existed. please choice another type or channelName`);
+                $(`#${typeFlag}_channelName`).val("");
             }
         });
     } else {

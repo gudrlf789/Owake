@@ -68,7 +68,6 @@ function searchResult(reqData) {
                             }` +
                             "</div>" +
                             "<div class='channel-box-footer-users'>" +
-                            "<p><span>20 / Users</span></p>" +
                             "</div>" +
                             "</div>" +
                             "</div>" +
