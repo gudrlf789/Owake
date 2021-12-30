@@ -227,7 +227,6 @@ router.post("/info", (req, res) => {
         bodyData.adminPassword +
         bodyData.channelName +
         bodyData.channelType;
-    const channelInfo = [];
 
     firebaseCollection
         .doc(docName)
@@ -236,7 +235,7 @@ router.post("/info", (req, res) => {
             if (doc.exists) {
                 return res.status(200).json({
                     success: true,
-                    channelInfo: channelInfo.push(doc.data()),
+                    channelInfo: doc.data(),
                 });
             }
         })
