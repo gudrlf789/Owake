@@ -1,10 +1,7 @@
 function searchKeyWord(searchTypeId) {
     const reqData = {
-        channelName:
-            searchTypeId === "searchWord"
-                ? $("#searchWord").val()
-                : $("#mobile_searchWord").val(),
-        channelType: $("#select_options_search").val(),
+        channelName: searchTypeId === "searchWord" ? $("#searchWord").val() : $("#mobile_searchWord").val(),
+        channelType: searchTypeId === "searchWord" ? $("#select_options_search").val() : $("#mobile_selectOptions").val()
     };
 
     if (reqData.channelType === "Private" && reqData.channelName === "") {
