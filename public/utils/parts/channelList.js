@@ -9,26 +9,31 @@ function checkPassword(channelName, channelPassword) {
     }
 }
 
+$(document).on(
+    "click",
+    ".channel-box-wrapper > .channel-thumnail, .channel-box-wrapper > .channel-box-title, .channel-box-wrapper > .channel-box-description",
+    (e) => {
+        const channelType =
+            e.currentTarget.parentNode.childNodes[0].childNodes[2].value;
+        const channelName =
+            e.currentTarget.parentNode.childNodes[0].childNodes[3].value;
+        const channelPassword =
+            e.currentTarget.parentNode.childNodes[0].childNodes[4].value;
 
-$(document).on("click", ".channel-box-wrapper > .channel-thumnail, .channel-box-wrapper > .channel-box-title, .channel-box-wrapper > .channel-box-description", (e) => {
-    const channelType = e.currentTarget.parentNode.childNodes[0].childNodes[2].value;
-    const channelName = e.currentTarget.parentNode.childNodes[0].childNodes[3].value;
-    const channelPassword = e.currentTarget.parentNode.childNodes[0].childNodes[4].value;
-
-    switch (channelType) {
-        case "Public":
-            checkPassword(channelName, channelPassword);
-            break;
-        case "Private":
-            checkPassword(channelName, channelPassword);
-            break;
-        default:
-            break;
+        switch (channelType) {
+            case "Public":
+                checkPassword(channelName, channelPassword);
+                break;
+            case "Private":
+                checkPassword(channelName, channelPassword);
+                break;
+            default:
+                break;
+        }
     }
-});
+);
 
 $(document).on("click", "#channelUpdateBtn", (e) => {
-
     const adminId = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[0].value;
     const adminPassword = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[1].value;
     const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[2].value;
@@ -81,7 +86,7 @@ const callChannelList = () => {
                             data.channelName +
                             "</div>" +
                             "<div class='channel-box-description'>" +
-                            data.channelDescription +
+                            `<p>${data.channelDescription}</p>` +
                             "</div>" +
                             "<div class='channel-box-footer'>" +
                             "<div class='channel-box-footer-icon'>" +
