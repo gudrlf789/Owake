@@ -25,7 +25,11 @@ function checkCreateData(typeFlag) {
             success : false,
             failData : "Channel Name"
         }
-    }else{}
+    }else{
+        return {
+            success : true
+        }
+    }
 }
 
 function createChannelData(typeFlag) {
