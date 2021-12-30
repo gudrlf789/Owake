@@ -11,11 +11,38 @@ function afterAction(typeFlag) {
     $(`#${typeFlag}_channel-description`).val("");
 }
 
+function checkCreateData(typeFlag) {
+    if ($(`#${typeFlag}_adminId`).val() === "") {
+        return {
+            success: false,
+            failData: "Admin ID",
+        };
+    } else if ($(`#${typeFlag}_adminPassword`).val() === "") {
+        return {
+            success: false,
+            failData: "Admin Password",
+        };
+    } else if ($(`#${typeFlag}_channelName`).val() === "") {
+        return {
+            success: false,
+            failData: "Channel Name",
+        };
+    } else {
+    }
+}
+
 function createChannelData(typeFlag) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
 
     const formData = new FormData();
+
+    const result = checkCreateData(typeFlag);
+
+    if (!result.success) {
+        alert(`Please enter ${result.failData}`);
+        return;
+    }
 
     formData.append("adminId", $(`#${typeFlag}_adminId`).val());
     formData.append("adminPassword", $(`#${typeFlag}_adminPassword`).val());
