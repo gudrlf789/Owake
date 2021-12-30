@@ -84,7 +84,7 @@ router.get("/kronosaChannelList", (req, res, next) => {
 });
 
 router.post("/register", upload.single("image"), async (req, res) => {
-    const bodyData = req.body; 
+    const bodyData = req.body;
     const docName =
         bodyData.adminId +
         bodyData.adminPassword +
@@ -126,7 +126,7 @@ router.post("/register", upload.single("image"), async (req, res) => {
 router.post("/search", async (req, res) => {
     const bodyData = req.body;
     const roomArray = [];
-    
+
     firebaseCollection
         .where("channelType", "==", bodyData.channelType)
         .where("channelName", ">=", bodyData.channelName)
@@ -139,7 +139,7 @@ router.post("/search", async (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                channelList: roomArray
+                channelList: roomArray,
             });
         })
         .catch((err) => {
@@ -163,7 +163,7 @@ router.post("/update", upload.single("image"), async (req, res) => {
         .update({
             channelPassword: bodyData.channelPassword,
             channelCategory: bodyData.channelCategory,
-            imageName : bodyData.imageName,
+            imageName: bodyData.imageName,
             channelDescription: bodyData.channelDescription,
         })
         .then((e) => {
@@ -191,16 +191,14 @@ router.post("/delete", (req, res) => {
         .doc(docName)
         .get()
         .then((doc) => {
-            if(doc.exists){
+            if (doc.exists) {
                 realDeleteData(docName, res);
-            }else{
+            } else {
                 return res.status(200).json({
-                    success: false
+                    success: false,
                 });
             }
         });
-
-    
 });
 
 function realDeleteData(docName, res) {
@@ -236,7 +234,7 @@ router.post("/info", (req, res) => {
             if (doc.exists) {
                 return res.status(200).json({
                     success: true,
-                    channelInfo: channelInfo.push(doc.data()),
+                    channelInfo: doc.data(),
                 });
             }
         })
