@@ -1,7 +1,7 @@
-function searchKeyWord() {
+function searchKeyWord(searchTypeId) {
     const reqData = {
-        channelName: $("#searchWord").val(),
-        channelType: $("#select_options_search").val(),
+        channelName: searchTypeId === "searchWord" ? $("#searchWord").val() : $("#mobile_searchWord").val(),
+        channelType: $("#select_options_search").val()
     };
 
     if (reqData.channelType === "Private" && reqData.channelName === "") {
@@ -11,13 +11,13 @@ function searchKeyWord() {
     }
 }
 
-$("#searchIcon").click((e) => {
-    searchKeyWord();
+$("#searchIcon, #mobile_searchIcon").click((e) => {
+    searchKeyWord(e.currentTarget.id);
 });
 
-$("#searchWord").keydown((e) => {
+$("#searchWord, #mobile_searchWord").keydown((e) => {
     if (e.which === 13) {
-        searchKeyWord();
+        searchKeyWord(e.currentTarget.id);
     }
 });
 
