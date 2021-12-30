@@ -35,27 +35,24 @@ const callChannelKronosaList = () => {
             if (data.channelType === "Public") {
                 $(".business-box-container").append(
                     $(
-                        "<div class='business-box'>" +
-                            "<div class='business-box-wrapper'>" +
+                        "<div class='channel-box'>" +
+                            "<div class='channel-box-wrapper'>" +
+                            "<div class='hidden-data'>" +
+                            `<input type='hidden' value=${data.adminId} >` +
+                            `<input type='hidden' value=${data.adminPassword} >` +
                             `<input type='hidden' value=${data.channelType} >` +
                             `<input type='hidden' value=${data.channelName} >` +
                             `<input type='hidden' value=${data.channelPassword} >` +
+                            `<input type='hidden' value=${data.imageName} >` +
+                            "</div>" +
+                            "<div class='channel-thumnail'>" +
                             `<img src='${data.imageName}' />` +
-                            "<div class='business-box-text'>" +
-                            "<div class='business-box-title'>" +
-                            "<p><span>" +
+                            "</div>" +
+                            "<div class='channel-box-title'>" +
                             data.channelName +
-                            "</span></p>" +
                             "</div>" +
-                            "<div class='business-box-description'>" +
-                            "</div>" +
-                            "<div class='business-box-footer'>" +
-                            "<div class='business-name'>" +
-                            "<p><span></span></p>" +
-                            "</div>" +
-                            "<div class='business-users'>" +
-                            "</div>" +
-                            "</div>" +
+                            "<div class='channel-box-description'>" +
+                            `<p>${data.channelDescription}</p>` +
                             "</div>" +
                             "</div>" +
                             "</div>"
