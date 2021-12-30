@@ -31,7 +31,6 @@ function searchResult(reqData) {
                     $(
                         "<div class='channel-box'>" +
                             "<div class='channel-box-wrapper'>" +
-                            "<div class='channel-thumnail-container'>" +
                             "<div class='hidden-data'>" +
                             `<input type='hidden' value=${data.adminId} >` +
                             `<input type='hidden' value=${data.adminPassword} >` +
@@ -41,7 +40,6 @@ function searchResult(reqData) {
                             "</div>" +
                             "<div class='channel-thumnail'>" +
                             `<img src='${data.imageName}' />` +
-                            "</div>" +
                             "</div>" +
                             "<div class='channel-box-title'>" +
                             data.channelName +

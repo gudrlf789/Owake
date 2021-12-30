@@ -33,10 +33,12 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
     const adminPassword = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[1].value;
     const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[2].value;
     const channelName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[3].value;
+    const imageName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[5].value;
     
     $("#update_adminId").val(adminId);
     $("#update_adminPassword").val(adminPassword);
     $("#update_channelName").val(channelName);
+    $("#update_upload").val(imageName);
     if (channelType === "Private") {
         $("#update_private").attr("checked", true);
         $("#update_public").attr("checked", false);
@@ -49,9 +51,7 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
 });
 
 $(document).on("click", "#channelDeleteBtn", (e) => {
-    const channelType =
-        e.currentTarget.parentNode.parentNode.parentNode.childNodes[0]
-            .children[2].value;
+    const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[2].value;
     $("#delete_channelType").val(channelType);
 });
 
@@ -66,17 +66,16 @@ const callChannelList = () => {
                     $(
                         "<div class='channel-box'>" +
                             "<div class='channel-box-wrapper'>" +
-                            "<div class='channel-thumnail-container'>" +
                             "<div class='hidden-data'>" +
                             `<input type='hidden' value=${data.adminId} >` +
                             `<input type='hidden' value=${data.adminPassword} >` +
                             `<input type='hidden' value=${data.channelType} >` +
                             `<input type='hidden' value=${data.channelName} >` +
                             `<input type='hidden' value=${data.channelPassword} >` +
+                            `<input type='hidden' value=${data.imageName} >` +
                             "</div>" +
                             "<div class='channel-thumnail'>" +
                             `<img src='${data.imageName}' />` +
-                            "</div>" +
                             "</div>" +
                             "<div class='channel-box-title'>" +
                             data.channelName +

@@ -1,8 +1,51 @@
 $("#channelJoin-btn").click((e) => {
-    const channelName = $("#channelJoin-channelName").val();
-    const userId = $("#channelJoin-username").val();
 
-    checkKorean(userId, channelName);
+    const reqData = {
+        userId: $("#channelJoin-username").val(),
+        adminPassword: $("#channelJoin-adminPassword").val(),
+        channelType: $("input:radio[name=join_userType]:checked").val(),
+        channelName: $("#channelJoin-channelName").val(),
+        channelPassword: $("#channelJoin-channelPassword").val()
+    };
+
+    axios.post("/channel/info",reqData).then((res) => {
+        if(res.data.success){
+            switch($("input:radio[name=join_userType]:checked").val()) {
+                case "ADMIN" :
+                    if(res.data.channelInfo.adminPassword !== reqData.adminPassword){
+                        alert("Wrong Admin Password");
+                    }else if(res.data.channelInfo.channelPassword !== reqData.channelPassword){
+                        alert("Wrong Channel Password");
+                    }else{
+                        checkKorean(reqData.userId, reqData.channelName);
+                    }
+                    break;
+                default :
+                    if(res.data.channelInfo.channelPassword !== reqData.channelPassword){
+                        alert("Wrong Channel Password");
+                    }else{
+                        checkKorean(reqData.userId, reqData.channelName);
+                    }
+                    break;
+            }
+        }
+    });
+
+    if($("input:radio[name=join_userType]:checked").val() === "ADMIN"){
+        axios.post("/channel/callChannelData").then((res) => {
+            if(res.data.success){
+                if(res.data.channelInfo.adminPassword !== reqData.adminPassword){
+                    alert("Wrong Admin Password");
+                }else if(res.data.channelInfo.channelPassword !== reqData.channelPassword){
+                    alert("Wrong Channel Password");
+                }else{
+                    checkKorean(reqData.userId, reqData.channelName);
+                }
+            }
+        });
+    }else{
+
+    }
 });
 
 $("input:radio[name=join_userType]").change((e) => {

@@ -20,6 +20,8 @@ $("#updateBtn").click((e) => {
         alert("You can only select the image file");
         return;
     }
+  }else{
+    formData.append("imageName", $("#update_upload").val());
   }
 
   if (!korean.test(formData.get("adminId")) && !korean.test(formData.get("channelName"))) {
