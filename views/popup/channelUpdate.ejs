@@ -31,11 +31,11 @@
                             <p class="choose-info-title">Password Usage</p>
                             <div class="choose-wrapper">
                                 <div class="choose-innner-wrapper">
-                                    <input type="radio" checked>
+                                    <input type="radio" name="password" checked>
                                     <p>Yes</p>
                                 </div>
                                 <div class="choose-innner-wrapper">
-                                    <input type="radio">
+                                    <input type="radio" name="password">
                                     <p>No</p>
                                 </div>
                             </div>
@@ -99,10 +99,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $("#update_file_thumnail").on('change', () => {
-        let fileName = $("#update_file_thumnail").val();
-        $(".upload-name").val(fileName);
-    })
-</script>

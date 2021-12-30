@@ -1,13 +1,12 @@
 function searchKeyWord() {
-
     const reqData = {
         channelName: $("#searchWord").val(),
         channelType: $("#select_options_search").val(),
     };
-    
-    if(reqData.channelType === "Private" && reqData.channelName === ""){
+
+    if (reqData.channelType === "Private" && reqData.channelName === "") {
         alert("Please Enter Private ChannelName");
-    }else{
+    } else {
         searchResult(reqData);
     }
 }
@@ -67,7 +66,12 @@ function searchResult(reqData) {
                                     : "<img src='./img/unlock.svg' alt='' class='unlock-icon'></img>"
                             }` +
                             "</div>" +
-                            "<div class='channel-box-footer-users'>" +
+                            "<div class='channel-box-footer-btn'>" +
+                            "<div class='channel-box-footer-btn-update' id='channelUpdateBtn' data-toggle='modal' data-target='#channelUpdateModal'>" +
+                            "<span>Edit</span>" +
+                            "</div>" +
+                            "<div class='channel-box-footer-btn-remove' id='channelDeleteBtn' data-toggle='modal' data-target='#channelDeleteModal'>" +
+                            "<span>Delete</span>" +
                             "</div>" +
                             "</div>" +
                             "</div>" +

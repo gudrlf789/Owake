@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="channelJoinModalLabel">
-                    Channel Join
+                    Join Your Channel
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -11,46 +11,60 @@
             </div>
             <div class="modal-body">
                 <div id="channelJoin-Container">
+
+                    <div class="col-sm choose-container">
+                        <p class="choose-info-title">Choose a Channel type</p>
+                        <div class="choose-wrapper">
+                            <div class="choose-innner-wrapper">
+                                <input type="radio" name="channel" checked="checked">
+                                <p>Public Channel</p>
+                            </div>
+                            <div class="choose-innner-wrapper">
+                                <input type="radio" name="channel">
+                                <p>Private Channel</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row admin-info-group">
-
-                        <div class="col-sm" style="margin-top: 10px;">
-                            <p class="channel-info-text">Channel Name</p>
-                            <input id="channelJoin-channelName" type="text" placeholder="Enter the Channel Name" >
-                        </div>
                         <div class="col-sm">
-                            <div>
-                                <p class="public_room_active">Public Room</p>
-                                <input id="public_room_active" type="radio" name="channelTypeRadioBtn" value="Public" checked >
-                            </div>
-                            <div>
-                                <p class="private_room_active">Private Room</p>
-                                <input id="private_room_active" type="radio" name="channelTypeRadioBtn" value="Private" >
-                                <div>
-                                    <p>Password</p>
-                                    <input id="channelJoin-privateRoomPassword" type="password" />
-                                </div>
-                            </div>
+                            <p class="channel-info-name">Channel Name</p>
+                            <input id="channelJoin-channelName" type="text" placeholder="Enter a Channel Name" required>
                         </div>
 
                         <div class="col-sm">
-                            <p class="nickname-text">Nick Name</p>
-                            <input id="channelJoin-nickName" type="text" placeholder="Enter the Nick Name" required >
-                        </div>
-                        <div class="col-sm">
-                            <p class="user_active">USER</p>
-                            <input id="user_active" type="radio" name="userTypeRadioBtn" value="USER" checked >
-                        </div>
-                        <div class="col-sm">
-                            <p class="admin_active">ADMIN</p>
-                            <input id="admin_active" type="radio" name="userTypeRadioBtn" value="ADMIN" >
-                        </div>
-                        <div class="col-sm">
-                            <p class="admin-password-text">Admin Password</p>
-                            <input id="channelJoin-adminPassword" type="password" disabled >
+                            <p class="channel-info-password">Channel Password</p>
+                            <input id="channelJoin-nickName" type="password" placeholder="Enter a Channel Password"
+                                required>
                         </div>
 
+                        <div class="col-sm">
+                            <p class="channel-info-username">Username</p>
+                            <input id="channelJoin-username" type="text" placeholder="Enter the Username" required>
+                        </div>
+
+                        <div class="col-sm">
+                            <p class="channel-info-adminPassword">Admin Password</p>
+                            <input id="channelJoin-adminPassword" type="password" placeholder="Enter a Admin Password"
+                                required>
+                        </div>
                     </div>
                     <br><br>
+
+                    <div class="col-sm choose-container">
+                        <p class="choose-info-title">Choose a Your Role</p>
+                        <div class="choose-wrapper">
+                            <div class="choose-innner-wrapper">
+                                <input type="radio" name="user" checked="chekced">
+                                <p>User</p>
+                            </div>
+                            <div class="choose-innner-wrapper">
+                                <input type="radio" name="user">
+                                <p>Admin</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="button-group">
                         <button id="channelJoin-btn" class="btn btn-primary btn-sm">
                             Join
