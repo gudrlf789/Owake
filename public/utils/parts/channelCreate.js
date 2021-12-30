@@ -24,10 +24,13 @@ function checkCreateData(typeFlag) {
         };
     } else if ($(`#${typeFlag}_channelName`).val() === "") {
         return {
-            success: false,
-            failData: "Channel Name",
-        };
-    } else {
+            success : false,
+            failData : "Channel Name"
+        }
+    }else{
+        return {
+            success : true
+        }
     }
 }
 
