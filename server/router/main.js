@@ -189,6 +189,23 @@ router.post("/delete", (req, res) => {
 
     firebaseCollection
         .doc(docName)
+        .get()
+        .then((doc) => {
+            if(doc.exists){
+                realDeleteData(docName, res);
+            }else{
+                return res.status(200).json({
+                    success: false
+                });
+            }
+        });
+
+    
+});
+
+function realDeleteData(docName, res) {
+    firebaseCollection
+        .doc(docName)
         .delete()
         .then((e) => {
             return res.status(200).json({
@@ -201,7 +218,7 @@ router.post("/delete", (req, res) => {
                 error: err,
             });
         });
-});
+}
 
 router.post("/info", (req, res) => {
     const bodyData = req.body;

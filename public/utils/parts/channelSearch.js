@@ -1,7 +1,7 @@
-function searchKeyWord() {
+function searchKeyWord(searchTypeId) {
     const reqData = {
-        channelName: $("#searchWord").val(),
-        channelType: $("#select_options_search").val(),
+        channelName: searchTypeId === "searchWord" ? $("#searchWord").val() : $("#mobile_searchWord").val(),
+        channelType: $("#select_options_search").val()
     };
 
     if (reqData.channelType === "Private" && reqData.channelName === "") {
@@ -11,13 +11,13 @@ function searchKeyWord() {
     }
 }
 
-$("#searchIcon").click((e) => {
-    searchKeyWord();
+$("#searchIcon, #mobile_searchIcon").click((e) => {
+    searchKeyWord(e.currentTarget.id);
 });
 
-$("#searchWord").keydown((e) => {
+$("#searchWord, #mobile_searchWord").keydown((e) => {
     if (e.which === 13) {
-        searchKeyWord();
+        searchKeyWord(e.currentTarget.id);
     }
 });
 
@@ -31,22 +31,12 @@ function searchResult(reqData) {
                     $(
                         "<div class='channel-box'>" +
                             "<div class='channel-box-wrapper'>" +
+                            "<div class='hidden-data'>" +
+                            `<input type='hidden' value=${data.adminId} >` +
+                            `<input type='hidden' value=${data.adminPassword} >` +
                             `<input type='hidden' value=${data.channelType} >` +
                             `<input type='hidden' value=${data.channelName} >` +
                             `<input type='hidden' value=${data.channelPassword} >` +
-                            "<div class='channel-menu'>" +
-                            "<div class='btn-group'>" +
-                            "<button type='button'" +
-                            "class='btn btn-secondary dropdown-toggle dropdown-toggle-split'" +
-                            "id='channelDropDownMenu' data-toggle='dropdown' aria-haspopup='true'" +
-                            "aria-expanded='false' data-reference='parent'>" +
-                            "<span class='sr-only'>Toggle Dropdown</span>" +
-                            "</button>" +
-                            "<div class='dropdown-menu' aria-labelledby='channelDropDownMenu'>" +
-                            "<a class='dropdown-item' href='#'>Channel Update</a>" +
-                            "<a class='dropdown-item' href='#'>Channel Remove</a>" +
-                            "</div>" +
-                            "</div>" +
                             "</div>" +
                             "<div class='channel-thumnail'>" +
                             `<img src='${data.imageName}' />` +
@@ -72,7 +62,6 @@ function searchResult(reqData) {
                             "</div>" +
                             "<div class='channel-box-footer-btn-remove' id='channelDeleteBtn' data-toggle='modal' data-target='#channelDeleteModal'>" +
                             "<span>Delete</span>" +
-                            "</div>" +
                             "</div>" +
                             "</div>" +
                             "</div>"
