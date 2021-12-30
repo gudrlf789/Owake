@@ -2,9 +2,16 @@ $("#channelJoin-btn").click((e) => {
     const channelName = $("#channelJoin-channelName").val();
     const userId = $("#channelJoin-username").val();
 
-    window.sessionStorage.setItem("channel", channelName);
-    window.sessionStorage.setItem("uid", userId);
-    window.location.href = "/join";
+    checkKorean(userId, channelName);
+});
+
+$("input:radio[name=join_userType]").change((e) => {
+    if (e.currentTarget.value == "ADMIN") {
+        $("#channelJoin-adminPassword").attr("disabled", false);
+    } else {
+        $("#channelJoin-adminPassword").attr("disabled", true);
+        $("#channelJoin-adminPassword").val("");
+    }
 });
 
 $("#private-channelJoin-btn").click((e) => {
@@ -16,15 +23,9 @@ $("#private-channelJoin-btn").click((e) => {
 
     if (checkingPassword !== password) {
         alert("Wrong Password");
-        $("#private-channelName").val("");
-        $("#private-passwordChecking").val("");
-        $("#private-nickName").val("");
         $("#private-roomPassword").val("");
-        $("#channelPrivateJoin").modal("hide");
     } else {
-        window.sessionStorage.setItem("channel", channelName);
-        window.sessionStorage.setItem("uid", userId);
-        window.location.href = "/join";
+        checkKorean(userId, channelName);
     }
 });
 
@@ -32,16 +33,17 @@ $("#public-channelJoin-btn").click((e) => {
     const channelName = $("#public-channelName").val();
     const userId = $("#public-nickName").val();
 
-    window.sessionStorage.setItem("channel", channelName);
-    window.sessionStorage.setItem("uid", userId);
-    window.location.href = "/join";
+    checkKorean(userId, channelName);
 });
 
-$("input:radio[name=join_userType]").change((e) => {
-    if (e.currentTarget.value == "ADMIN") {
-        $("#channelJoin-adminPassword").attr("disabled", false);
-    } else {
-        $("#channelJoin-adminPassword").attr("disabled", true);
-        $("#channelJoin-adminPassword").val("");
+function checkKorean(userId, channelName) {
+    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+
+    if(!korean.test(userId)){
+        window.sessionStorage.setItem("channel", channelName);
+        window.sessionStorage.setItem("uid", userId);
+        window.location.href = "/join";
+    }else{
+        alert("You can only type User Name in English.");
     }
-});
+};
