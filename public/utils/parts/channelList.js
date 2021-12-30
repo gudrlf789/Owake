@@ -93,7 +93,7 @@ const callChannelList = () => {
                             data.channelName +
                             "</div>" +
                             "<div class='channel-box-description'>" +
-                            data.channelDescription +
+                            `<p>${data.channelDescription}</p>` +
                             "</div>" +
                             "<div class='channel-box-footer'>" +
                             "<div class='channel-box-footer-icon'>" +
