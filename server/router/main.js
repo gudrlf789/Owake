@@ -225,7 +225,6 @@ router.post("/info", (req, res) => {
         bodyData.adminPassword +
         bodyData.channelName +
         bodyData.channelType;
-    const channelInfo = [];
 
     firebaseCollection
         .doc(docName)
