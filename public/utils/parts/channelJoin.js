@@ -1,6 +1,6 @@
 $("#channelJoin-btn").click((e) => {
     const channelName = $("#channelJoin-channelName").val();
-    const userId = $("#channelJoin-userId").val();
+    const userId = $("#channelJoin-username").val();
 
     window.sessionStorage.setItem("channel", channelName);
     window.sessionStorage.setItem("uid", userId);
@@ -37,7 +37,7 @@ $("#public-channelJoin-btn").click((e) => {
     window.location.href = "/join";
 });
 
-$("input:radio[name=userTypeRadioBtn]").change((e) => {
+$("input:radio[name=join_userType]").change((e) => {
     if (e.currentTarget.value == "ADMIN") {
         $("#channelJoin-adminPassword").attr("disabled", false);
     } else {

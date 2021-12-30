@@ -6,9 +6,7 @@ $("#updateBtn").click((e) => {
 
   formData.append("adminId", $(`#update_adminId`).val());
   formData.append("adminPassword", $(`#update_adminPassword`).val());
-  
-  formData.append("channelType", "Public");
-
+  formData.append("channelType", $("input:radio[name=update_channelType]:checked").val());
   formData.append("channelName", $(`#update_channelName`).val());
   formData.append("channelPassword",$(`#update_channelPassword`).val());
   formData.append("channelCategory", $(`#update_theme-category`).val());
@@ -28,7 +26,7 @@ $("#updateBtn").click((e) => {
     axios.post("/channel/update", formData).then((res) => {
       if (res.data.success) {
         alert("The channel has been successfully modified");
-        $("#channelUpdate").modal("hide");
+        $("#channelUpdateModal").modal("hide");
         $(`#update_adminId`).val("");
         $(`#update_adminPassword`).val("");
         $(`#update_channelName`).val("");
@@ -38,11 +36,24 @@ $("#updateBtn").click((e) => {
 
         callChannelList();
       }else{
-        alert("The channel hasn't been successfully modified");
+        alert("The channel hasn't been modified");
         $("#channelUpdate").modal("hide");
       }
     });
   }else{
     alert("You can only type in English.");
   }
+});
+
+$("input:radio[name=update_password]").change((e) => {
+  if (e.currentTarget.value == "Y") {
+      $("#update_channelPassword").attr("disabled", false);
+  } else {
+      $("#update_channelPassword").attr("disabled", true);
+      $("#update_channelPassword").val("");
+  }
+});
+
+$("#update_file_thumnail").change((e) => {
+  $("#update_upload").val(e.currentTarget.files[0].name);
 });

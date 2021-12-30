@@ -46,6 +46,11 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
     $("#channelUpdateModal").modal();
 });
 
+$(document).on("click", "#channelDeleteBtn", (e) => {
+    const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[2].value;
+    $("#delete_channelType").val(channelType);
+});
+
 const callChannelList = () => {
     axios.get("/channel/list").then((res) => {
         // 자식요소 모두 삭제 후 불러오기

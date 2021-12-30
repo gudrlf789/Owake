@@ -67,3 +67,11 @@ $("input:radio[name=channelRadioBtn]").change((e) => {
         $("#channelPassword").attr("disabled", false);
     }
 });
+
+$("#public_file_thumnail").change((e) => {
+    $("#public_upload").val(e.currentTarget.files[0].name);
+});
+
+$("#private_file_thumnail").change((e) => {
+    $("#private_upload").val(e.currentTarget.files[0].name);
+});
