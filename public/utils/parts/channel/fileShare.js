@@ -41,7 +41,9 @@ export const fileShare = () => {
                 contentType: false,
                 data: data,
                 cache: false,
-            }).done(function (data) {});
+            }).done(function (data) {
+                console.log(data.transfer, data.length);
+            });
         }
 
         function receiveKey(key) {
