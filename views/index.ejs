@@ -65,6 +65,12 @@
                 <img id="searchIcon" src="search_icon.svg" alt="search">
             </div>
             <div class="mobile-top-navbar">
+
+                <select name="searchOptions" id="select_options_search">
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                </select>
+
                 <div class="mobile-search-input-container">
                     <input id="mobile_searchWord" class="mobile-search-input" type="text" placeholder="Search a Channel">
                 </div>
@@ -96,8 +102,14 @@
                     <%- include('./channelList') %>
                 </div>
             </div>
+
+
+            <div class="mobile-main-fixed-menu" style="display : none">
+                <i class="far fa-plus-square"></i>
+            </div>
         </div>
     </div>
+    <script src="mobileFixedBtn.js"></script>
     <script>
         let dashboard = $("#dashboard");
         let channelList = $("#channelList");
