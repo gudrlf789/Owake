@@ -1,9 +1,9 @@
 function checkKronosaPassword(channelName, channelPassword) {
-    if(channelPassword !== ""){
+    if (channelPassword !== "") {
         $("#channelPrivateJoin #private-channelName").val(channelName);
         $("#channelPrivateJoin #private-passwordChecking").val(channelPassword);
         $("#channelPrivateJoin").modal();
-    }else{
+    } else {
         $("#channelPublicJoin #public-channelName").val(channelName);
         $("#channelPublicJoin").modal();
     }
@@ -14,7 +14,7 @@ $(document).on("click", ".business-box-wrapper", (e) => {
     const channelName = e.currentTarget.children[1].value;
     const channelPassword = e.currentTarget.children[2].value;
 
-    switch(channelType) {
+    switch (channelType) {
         case "Public":
             checkKronosaPassword(channelName, channelPassword);
             break;
@@ -22,7 +22,7 @@ $(document).on("click", ".business-box-wrapper", (e) => {
             checkKronosaPassword(channelName, channelPassword);
             break;
         default:
-            break; 
+            break;
     }
 });
 
@@ -35,8 +35,8 @@ const callChannelKronosaList = () => {
             if (data.channelType === "Public") {
                 $(".business-box-container").append(
                     $(
-                        "<div class='channel-box'>" +
-                            "<div class='channel-box-wrapper'>" +
+                        "<div class='business-box'>" +
+                            "<div class='business-box-wrapper'>" +
                             "<div class='hidden-data'>" +
                             `<input type='hidden' value=${data.adminId} >` +
                             `<input type='hidden' value=${data.adminPassword} >` +
@@ -45,13 +45,13 @@ const callChannelKronosaList = () => {
                             `<input type='hidden' value=${data.channelPassword} >` +
                             `<input type='hidden' value=${data.imageName} >` +
                             "</div>" +
-                            "<div class='channel-thumnail'>" +
+                            "<div class='business-thumnail'>" +
                             `<img src='${data.imageName}' />` +
                             "</div>" +
-                            "<div class='channel-box-title'>" +
+                            "<div class='business-box-title'>" +
                             data.channelName +
                             "</div>" +
-                            "<div class='channel-box-description'>" +
+                            "<div class='business-box-description'>" +
                             `<p>${data.channelDescription}</p>` +
                             "</div>" +
                             "</div>" +
