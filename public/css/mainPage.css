@@ -83,13 +83,13 @@ body {
 }
 
 #select_options_search {
-    border-radius: 8px;
-    height: 30px;
-    font-size: 13px;
-    width: 100px;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+  border-radius: 8px;
+  height: 30px;
+  font-size: 13px;
+  width: 100px;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 .search-bar {
@@ -134,7 +134,7 @@ body {
   width: 100%;
   height: 100%;
   /* margin: 10px; */
-  padding : 3rem;
+  padding: 3rem;
 }
 
 .business-title-container {
@@ -231,12 +231,12 @@ body {
 }
 
 .business-button {
-    width: 100px;
-    box-sizing: content-box;
-    border: 1px solid #000;
-    background: #fff;
-    border-radius: 8px;
-    padding: 5px;
+  width: 100px;
+  box-sizing: content-box;
+  border: 1px solid #000;
+  background: #fff;
+  border-radius: 8px;
+  padding: 5px;
 }
 
 
@@ -244,12 +244,13 @@ body {
 
 .channel-menu {
   position: absolute;
-    right: 0;
-    margin-right: 8px;
-    display : block;
+  right: 0;
+  margin-right: 8px;
+  display: block;
 }
 
 .channel-course-container {
+  display : table;
   position: relative;
   width: 100%;
   height: 100%;
@@ -264,7 +265,7 @@ body {
   margin: 0 auto;
 }
 
-.channel-thumnail > img{
+.channel-thumnail>img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -346,20 +347,20 @@ body {
 }
 
 .channel-box-footer-btn {
-  display : flex;
+  display: flex;
 }
 
 #channelUpdateBtn {
-  margin-right : 10px;
+  margin-right: 10px;
 }
 
 /* Channel Btn FileBox Btn */
 .filebox {
-  display : flex;
+  display: flex;
 }
 
 .filebox .upload-name {
-  flex : 1;
+  flex: 1;
   display: inline-block;
   height: 40px;
   padding: 0 10px;
@@ -370,7 +371,7 @@ body {
 }
 
 .filebox label {
-  flex : 0.3;
+  flex: 0.3;
   display: inline-block;
   padding: 10px 20px;
   color: #fff;
@@ -378,7 +379,7 @@ body {
   background-color: #999999;
   cursor: pointer;
   height: 40px;
-  width : 100%;
+  width: 100%;
   font-size: 12px;
 }
 
@@ -392,11 +393,11 @@ body {
 }
 
 /* Category CSS */
-.col-sm > label {
-  font-size : 12px;
+.col-sm>label {
+  font-size: 12px;
 }
 
-.col-sm > select {
+.col-sm>select {
   height: 40px;
   font-size: 12px;
 }
@@ -404,37 +405,39 @@ body {
 
 /* Radio Btn */
 .choose-wrapper {
-  display : flex;
+  display: flex;
   justify-content: space-evenly;
 }
 
 .choose-innner-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin : 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 12px;
 }
 
-.choose-innner-wrapper > p {
-  font-size : 12px;
+.choose-innner-wrapper>p {
+  font-size: 12px;
 }
 
 /* ChannelDelete CSS */
 #channelDeleteAdminInfo {
-  display : flex;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-#channelDeleteAdminInfo > div {
-  margin : 10px;
+#channelDeleteAdminInfo>div {
+  margin: 10px;
 }
 
 #channelDeleteChannelInfo {
-  display : flex;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-#channelDeleteChannelInfo > div {
-  margin : 10px;
+#channelDeleteChannelInfo>div {
+  margin: 10px;
 }
 
 /* Bottom */
@@ -458,20 +461,26 @@ body {
 @media (max-width: 768px) {
   .mobile-top-navbar {
     display: flex;
+    width : 100%;
     padding: 20px;
   }
 
-  .mobile-search-input-container {
-    margin-right : 10px;
+  .search-icon {
+    width : 35px;
   }
-  
+
+  .mobile-search-input-container {
+    margin-right: 10px;
+  }
+
   .mobile-search-input {
-    border-radius: 8px !important;
-    height : 100%;
+    height: 100%;
+    width: 100%;
+    text-align: center;
   }
 
   .search-icon {
-    display : flex;
+    display: flex;
   }
 
   .mobile-category {
@@ -492,8 +501,23 @@ body {
     text-align: center;
   }
 
+  .mobileClickMenu {
+    width: 70px;
+    height: 150px;
+    position: fixed;
+    bottom: 70px;
+    right: 0;
+    background-color : #fff;
+    z-index: 60;
+  }
+
   .search-bar {
     display: none;
+  }
+
+  #select_options_search {
+    height: 100%;
+    border-radius: 0;
   }
 
   .nav-container {
@@ -543,11 +567,11 @@ body {
 
 
   .business-course-container {
-    padding : 1rem;
+    padding: 1rem;
   }
 
   .channel-course-container {
-    padding : 1rem;
+    padding: 1rem;
   }
 
 
@@ -560,17 +584,26 @@ body {
   }
 
   .channel-box-wrapper {
-    width : 100%;
+    width: 100%;
   }
 
   .channel-menu {
     position: absolute;
     right: 0;
     margin-right: 8px;
-    display : block;
+    display: block;
   }
 
   .bottom-container-first-wrapper {
     flex-direction: column;
+  }
+
+  .mobile-main-fixed-menu {
+    display: block !important;
+    position: fixed;
+    bottom: 8px;
+    right: 12px;
+    font-size: -webkit-xxx-large;
+    z-index : 50;
   }
 }
