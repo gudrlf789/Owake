@@ -1,7 +1,10 @@
 function searchKeyWord(searchTypeId) {
     const reqData = {
-        channelName: searchTypeId === "searchWord" ? $("#searchWord").val() : $("#mobile_searchWord").val(),
-        channelType: $("#select_options_search").val()
+        channelName:
+            searchTypeId === "searchWord"
+                ? $("#searchWord").val()
+                : $("#mobile_searchWord").val(),
+        channelType: $("#select_options_search").val(),
     };
 
     if (reqData.channelType === "Private" && reqData.channelName === "") {
@@ -31,6 +34,7 @@ function searchResult(reqData) {
                     $(
                         "<div class='channel-box'>" +
                             "<div class='channel-box-wrapper'>" +
+                            "<div class='channel-thumnail-container'>" +
                             "<div class='hidden-data'>" +
                             `<input type='hidden' value=${data.adminId} >` +
                             `<input type='hidden' value=${data.adminPassword} >` +
@@ -40,6 +44,7 @@ function searchResult(reqData) {
                             "</div>" +
                             "<div class='channel-thumnail'>" +
                             `<img src='${data.imageName}' />` +
+                            "</div>" +
                             "</div>" +
                             "<div class='channel-box-title'>" +
                             data.channelName +
