@@ -79,7 +79,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width : 100%;
 }
 
 #select_options_search {
@@ -120,7 +120,6 @@ body {
   display: flex;
   margin: 20px;
   width: 90%;
-  height: 300px;
 }
 
 .bottom-body-container {
@@ -174,11 +173,6 @@ body {
   background-color: #fff;
   border-radius: 11px;
   margin: 10px;
-}
-
-.business-box:hover {
-  color: #ad8aee;
-  cursor: pointer;
 }
 
 .business-box-wrapper {
@@ -308,9 +302,14 @@ body {
   margin: 10px;
 }
 
-.channel-box:hover {
-  color: #ad8aee;
-  cursor: pointer;
+.channel-box-footer-btn-update:hover {
+  cursor : pointer;
+  color : deepskyblue;
+}
+
+.channel-box-footer-btn-remove:hover {
+  cursor : pointer;
+  color : rgb(255, 0, 0);
 }
 
 .channel-box-wrapper {
@@ -321,6 +320,13 @@ body {
   height: 250px;
   box-sizing: border-box;
   padding: 0.5rem;
+}
+
+.channel-thumnail-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0 auto;
 }
 
 .channel-box-title {

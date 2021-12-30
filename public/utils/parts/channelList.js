@@ -9,6 +9,7 @@ function checkPassword(channelName, channelPassword) {
     }
 }
 
+
 $(document).on("click", ".channel-box-wrapper > .channel-thumnail, .channel-box-wrapper > .channel-box-title, .channel-box-wrapper > .channel-box-description", (e) => {
     const channelType = e.currentTarget.parentNode.childNodes[0].childNodes[2].value;
     const channelName = e.currentTarget.parentNode.childNodes[0].childNodes[3].value;
@@ -27,6 +28,7 @@ $(document).on("click", ".channel-box-wrapper > .channel-thumnail, .channel-box-
 });
 
 $(document).on("click", "#channelUpdateBtn", (e) => {
+
     const adminId = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[0].value;
     const adminPassword = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[1].value;
     const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[2].value;
@@ -35,10 +37,10 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
     $("#update_adminId").val(adminId);
     $("#update_adminPassword").val(adminPassword);
     $("#update_channelName").val(channelName);
-    if(channelType === "Private"){
+    if (channelType === "Private") {
         $("#update_private").attr("checked", true);
         $("#update_public").attr("checked", false);
-    }else{
+    } else {
         $("#update_private").attr("checked", false);
         $("#update_public").attr("checked", true);
     }
@@ -47,7 +49,9 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
 });
 
 $(document).on("click", "#channelDeleteBtn", (e) => {
-    const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[2].value;
+    const channelType =
+        e.currentTarget.parentNode.parentNode.parentNode.childNodes[0]
+            .children[2].value;
     $("#delete_channelType").val(channelType);
 });
 
@@ -62,6 +66,7 @@ const callChannelList = () => {
                     $(
                         "<div class='channel-box'>" +
                             "<div class='channel-box-wrapper'>" +
+                            "<div class='channel-thumnail-container'>" +
                             "<div class='hidden-data'>" +
                             `<input type='hidden' value=${data.adminId} >` +
                             `<input type='hidden' value=${data.adminPassword} >` +
@@ -71,6 +76,7 @@ const callChannelList = () => {
                             "</div>" +
                             "<div class='channel-thumnail'>" +
                             `<img src='${data.imageName}' />` +
+                            "</div>" +
                             "</div>" +
                             "<div class='channel-box-title'>" +
                             data.channelName +
