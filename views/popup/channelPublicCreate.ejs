@@ -15,6 +15,20 @@
 
                     <div class="container admin-info-group">
                         <div class="row channel-info-group">
+                            <div class="channelJoin-info channelUserName-wrapper">
+                                <p class="w-100 channel-info-username">Admin ID</p>
+                                <input class="w-100" id="public_adminId" type="text" placeholder="Enter the Username"
+                                    required>
+                            </div>
+
+                            <div class="channelJoin-info channelUserPassword-wrapper">
+                                <p class="w-100 channel-info-userPassword">Admin Password</p>
+                                <input class="w-100" id="public_adminPassword" type="password"
+                                    placeholder="Enter a User Password">
+                            </div>
+                        </div>
+
+                        <div class="row channel-info-group">
                             <div class="channelJoin-info channelName-wrapper">
                                 <p class="w-100 channel-info-name">Channel Name</p>
                                 <input class="w-100" id="public_channelName" type="text"
@@ -27,43 +41,7 @@
                                     placeholder="Enter a Channel Password" required>
                             </div>
                         </div>
-
-                        <div class="row channel-info-group">
-                            <div class="channelJoin-info channelUserName-wrapper">
-                                <p class="w-100 channel-info-username">Username</p>
-                                <input class="w-100" id="public_adminId" type="text" placeholder="Enter the Username"
-                                    required>
-                            </div>
-
-                            <div class="channelJoin-info channelUserPassword-wrapper">
-                                <p class="w-100 channel-info-userPassword">Admin Password</p>
-                                <input class="w-100" id="public_adminPassword" type="password"
-                                    placeholder="Enter a User Password">
-                            </div>
-                        </div>
                     </div>
-
-                    <!-- <div class="row admin-info-group">
-                        <div class="col-sm">
-                            <p class="admin-info-text">Admin ID</p>
-                            <input id="public_adminId" type="text" placeholder="Enter the AdminID" required />
-                        </div>
-                        <div class="col-sm">
-                            <p class="admin-info-text">Admin Password</p>
-                            <input id="public_adminPassword" type="password" placeholder="Enter the Admin Password" />
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row roomSetting-info-group">
-                        <div class="col-sm">
-                            <p class="channel-info-text">Channel Name</p>
-                            <input id="public_channelName" type="text" placeholder="Enter the Channel Name">
-                        </div>
-                        <div class="col-sm">
-                            <p class="channel-info-text">Channel Password</p>
-                            <input id="public_channelPassword" type="password" placeholder="Enter the Channel Password">
-                        </div>
-                    </div> -->
                     <br><br>
 
                     <div class="filebox">
@@ -77,7 +55,7 @@
                         <div class="col-sm">
                             <label for="theme-category">Category</label>
 
-                            <select id="public_theme-category">
+                            <select id="public-theme-category">
                                 <%- include("category") %>
                             </select>
                         </div>
@@ -86,14 +64,14 @@
                     <div class="row description-info-group">
                         <div class="col-sm">
                             <label for="description">Description</label>
+
                             <textarea style="width:100%" name="channel-description" id="public_channel-description"
                                 cols="20" rows="5"></textarea>
-                            <div id="text_cnt">(0 / 50)</div>
                         </div>
                     </div>
                     <br><br>
                     <div class="button-group">
-                        <button id="public_create" class="btn btn-primary btn-sm">
+                        <button id="public_create" type="submit" class="btn btn-primary btn-sm">
                             Create
                         </button>
                     </div>
