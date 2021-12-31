@@ -50,28 +50,16 @@ function createChannelData(typeFlag) {
 
     formData.append("adminId", $(`#${typeFlag}_adminId`).val());
     formData.append("adminPassword", $(`#${typeFlag}_adminPassword`).val());
-    formData.append(
-        "channelType",
-        typeFlag === "private" ? "Private" : "Public"
-    );
+    formData.append("channelType", typeFlag === "private" ? "Private" : "Public");
     formData.append("channelName", $(`#${typeFlag}_channelName`).val());
     formData.append("channelPassword", $(`#${typeFlag}_channelPassword`).val());
     formData.append("channelCategory", $(`#${typeFlag}_theme-category`).val());
-    formData.append(
-        "channelDescription",
-        $(`#${typeFlag}_channel-description`).val()
-    );
+    formData.append("channelDescription", $(`#${typeFlag}_channel-description`).val());
 
     if ($(`#${typeFlag}_file_thumnail`)[0].files[0]) {
         if (imageType.test($(`#${typeFlag}_file_thumnail`)[0].files[0].type)) {
-            formData.append(
-                "image",
-                $(`#${typeFlag}_file_thumnail`)[0].files[0]
-            );
-            formData.append(
-                "imageName",
-                $(`#${typeFlag}_file_thumnail`)[0].files[0].name
-            );
+            formData.append("image", $(`#${typeFlag}_file_thumnail`)[0].files[0]);
+            formData.append("imageName", $(`#${typeFlag}_file_thumnail`)[0].files[0].name);
         } else {
             alert("You can only select the image file");
             return;
@@ -88,11 +76,7 @@ function createChannelData(typeFlag) {
                 afterAction(typeFlag);
                 callChannelList();
             } else {
-                alert(
-                    `ChannelName: ${$(
-                        `#${typeFlag}_channelName`
-                    ).val()} is already existed. please choice another type or channelName`
-                );
+                alert(`ChannelName: ${$(`#${typeFlag}_channelName`).val()} is already existed. please choice another type or channelName`);
                 $(`#${typeFlag}_channelName`).val("");
             }
         });
