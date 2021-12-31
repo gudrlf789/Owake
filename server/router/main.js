@@ -86,8 +86,6 @@ router.get("/kronosaChannelList", (req, res, next) => {
 router.post("/register", upload.single("image"), async (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.adminId +
-        bodyData.adminPassword +
         bodyData.channelName +
         bodyData.channelType;
 
@@ -98,7 +96,6 @@ router.post("/register", upload.single("image"), async (req, res) => {
 
     if (snapshot.empty) {
         bodyData.registreTime = firebase.firestore.FieldValue.serverTimestamp();
-        bodyData.privateId = docName;
         bodyData.Kronosa = "N";
 
         // doc에 특정 이름을 설정하고 싶을때
@@ -153,8 +150,6 @@ router.post("/search", async (req, res) => {
 router.post("/update", upload.single("image"), async (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.adminId +
-        bodyData.adminPassword +
         bodyData.channelName +
         bodyData.channelType;
 
@@ -182,8 +177,6 @@ router.post("/update", upload.single("image"), async (req, res) => {
 router.post("/delete", (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.adminId +
-        bodyData.adminPassword +
         bodyData.channelName +
         bodyData.channelType;
 
@@ -221,8 +214,6 @@ function realDeleteData(docName, res) {
 router.post("/info", (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.adminId +
-        bodyData.adminPassword +
         bodyData.channelName +
         bodyData.channelType;
 

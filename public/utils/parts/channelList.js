@@ -13,12 +13,9 @@ $(document).on(
     "click",
     ".channel-box-wrapper > .channel-thumnail, .channel-box-wrapper > .channel-box-title, .channel-box-wrapper > .channel-box-description",
     (e) => {
-        const channelType =
-            e.currentTarget.parentNode.childNodes[0].childNodes[2].value;
-        const channelName =
-            e.currentTarget.parentNode.childNodes[0].childNodes[3].value;
-        const channelPassword =
-            e.currentTarget.parentNode.childNodes[0].childNodes[4].value;
+        const channelType = e.currentTarget.parentNode.childNodes[0].childNodes[0].value;
+        const channelName = e.currentTarget.parentNode.childNodes[0].childNodes[1].value;
+        const channelPassword = e.currentTarget.parentNode.childNodes[0].childNodes[2].value;
 
         switch (channelType) {
             case "Public":
@@ -34,14 +31,10 @@ $(document).on(
 );
 
 $(document).on("click", "#channelUpdateBtn", (e) => {
-    const adminId = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[0].value;
-    const adminPassword = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[1].value;
-    const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[2].value;
-    const channelName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[3].value;
-    const imageName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[5].value;
+    const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[0].value;
+    const channelName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[1].value;
+    const imageName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[3].value;
     
-    $("#update_adminId").val(adminId);
-    $("#update_adminPassword").val(adminPassword);
     $("#update_channelName").val(channelName);
     $("#update_upload").val(imageName);
     if (channelType === "Private") {
@@ -56,8 +49,11 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
 });
 
 $(document).on("click", "#channelDeleteBtn", (e) => {
-    const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[2].value;
+    const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[0].value;
+    const channelName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[1].value;
+
     $("#delete_channelType").val(channelType);
+    $("#delete_channelName").val(channelName);
 });
 
 const callChannelList = () => {
@@ -72,8 +68,6 @@ const callChannelList = () => {
                         "<div class='channel-box'>" +
                             "<div class='channel-box-wrapper'>" +
                             "<div class='hidden-data'>" +
-                            `<input type='hidden' value=${data.adminId} >` +
-                            `<input type='hidden' value=${data.adminPassword} >` +
                             `<input type='hidden' value=${data.channelType} >` +
                             `<input type='hidden' value=${data.channelName} >` +
                             `<input type='hidden' value=${data.channelPassword} >` +

@@ -9,21 +9,24 @@ function checkKronosaPassword(channelName, channelPassword) {
     }
 }
 
-$(document).on("click", ".business-box-wrapper", (e) => {
-    const channelType = e.currentTarget.children[0].value;
-    const channelName = e.currentTarget.children[1].value;
-    const channelPassword = e.currentTarget.children[2].value;
+$(document).on(
+    "click",
+    ".business-box-wrapper > .business-thumnail, .business-box-wrapper > .business-box-title, .business-box-wrapper > .business-box-description",
+    (e) => {
+        const channelType = e.currentTarget.children[0].value;
+        const channelName = e.currentTarget.children[1].value;
+        const channelPassword = e.currentTarget.children[2].value;
 
-    switch (channelType) {
-        case "Public":
-            checkKronosaPassword(channelName, channelPassword);
-            break;
-        case "Private":
-            checkKronosaPassword(channelName, channelPassword);
-            break;
-        default:
-            break;
-    }
+        switch (channelType) {
+            case "Public":
+                checkKronosaPassword(channelName, channelPassword);
+                break;
+            case "Private":
+                checkKronosaPassword(channelName, channelPassword);
+                break;
+            default:
+                break;
+        }
 });
 
 const callChannelKronosaList = () => {
@@ -38,8 +41,6 @@ const callChannelKronosaList = () => {
                         "<div class='business-box'>" +
                             "<div class='business-box-wrapper'>" +
                             "<div class='hidden-data'>" +
-                            `<input type='hidden' value=${data.adminId} >` +
-                            `<input type='hidden' value=${data.adminPassword} >` +
                             `<input type='hidden' value=${data.channelType} >` +
                             `<input type='hidden' value=${data.channelName} >` +
                             `<input type='hidden' value=${data.channelPassword} >` +

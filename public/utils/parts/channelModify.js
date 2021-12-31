@@ -1,7 +1,5 @@
-$("#updateBtn").click((e) => {
-  const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+function realUpdateChannel() {
   const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
-
   const formData = new FormData();
 
   formData.append("adminId", $(`#update_adminId`).val());
@@ -24,28 +22,48 @@ $("#updateBtn").click((e) => {
     formData.append("imageName", $("#update_upload").val());
   }
 
-  if (!korean.test(formData.get("adminId")) && !korean.test(formData.get("channelName"))) {
-    axios.post("/channel/update", formData).then((res) => {
-      if (res.data.success) {
-        alert("The channel has been successfully modified");
-        $("#channelUpdateModal").modal("hide");
-        $(`#update_adminId`).val("");
-        $(`#update_adminPassword`).val("");
-        $(`#update_channelName`).val("");
-        $(`#update_channelPassword`).val("");
-        $(`#update_theme-category`).val("News");
-        $("#update_file_thumnail").val("");
-        $("#update_upload").val("");
-        $(`#update_channel-description`).val("");
+  axios.post("/channel/update", formData).then((res) => {
+    if (res.data.success) {
+      alert("The channel has been successfully modified");
+      $("#channelUpdateModal").modal("hide");
+      $(`#update_adminId`).val("");
+      $(`#update_adminPassword`).val("");
+      $(`#update_channelName`).val("");
+      $(`#update_channelPassword`).val("");
+      $(`#update_theme-category`).val("News");
+      $("#update_file_thumnail").val("");
+      $("#update_upload").val("");
+      $(`#update_channel-description`).val("");
 
-        callChannelList();
-      }else{
-        alert("The channel hasn't been modified");
-        $("#channelUpdate").modal("hide");
+      callChannelList();
+    }else{
+      alert("The channel hasn't been modified");
+      $("#channelUpdate").modal("hide");
+    }
+  });
+}
+
+$("#updateBtn").click((e) => {
+  const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+
+  const reqData = {
+    channelName : $(`#update_channelName`).val(),
+    channelType : $("input:radio[name=update_channelType]:checked").val()
+  }
+
+  if (!korean.test($(`#update_adminId`).val())) {
+    axios.post("/channel/info", reqData).then((res) => {
+      if (res.data.success) {
+        if(res.data.channelInfo.adminId === $(`#update_adminId`).val() && res.data.channelInfo.adminPassword === $(`#update_adminPassword`).val()) {
+          realUpdateChannel();
+        }else{
+          alert("Admin Id or Admin Password is wrong");
+        }
       }
     });
   }else{
     alert("You can only type in English.");
+    $(`#update_adminId`).val("");
   }
 });
 
