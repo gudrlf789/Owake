@@ -1,7 +1,8 @@
 function searchKeyWord(searchTypeId) {
     const reqData = {};
     switch(searchTypeId) {
-        case "searchWord", "searchIcon" :
+        case "searchWord" :
+        case "searchIcon" :
             reqData.channelName = $("#searchWord").val();
             reqData.channelType = $("#select_options_search").val();
             break;
@@ -10,7 +11,7 @@ function searchKeyWord(searchTypeId) {
             reqData.channelType = $("#mobile_selectOptions").val();
             break;
     }
-
+    
     if (reqData.channelType === "Private" && reqData.channelName === "") {
         alert("Please Enter Private ChannelName");
     } else {
