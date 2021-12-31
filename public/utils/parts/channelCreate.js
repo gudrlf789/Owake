@@ -6,8 +6,9 @@ function afterAction(typeFlag) {
     $(`#${typeFlag}_adminPassword`).val("");
     $(`#${typeFlag}_channelName`).val("");
     $(`#${typeFlag}_channelPassword`).val("");
-    $(`#${typeFlag}_theme-category`).val("outdoor");
+    $(`#${typeFlag}_theme-category`).val("News");
     $(`#${typeFlag}_file_thumnail`).val("");
+    $(`#${typeFlag}_upload`).val("");
     $(`#${typeFlag}_channel-description`).val("");
 }
 

@@ -34,6 +34,8 @@ $("#updateBtn").click((e) => {
         $(`#update_channelName`).val("");
         $(`#update_channelPassword`).val("");
         $(`#update_theme-category`).val("News");
+        $("#update_file_thumnail").val("");
+        $("#update_upload").val("");
         $(`#update_channel-description`).val("");
 
         callChannelList();
