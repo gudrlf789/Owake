@@ -255,6 +255,16 @@ body {
 
 /* Channel */
 
+.channelJoin-info {
+  width : 200px;
+  margin : 10px;
+  font-size : 13px;
+}
+
+.channel-info-group {
+  justify-content : center;
+}
+
 .channel-menu {
   position: absolute;
   right: 0;

@@ -12,34 +12,74 @@
             </div>
             <div class="modal-body">
                 <div id="channelCreate-div">
-                    <div class="row admin-info-group">
 
-                        <div class="col-sm">
-                            <p class="admin-info-text">Admin ID</p>
-                            <input id="public_adminId" type="text" placeholder="Enter the AdminID" required />
+                    <div class="row choose-info-group">
+                        <div class="col-sm choose-container">
+                            <p class="choose-info-title">Channel a Channel Type</p>
+                            <div class="choose-wrapper">
+                                <div class="choose-innner-wrapper">
+                                    <input type="radio" name="channelType">
+                                    <p>Public Channel</p>
+                                </div>
+                                <div class="choose-innner-wrapper">
+                                    <input type="radio" name="channelType">
+                                    <p>Private Channel</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm">
-                            <p class="admin-info-text">Admin Password</p>
-                            <input id="public_adminPassword" type="password" placeholder="Enter the Admin Password" />
+                        <div class="col-sm choose-container">
+                            <p class="choose-info-title">Password Usage</p>
+                            <div class="choose-wrapper">
+                                <div class="choose-innner-wrapper">
+                                    <input type="radio" name="passwordCheck">
+                                    <p>Yes</p>
+                                </div>
+                                <div class="choose-innner-wrapper">
+                                    <input type="radio" name="passwordCheck">
+                                    <p>No</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <br>
-                    <div class="row roomSetting-info-group">
-                        <div class="col-sm">
-                            <p class="channel-info-text">Channel Name</p>
-                            <input id="public_channelName" type="text" placeholder="Enter the Channel Name">
+
+
+                    <div class="container admin-info-group">
+
+                        <div class="row channel-info-group">
+                            <div class="channelJoin-info channelUserName-wrapper">
+                                <p class="w-100 channel-info-adminId">Admin ID</p>
+                                <input class="w-100" id="channelJoin-username" type="text"
+                                    placeholder="Enter the Username" required>
+                            </div>
+
+                            <div class="channelJoin-info channelUserPassword-wrapper">
+                                <p class="w-100 channel-info-adminPassword">Admin Password</p>
+                                <input class="w-100" id="channelJoin-userPassword" type="password"
+                                    placeholder="Enter a User Password" disabled>
+                            </div>
                         </div>
-                        <div class="col-sm">
-                            <p class="channel-info-text">Channel Password</p>
-                            <input id="public_channelPassword" type="password" placeholder="Enter the Channel Password">
+
+                        <div class="row channel-info-group">
+                            <div class="channelJoin-info channelName-wrapper">
+                                <p class="w-100 channel-info-name">Channel Name</p>
+                                <input class="w-100" id="channelJoin-channelName" type="text"
+                                    placeholder="Enter a Channel Name" required>
+                            </div>
+
+                            <div class="channelJoin-info channelPassword-wrapper">
+                                <p class="w-100 channel-info-password">Channel Password</p>
+                                <input class="w-100" id="channelJoin-channelPassword" type="password"
+                                    placeholder="Enter a Channel Password" required>
+                            </div>
                         </div>
                     </div>
                     <br><br>
 
                     <div class="filebox">
                         <label for="public_file_thumnail">Channel Image</label>
-                        <input id="public_upload" class="upload-name" placeholder="Search for a channel image file" disabled />
-                        <input id="public_file_thumnail" type="file" >
+                        <input id="public_upload" class="upload-name" placeholder="Search for a channel image file"
+                            disabled />
+                        <input id="public_file_thumnail" type="file">
                     </div>
 
                     <div class="row category-info-group">
@@ -57,7 +97,7 @@
                         <div class="col-sm">
                             <label for="description">Description</label>
                             <textarea style="width:100%" name="channel-description" id="public_channel-description"
-                                cols="50" rows="10"></textarea>
+                                cols="20" rows="5"></textarea>
                         </div>
                     </div>
                     <br><br>
