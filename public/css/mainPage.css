@@ -514,6 +514,13 @@ body {
     padding: 20px;
   }
 
+  .mobile_channel-join-btn {
+    display : inline-block;
+    margin-left : auto;
+    font-size : 20px;
+    cursor : pointer;
+  }
+
   .search-icon {
     width: 35px;
   }
