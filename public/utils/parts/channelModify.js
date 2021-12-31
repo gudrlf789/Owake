@@ -59,6 +59,8 @@ $("#updateBtn").click((e) => {
         }else{
           alert("Admin Id or Admin Password is wrong");
         }
+      }else{
+        alert(res.data.error);
       }
     });
   }else{
