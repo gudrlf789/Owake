@@ -16,11 +16,11 @@
                         <p class="choose-info-title">Choose a Channel type</p>
                         <div class="choose-wrapper">
                             <div class="choose-innner-wrapper">
-                                <input type="radio" name="channel" checked>
+                                <input type="radio" name="join_channelType" value="Public" checked>
                                 <p>Public Channel</p>
                             </div>
                             <div class="choose-innner-wrapper">
-                                <input type="radio" name="channel">
+                                <input type="radio" name="join_channelType" value="Private">
                                 <p>Private Channel</p>
                             </div>
                         </div>
@@ -30,28 +30,24 @@
                         <div class="row channel-info-group">
                             <div class="channelJoin-info channelName-wrapper">
                                 <p class="w-100 channel-info-name">Channel Name</p>
-                                <input class="w-100" id="channelJoin-channelName" type="text"
-                                    placeholder="Enter a Channel Name" required>
+                                <input class="w-100" id="join-channelName" type="text" placeholder="Enter a Channel Name" required>
                             </div>
 
                             <div class="channelJoin-info channelPassword-wrapper">
                                 <p class="w-100 channel-info-password">Channel Password</p>
-                                <input class="w-100" id="channelJoin-channelPassword" type="password"
-                                    placeholder="Enter a Channel Password" required>
+                                <input class="w-100" id="join-channelPassword" type="password" placeholder="Enter a Channel Password" required>
                             </div>
                         </div>
 
                         <div class="row channel-info-group">
                             <div class="channelJoin-info channelUserName-wrapper">
                                 <p class="w-100 channel-info-username">Username</p>
-                                <input class="w-100" id="channelJoin-username" type="text"
-                                    placeholder="Enter the Username" required>
+                                <input class="w-100" id="join-username" type="text" placeholder="Enter the Username" required>
                             </div>
 
                             <div class="channelJoin-info channelUserPassword-wrapper">
                                 <p class="w-100 channel-info-userPassword">Admin Password</p>
-                                <input class="w-100" id="channelJoin-userPassword" type="password"
-                                    placeholder="Enter a User Password" disabled>
+                                <input class="w-100" id="join-adminPassword" type="password" placeholder="Enter a User Password" disabled>
                             </div>
                         </div>
                     </div>

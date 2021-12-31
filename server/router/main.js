@@ -211,29 +211,38 @@ function realDeleteData(docName, res) {
         });
 }
 
-router.post("/info", (req, res) => {
+router.post("/info", async (req, res) => {
     const bodyData = req.body;
     const docName =
         bodyData.channelName +
         bodyData.channelType;
 
-    firebaseCollection
-        .doc(docName)
-        .get()
-        .then((doc) => {
-            if (doc.exists) {
-                return res.status(200).json({
-                    success: true,
-                    channelInfo: doc.data(),
+    const snapshot =  await firebaseCollection.doc(docName).get();
+    
+    if(snapshot.exists){
+        firebaseCollection
+            .doc(docName)
+            .get()
+            .then((doc) => {
+                if (doc.exists) {
+                    return res.status(200).json({
+                        success: true,
+                        channelInfo: doc.data(),
+                    });
+                }
+            })
+            .catch((err) => {
+                return res.status(500).json({
+                    success: false,
+                    error: err,
                 });
-            }
-        })
-        .catch((err) => {
-            return res.status(500).json({
-                success: false,
-                error: err,
             });
-        });
+    }else{
+        return res.status(200).json({
+            success: false,
+            error: "It's a channel that doesn't exist"
+        })
+    }
 });
 
 module.exports = router;
