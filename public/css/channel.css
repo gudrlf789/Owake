@@ -47,7 +47,6 @@
     width: 100%;
     background-color: var(--main-darklg);
 }
-
 .logo {
     width: 150px;
     margin: 10px;
@@ -98,7 +97,6 @@
     justify-content: center;
     margin-right: 20px;
 }
-
 .deviceSetting span {
     font-size: small;
 }
@@ -251,7 +249,6 @@
     /* flex: 0.25; */
     height: 100%;
 }
-
 #remote__video__container::-webkit-scrollbar {
     display: none;
 }
@@ -332,7 +329,6 @@ video:hover {
     .main__right {
         display: none;
     }
-
     .main__left {
         width: 100%;
         flex: 1;
@@ -439,7 +435,6 @@ video:hover {
         opacity: 0;
         transform: scale(0.4) translateY(20px);
     }
-
     100% {
         opacity: 1;
         transform: scale(1) translateY(0);

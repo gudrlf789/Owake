@@ -19,9 +19,13 @@ export const screenShareFunc = () => {
         const screenTrack = await AgoraRTC.createScreenVideoTrack(
             {
                 encoderConfig: {
+<<<<<<< HEAD
                     frameRate: 60,
                     bitrateMax: 4780,
                     bitrateMin: 3150,
+=======
+                    framerate: 30,
+>>>>>>> 16b518eab37b6d84dbb6a927fab15dbf1f53ad16
                 },
             },
             "auto"
