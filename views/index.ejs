@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./headparts/meta-parts") %>
+        <%- include("./headparts/favicon-parts") %>
+
+
+            <script src="owake_rtc_n.js"></script>
+            <script src="owake_rtm.js"></script>
+            <!-- jquery -->
+            <script src="jquery-3.4.1.min.js"></script>
+            <!-- Bootstrap -->
+            <script src="bootstrap.bundle.min.js"></script>
+            <!-- Socket.io -->
+            <script src="/socket.io/socket.io.js"></script>
+            <!-- axios -->
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <title>Owake</title>
+
+            <link rel="stylesheet" href="mainPage.css">
+            <link rel="stylesheet" href="https://unpkg.com/@themesberg/flowbite@1.2.0/dist/flowbite.min.css" />
+            <%- include("./popup/channelPublicCreate") %>
+                <%- include("./popup/channelPrivateCreate") %>
+                    <%- include("./popup/channelPrivateJoin") %>
+                        <%- include("./popup/channelPublicJoin") %>
+                            <%- include("./popup/channelUpdate") %>
+                                <%- include("./popup/channelDelete") %>
+                                    <%- include("./popup/channelJoin") %>
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="logo" onclick="location.href='/'">
+                    <img src="main_logo.svg" alt="logo">
+                </div>
+                <div class="nav-inner-wrapper" id="dashboard">
+                    <img src="dashboard.svg" alt="">
+                    &nbsp;<p><span>Dashboard</span></p>
+                </div>
+
+                <div class="nav-inner-wrapper" id="channelList">
+                    <img src="podcasts.svg" alt="">
+                    &nbsp;<p><span>Channel</span></p>
+                </div>
+
+                <!-- <div class="nav-inner-wrapper" id="newsfeed">
+                    <img src="newsfeed.svg" alt="">
+                    &nbsp;<p><span>News Feed</span></p>
+                </div> -->
+
+            </div>
+        </div>
+        <div class="body-container">
+            <!-- <div class="search-bar">
+                <select name="searchOptions" id="select_options_search">
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                </select>
+                <input id="searchWord" type="text" placeholder="Search">
+                <img id="searchIcon" src="search_icon.svg" alt="search">
+            </div> -->
+            <div class="mobile-top-navbar">
+                <!-- <select name="searchOptions" id="mobile_selectOptions">
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                </select>
+
+                <div class="mobile-search-input-container">
+                    <input id="mobile_searchWord" class="mobile-search-input" type="text"
+                        placeholder="Search a Channel">
+                </div>
+                <div class="search-icon">
+                    <img id="mobile_searchIcon" src="search_icon.svg" alt="search">
+                </div> -->
+                <div class="mobile_channel-join-btn" data-toggle="modal" data-target="#channelJoinModal">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+            </div>
+
+            <div class="mobile-category">
+                <div class="category-box" id="All">
+                    <p>All Channel</p>
+                </div>
+                <div class="category-box" id="Business">
+                    <p>Partner Channel</p>
+                </div>
+                <div class="category-box" id="Channel">
+                    <p>Channel</p>
+                </div>
+                <!-- <div class="category-box" id="News">
+                    <p>News</p>
+                </div> -->
+            </div>
+
+            <div class="body-container-wrapper">
+                <div class="top-body-container">
+                    <%- include('./businessList') %>
+                </div>
+                <div class="middle-body-container">
+                    <%- include('./channelList') %>
+                </div>
+            </div>
+
+
+            <div class="mobile-main-fixed-menu" style="display : none">
+                <i class="far fa-plus-square"></i>
+            </div>
+        </div>
+    </div>
+    <script src="mobileFixedBtn.js"></script>
+    <script>
+        let dashboard = $("#dashboard");
+        let channelList = $("#channelList");
+        let newsfeed = $("#newsfeed");
+        let bodyContainer = $(".body-container-wrapper");
+
+        let middleBodyContainer = $(".middle-body-container");
+        let channelBoxContainer = document.querySelector(".channel-box-container");
+
+        const mobileTopNavbar = document.querySelector(".mobile-top-navbar");
+        const searchInput = document.querySelector(".mobile-search-input");
+
+        let categoryBoxAll = document.querySelector("#All");
+        let categoryBoxBu = document.querySelector("#Business");
+        let categoryBoxCh = document.querySelector("#Channel");
+
+
+        $(document).on("keydown", ".mobile-search-input", (e) => {
+            const reqData = {
+                channelName: $(".mobile-search-input").val(),
+            };
+            if (e.which === 13 && searchInput.value.length !== 0) {
+                //channelSearch
+                searchResult(reqData);
+            }
+        });
+
+        // Mobiled Category Click Event
+        categoryBoxAll.addEventListener("click", (e) => {
+            e.preventDefault();
+            while (bodyContainer[0].hasChildNodes()) {
+                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
+            }
+            bodyContainer.load('/all', () => {
+                callChannelKronosaList();
+                callChannelList();
+            });
+        })
+
+        categoryBoxBu.addEventListener("click", (e) => {
+            e.preventDefault();
+            while (bodyContainer[0].hasChildNodes()) {
+                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
+            }
+
+            bodyContainer.load('/business', () => {
+                callChannelKronosaList();
+            });
+        })
+
+        categoryBoxCh.addEventListener("click", (e) => {
+            e.preventDefault();
+            while (bodyContainer[0].hasChildNodes()) {
+                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
+            }
+            bodyContainer.load('/channelList', () => {
+                callChannelList();
+            });
+        })
+        // Mobiled Category Click Event End
+
+        dashboard.click(() => {
+            bodyContainer.load('/all', () => {
+                callChannelKronosaList();
+                callChannelList();
+            });
+        })
+
+        channelList.click(() => {
+            while (bodyContainer[0].hasChildNodes()) {
+                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
+            }
+            bodyContainer.load('/channelList', () => {
+                callChannelList();
+            });
+        })
+
+        newsfeed.click(() => {
+            while (bodyContainer[0].hasChildNodes()) {
+                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
+            }
+            bodyContainer.load('/newsfeed');
+        })
+
+    </script>
+    <%- include('./jsparts/main-parts') %>
+
+</body>
+
+</html>

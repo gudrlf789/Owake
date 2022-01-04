@@ -1,0 +1,43 @@
+#momentShare-iframe {
+    border: none;
+}
+
+#momentShareArea {
+    position: absolute;
+    background: #546362;
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+    top: 0;
+    z-index: 10;
+}
+
+#momentShareAreaheader {
+    cursor: move;
+    padding: 10px;
+}
+
+#momentShare-iframe {
+    position: absolute;
+    width: 100%;
+    height: 92%;
+    border-radius: 25px;
+}
+
+#searchContainer {
+    display: flex;
+    justify-content: center;
+}
+
+#searchInput {
+    margin: 5px;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+#searchInputBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

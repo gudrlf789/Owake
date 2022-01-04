@@ -1,0 +1,83 @@
+<div class="modal fade" id="channelJoinModal" tabindex="-1" aria-labelledby="channelJoinModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="channelJoinModalLabel">
+                    Join Your Channel
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="channelJoin-Container">
+
+                    <div class="col-sm choose-container">
+                        <p class="choose-info-title">Choose a Channel type</p>
+                        <div class="choose-wrapper">
+                            <div class="choose-innner-wrapper">
+                                <input type="radio" name="join_channelType" value="Public" checked>
+                                <p>Public Channel</p>
+                            </div>
+                            <div class="choose-innner-wrapper">
+                                <input type="radio" name="join_channelType" value="Private">
+                                <p>Private Channel</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container admin-info-group">
+                        <div class="row channel-info-group">
+                            <div class="channelJoin-info channelName-wrapper">
+                                <p class="w-100 channel-info-name">Channel Name</p>
+                                <input class="w-100" id="join-channelName" type="text"
+                                    placeholder="Enter a Channel Name" required>
+                            </div>
+
+                            <div class="channelJoin-info channelPassword-wrapper">
+                                <p class="w-100 channel-info-password">Channel Password</p>
+                                <input class="w-100" id="join-channelPassword" type="password"
+                                    placeholder="Enter a Channel Password" required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm choose-container">
+                            <p class="choose-info-title">Choose a Your Role</p>
+                            <div class="choose-wrapper">
+                                <div class="choose-innner-wrapper">
+                                    <input type="radio" name="join_userType" value="USER" checked>
+                                    <p>User</p>
+                                </div>
+                                <div class="choose-innner-wrapper">
+                                    <input type="radio" name="join_userType" value="ADMIN">
+                                    <p>Admin</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row channel-info-group">
+                            <div class="channelJoin-info channelUserName-wrapper">
+                                <p class="w-100 channel-info-username">Name</p>
+                                <input class="w-100" id="join-username" type="text" placeholder="Enter the Your Name"
+                                    required>
+                            </div>
+
+                            <div class="channelJoin-info channelUserPassword-wrapper">
+                                <p class="w-100 channel-info-userPassword">Password</p>
+                                <input class="w-100" id="join-adminPassword" type="password"
+                                    placeholder="Enter the Your Password" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+
+                    <div class="button-group">
+                        <button id="channelJoin-btn" class="btn btn-primary btn-sm">
+                            Join
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

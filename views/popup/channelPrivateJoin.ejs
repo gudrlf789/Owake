@@ -1,0 +1,46 @@
+<div class="modal fade" id="channelPrivateJoin" tabindex="-1" aria-labelledby="channelPrivateJoinModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="channelPrivateJoinModalLabel">
+                    Join Your Private Channel
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="channelJoin-Container">
+                    <div class="row admin-info-group">
+
+                        <div class="col-sm" hidden="true">
+                            <input id="private-channelName" type="hidden" />
+                            <input id="private-passwordChecking" type="hidden" />
+                        </div>
+
+                        <div class="col-sm">
+                            <p class="nickname-text">User Name</p>
+                            <input id="private-nickName" type="text" placeholder="Enter a User Name" required />
+                        </div>
+
+                        <div class="col-sm">
+                            <div>
+                                <p>Channel Password</p>
+                                <input id="private-roomPassword" type="password"
+                                    placeholder="Enter a Channel Password" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <br><br>
+                    <div class="button-group">
+                        <button id="private-channelJoin-btn" class="btn btn-primary btn-sm">
+                            Join
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
