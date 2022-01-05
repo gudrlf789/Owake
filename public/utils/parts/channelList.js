@@ -34,9 +34,14 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
     const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[0].value;
     const channelName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[1].value;
     const imageName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[3].value;
+    const channelCategory = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[4].value;
+    const channelDescription = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[5].value;
     
     $("#update_channelName").val(channelName);
     $("#update_upload").val(imageName);
+    $("#update_theme-category").val(channelCategory);
+    $("#update_channel-description").val(channelDescription);
+
     if (channelType === "Private") {
         $("#update_private").attr("checked", true);
         $("#update_public").attr("checked", false);
@@ -60,9 +65,8 @@ const callChannelList = () => {
     axios.get("/channel/list").then((res) => {
         // 자식요소 모두 삭제 후 불러오기
         $(".channel-box-container").empty();
-
         for (data of res.data.channelList) {
-            if (data.channelType === "Public") {
+            if (data.channelType === "Public" && data.Kronosa === "N") {
                 $(".channel-box-container").append(
                     $(
                         "<div class='channel-box'>" +
@@ -72,6 +76,8 @@ const callChannelList = () => {
                             `<input type='hidden' value=${data.channelName} >` +
                             `<input type='hidden' value=${data.channelPassword} >` +
                             `<input type='hidden' value=${data.imageName} >` +
+                            `<input type='hidden' value=${data.channelCategory} >` +
+                            `<input type='hidden' value=${data.channelDescription} >` +
                             "</div>" +
                             "<div class='channel-thumnail'>" +
                             `<img src='${data.imageName}' />` +

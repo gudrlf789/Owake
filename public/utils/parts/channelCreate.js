@@ -53,7 +53,7 @@ function createChannelData(typeFlag) {
     formData.append("channelType", typeFlag === "private" ? "Private" : "Public");
     formData.append("channelName", $(`#${typeFlag}_channelName`).val());
     formData.append("channelPassword", $(`#${typeFlag}_channelPassword`).val());
-    formData.append("channelCategory", $(`#${typeFlag}_theme-category`).val());
+    formData.append("channelCategory", $(`#${typeFlag}-theme-category`).val());
     formData.append("channelDescription", $(`#${typeFlag}_channel-description`).val());
 
     if ($(`#${typeFlag}_file_thumnail`)[0].files[0]) {
