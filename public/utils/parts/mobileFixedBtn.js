@@ -21,8 +21,8 @@ channelPrivateBtn.id = "mobileChannelPrivateBtn";
 
 mobileMenu.style.padding = "10px";
 
-channelPublicBtnImg.src = "../../img/channel/public.svg";
-channelPrivateBtnImg.src = "../../img/channel/private.svg";
+channelPublicBtnImg.src = "../../img/channel/mobile_public_btn.svg";
+channelPrivateBtnImg.src = "../../img/channel/mobile_private_btn.svg";
 
 channelBtnPublicText.textContent = "Public";
 channelBtnPrivateText.textContent = "Private";
@@ -32,16 +32,16 @@ channelPrivateBtn.append(channelPrivateBtnImg, channelBtnPrivateText);
 
 mobileMenu.append(channelPublicBtn, channelPrivateBtn);
 
-const bodyContainer = document.querySelector(".body-container");
+const mobileBodyContainer = document.querySelector(".body-container");
 
 let menuActive = false;
 
 $(".mobile-main-fixed-menu").click((e) => {
     menuActive = !menuActive;
     if (menuActive == true) {
-        bodyContainer.append(mobileMenu);
+        mobileBodyContainer.append(mobileMenu);
     } else {
-        bodyContainer.removeChild(mobileMenu);
+        mobileBodyContainer.removeChild(mobileMenu);
     }
 });
 
@@ -55,6 +55,6 @@ $(document).on("click", "#mobileChannelPrivateBtn", (e) => {
 
 window.addEventListener("resize", () => {
     if (window.innerWidth > 768) {
-        bodyContainer.removeChild(mobileMenu);
+        mobileBodyContainer.removeChild(mobileMenu);
     }
 });

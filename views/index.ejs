@@ -16,6 +16,7 @@
             <script src="/socket.io/socket.io.js"></script>
             <!-- axios -->
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
             <title>Owake</title>
 
             <link rel="stylesheet" href="mainPage.css">
@@ -108,15 +109,14 @@
 
 
             <div class="mobile-main-fixed-menu" style="display : none">
-                <i class="far fa-plus-square"></i>
+                <img class="mobile-menu-btn" src="menu_btn.svg" alt="">
             </div>
         </div>
     </div>
-    <script src="mobileFixedBtn.js"></script>
+
     <script>
         let dashboard = $("#dashboard");
         let channelList = $("#channelList");
-        let newsfeed = $("#newsfeed");
         let bodyContainer = $(".body-container-wrapper");
 
         let middleBodyContainer = $(".middle-body-container");
@@ -190,16 +190,8 @@
             });
         })
 
-        newsfeed.click(() => {
-            while (bodyContainer[0].hasChildNodes()) {
-                bodyContainer[0].removeChild(bodyContainer[0].firstChild);
-            }
-            bodyContainer.load('/newsfeed');
-        })
-
     </script>
     <%- include('./jsparts/main-parts') %>
-
 </body>
 
 </html>
