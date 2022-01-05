@@ -385,6 +385,7 @@ body {
 
 .channel-box-title {
   flex: 0.2;
+  font-weight: bold;
 }
 
 .channel-box-description {
@@ -392,6 +393,7 @@ body {
   flex: 0.6;
   margin-top: 5px;
   margin-bottom: 10px;
+  color : gray;
 }
 
 .channel-box-description>p {
@@ -598,6 +600,7 @@ body {
 
   .mobile-channel-btn > p {
     font-weight: 400;
+    text-shadow: 1px 1px 0px #fff;
   }
 
   #mobileChannelPublicBtn {
