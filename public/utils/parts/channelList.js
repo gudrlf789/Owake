@@ -62,7 +62,7 @@ const callChannelList = () => {
         $(".channel-box-container").empty();
 
         for (data of res.data.channelList) {
-            if (data.channelType === "Public") {
+            if (data.channelType === "Public" && data.Kronosa === "N") {
                 $(".channel-box-container").append(
                     $(
                         "<div class='channel-box'>" +

@@ -21,9 +21,6 @@ const io = require("socket.io")(server);
 /** Router */
 const mainRouter = require("./router/main.js");
 
-const dotenv = require("dotenv");
-dotenv.config();
-
 /** https Redirecting Setting */
 function redirectSec(req, res, next) {
     if (req.headers["x-forwarded-proto"] == "http") {
