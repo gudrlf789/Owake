@@ -9,24 +9,21 @@ function checkKronosaPassword(channelName, channelPassword) {
     }
 }
 
-$(document).on(
-    "click",
-    ".business-box-wrapper > .business-thumnail, .business-box-wrapper > .business-box-title, .business-box-wrapper > .business-box-description",
-    (e) => {
-        const channelType = e.currentTarget.children[0].value;
-        const channelName = e.currentTarget.children[1].value;
-        const channelPassword = e.currentTarget.children[2].value;
+$(document).on("click", ".business-box-wrapper > .business-thumnail, .business-box-wrapper > .business-box-title, .business-box-wrapper > .business-box-description", (e) => {
+    const channelType = e.currentTarget.parentNode.childNodes[0].childNodes[0].value;
+    const channelName = e.currentTarget.parentNode.childNodes[0].childNodes[1].value;
+    const channelPassword = e.currentTarget.parentNode.childNodes[0].childNodes[2].value;
 
-        switch (channelType) {
-            case "Public":
-                checkKronosaPassword(channelName, channelPassword);
-                break;
-            case "Private":
-                checkKronosaPassword(channelName, channelPassword);
-                break;
-            default:
-                break;
-        }
+    switch (channelType) {
+        case "Public":
+            checkKronosaPassword(channelName, channelPassword);
+            break;
+        case "Private":
+            checkKronosaPassword(channelName, channelPassword);
+            break;
+        default:
+            break;
+    }
 });
 
 const callChannelKronosaList = () => {
@@ -44,7 +41,6 @@ const callChannelKronosaList = () => {
                             `<input type='hidden' value=${data.channelType} >` +
                             `<input type='hidden' value=${data.channelName} >` +
                             `<input type='hidden' value=${data.channelPassword} >` +
-                            `<input type='hidden' value=${data.imageName} >` +
                             "</div>" +
                             "<div class='business-thumnail'>" +
                             `<img src='${data.imageName}' />` +
