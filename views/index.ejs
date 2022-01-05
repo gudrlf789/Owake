@@ -129,16 +129,15 @@
         let categoryBoxBu = document.querySelector("#Business");
         let categoryBoxCh = document.querySelector("#Channel");
 
-
-        $(document).on("keydown", ".mobile-search-input", (e) => {
-            const reqData = {
-                channelName: $(".mobile-search-input").val(),
-            };
-            if (e.which === 13 && searchInput.value.length !== 0) {
-                //channelSearch
-                searchResult(reqData);
-            }
-        });
+        // $(document).on("keydown", ".mobile-search-input", (e) => {
+        //     const reqData = {
+        //         channelName: $(".mobile-search-input").val(),
+        //     };
+        //     if (e.which === 13 && searchInput.value.length !== 0) {
+        //         //channelSearch
+        //         searchResult(reqData);
+        //     }
+        // });
 
         // Mobiled Category Click Event
         categoryBoxAll.addEventListener("click", (e) => {
