@@ -65,49 +65,51 @@ const callChannelList = () => {
     axios.get("/channel/list").then((res) => {
         // 자식요소 모두 삭제 후 불러오기
         $(".channel-box-container").empty();
-        for (data of res.data.channelList) {
-            if (data.channelType === "Public" && data.Kronosa === "N") {
-                $(".channel-box-container").append(
-                    $(
-                        "<div class='channel-box'>" +
-                            "<div class='channel-box-wrapper'>" +
-                            "<div class='hidden-data'>" +
-                            `<input type='hidden' value=${data.channelType} >` +
-                            `<input type='hidden' value="${data.channelName}" >` +
-                            `<input type='hidden' value=${data.channelPassword} >` +
-                            `<input type='hidden' value="${data.imageName}" >` +
-                            `<input type='hidden' value=${data.channelCategory} >` +
-                            `<input type='hidden' value="${data.channelDescription}" >` +
-                            "</div>" +
-                            "<div class='channel-thumnail'>" +
-                            `<img src='${data.imageName}' />` +
-                            "</div>" +
-                            "<div class='channel-box-title'>" +
-                            data.channelName +
-                            "</div>" +
-                            "<div class='channel-box-description'>" +
-                            `<p>${data.channelDescription}</p>` +
-                            "</div>" +
-                            "<div class='channel-box-footer'>" +
-                            "<div class='channel-box-footer-icon'>" +
-                            `${
-                                data.channelPassword.length !== 0 ||
-                                data.channelPassword !== ""
-                                    ? "<img src='./img/lock.svg' alt='' class='lock-icon'></img>"
-                                    : "<img src='./img/unlock.svg' alt='' class='unlock-icon'></img>"
-                            }` +
-                            "</div>" +
-                            "<div class='channel-box-footer-btn'>" +
-                            "<div class='channel-box-footer-btn-update' id='channelUpdateBtn' data-toggle='modal' data-target='#channelUpdateModal'>" +
-                            "<span>Edit</span>" +
-                            "</div>" +
-                            "<div class='channel-box-footer-btn-remove' id='channelDeleteBtn' data-toggle='modal' data-target='#channelDeleteModal'>" +
-                            "<span>Delete</span>" +
-                            "</div>" +
-                            "</div>" +
-                            "</div>"
-                    )
-                );
+        if(res.data.success){
+            for (data of res.data.channelList) {
+                if (data.channelType === "Public" && data.Kronosa === "N") {
+                    $(".channel-box-container").append(
+                        $(
+                            "<div class='channel-box'>" +
+                                "<div class='channel-box-wrapper'>" +
+                                "<div class='hidden-data'>" +
+                                `<input type='hidden' value=${data.channelType} >` +
+                                `<input type='hidden' value="${data.channelName}" >` +
+                                `<input type='hidden' value=${data.channelPassword} >` +
+                                `<input type='hidden' value="${data.imageName}" >` +
+                                `<input type='hidden' value=${data.channelCategory} >` +
+                                `<input type='hidden' value="${data.channelDescription}" >` +
+                                "</div>" +
+                                "<div class='channel-thumnail'>" +
+                                `<img src='${data.imageName}' />` +
+                                "</div>" +
+                                "<div class='channel-box-title'>" +
+                                data.channelName +
+                                "</div>" +
+                                "<div class='channel-box-description'>" +
+                                `<p>${data.channelDescription}</p>` +
+                                "</div>" +
+                                "<div class='channel-box-footer'>" +
+                                "<div class='channel-box-footer-icon'>" +
+                                `${
+                                    data.channelPassword.length !== 0 ||
+                                    data.channelPassword !== ""
+                                        ? "<img src='./img/lock.svg' alt='' class='lock-icon'></img>"
+                                        : "<img src='./img/unlock.svg' alt='' class='unlock-icon'></img>"
+                                }` +
+                                "</div>" +
+                                "<div class='channel-box-footer-btn'>" +
+                                "<div class='channel-box-footer-btn-update' id='channelUpdateBtn' data-toggle='modal' data-target='#channelUpdateModal'>" +
+                                "<span>Edit</span>" +
+                                "</div>" +
+                                "<div class='channel-box-footer-btn-remove' id='channelDeleteBtn' data-toggle='modal' data-target='#channelDeleteModal'>" +
+                                "<span>Delete</span>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>"
+                        )
+                    );
+                }
             }
         }
     });
