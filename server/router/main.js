@@ -86,7 +86,7 @@ router.get("/kronosaChannelList", (req, res, next) => {
 router.post("/register", upload.single("image"), async (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.channelName +
+        bodyData.channelName.replace(/\s/gi,"") +
         bodyData.channelType;
 
     const snapshot = await firebaseCollection
@@ -150,7 +150,7 @@ router.post("/search", async (req, res) => {
 router.post("/update", upload.single("image"), async (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.channelName +
+        bodyData.channelName.replace(/\s/gi,"") +
         bodyData.channelType;
 
     firebaseCollection
@@ -177,7 +177,7 @@ router.post("/update", upload.single("image"), async (req, res) => {
 router.post("/delete", (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.channelName +
+        bodyData.channelName.replace(/\s/gi,"") +
         bodyData.channelType;
 
     firebaseCollection
@@ -214,7 +214,7 @@ function realDeleteData(docName, res) {
 router.post("/info", async (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.channelName +
+        bodyData.channelName.replace(/\s/gi,"") +
         bodyData.channelType;
 
     const snapshot =  await firebaseCollection.doc(docName).get();
