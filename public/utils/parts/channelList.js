@@ -73,11 +73,11 @@ const callChannelList = () => {
                             "<div class='channel-box-wrapper'>" +
                             "<div class='hidden-data'>" +
                             `<input type='hidden' value=${data.channelType} >` +
-                            `<input type='hidden' value=${data.channelName} >` +
+                            `<input type='hidden' value="${data.channelName}" >` +
                             `<input type='hidden' value=${data.channelPassword} >` +
-                            `<input type='hidden' value=${data.imageName} >` +
+                            `<input type='hidden' value="${data.imageName}" >` +
                             `<input type='hidden' value=${data.channelCategory} >` +
-                            `<input type='hidden' value=${data.channelDescription} >` +
+                            `<input type='hidden' value="${data.channelDescription}" >` +
                             "</div>" +
                             "<div class='channel-thumnail'>" +
                             `<img src='${data.imageName}' />` +
