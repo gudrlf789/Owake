@@ -265,7 +265,7 @@ body {
   box-sizing: content-box;
   text-align: center;
   padding: 5px;
-  margin : 6px;
+  margin-right : 20px;
   cursor : pointer;
 }
 
@@ -553,6 +553,10 @@ body {
     margin-left : auto;
     font-size : 20px;
     cursor : pointer;
+  }
+
+  .mobile_channel-join-btn > img {
+    width : 45px;
   }
 
   .search-icon {
