@@ -534,6 +534,13 @@ body {
   margin-right: 10px;
 }
 
+#spinnerModal {
+  position: absolute;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+}
+
 @media (max-width: 768px) {
   .mobile-top-navbar {
     display: flex;
