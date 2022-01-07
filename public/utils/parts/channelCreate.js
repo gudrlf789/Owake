@@ -90,15 +90,16 @@ function createChannelData(typeFlag) {
             } else {
                 if (res.data.includes("file")) {
                     alert(`${res.data}`);
+                    $(`#${typeFlag}_upload`).val("");
                 } else {
                     alert(
                         `ChannelName: ${$(
                             `#${typeFlag}_channelName`
                         ).val()} is already existed. please choice another type or channelName`
                     );
+                    $(`#${typeFlag}_channelName`).val("");
                     console.log(res.data);
                 }
-                $(`#${typeFlag}_channelName`).val("");
             }
         });
     } else {
