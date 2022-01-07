@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
         cb(null, file.originalname);
     },
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, limits: { fileSize: 1000000 } });
 
 /** Firebase Settings */
 const firebase = require("firebase/app");
@@ -30,6 +30,17 @@ fs.readdir("./server/uploads", (err) => {
         fs.mkdirSync("./server/uploads");
     }
 });
+
+// 파일 사이즈 오류 핸들러
+const fileSizeLimitErrorHandler = (err, req, res, next) => {
+    if (err) {
+        console.log(err);
+        res.write("Please set the file size. (1MB or less)");
+        res.end();
+    } else {
+        next();
+    }
+};
 
 //날짜마다 이미지 파일들 관리할수 있게 날짜 폴더 생성
 /*fs.readdir(`./server/uploads/${nowDate}`, (err) => {
@@ -83,42 +94,47 @@ router.get("/kronosaChannelList", (req, res, next) => {
         });
 });
 
-router.post("/register", upload.single("image"), async (req, res) => {
-    const bodyData = req.body;
-    const docName =
-        bodyData.channelName.replace(/\s/gi,"") +
-        bodyData.channelType;
+router.post(
+    "/register",
+    upload.single("image"),
+    fileSizeLimitErrorHandler,
+    async (req, res) => {
+        const bodyData = req.body;
+        const docName =
+            bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
 
-    const snapshot = await firebaseCollection
-        .where("channelName", "==", bodyData.channelName)
-        .where("channelType", "==", bodyData.channelType)
-        .get();
+        const snapshot = await firebaseCollection
+            .where("channelName", "==", bodyData.channelName)
+            .where("channelType", "==", bodyData.channelType)
+            .get();
 
-    if (snapshot.empty) {
-        bodyData.registreTime = firebase.firestore.FieldValue.serverTimestamp();
-        bodyData.Kronosa = "N";
+        if (snapshot.empty) {
+            bodyData.registreTime =
+                firebase.firestore.FieldValue.serverTimestamp();
+            bodyData.Kronosa = "N";
 
-        // doc에 특정 이름을 설정하고 싶을때
-        firebaseCollection
-            .doc(docName)
-            .set(bodyData)
-            .then((e) => {
-                return res.status(200).json({
-                    success: true,
+            // doc에 특정 이름을 설정하고 싶을때
+            firebaseCollection
+                .doc(docName)
+                .set(bodyData)
+                .then((e) => {
+                    return res.status(200).json({
+                        success: true,
+                    });
+                })
+                .catch((err) => {
+                    return res.status(500).json({
+                        success: false,
+                        error: err,
+                    });
                 });
-            })
-            .catch((err) => {
-                return res.status(500).json({
-                    success: false,
-                    error: err,
-                });
+        } else {
+            return res.status(200).json({
+                success: false,
             });
-    } else {
-        return res.status(200).json({
-            success: false,
-        });
+        }
     }
-});
+);
 
 router.post("/search", async (req, res) => {
     const bodyData = req.body;
@@ -150,8 +166,7 @@ router.post("/search", async (req, res) => {
 router.post("/update", upload.single("image"), async (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.channelName.replace(/\s/gi,"") +
-        bodyData.channelType;
+        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
 
     firebaseCollection
         .doc(docName)
@@ -177,8 +192,7 @@ router.post("/update", upload.single("image"), async (req, res) => {
 router.post("/delete", (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.channelName.replace(/\s/gi,"") +
-        bodyData.channelType;
+        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
 
     firebaseCollection
         .doc(docName)
@@ -214,12 +228,11 @@ function realDeleteData(docName, res) {
 router.post("/info", async (req, res) => {
     const bodyData = req.body;
     const docName =
-        bodyData.channelName.replace(/\s/gi,"") +
-        bodyData.channelType;
+        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
 
-    const snapshot =  await firebaseCollection.doc(docName).get();
-    
-    if(snapshot.exists){
+    const snapshot = await firebaseCollection.doc(docName).get();
+
+    if (snapshot.exists) {
         firebaseCollection
             .doc(docName)
             .get()
@@ -237,11 +250,11 @@ router.post("/info", async (req, res) => {
                     error: err,
                 });
             });
-    }else{
+    } else {
         return res.status(200).json({
             success: false,
-            error: "It's a channel that doesn't exist"
-        })
+            error: "It's a channel that doesn't exist",
+        });
     }
 });
 
