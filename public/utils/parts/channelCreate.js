@@ -84,7 +84,7 @@ function createChannelData(typeFlag) {
     if ($(`#${typeFlag}_file_thumnail`) != "") {
         let size = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
         if (size > maxSize) {
-            alert("Attachment file size can be registered within 7MB..");
+            alert("Attachment file size can be registered within 2MB..");
             $(`#${typeFlag}_upload`).val("");
             $(`#${typeFlag}_upload`).focus();
             return false;
