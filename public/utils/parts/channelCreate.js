@@ -79,7 +79,7 @@ function createChannelData(typeFlag) {
     }
 
     // FileSizecheck
-    const maxSize = 2000000; //2MB
+    const maxSize = 2097152; //2MB
 
     if ($(`#${typeFlag}_file_thumnail`) != "") {
         let size = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
