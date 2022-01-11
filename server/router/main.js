@@ -1,5 +1,5 @@
-//let moment = require("moment");
-//const nowDate = moment().format("YYYY-MM-DD");
+let moment = require("moment");
+const nowDate = moment().format("YYYY-MM-DD");
 //const nowDateAndTime = moment().format("YYYY-MM-DD h:mm:ss a");
 const fs = require("fs");
 const express = require("express");
@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
         cb(null, `./server/uploads`);
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);
+        cb(null, req.body.adminId + "_" + nowDate + "_" + file.originalname);
     },
 });
 const upload = multer({ storage: storage });
