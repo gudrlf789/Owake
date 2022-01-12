@@ -25,7 +25,8 @@ $("#channelDelete-btn").click((e) => {
 
   const reqData = {
     channelType: $("#delete_channelType").val(),
-    channelName: $("#delete_channelName").val()
+    channelName: $("#delete_channelName").val(),
+    imageName: $("#delete_imageName").val()
   };
   
   if(!korean.test(reqData.adminId) && !korean.test(reqData.channelName)){
