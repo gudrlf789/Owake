@@ -14,6 +14,7 @@ const storage = multer.diskStorage({
     },
 });
 const upload = multer({ storage: storage });
+const path = require("path");
 
 /** Firebase Settings */
 const firebase = require("firebase/app");
@@ -85,8 +86,8 @@ router.get("/kronosaChannelList", (req, res, next) => {
 
 router.post("/register", upload.single("image"), async (req, res) => {
     const bodyData = req.body;
-    const docName =
-        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
+    bodyData.imageName = bodyData.adminId + "_"  + nowDate + "_" + bodyData.imageName;
+    const docName = bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
 
     const snapshot = await firebaseCollection
         .where("channelName", "==", bodyData.channelName)
@@ -156,7 +157,7 @@ router.post("/update", upload.single("image"), async (req, res) => {
         .update({
             channelPassword: bodyData.channelPassword,
             channelCategory: bodyData.channelCategory,
-            imageName: bodyData.imageName,
+            imageName: bodyData.adminId + "_"  + nowDate + "_" + bodyData.imageName,
             channelDescription: bodyData.channelDescription,
         })
         .then((e) => {
@@ -174,15 +175,19 @@ router.post("/update", upload.single("image"), async (req, res) => {
 
 router.post("/delete", (req, res) => {
     const bodyData = req.body;
-    const docName =
-        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
-
+    const docName = bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
+    const imagePath = path.join(__dirname, `../uploads/${bodyData.imageName}`);
+    
     firebaseCollection
         .doc(docName)
         .get()
         .then((doc) => {
             if (doc.exists) {
                 realDeleteData(docName, res);
+                // 이미지 삭제
+                if(fs.statSync(imagePath)){
+                    fs.unlinkSync(imagePath);
+                }
             } else {
                 return res.status(200).json({
                     success: false,

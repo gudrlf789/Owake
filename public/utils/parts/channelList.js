@@ -56,9 +56,11 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
 $(document).on("click", "#channelDeleteBtn", (e) => {
     const channelType = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[0].value;
     const channelName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[1].value;
+    const imageName = e.currentTarget.parentNode.parentNode.parentNode.childNodes[0].children[3].value;
 
     $("#delete_channelType").val(channelType);
     $("#delete_channelName").val(channelName);
+    $("#delete_imageName").val(imageName);
 });
 
 const callChannelList = () => {
