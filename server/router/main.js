@@ -166,32 +166,37 @@ router.post("/search", async (req, res) => {
         });
 });
 
-router.post("/update", upload.single("image"), fileSizeLimitErrorHandler, async (req, res) => {
-    const bodyData = req.body;
-    const docName =
-        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
+router.post(
+    "/update",
+    upload.single("image"),
+    fileSizeLimitErrorHandler,
+    async (req, res) => {
+        const bodyData = req.body;
+        const docName =
+            bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
 
-    firebaseCollection
-        .doc(docName)
-        .update({
-            channelPassword: bodyData.channelPassword,
-            channelCategory: bodyData.channelCategory,
-            imageName:
-                bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName,
-            channelDescription: bodyData.channelDescription,
-        })
-        .then((e) => {
-            return res.status(200).json({
-                success: true,
+        firebaseCollection
+            .doc(docName)
+            .update({
+                channelPassword: bodyData.channelPassword,
+                channelCategory: bodyData.channelCategory,
+                imageName:
+                    bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName,
+                channelDescription: bodyData.channelDescription,
+            })
+            .then((e) => {
+                return res.status(200).json({
+                    success: true,
+                });
+            })
+            .catch((err) => {
+                return res.status(500).json({
+                    success: false,
+                    error: err,
+                });
             });
-        })
-        .catch((err) => {
-            return res.status(500).json({
-                success: false,
-                error: err,
-            });
-        });
-});
+    }
+);
 
 router.post("/delete", (req, res) => {
     const bodyData = req.body;
