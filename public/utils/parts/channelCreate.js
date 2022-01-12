@@ -78,19 +78,6 @@ function createChannelData(typeFlag) {
         }
     }
 
-    // FileSizecheck
-    const maxSize = 2097152; //2MB
-
-    if ($(`#${typeFlag}_file_thumnail`) != "") {
-        let size = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
-        if (size > maxSize) {
-            alert("Attachment file size can be registered within 2MB..");
-            $(`#${typeFlag}_upload`).val("");
-            $(`#${typeFlag}_upload`).focus();
-            return false;
-        }
-    }
-
     if (
         !korean.test(formData.get("adminId")) &&
         !korean.test(formData.get("channelName"))
@@ -101,13 +88,17 @@ function createChannelData(typeFlag) {
                 afterAction(typeFlag);
                 callChannelList();
             } else {
-                alert(
-                    `ChannelName: ${$(
-                        `#${typeFlag}_channelName`
-                    ).val()} is already existed. please choice another type or channelName`
-                );
-                $(`#${typeFlag}_channelName`).val("");
-                console.log(res.data);
+                if (res.data.includes("file")) {
+                    alert(`${res.data}`);
+                } else {
+                    alert(
+                        `ChannelName: ${$(
+                            `#${typeFlag}_channelName`
+                        ).val()} is already existed. please choice another type or channelName`
+                    );
+                    $(`#${typeFlag}_channelName`).val("");
+                    console.log(res.data);
+                }
             }
         });
     } else {
