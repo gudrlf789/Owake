@@ -90,6 +90,7 @@ function createChannelData(typeFlag) {
             } else {
                 if (res.data.includes("file")) {
                     alert(`${res.data}`);
+                    return;
                 } else {
                     alert(
                         `ChannelName: ${$(
@@ -97,7 +98,6 @@ function createChannelData(typeFlag) {
                         ).val()} is already existed. please choice another type or channelName`
                     );
                     $(`#${typeFlag}_channelName`).val("");
-                    console.log(res.data);
                 }
             }
         });

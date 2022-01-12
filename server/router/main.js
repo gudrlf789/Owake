@@ -200,7 +200,8 @@ router.post(
 
 router.post("/delete", (req, res) => {
     const bodyData = req.body;
-    const docName = bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
+    const docName =
+        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
     const imagePath = path.join(__dirname, `../uploads/${bodyData.imageName}`);
 
     firebaseCollection
@@ -210,13 +211,15 @@ router.post("/delete", (req, res) => {
             if (doc.exists) {
                 realDeleteData(docName, res);
                 // 이미지 삭제
-                try{
+                try {
                     if (fs.statSync(imagePath)) {
                         fs.unlinkSync(imagePath);
                     }
-                }catch(err){
-                    if(err.code === "ENOENT"){
-                        console.log(`${bodyData.channelName} 채널은 이미지가 존재하지 않는 채널`);
+                } catch (err) {
+                    if (err.code === "ENOENT") {
+                        console.log(
+                            `${bodyData.channelName} Channels are channels that do not exist`
+                        );
                     }
                 }
             } else {
