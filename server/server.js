@@ -114,7 +114,7 @@ io.on("connection", (socket) => {
     });
 });
 
-const port = 80;
+const port = 8080;
 server.listen(port, () => {
     console.log(`Server Listen... ${port}`);
 });
