@@ -168,16 +168,15 @@ router.post("/search", async (req, res) => {
 
 router.post("/update", upload.single("image"), fileSizeLimitErrorHandler, async (req, res) => {
     const bodyData = req.body;
-    const docName =
-        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
+    const docName = bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
+    const imageUpdateYN = bodyData.imageName.indexOf(bodyData.adminId);
 
     firebaseCollection
         .doc(docName)
         .update({
             channelPassword: bodyData.channelPassword,
             channelCategory: bodyData.channelCategory,
-            imageName:
-                bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName,
+            imageName: imageUpdateYN < 0 ? bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName : bodyData.imageName,
             channelDescription: bodyData.channelDescription,
         })
         .then((e) => {
