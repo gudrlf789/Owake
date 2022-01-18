@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "nodemon --experimental-modules server/server.js",
-        "start": "node --experimental-modules server/server.js"
+        "start": "pm2 --experimental-modules server/server.js"
     },
     "keywords": [],
     "author": "Owake",
