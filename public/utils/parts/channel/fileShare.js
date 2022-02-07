@@ -7,7 +7,7 @@ export const fileShare = () => {
                 dataType: "jsonp",
                 data: {
                     api_key: "503d6430f3c124e0f239092e9c916b932a869dfe",
-                    profile_name: "username",
+                    profile_name: "owake",
                 },
                 cache: false,
             }).done(function (data) {});
@@ -41,9 +41,7 @@ export const fileShare = () => {
                 contentType: false,
                 data: data,
                 cache: false,
-            }).done(function (data) {
-                console.log(data.transfer, data.length);
-            });
+            }).done(function (data) {});
         }
 
         function receiveKey(key) {
