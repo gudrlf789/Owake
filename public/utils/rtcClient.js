@@ -3,6 +3,7 @@ localVideoBox.id = "local__videoBox local-player";
 localVideoBox.className = "player";
 
 let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+let socket = io();
 
 let localTracks = {
     videoTrack: null,
@@ -91,6 +92,9 @@ $(document).on("click", ".player", (e) => {
 });
 
 async function join() {
+    options.uid = window.sessionStorage.getItem("uid");
+    options.channel = window.sessionStorage.getItem("channel");
+
     client.on("user-published", handleUserPublished);
     client.on("user-joined", handleUserJoined);
     client.on("user-unpublished", handleUserUnpublished);

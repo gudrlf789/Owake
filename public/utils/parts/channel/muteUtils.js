@@ -7,19 +7,29 @@ export const muteUtilsFunc = () => {
         audioTrackMuted: false,
     };
 
+    $(() => {
+        setTimeout(() => {
+            muteVideo();
+        }, 3000);
+    });
+
     $("#muteAudio").click(function (e) {
         if (!localTrackState.audioTrackMuted) {
             muteAudio();
+            alert("audio mute activation");
         } else {
             unmuteAudio();
+            alert("audio unmute activation");
         }
     });
 
     $("#muteVideo").click(function (e) {
         if (!localTrackState.videoTrackMuted) {
             muteVideo();
+            alert("video mute activation");
         } else {
             unmuteVideo();
+            alert("video unmute activation");
         }
     });
 
@@ -30,7 +40,6 @@ export const muteUtilsFunc = () => {
         ].audioTrack._originMediaStreamTrack.enabled = false;
         localTrackState.audioTrackMuted = true;
         audioIcon.className = "fa fa-microphone-slash";
-        alert("audio mute activation");
     }
 
     async function unmuteAudio() {
@@ -40,7 +49,6 @@ export const muteUtilsFunc = () => {
         ].audioTrack._originMediaStreamTrack.enabled = true;
         localTrackState.audioTrackMuted = false;
         audioIcon.className = "fa fa-microphone";
-        alert("audio unmute activation");
     }
 
     async function muteVideo() {
@@ -50,7 +58,6 @@ export const muteUtilsFunc = () => {
         ].videoTrack._originMediaStreamTrack.enabled = false;
         localTrackState.videoTrackMuted = true;
         videoIcon.className = "fas fa-video-slash";
-        alert("video mute activation");
     }
 
     async function unmuteVideo() {
@@ -60,6 +67,5 @@ export const muteUtilsFunc = () => {
         ].videoTrack._originMediaStreamTrack.enabled = true;
         localTrackState.videoTrackMuted = false;
         videoIcon.className = "fas fa-video";
-        alert("video unmute activation");
     }
 };

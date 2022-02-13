@@ -1,7 +1,7 @@
 function checkUserId(userId) {
-    if(userId === ""){
+    if (userId === "") {
         return false;
-    }else{
+    } else {
         return true;
     }
 }
@@ -10,12 +10,12 @@ function checkKorean(userId, channelName) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
     if (!korean.test(userId)) {
-        window.sessionStorage.setItem("channel", channelName);
+        window.sessionStorage.setItem("channel", ROOM_ID);
         window.sessionStorage.setItem("uid", userId);
         window.location.href = "/join";
     } else {
         alert("You can only type User Name in English.");
-        return
+        return;
     }
 }
 
@@ -80,9 +80,9 @@ $("#private-channelJoin-btn").click((e) => {
         alert("Wrong Password");
         $("#private-roomPassword").val("");
     } else {
-        if(!checkUserId(userId)) {
+        if (!checkUserId(userId)) {
             alert("Enter your User Name");
-        }else{
+        } else {
             checkKorean(userId, channelName);
         }
     }
@@ -92,9 +92,9 @@ $("#public-channelJoin-btn").click((e) => {
     const channelName = $("#public-channelName").val();
     const userId = $("#public-nickName").val();
 
-    if(!checkUserId(userId)) {
+    if (!checkUserId(userId)) {
         alert("Enter your User Name");
-    }else{
+    } else {
         checkKorean(userId, channelName);
     }
 });

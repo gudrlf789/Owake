@@ -12,7 +12,6 @@ export const mobileDisplayCtr = () => {
     function messageEnable() {
         mainRight.hidden = false;
         mainRight.style.display = "flex";
-        mainRight.style.flex = "1";
         showChat.style.color = "rgb(165, 199, 236)";
     }
     function messageDisable() {

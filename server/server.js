@@ -3,6 +3,10 @@ const cors = require("cors");
 const app = express();
 const path = require("path");
 
+const { customAlphabet } = require("nanoid");
+const nanoid = customAlphabet("ABCDEFGHI1234567890", 12);
+const roomID = nanoid();
+
 const CORS_fn = (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -16,10 +20,15 @@ const CORS_fn = (req, res) => {
 };
 
 const server = require("http").createServer(app, CORS_fn);
-const io = require("socket.io")(server);
-
+const io = require("socket.io")(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+        preflightContinue: false,
+    },
+});
 /** Router */
-const mainRouter = require("./router/main.js");
+const mainRouter = require("./routes/router.js");
 
 /** https Redirecting Setting */
 function redirectSec(req, res, next) {
@@ -61,11 +70,15 @@ app.use(express.json());
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
-    res.render("index");
+    res.render("index", { roomId: roomID });
 });
 
-app.get("/join", (req, res, next) => {
-    res.render("channel");
+app.get("/join", (req, res) => {
+    res.redirect(`/join/${roomID}`);
+});
+
+app.get(`/join/:room`, (req, res) => {
+    res.render("channel", { roomId: req.params.room });
 });
 
 app.get("/all", (req, res, next) => {
