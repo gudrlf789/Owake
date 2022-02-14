@@ -10,6 +10,7 @@ import { screenShareFunc } from "./parts/channel/screenShare.js";
 import { whiteBoardFunc } from "./parts/channel/whiteBoard.js";
 import { mobileReflashClose } from "./parts/channel/mobileReflashClose.js";
 import { responsiveFunc } from "./parts/channel/responsive.js";
+import { copyInfo } from "./parts/channel/copyUrl.js";
 
 mobileDisplayCtr();
 f12defense();
@@ -23,3 +24,4 @@ screenShareFunc();
 whiteBoardFunc();
 mobileReflashClose();
 responsiveFunc();
+copyInfo();
