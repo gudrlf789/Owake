@@ -74,10 +74,10 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/join", (req, res) => {
-    res.redirect(`/join/${roomID}`);
+    res.redirect(`/${roomID}`);
 });
 
-app.get(`/join/:room`, (req, res) => {
+app.get(`/:room`, (req, res) => {
     res.render("channel", { roomId: req.params.room });
 });
 
