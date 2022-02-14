@@ -11,6 +11,7 @@ import { whiteBoardFunc } from "./parts/channel/whiteBoard.js";
 import { mobileReflashClose } from "./parts/channel/mobileReflashClose.js";
 import { responsiveFunc } from "./parts/channel/responsive.js";
 import { copyInfo } from "./parts/channel/copyUrl.js";
+import { browserEvent } from "./parts/channel/browserEvent.js";
 
 mobileDisplayCtr();
 f12defense();
@@ -25,3 +26,4 @@ whiteBoardFunc();
 mobileReflashClose();
 responsiveFunc();
 copyInfo();
+browserEvent();
