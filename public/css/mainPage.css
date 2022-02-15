@@ -744,6 +744,6 @@ body {
 }
 
 /* textArea */
-#channelInfo__description {
+.channelInfo__description {
     width: 100%;
 }
