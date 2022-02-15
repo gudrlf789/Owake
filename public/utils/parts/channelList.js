@@ -1,10 +1,12 @@
-function checkPassword(channelName, channelPassword) {
+function checkPassword(channelName, channelPassword, channelType) {
     if (channelPassword !== "") {
         $("#private-channelName").val(channelName);
         $("#private-passwordChecking").val(channelPassword);
+        $("#private-channelType").val(channelType);
         $("#channelPrivateJoin").modal();
     } else {
         $("#public-channelName").val(channelName);
+        $("#public-channelType").val(channelType);
         $("#channelPublicJoin").modal();
     }
 }
@@ -22,10 +24,10 @@ $(document).on(
 
         switch (channelType) {
             case "Public":
-                checkPassword(channelName, channelPassword);
+                checkPassword(channelName, channelPassword, channelType);
                 break;
             case "Private":
-                checkPassword(channelName, channelPassword);
+                checkPassword(channelName, channelPassword, channelType);
                 break;
             default:
                 break;

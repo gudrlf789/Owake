@@ -3,10 +3,6 @@ const cors = require("cors");
 const app = express();
 const path = require("path");
 
-const { customAlphabet } = require("nanoid");
-const nanoid = customAlphabet("ABCDEFGHI1234567890", 12);
-const roomID = nanoid();
-
 const CORS_fn = (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -70,15 +66,11 @@ app.use(express.json());
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
-    res.render("index", { roomId: roomID });
+    res.render("index");
 });
 
-app.get("/join", (req, res) => {
-    res.redirect(`/${roomID}`);
-});
-
-app.get(`/:room`, (req, res) => {
-    res.render("channel", { roomId: req.params.room });
+app.get("/join/:channelName/:channelType", (req, res) => {
+    res.render("channel", {channelName: req.params.channelName, channelType: req.params.channelType});
 });
 
 app.get("/all", (req, res, next) => {

@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <base href="/">
     <!-- meta tag -->
     <%- include("./headparts/meta-parts") %>
         <!-- meta tag end -->
@@ -17,28 +18,53 @@
 
             <!-- Jquery -->
             <script src="jquery-3.4.1.min.js"></script>
-
             <!-- Bootstrap -->
             <script src="bootstrap.bundle.min.js"></script>
             <!-- Socket.io -->
             <script src="/socket.io/socket.io.js"></script>
+            <!-- axios -->
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
             <title>Owake</title>
+
             <script>
-                const ROOM_ID = '<%=roomId %>';
                 let channelSession = window.sessionStorage.getItem('channel');
                 let userNameSession = window.sessionStorage.getItem('uid');
+                const channelType = '<%= channelType %>';
 
                 if (channelSession === null) {
-                    window.sessionStorage.setItem('channel', ROOM_ID);
+                    channelSession = '<%= channelName %>';
+                    window.sessionStorage.setItem('channel', '<%= channelName %>');
                 }
                 if (userNameSession === null) {
-                    const username = window.prompt('Please Enter the Name');
-                    window.sessionStorage.setItem('uid', username);
-                }
-                alert(`Welcome to ${ROOM_ID}`);
+                    const reqData = {
+                        channelType: channelType,
+                        channelName: channelSession
+                    };
 
+                    userNameSession = window.prompt("Enter the name");
+                    window.sessionStorage.setItem("uid", userNameSession);
+
+                    axios.post("/channel/info", reqData).then((res) => {
+                        if (res.data.success) {
+                            if(res.data.channelInfo.channelPassword !== "") {
+                                
+                                const roomPassword = window.prompt("Enter the password");
+
+                                if(res.data.channelInfo.channelPassword !== roomPassword) {
+                                    alert("Wrong Password");
+                                    window.location.href = "/";
+                                }
+                            }
+                        }else {
+                            alert(res.data.error);
+                            window.location.href = "/";
+                        }
+                    });
+                    
+                }
             </script>
+            
             <%- include("./popup/fileshare") %>
                 <%- include("./popup/deviceSettings") %>
 </head>

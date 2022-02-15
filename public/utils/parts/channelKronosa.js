@@ -1,10 +1,12 @@
-function checkKronosaPassword(channelName, channelPassword) {
+function checkKronosaPassword(channelName, channelPassword, channelType) {
     if (channelPassword !== "") {
         $("#channelPrivateJoin #private-channelName").val(channelName);
         $("#channelPrivateJoin #private-passwordChecking").val(channelPassword);
+        $("#channelPrivateJoin #private-channelType").val(channelType);
         $("#channelPrivateJoin").modal();
     } else {
         $("#channelPublicJoin #public-channelName").val(channelName);
+        $("#channelPublicJoin #public-channelType").val(channelType);
         $("#channelPublicJoin").modal();
     }
 }
@@ -16,10 +18,10 @@ $(document).on("click", ".business-box-wrapper > .business-thumnail, .business-b
 
     switch (channelType) {
         case "Public":
-            checkKronosaPassword(channelName, channelPassword);
+            checkKronosaPassword(channelName, channelPassword, channelType);
             break;
         case "Private":
-            checkKronosaPassword(channelName, channelPassword);
+            checkKronosaPassword(channelName, channelPassword, channelType);
             break;
         default:
             break;
