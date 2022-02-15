@@ -6,13 +6,13 @@ function checkUserId(userId) {
     }
 }
 
-function checkKorean(userId, channelName) {
+function checkKorean(userId, channelName, channelType) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
     if (!korean.test(userId)) {
-        window.sessionStorage.setItem("channel", ROOM_ID);
+        window.sessionStorage.setItem("channel", channelName);
         window.sessionStorage.setItem("uid", userId);
-        window.location.href = "/join";
+        window.location.href = `/join/${channelName}/${channelType}`;
     } else {
         alert("You can only type User Name in English.");
         return;
@@ -48,7 +48,7 @@ $("#channelJoin-btn").click((e) => {
                     ) {
                         alert("Check user name or admin password");
                     } else {
-                        checkKorean(reqData.userId, reqData.channelName);
+                        checkKorean(reqData.userId, reqData.channelName, res.data.channelInfo.channelType);
                     }
                     break;
                 default:
@@ -59,7 +59,7 @@ $("#channelJoin-btn").click((e) => {
                         alert("Check channel password");
                         $("#join-channelPassword").val("");
                     } else {
-                        checkKorean(reqData.userId, reqData.channelName);
+                        checkKorean(reqData.userId, reqData.channelName, res.data.channelInfo.channelType);
                     }
                     break;
             }
@@ -72,6 +72,7 @@ $("#channelJoin-btn").click((e) => {
 $("#private-channelJoin-btn").click((e) => {
     const channelName = $("#private-channelName").val();
     const checkingPassword = $("#private-passwordChecking").val();
+    const channelType = $("#private-channelType").val();
 
     const userId = $("#private-nickName").val();
     const password = $("#private-roomPassword").val();
@@ -83,18 +84,19 @@ $("#private-channelJoin-btn").click((e) => {
         if (!checkUserId(userId)) {
             alert("Enter your User Name");
         } else {
-            checkKorean(userId, channelName);
+            checkKorean(userId, channelName, channelType);
         }
     }
 });
 
 $("#public-channelJoin-btn").click((e) => {
     const channelName = $("#public-channelName").val();
+    const channelType = $("#public-channelType").val();
     const userId = $("#public-nickName").val();
 
     if (!checkUserId(userId)) {
         alert("Enter your User Name");
     } else {
-        checkKorean(userId, channelName);
+        checkKorean(userId, channelName, channelType);
     }
 });
