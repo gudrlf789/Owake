@@ -30,13 +30,12 @@ export const recodingDeviceCtrl = () => {
     deviceSettingBtn.addEventListener("click", async (e) => {
         $(".cam-list").delegate("a", "click", function (e) {
             videoBox = document.querySelector("#local__videoBox");
-            if (this.text.includes("back")) {
-                switchCamera(this.text);
-                videoBox.childNodes[0].childNodes[0].style.transform =
-                    "rotateY(180deg)";
-            } else {
-                switchCamera(this.text);
-            }
+            // if (this.text.includes("back")) {
+            //     switchCamera(this.text);
+            // } else {
+
+            // }
+            switchCamera(this.text);
         });
         $(".mic-list").delegate("a", "click", function (e) {
             switchMicrophone(this.text);
