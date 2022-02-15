@@ -116,6 +116,9 @@ io.on("connection", (socket) => {
 
     socket.on("join-whiteboard", (channelName) => {
         socket.join(channelName);
+        socket.on("whiteboardClick", (data) => {
+            socket.broadcast.emit("whiteboardClick", data);
+        });
     });
 
     socket.on("drawing", (data, channelName) => {

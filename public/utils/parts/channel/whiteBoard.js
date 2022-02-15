@@ -42,10 +42,16 @@ export const whiteBoardFunc = () => {
     whiteBoardOptionsContainer.append(colorInput, numberInput, clearBtn);
     whiteBoardContainer.append(whiteBoardOptionsContainer, canvas);
 
-    whiteBoardBtn.addEventListener("click", () => {
-        whiteBoardBtnActive = !whiteBoardBtnActive;
-        whiteBoardBtnActive ? whiteBoardEnable() : whiteBoardDisable();
+    // Click Event Handler
+
+    whiteBoardBtn.addEventListener("click", (e) => {
+        handleWhiteboard(e);
     });
+
+    function handleWhiteboard(e) {
+        whiteBoardBtnActive = !whiteBoardBtnActive;
+        whiteBoardBtnActive ? whiteBoardEnable(e) : whiteBoardDisable(e);
+    }
 
     function whiteBoardEnable() {
         selectLocalVideoContainer.append(whiteBoardContainer);
