@@ -1,5 +1,5 @@
 const localVideoBox = document.createElement("div");
-localVideoBox.id = "local__videoBox local-player";
+localVideoBox.id = "local__videoBox";
 localVideoBox.className = "player";
 
 let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
@@ -40,17 +40,15 @@ $("#leave").click(function (e) {
 });
 
 $(document).on("click", ".player", (e) => {
-    const localUid = document.getElementById(
-        "local__videoBox local-player"
-    ).uid;
+    const localUid = document.getElementById("local__videoBox").uid;
     const remoteUid = e.currentTarget.id.replace("player-", "");
     let remoteTag = document.getElementById(`player-wrapper-${remoteUid}`);
 
-    if (e.currentTarget.id != "local__videoBox local-player") {
+    if (e.currentTarget.id != "local__videoBox") {
         totalUsers[localUid].videoTrack
             ? totalUsers[localUid].videoTrack.stop()
             : "";
-        document.getElementById("local__videoBox local-player").remove();
+        document.getElementById("local__videoBox").remove();
         totalUsers[remoteUid].videoTrack
             ? totalUsers[remoteUid].videoTrack.stop()
             : "";
@@ -225,9 +223,7 @@ async function subscribe(user, mediaType) {
 }
 
 function revertLocalTrackToMain(leftUid) {
-    const localUid = document.getElementById(
-        "local__videoBox local-player"
-    ).uid;
+    const localUid = document.getElementById("local__videoBox").uid;
 
     if (localUid == leftUid) {
         localVideoBox.uid = options.uid;
