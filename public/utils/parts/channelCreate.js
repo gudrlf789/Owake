@@ -1,5 +1,3 @@
-const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-
 function afterAction(typeFlag) {
     typeFlag === "private"
         ? $("#channelPrivateCreate").modal("hide")
@@ -41,6 +39,7 @@ function createChannelData(typeFlag) {
     const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
     const formData = new FormData();
     const result = checkCreateData(typeFlag);
+    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
     if (!result.success) {
         alert(`Please enter ${result.failData}`);
@@ -89,22 +88,22 @@ function createChannelData(typeFlag) {
         !korean.test(formData.get("channelName"))
     ) {
         axios.post("/channel/register", formData).then((res) => {
+            if (res.data.includes("file")) {
+                alert(`${res.data}`);
+                return;
+            }
+
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 afterAction(typeFlag);
                 callChannelList();
             } else {
-                if (res.data.includes("file")) {
-                    alert(`${res.data}`);
-                    return;
-                } else {
-                    alert(
-                        `ChannelName: ${$(
-                            `#${typeFlag}_channelName`
-                        ).val()} is already existed. please choice another type or channelName`
-                    );
-                    $(`#${typeFlag}_channelName`).val("");
-                }
+                alert(
+                    `ChannelName: ${$(
+                        `#${typeFlag}_channelName`
+                    ).val()} is already existed. please choice another type or channelName`
+                );
+                $(`#${typeFlag}_channelName`).val("");
             }
         });
     } else {

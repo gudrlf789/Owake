@@ -1,5 +1,3 @@
-const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-
 function realUpdateChannel() {
     const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
     const formData = new FormData();
@@ -27,6 +25,7 @@ function realUpdateChannel() {
     );
 
     if (fileSelect) {
+        const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
         if (korean.test(fileName)) {
             alert(
                 "The file name contains Korean. Please change the file name to English."
@@ -45,6 +44,12 @@ function realUpdateChannel() {
     }
 
     axios.post("/channel/update", formData).then((res) => {
+        console.log(res.data);
+        if (res.data.includes("file")) {
+            alert(`${res.data}`);
+            return;
+        }
+
         if (res.data.success) {
             alert("The channel has been successfully modified");
             $("#channelUpdateModal").modal("hide");
@@ -58,9 +63,6 @@ function realUpdateChannel() {
             $(`#update_channel-description`).val("");
 
             callChannelList();
-        } else if (res.data.includes("file")) {
-            alert(`${res.data}`);
-            return;
         } else {
             alert("The channel hasn't been modified");
             $("#channelUpdate").modal("hide");
@@ -70,6 +72,7 @@ function realUpdateChannel() {
 }
 
 $("#updateBtn").click((e) => {
+    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const reqData = {
         channelName: $(`#update_channelName`).val(),
         channelType: $("input:radio[name=update_channelType]:checked").val(),

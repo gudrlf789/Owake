@@ -13,7 +13,10 @@ const storage = multer.diskStorage({
         cb(null, req.body.adminId + "_" + nowDate + "_" + file.originalname);
     },
 });
-const upload = multer({ storage: storage, limits: { fileSize: 2000000 } });
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 2 * 1024 * 1024 },
+});
 const path = require("path");
 
 /** Firebase Settings */
