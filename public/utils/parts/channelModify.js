@@ -45,11 +45,6 @@ function realUpdateChannel() {
 
     axios.post("/channel/update", formData).then((res) => {
         console.log(res.data);
-        if (res.data.includes("file")) {
-            alert(`${res.data}`);
-            return;
-        }
-
         if (res.data.success) {
             alert("The channel has been successfully modified");
             $("#channelUpdateModal").modal("hide");
@@ -63,6 +58,9 @@ function realUpdateChannel() {
             $(`#update_channel-description`).val("");
 
             callChannelList();
+        } else if (res.data.includes("file")) {
+            alert(`${res.data}`);
+            return;
         } else {
             alert("The channel hasn't been modified");
             $("#channelUpdate").modal("hide");

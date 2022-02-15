@@ -88,15 +88,13 @@ function createChannelData(typeFlag) {
         !korean.test(formData.get("channelName"))
     ) {
         axios.post("/channel/register", formData).then((res) => {
-            if (res.data.includes("file")) {
-                alert(`${res.data}`);
-                return;
-            }
-
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 afterAction(typeFlag);
                 callChannelList();
+            } else if (res.data.includes("file")) {
+                alert(`${res.data}`);
+                return;
             } else {
                 alert(
                     `ChannelName: ${$(
