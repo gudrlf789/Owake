@@ -32,8 +32,7 @@ export const recodingDeviceCtrl = () => {
             videoBox = document.querySelector("#local__videoBox");
             if (this.text.includes("back")) {
                 switchCamera(this.text);
-                videoBox.childNodes[0].childNodes[0].style.transform =
-                    "none !important";
+                videoBox.childNodes[0].childNodes[0].style.transform = "none";
             } else {
                 switchCamera(this.text);
             }
