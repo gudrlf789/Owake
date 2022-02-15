@@ -12,7 +12,7 @@ function checkKorean(userId, channelName, channelType) {
     if (!korean.test(userId)) {
         window.sessionStorage.setItem("channel", channelName);
         window.sessionStorage.setItem("uid", userId);
-        window.location.href = `/join/${channelName}/${channelType}`;
+        window.location.href = `/${channelName}/${channelType}`;
     } else {
         alert("You can only type User Name in English.");
         return;
@@ -48,7 +48,11 @@ $("#channelJoin-btn").click((e) => {
                     ) {
                         alert("Check user name or admin password");
                     } else {
-                        checkKorean(reqData.userId, reqData.channelName, res.data.channelInfo.channelType);
+                        checkKorean(
+                            reqData.userId,
+                            reqData.channelName,
+                            res.data.channelInfo.channelType
+                        );
                     }
                     break;
                 default:
@@ -59,7 +63,11 @@ $("#channelJoin-btn").click((e) => {
                         alert("Check channel password");
                         $("#join-channelPassword").val("");
                     } else {
-                        checkKorean(reqData.userId, reqData.channelName, res.data.channelInfo.channelType);
+                        checkKorean(
+                            reqData.userId,
+                            reqData.channelName,
+                            res.data.channelInfo.channelType
+                        );
                     }
                     break;
             }
