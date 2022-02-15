@@ -69,7 +69,7 @@ app.get("/", (req, res, next) => {
     res.render("index");
 });
 
-app.get("/join/:channelName/:channelType", (req, res) => {
+app.get("/:channelName/:channelType", (req, res) => {
     res.render("channel", {channelName: req.params.channelName, channelType: req.params.channelType});
 });
 
