@@ -1,3 +1,5 @@
+const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+
 function afterAction(typeFlag) {
     typeFlag === "private"
         ? $("#channelPrivateCreate").modal("hide")
@@ -36,11 +38,8 @@ function checkCreateData(typeFlag) {
 }
 
 function createChannelData(typeFlag) {
-    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
-
     const formData = new FormData();
-
     const result = checkCreateData(typeFlag);
 
     if (!result.success) {
@@ -63,6 +62,13 @@ function createChannelData(typeFlag) {
     );
 
     if ($(`#${typeFlag}_file_thumnail`)[0].files[0]) {
+        if (korean.test($(`#${typeFlag}_file_thumnail`)[0].files[0].name)) {
+            alert(
+                "The file name contains Korean. Please change the file name to English."
+            );
+            return;
+        }
+
         if (imageType.test($(`#${typeFlag}_file_thumnail`)[0].files[0].type)) {
             formData.append(
                 "image",

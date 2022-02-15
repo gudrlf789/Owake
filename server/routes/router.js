@@ -28,7 +28,7 @@ const firebaseCollection = db.collection("ChannelList");
 // 파일 사이즈 오류 핸들러
 const fileSizeLimitErrorHandler = (err, req, res, next) => {
     if (err) {
-        console.log(err);
+        console.debug("err : fileSizeLimitErrorHandler Error!!!");
         res.write("Please set the file size. (2MB or less)");
         res.end();
     } else {
@@ -49,6 +49,8 @@ fs.readdir("./server/uploads", (err) => {
         fs.mkdirSync(`./server/uploads/${nowDate}`);
     }
 });*/
+
+let fileName;
 
 router.get("/list", (req, res, next) => {
     const roomArray = [];
@@ -176,6 +178,8 @@ router.post(
             bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
         const imageUpdateYN = bodyData.imageName.indexOf(bodyData.adminId);
 
+        fileName = bodyData.imageName;
+
         firebaseCollection
             .doc(docName)
             .update({
@@ -183,12 +187,8 @@ router.post(
                 channelCategory: bodyData.channelCategory,
                 imageName:
                     imageUpdateYN < 0
-                        ? bodyData.adminId +
-                          "_" +
-                          nowDate +
-                          "_" +
-                          bodyData.imageName
-                        : bodyData.imageName,
+                        ? bodyData.adminId + "_" + nowDate + "_" + fileName
+                        : fileName,
                 channelDescription: bodyData.channelDescription,
             })
             .then((e) => {
@@ -198,6 +198,12 @@ router.post(
             })
             .catch((err) => {
                 return res.status(500).json({
+                    success: false,
+                    error: err,
+                });
+            })
+            .catch((err) => {
+                return res.status(413).json({
                     success: false,
                     error: err,
                 });
