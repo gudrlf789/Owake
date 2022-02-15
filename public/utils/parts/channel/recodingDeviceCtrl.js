@@ -7,6 +7,7 @@ export const recodingDeviceCtrl = () => {
 
     const deviceSettingBtn = document.getElementById("deviceSettingBtn");
     const dropdownItem = document.querySelector(".dropdown-item");
+    const localVideoBox = document.querySelector("#local__videoBox");
 
     $(async () => {
         // get mics
@@ -28,6 +29,10 @@ export const recodingDeviceCtrl = () => {
 
     deviceSettingBtn.addEventListener("click", async (e) => {
         $(".cam-list").delegate("a", "click", function (e) {
+            if (this.text.includes("back")) {
+                localVideoBox.childNodes[0].childNodes[0].style.transform =
+                    "none";
+            }
             switchCamera(this.text);
         });
         $(".mic-list").delegate("a", "click", function (e) {
