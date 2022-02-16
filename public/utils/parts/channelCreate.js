@@ -36,12 +36,10 @@ function checkCreateData(typeFlag) {
 }
 
 function createChannelData(typeFlag) {
-    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
-
     const formData = new FormData();
-
     const result = checkCreateData(typeFlag);
+    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
     if (!result.success) {
         alert(`Please enter ${result.failData}`);
@@ -63,6 +61,13 @@ function createChannelData(typeFlag) {
     );
 
     if ($(`#${typeFlag}_file_thumnail`)[0].files[0]) {
+        if (korean.test($(`#${typeFlag}_file_thumnail`)[0].files[0].name)) {
+            alert(
+                "The file name contains Korean. Please change the file name to English."
+            );
+            return;
+        }
+
         if (imageType.test($(`#${typeFlag}_file_thumnail`)[0].files[0].type)) {
             formData.append(
                 "image",
@@ -83,22 +88,23 @@ function createChannelData(typeFlag) {
         !korean.test(formData.get("channelName"))
     ) {
         axios.post("/channel/register", formData).then((res) => {
+            let fileSize = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
+            let maxFileSize = 2 * 1024 * 1024;
+
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 afterAction(typeFlag);
                 callChannelList();
+            } else if (res.data.includes("file")) {
+                alert(`${res.data}`);
+                return;
             } else {
-                if (res.data.includes("file")) {
-                    alert(`${res.data}`);
-                    return;
-                } else {
-                    alert(
-                        `ChannelName: ${$(
-                            `#${typeFlag}_channelName`
-                        ).val()} is already existed. please choice another type or channelName`
-                    );
-                    $(`#${typeFlag}_channelName`).val("");
-                }
+                alert(
+                    `ChannelName: ${$(
+                        `#${typeFlag}_channelName`
+                    ).val()} is already existed. please choice another type or channelName`
+                );
+                $(`#${typeFlag}_channelName`).val("");
             }
         });
     } else {

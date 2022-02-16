@@ -47,24 +47,24 @@
 
                     axios.post("/channel/info", reqData).then((res) => {
                         if (res.data.success) {
-                            if(res.data.channelInfo.channelPassword !== "") {
-                                
+                            if (res.data.channelInfo.channelPassword !== "") {
+
                                 const roomPassword = window.prompt("Enter the password");
 
-                                if(res.data.channelInfo.channelPassword !== roomPassword) {
+                                if (res.data.channelInfo.channelPassword !== roomPassword) {
                                     alert("Wrong Password");
                                     window.location.href = "/";
                                 }
                             }
-                        }else {
+                        } else {
                             alert(res.data.error);
                             window.location.href = "/";
                         }
                     });
-                    
+
                 }
             </script>
-            
+
             <%- include("./popup/fileshare") %>
                 <%- include("./popup/deviceSettings") %>
 </head>
