@@ -1,11 +1,8 @@
 const localVideoBox = document.createElement("div");
 localVideoBox.id = "local__videoBox";
 localVideoBox.className = "player";
-// Front Camera Setting
-localVideoBox.style.transform = "rotateY(180deg)";
 
 let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-let socket = io();
 
 let localTracks = {
     videoTrack: null,
