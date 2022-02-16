@@ -95,8 +95,8 @@ function createChannelData(typeFlag) {
                 alert("The channel has been successfully created");
                 afterAction(typeFlag);
                 callChannelList();
-            } else if (fileSize > maxFileSize) {
-                alert("Please set the file size. (2MB or less)");
+            } else if (res.data.includes("file")) {
+                alert(`${res.data}`);
                 return;
             } else {
                 alert(

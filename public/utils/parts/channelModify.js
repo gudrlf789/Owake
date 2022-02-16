@@ -60,8 +60,8 @@ function realUpdateChannel() {
             $(`#update_channel-description`).val("");
 
             callChannelList();
-        } else if (fileSize > maxFileSize) {
-            alert("Please set the file size. (2MB or less)");
+        } else if (res.data.includes("file")) {
+            alert(`${res.data}`);
             return;
         } else {
             alert("The channel hasn't been modified");
