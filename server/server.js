@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const path = require("path");
+const bodyParser = require("body-parser");
 
 const CORS_fn = (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -40,6 +41,14 @@ app.set("view engine", "ejs");
 
 app.use(cors());
 app.use(redirectSec);
+app.use(bodyParser.json({ limit: 2 * 1024 * 1024 }));
+app.use(
+    bodyParser.urlencoded({
+        limit: 2 * 1024 * 1024,
+        extended: true,
+        parameterLimit: 50000,
+    })
+);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
@@ -70,7 +79,10 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/:channelName/:channelType", (req, res) => {
-    res.render("channel", {channelName: req.params.channelName, channelType: req.params.channelType});
+    res.render("channel", {
+        channelName: req.params.channelName,
+        channelType: req.params.channelType,
+    });
 });
 
 app.get("/all", (req, res, next) => {
