@@ -13,10 +13,7 @@ const storage = multer.diskStorage({
         cb(null, req.body.adminId + "_" + nowDate + "_" + file.originalname);
     },
 });
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 2 * 1024 * 1024 },
-});
+const upload = multer({ storage: storage });
 const path = require("path");
 
 /** Firebase Settings */
@@ -29,15 +26,15 @@ const db = firebase.firestore();
 const firebaseCollection = db.collection("ChannelList");
 
 // 파일 사이즈 오류 핸들러
-const fileSizeLimitErrorHandler = (err, req, res, next) => {
-    if (err) {
-        console.debug("err : fileSizeLimitErrorHandler Error!!!");
-        res.write("Please set the file size. (2MB or less)");
-        res.end();
-    } else {
-        next();
-    }
-};
+// const fileSizeLimitErrorHandler = (err, req, res, next) => {
+//     if (err) {
+//         console.debug("err : fileSizeLimitErrorHandler Error!!!");
+//         res.write("Please set the file size. (2MB or less)");
+//         res.end();
+//     } else {
+//         next();
+//     }
+// };
 
 //uploads 폴더 없을시 생성
 fs.readdir("./server/uploads", (err) => {
@@ -100,49 +97,43 @@ router.get("/kronosaChannelList", (req, res, next) => {
         });
 });
 
-router.post(
-    "/register",
-    upload.single("image"),
-    fileSizeLimitErrorHandler,
-    async (req, res) => {
-        const bodyData = req.body;
-        bodyData.imageName =
-            bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName;
-        const docName =
-            bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
+router.post("/register", upload.single("image"), async (req, res) => {
+    const bodyData = req.body;
+    bodyData.imageName =
+        bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName;
+    const docName =
+        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
 
-        const snapshot = await firebaseCollection
-            .where("channelName", "==", bodyData.channelName)
-            .where("channelType", "==", bodyData.channelType)
-            .get();
+    const snapshot = await firebaseCollection
+        .where("channelName", "==", bodyData.channelName)
+        .where("channelType", "==", bodyData.channelType)
+        .get();
 
-        if (snapshot.empty) {
-            bodyData.registreTime =
-                firebase.firestore.FieldValue.serverTimestamp();
-            bodyData.Kronosa = "N";
+    if (snapshot.empty) {
+        bodyData.registreTime = firebase.firestore.FieldValue.serverTimestamp();
+        bodyData.Kronosa = "N";
 
-            // doc에 특정 이름을 설정하고 싶을때
-            firebaseCollection
-                .doc(docName)
-                .set(bodyData)
-                .then((e) => {
-                    return res.status(200).json({
-                        success: true,
-                    });
-                })
-                .catch((err) => {
-                    return res.status(500).json({
-                        success: false,
-                        error: err,
-                    });
+        // doc에 특정 이름을 설정하고 싶을때
+        firebaseCollection
+            .doc(docName)
+            .set(bodyData)
+            .then((e) => {
+                return res.status(200).json({
+                    success: true,
                 });
-        } else {
-            return res.status(200).json({
-                success: false,
+            })
+            .catch((err) => {
+                return res.status(500).json({
+                    success: false,
+                    error: err,
+                });
             });
-        }
+    } else {
+        return res.status(200).json({
+            success: false,
+        });
     }
-);
+});
 
 router.post("/search", async (req, res) => {
     const bodyData = req.body;
@@ -171,48 +162,43 @@ router.post("/search", async (req, res) => {
         });
 });
 
-router.post(
-    "/update",
-    upload.single("image"),
-    fileSizeLimitErrorHandler,
-    async (req, res) => {
-        const bodyData = req.body;
-        const docName =
-            bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
-        const imageUpdateYN = bodyData.imageName.indexOf(bodyData.adminId);
+router.post("/update", upload.single("image"), async (req, res) => {
+    const bodyData = req.body;
+    const docName =
+        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
+    const imageUpdateYN = bodyData.imageName.indexOf(bodyData.adminId);
 
-        fileName = bodyData.imageName;
+    fileName = bodyData.imageName;
 
-        firebaseCollection
-            .doc(docName)
-            .update({
-                channelPassword: bodyData.channelPassword,
-                channelCategory: bodyData.channelCategory,
-                imageName:
-                    imageUpdateYN < 0
-                        ? bodyData.adminId + "_" + nowDate + "_" + fileName
-                        : fileName,
-                channelDescription: bodyData.channelDescription,
-            })
-            .then((e) => {
-                return res.status(200).json({
-                    success: true,
-                });
-            })
-            .catch((err) => {
-                return res.status(500).json({
-                    success: false,
-                    error: err,
-                });
-            })
-            .catch((err) => {
-                return res.status(413).json({
-                    success: false,
-                    error: err,
-                });
+    firebaseCollection
+        .doc(docName)
+        .update({
+            channelPassword: bodyData.channelPassword,
+            channelCategory: bodyData.channelCategory,
+            imageName:
+                imageUpdateYN < 0
+                    ? bodyData.adminId + "_" + nowDate + "_" + fileName
+                    : fileName,
+            channelDescription: bodyData.channelDescription,
+        })
+        .then((e) => {
+            return res.status(200).json({
+                success: true,
             });
-    }
-);
+        })
+        .catch((err) => {
+            return res.status(500).json({
+                success: false,
+                error: err,
+            });
+        })
+        .catch((err) => {
+            return res.status(413).json({
+                success: false,
+                error: err,
+            });
+        });
+});
 
 router.post("/delete", (req, res) => {
     const bodyData = req.body;

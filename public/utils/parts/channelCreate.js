@@ -41,6 +41,18 @@ function createChannelData(typeFlag) {
     const result = checkCreateData(typeFlag);
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
+    let fileType;
+    let fileSelect;
+    let fileName;
+    let fileSize;
+    let maxFileSize;
+
+    fileSelect = $(`#${typeFlag}_file_thumnail`)[0].files[0];
+    fileName = $(`#${typeFlag}_file_thumnail`)[0].files[0].name;
+    fileType = $(`#${typeFlag}_file_thumnail`)[0].files[0].type;
+    fileSize = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
+    maxFileSize = 2 * 1024 * 1024;
+
     if (!result.success) {
         alert(`Please enter ${result.failData}`);
         return;
@@ -60,23 +72,17 @@ function createChannelData(typeFlag) {
         $(`#${typeFlag}_channel-description`).val()
     );
 
-    if ($(`#${typeFlag}_file_thumnail`)[0].files[0]) {
-        if (korean.test($(`#${typeFlag}_file_thumnail`)[0].files[0].name)) {
+    if (fileSelect) {
+        if (korean.test(fileName)) {
             alert(
                 "The file name contains Korean. Please change the file name to English."
             );
             return;
         }
 
-        if (imageType.test($(`#${typeFlag}_file_thumnail`)[0].files[0].type)) {
-            formData.append(
-                "image",
-                $(`#${typeFlag}_file_thumnail`)[0].files[0]
-            );
-            formData.append(
-                "imageName",
-                $(`#${typeFlag}_file_thumnail`)[0].files[0].name
-            );
+        if (imageType.test(fileType)) {
+            formData.append("image", fileSelect);
+            formData.append("imageName", fileName);
         } else {
             alert("You can only select the image file");
             return;
@@ -88,13 +94,14 @@ function createChannelData(typeFlag) {
         !korean.test(formData.get("channelName"))
     ) {
         axios.post("/channel/register", formData).then((res) => {
+            if (fileSize > maxFileSize) {
+                alert("Please set the file size. (2MB or less)");
+                return;
+            }
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 afterAction(typeFlag);
                 callChannelList();
-            } else if (res.data.includes("file")) {
-                alert(`${res.data}`);
-                return;
             } else {
                 alert(
                     `ChannelName: ${$(

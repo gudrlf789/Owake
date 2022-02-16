@@ -5,11 +5,14 @@ function realUpdateChannel() {
     let fileType;
     let fileSelect;
     let fileName;
+    let fileSize;
+    let maxFileSize;
 
     fileSelect = $(`#update_file_thumnail`)[0].files[0];
     fileType = $(`#update_file_thumnail`)[0].files[0].type;
     fileName = $(`#update_file_thumnail`)[0].files[0].name;
     fileSize = $(`#update_file_thumnail`)[0].files[0].size;
+    maxFileSize = 2 * 1024 * 1024;
 
     formData.append("adminId", $(`#update_adminId`).val());
     formData.append("adminPassword", $(`#update_adminPassword`).val());
@@ -45,6 +48,11 @@ function realUpdateChannel() {
     }
 
     axios.post("/channel/update", formData).then((res) => {
+        if (fileSize > maxFileSize) {
+            alert("Please set the file size. (2MB or less)");
+            return;
+        }
+
         if (res.data.success) {
             alert("The channel has been successfully modified");
             $("#channelUpdateModal").modal("hide");
@@ -58,9 +66,6 @@ function realUpdateChannel() {
             $(`#update_channel-description`).val("");
 
             callChannelList();
-        } else if (res.data.includes("file")) {
-            alert(`${res.data}`);
-            return;
         } else {
             alert("The channel hasn't been modified");
             $("#channelUpdate").modal("hide");
