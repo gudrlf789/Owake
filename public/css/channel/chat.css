@@ -39,7 +39,6 @@
     margin: 1.5rem;
     padding: 10px;
     border: 1px solid antiquewhite;
-    overflow-y: scroll;
 }
 
 .messages::-webkit-scrollbar {
