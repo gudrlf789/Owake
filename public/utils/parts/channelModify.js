@@ -9,10 +9,6 @@ function realUpdateChannel() {
     let maxFileSize;
 
     fileSelect = $(`#update_file_thumnail`)[0].files[0];
-    fileType = $(`#update_file_thumnail`)[0].files[0].type;
-    fileName = $(`#update_file_thumnail`)[0].files[0].name;
-    fileSize = $(`#update_file_thumnail`)[0].files[0].size;
-    maxFileSize = 2 * 1024 * 1024;
 
     formData.append("adminId", $(`#update_adminId`).val());
     formData.append("adminPassword", $(`#update_adminPassword`).val());
@@ -29,6 +25,10 @@ function realUpdateChannel() {
     );
 
     if (fileSelect) {
+        fileName = $(`#update_file_thumnail`)[0].files[0].name;
+        fileSize = $(`#update_file_thumnail`)[0].files[0].size;
+        fileType = $(`#update_file_thumnail`)[0].files[0].type;
+        maxFileSize = 2 * 1024 * 1024;
         const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
         if (korean.test(fileName)) {
             alert(
