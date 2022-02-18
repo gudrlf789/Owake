@@ -94,14 +94,12 @@ function createChannelData(typeFlag) {
         !korean.test(formData.get("channelName"))
     ) {
         axios.post("/channel/register", formData).then((res) => {
-            if (fileSize > maxFileSize) {
-                alert("Please check the file size (2MB or less)");
-                return;
-            }
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 afterAction(typeFlag);
                 callChannelList();
+            } else if (res.data.includes("file size")) {
+                alert(`${res.data}`);
             } else {
                 alert(
                     `ChannelName: ${$(
