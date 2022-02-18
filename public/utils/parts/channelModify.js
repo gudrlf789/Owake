@@ -49,7 +49,7 @@ function realUpdateChannel() {
 
     axios.post("/channel/update", formData).then((res) => {
         if (fileSize > maxFileSize) {
-            alert("Please set the file size. (2MB or less)");
+            alert("Please check the file size (2MB or less)");
             return;
         }
 

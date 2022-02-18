@@ -95,7 +95,7 @@ function createChannelData(typeFlag) {
     ) {
         axios.post("/channel/register", formData).then((res) => {
             if (fileSize > maxFileSize) {
-                alert("Please set the file size. (2MB or less)");
+                alert("Please check the file size (2MB or less)");
                 return;
             }
             if (res.data.success) {
