@@ -5,8 +5,6 @@ function realUpdateChannel() {
     let fileType;
     let fileSelect;
     let fileName;
-    let fileSize;
-    let maxFileSize;
 
     fileSelect = $(`#update_file_thumnail`)[0].files[0];
 
@@ -25,10 +23,8 @@ function realUpdateChannel() {
     );
 
     if (fileSelect) {
-        fileName = $(`#update_file_thumnail`)[0].files[0].name;
-        fileSize = $(`#update_file_thumnail`)[0].files[0].size;
-        fileType = $(`#update_file_thumnail`)[0].files[0].type;
-        maxFileSize = 2 * 1024 * 1024;
+        fileName = fileSelect.name;
+        fileType = fileSelect.type;
         const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
         if (korean.test(fileName)) {
             alert(
@@ -48,33 +44,50 @@ function realUpdateChannel() {
     }
 
     axios.post("/channel/update", formData).then((res) => {
-        if (fileSize > maxFileSize) {
-            alert("Please check the file size (2MB or less)");
-            return;
-        } else {
-            if (res.data.success) {
-                alert("The channel has been successfully modified");
-                $("#channelUpdateModal").modal("hide");
-                $(`#update_adminId`).val("");
-                $(`#update_adminPassword`).val("");
-                $(`#update_channelName`).val("");
-                $(`#update_channelPassword`).val("");
-                $(`#update_theme-category`).val("News");
-                $("#update_file_thumnail").val("");
-                $("#update_upload").val("");
-                $(`#update_channel-description`).val("");
+        if (res.data.success) {
+            alert("The channel has been successfully modified");
+            $("#channelUpdateModal").modal("hide");
+            $(`#update_adminId`).val("");
+            $(`#update_adminPassword`).val("");
+            $(`#update_channelName`).val("");
+            $(`#update_channelPassword`).val("");
+            $(`#update_theme-category`).val("News");
+            $("#update_file_thumnail").val("");
+            $("#update_upload").val("");
+            $(`#update_channel-description`).val("");
 
-                callChannelList();
-            } else {
-                alert("The channel hasn't been modified");
-                $("#channelUpdate").modal("hide");
-                return;
-            }
+            callChannelList();
+        } else {
+            alert("The channel hasn't been modified");
+            $("#channelUpdate").modal("hide");
+            return;
         }
     });
 }
 
 $("#updateBtn").click((e) => {
+    //  From channelCreate
+    if (fileSizeCheck("update") === false) {
+        return alert("Please check the file size (2MB or less)");
+    } else {
+        chanelUpdateAction();
+    }
+});
+
+$("input:radio[name=update_password]").change((e) => {
+    if (e.currentTarget.value == "Y") {
+        $("#update_channelPassword").attr("disabled", false);
+    } else {
+        $("#update_channelPassword").attr("disabled", true);
+        $("#update_channelPassword").val("");
+    }
+});
+
+$("#update_file_thumnail").change((e) => {
+    $("#update_upload").val(e.currentTarget.files[0].name);
+});
+
+function chanelUpdateAction() {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const reqData = {
         channelName: $(`#update_channelName`).val(),
@@ -102,17 +115,4 @@ $("#updateBtn").click((e) => {
         alert("You can only type in English.");
         $(`#update_adminId`).val("");
     }
-});
-
-$("input:radio[name=update_password]").change((e) => {
-    if (e.currentTarget.value == "Y") {
-        $("#update_channelPassword").attr("disabled", false);
-    } else {
-        $("#update_channelPassword").attr("disabled", true);
-        $("#update_channelPassword").val("");
-    }
-});
-
-$("#update_file_thumnail").change((e) => {
-    $("#update_upload").val(e.currentTarget.files[0].name);
-});
+}
