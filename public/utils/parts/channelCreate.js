@@ -44,10 +44,14 @@ function createChannelData(typeFlag) {
     let fileType;
     let fileSelect;
     let fileName;
+    let fileSize;
+    let maxFileSize;
 
     fileSelect = $(`#${typeFlag}_file_thumnail`)[0].files[0];
     fileName = $(`#${typeFlag}_file_thumnail`)[0].files[0].name;
     fileType = $(`#${typeFlag}_file_thumnail`)[0].files[0].type;
+    fileSize = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
+    maxFileSize = 2 * 1024 * 1024;
 
     if (!result.success) {
         alert(`Please enter ${result.failData}`);
@@ -90,19 +94,22 @@ function createChannelData(typeFlag) {
         !korean.test(formData.get("channelName"))
     ) {
         axios.post("/channel/register", formData).then((res) => {
-            if (res.data.success) {
-                alert("The channel has been successfully created");
-                afterAction(typeFlag);
-                callChannelList();
-            } else if (res.data.includes("file size")) {
-                alert(`${res.data}`);
+            if (fileSize > maxFileSize) {
+                alert("Please check the file size (2MB or less)");
+                return;
             } else {
-                alert(
-                    `ChannelName: ${$(
-                        `#${typeFlag}_channelName`
-                    ).val()} is already existed. please choice another type or channelName`
-                );
-                $(`#${typeFlag}_channelName`).val("");
+                if (res.data.success) {
+                    alert("The channel has been successfully created");
+                    afterAction(typeFlag);
+                    callChannelList();
+                } else {
+                    alert(
+                        `ChannelName: ${$(
+                            `#${typeFlag}_channelName`
+                        ).val()} is already existed. please choice another type or channelName`
+                    );
+                    $(`#${typeFlag}_channelName`).val("");
+                }
             }
         });
     } else {

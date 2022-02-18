@@ -5,6 +5,8 @@ function realUpdateChannel() {
     let fileType;
     let fileSelect;
     let fileName;
+    let fileSize;
+    let maxFileSize;
 
     fileSelect = $(`#update_file_thumnail`)[0].files[0];
 
@@ -24,8 +26,9 @@ function realUpdateChannel() {
 
     if (fileSelect) {
         fileName = $(`#update_file_thumnail`)[0].files[0].name;
+        fileSize = $(`#update_file_thumnail`)[0].files[0].size;
         fileType = $(`#update_file_thumnail`)[0].files[0].type;
-
+        maxFileSize = 2 * 1024 * 1024;
         const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
         if (korean.test(fileName)) {
             alert(
@@ -45,25 +48,28 @@ function realUpdateChannel() {
     }
 
     axios.post("/channel/update", formData).then((res) => {
-        if (res.data.success) {
-            alert("The channel has been successfully modified");
-            $("#channelUpdateModal").modal("hide");
-            $(`#update_adminId`).val("");
-            $(`#update_adminPassword`).val("");
-            $(`#update_channelName`).val("");
-            $(`#update_channelPassword`).val("");
-            $(`#update_theme-category`).val("News");
-            $("#update_file_thumnail").val("");
-            $("#update_upload").val("");
-            $(`#update_channel-description`).val("");
-
-            callChannelList();
-        } else if (res.data.includes("file size")) {
-            alert(`${res.data}`);
-        } else {
-            alert("The channel hasn't been modified");
-            $("#channelUpdate").modal("hide");
+        if (fileSize > maxFileSize) {
+            alert("Please check the file size (2MB or less)");
             return;
+        } else {
+            if (res.data.success) {
+                alert("The channel has been successfully modified");
+                $("#channelUpdateModal").modal("hide");
+                $(`#update_adminId`).val("");
+                $(`#update_adminPassword`).val("");
+                $(`#update_channelName`).val("");
+                $(`#update_channelPassword`).val("");
+                $(`#update_theme-category`).val("News");
+                $("#update_file_thumnail").val("");
+                $("#update_upload").val("");
+                $(`#update_channel-description`).val("");
+
+                callChannelList();
+            } else {
+                alert("The channel hasn't been modified");
+                $("#channelUpdate").modal("hide");
+                return;
+            }
         }
     });
 }
