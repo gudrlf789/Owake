@@ -149,4 +149,5 @@ function fileSizeCheck(typeFlag) {
     if (fileSize > maxFileSize) {
         return false;
     }
+    return true;
 }
