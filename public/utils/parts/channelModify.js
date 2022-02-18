@@ -5,8 +5,6 @@ function realUpdateChannel() {
     let fileType;
     let fileSelect;
     let fileName;
-    let fileSize;
-    let maxFileSize;
 
     fileSelect = $(`#update_file_thumnail`)[0].files[0];
 
@@ -25,10 +23,8 @@ function realUpdateChannel() {
     );
 
     if (fileSelect) {
-        fileName = $(`#update_file_thumnail`)[0].files[0].name;
-        fileSize = $(`#update_file_thumnail`)[0].files[0].size;
-        fileType = $(`#update_file_thumnail`)[0].files[0].type;
-        maxFileSize = 2 * 1024 * 1024;
+        fileName = fileSelect.name;
+        fileType = fileSelect.type;
         const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
         if (korean.test(fileName)) {
             alert(
@@ -48,11 +44,6 @@ function realUpdateChannel() {
     }
 
     axios.post("/channel/update", formData).then((res) => {
-        if (fileSize > maxFileSize) {
-            alert("Please set the file size. (2MB or less)");
-            return;
-        }
-
         if (res.data.success) {
             alert("The channel has been successfully modified");
             $("#channelUpdateModal").modal("hide");
@@ -75,6 +66,28 @@ function realUpdateChannel() {
 }
 
 $("#updateBtn").click((e) => {
+    // From channelCreate
+    if (fileSizeCheck("update") === false) {
+        return alert("Please check the file size (2MB or less)");
+    } else {
+        updateChannelAction();
+    }
+});
+
+$("input:radio[name=update_password]").change((e) => {
+    if (e.currentTarget.value == "Y") {
+        $("#update_channelPassword").attr("disabled", false);
+    } else {
+        $("#update_channelPassword").attr("disabled", true);
+        $("#update_channelPassword").val("");
+    }
+});
+
+$("#update_file_thumnail").change((e) => {
+    $("#update_upload").val(e.currentTarget.files[0].name);
+});
+
+function updateChannelAction() {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const reqData = {
         channelName: $(`#update_channelName`).val(),
@@ -102,17 +115,4 @@ $("#updateBtn").click((e) => {
         alert("You can only type in English.");
         $(`#update_adminId`).val("");
     }
-});
-
-$("input:radio[name=update_password]").change((e) => {
-    if (e.currentTarget.value == "Y") {
-        $("#update_channelPassword").attr("disabled", false);
-    } else {
-        $("#update_channelPassword").attr("disabled", true);
-        $("#update_channelPassword").val("");
-    }
-});
-
-$("#update_file_thumnail").change((e) => {
-    $("#update_upload").val(e.currentTarget.files[0].name);
-});
+}

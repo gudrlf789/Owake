@@ -100,7 +100,6 @@ router.get("/kronosaChannelList", (req, res, next) => {
 });
 
 router.post("/register", upload.single("image"), async (req, res) => {
-    console.log("::::::::Server Register:::::::::");
     const bodyData = req.body;
     bodyData.imageName =
         bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName;
