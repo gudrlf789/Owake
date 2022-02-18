@@ -48,9 +48,9 @@ function createChannelData(typeFlag) {
     let maxFileSize;
 
     fileSelect = $(`#${typeFlag}_file_thumnail`)[0].files[0];
-    fileName = fileSelect.name;
-    fileType = fileSelect.type;
-    fileSize = fileSelect.size;
+    fileName = $(`#${typeFlag}_file_thumnail`)[0].files[0].name;
+    fileType = $(`#${typeFlag}_file_thumnail`)[0].files[0].type;
+    fileSize = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
     maxFileSize = 2 * 1024 * 1024;
 
     if (!result.success) {
@@ -87,10 +87,6 @@ function createChannelData(typeFlag) {
             alert("You can only select the image file");
             return;
         }
-        if (fileSize > maxFileSize) {
-            alert("Please set the file size. (2MB or less)");
-            return;
-        }
     }
 
     if (
@@ -98,6 +94,10 @@ function createChannelData(typeFlag) {
         !korean.test(formData.get("channelName"))
     ) {
         axios.post("/channel/register", formData).then((res) => {
+            if (fileSize > maxFileSize) {
+                alert("Please set the file size. (2MB or less)");
+                return;
+            }
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 afterAction(typeFlag);
