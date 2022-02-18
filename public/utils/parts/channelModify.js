@@ -5,8 +5,6 @@ function realUpdateChannel() {
     let fileType;
     let fileSelect;
     let fileName;
-    let fileSize;
-    let maxFileSize;
 
     fileSelect = $(`#update_file_thumnail`)[0].files[0];
 
@@ -26,9 +24,8 @@ function realUpdateChannel() {
 
     if (fileSelect) {
         fileName = $(`#update_file_thumnail`)[0].files[0].name;
-        fileSize = $(`#update_file_thumnail`)[0].files[0].size;
         fileType = $(`#update_file_thumnail`)[0].files[0].type;
-        maxFileSize = 2 * 1024 * 1024;
+
         const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
         if (korean.test(fileName)) {
             alert(

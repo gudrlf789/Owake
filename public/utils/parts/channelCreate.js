@@ -44,14 +44,10 @@ function createChannelData(typeFlag) {
     let fileType;
     let fileSelect;
     let fileName;
-    let fileSize;
-    let maxFileSize;
 
     fileSelect = $(`#${typeFlag}_file_thumnail`)[0].files[0];
     fileName = $(`#${typeFlag}_file_thumnail`)[0].files[0].name;
     fileType = $(`#${typeFlag}_file_thumnail`)[0].files[0].type;
-    fileSize = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
-    maxFileSize = 2 * 1024 * 1024;
 
     if (!result.success) {
         alert(`Please enter ${result.failData}`);
