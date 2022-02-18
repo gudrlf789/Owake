@@ -36,6 +36,7 @@ function checkCreateData(typeFlag) {
 }
 
 function createChannelData(typeFlag) {
+    console.log(":::::: createChannelData ::::::");
     const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
     const formData = new FormData();
     const result = checkCreateData(typeFlag);
@@ -90,6 +91,7 @@ function createChannelData(typeFlag) {
         !korean.test(formData.get("channelName"))
     ) {
         axios.post("/channel/register", formData).then((res) => {
+            console.log(":::::: Register ::::::");
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 afterAction(typeFlag);
