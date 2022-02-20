@@ -13,7 +13,9 @@ const storage = multer.diskStorage({
         cb(null, req.body.adminId + "_" + nowDate + "_" + file.originalname);
     },
 });
-const upload = multer({ storage: storage });
+const upload = multer({
+    storage: storage,
+});
 const path = require("path");
 
 /** Firebase Settings */
@@ -29,7 +31,7 @@ const firebaseCollection = db.collection("ChannelList");
 // const fileSizeLimitErrorHandler = (err, req, res, next) => {
 //     if (err) {
 //         console.debug("err : fileSizeLimitErrorHandler Error!!!");
-//         res.write("Please set the file size. (2MB or less)");
+//         res.write("Please check the file size (2MB or less)");
 //         res.end();
 //     } else {
 //         next();

@@ -36,6 +36,7 @@ function checkCreateData(typeFlag) {
 }
 
 function createChannelData(typeFlag) {
+    console.log(":::::: createChannelData ::::::");
     const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
     const formData = new FormData();
     const result = checkCreateData(typeFlag);
@@ -44,14 +45,10 @@ function createChannelData(typeFlag) {
     let fileType;
     let fileSelect;
     let fileName;
-    let fileSize;
-    let maxFileSize;
 
     fileSelect = $(`#${typeFlag}_file_thumnail`)[0].files[0];
-    fileName = $(`#${typeFlag}_file_thumnail`)[0].files[0].name;
-    fileType = $(`#${typeFlag}_file_thumnail`)[0].files[0].type;
-    fileSize = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
-    maxFileSize = 2 * 1024 * 1024;
+    fileName = fileSelect.name;
+    fileType = fileSelect.type;
 
     if (!result.success) {
         alert(`Please enter ${result.failData}`);
@@ -94,10 +91,6 @@ function createChannelData(typeFlag) {
         !korean.test(formData.get("channelName"))
     ) {
         axios.post("/channel/register", formData).then((res) => {
-            if (fileSize > maxFileSize) {
-                alert("Please set the file size. (2MB or less)");
-                return;
-            }
             if (res.data.success) {
                 alert("The channel has been successfully created");
                 afterAction(typeFlag);
@@ -118,11 +111,19 @@ function createChannelData(typeFlag) {
 }
 
 $("#private_create").click((e) => {
-    createChannelData("private");
+    if (fileSizeCheck("private") === false) {
+        return alert("Please check the file size (2MB or less)");
+    } else {
+        createChannelData("private");
+    }
 });
 
 $("#public_create").click((e) => {
-    createChannelData("public");
+    if (fileSizeCheck("public") === false) {
+        return alert("Please check the file size (2MB or less)");
+    } else {
+        createChannelData("public");
+    }
 });
 
 $("input:radio[name=channelRadioBtn]").change((e) => {
@@ -141,3 +142,13 @@ $("#public_file_thumnail").change((e) => {
 $("#private_file_thumnail").change((e) => {
     $("#private_upload").val(e.currentTarget.files[0].name);
 });
+
+function fileSizeCheck(typeFlag) {
+    let fileSize = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
+    let maxFileSize = 2 * 1024 * 1024;
+
+    if (fileSize > maxFileSize) {
+        return false;
+    }
+    return true;
+}
