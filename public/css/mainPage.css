@@ -648,12 +648,7 @@ body {
         flex-direction: column;
     }
 
-    .business-box {
-        padding: 10px;
-    }
-
     .business-box-wrapper {
-        display: contents;
         width: 100%;
         box-sizing: border-box;
     }
