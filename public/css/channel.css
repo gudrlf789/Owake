@@ -3,26 +3,29 @@
 @import "./channel/chat.css";
 @import "./lib/bootstrap.min.css";
 @import "./channel/whiteBoard.css";
+@import "./channel/fileShare.css";
 
 @font-face {
     font-family: "NEXON Lv2 Gothic";
     src: url("../img/fonts/NEXON_Lv2_Gothic.eot");
     src: url("../img/fonts/NEXON_Lv2_Gothic.woff");
-    src: url('../img/fonts/NEXON_Lv2_Gothic?#iefix') format('embedded-opentype'),
+    src: url("../img/fonts/NEXON_Lv2_Gothic?#iefix") format("embedded-opentype");
 }
 
 @font-face {
     font-family: "NEXON Lv2 Gothic Light";
     src: url("../img/fonts/NEXON_Lv2_Gothic_Light.eot");
     src: url("../img/fonts/NEXON_Lv2_Gothic_Light.woff");
-    src: url('../img/fonts/NEXON_Lv2_Gothic_Light?#iefix') format('embedded-opentype'),
+    src: url("../img/fonts/NEXON_Lv2_Gothic_Light?#iefix")
+        format("embedded-opentype");
 }
 
 @font-face {
     font-family: "NEXON Lv2 Gothic Bold";
     src: url("../img/fonts/NEXON_Lv2_Gothic_Bold.eot");
     src: url("../img/fonts/NEXON_Lv2_Gothic_Bold.woff");
-    src: url('../img/fonts/NEXON_Lv2_Gothic_Bold?#iefix') format('embedded-opentype'),
+    src: url("../img/fonts/NEXON_Lv2_Gothic_Bold?#iefix")
+        format("embedded-opentype");
 }
 
 :root {

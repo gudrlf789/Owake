@@ -1,8 +1,16 @@
+const { Server } = require("socket.io");
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const path = require("path");
-const bodyParser = require("body-parser");
+const Logger = require("./Logger");
+const log = new Logger("server");
+const port = process.env.PORT || 1227;
+
+let channels = {}; // collect channels
+let sockets = {}; // collect sockets
+let peers = {}; // collect peers info grp by channels
+let io, server;
 
 const CORS_fn = (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -16,14 +24,17 @@ const CORS_fn = (req, res) => {
     }
 };
 
-const server = require("http").createServer(app, CORS_fn);
-const io = require("socket.io")(server, {
+server = require("http").createServer(app, CORS_fn);
+io = new Server({
+    pingTimeout: 60000,
+    upgradeTimeout: 100000,
+
     cors: {
         origin: "*",
         methods: ["GET", "POST"],
         preflightContinue: false,
     },
-});
+}).listen(server);
 /** Router */
 const mainRouter = require("./routes/router.js");
 
@@ -41,14 +52,6 @@ app.set("view engine", "ejs");
 
 app.use(cors());
 app.use(redirectSec);
-app.use(bodyParser.json({ limit: 2 * 1024 * 1024 }));
-app.use(
-    bodyParser.urlencoded({
-        limit: 2 * 1024 * 1024,
-        extended: true,
-        parameterLimit: 50000,
-    })
-);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
@@ -105,7 +108,67 @@ app.get("/newsfeed", (req, res, next) => {
     res.render("newsfeed");
 });
 
+/**
+ * @anthor 전형동
+ * @date 2022.02.21
+ * @version 1.1
+ * @descrption
+ * Socket 내용 다소 변경
+ * Logger 추가
+ * FileShare Socket 추가
+ */
+
 io.on("connection", (socket) => {
+    socket.channels = {};
+    sockets[socket.id] = socket;
+
+    socket.on("connect", (socket) => {
+        log.debug("[" + socket.id + "] connection accepted");
+    });
+
+    socket.on("disconnect", (reason) => {
+        log.debug("[" + socket.id + "] disconnected", { reason: reason });
+        delete sockets[socket.id];
+    });
+
+    socket.on("join", (config) => {
+        log.debug("[" + socket.id + "] join ", config);
+
+        let channel = config.channel;
+        let peerId = config.peerId;
+        let peerName = config.peerName;
+
+        if (channel in socket.channels) {
+            log.debug("[" + socket.id + "] [Warning] already joined", channel);
+            return;
+        }
+
+        // no channel aka room in channels init
+        if (!(channel in channels)) channels[channel] = {};
+
+        // no channel aka room in peers init
+        if (!(channel in peers)) peers[channel] = {};
+
+        // room locked by the participants can't join
+        if (peers[channel]["Locked"] === true) {
+            log.debug("[" + socket.id + "] [Warning] Room Is Locked", channel);
+            socket.emit("roomIsLocked");
+            return;
+        }
+
+        // collect peers info grp by channels
+        peers[channel][socket.id] = {
+            peer_Id: peerId,
+            peer_name: peerName,
+        };
+        log.debug("connected peers grp by roomId", peers);
+
+        channels[channel][socket.id] = socket;
+        socket.channels[channel] = channel;
+
+        socket.join(channel);
+    });
+
     socket.on("join-web", (channelName) => {
         socket.join(channelName);
     });
@@ -129,9 +192,16 @@ io.on("connection", (socket) => {
     socket.on("leave-whiteboard", (channelName) => {
         socket.leave(channelName);
     });
+
+    socket.on("fileShare", (channel, data) => {
+        log.debug("Channel:::::::", channel);
+        log.debug("data:::::::", data);
+        // Channel을 연결하면 안나옴 왜 안나오는지 모르겠음....
+        // socket.broadcast.to(channel).emit("send-fileShare", data);
+        socket.broadcast.emit("send-fileShare", data);
+    });
 });
 
-const port = process.env.PORT || 1227;
 server.listen(port, () => {
-    console.log(`Server Listen... ${port}`);
+    log.debug(`Server Listen... ${port}`);
 });

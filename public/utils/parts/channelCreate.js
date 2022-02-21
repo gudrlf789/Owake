@@ -1,3 +1,8 @@
+let fileType;
+let fileSelect;
+let fileName;
+let maxFileSize;
+
 function afterAction(typeFlag) {
     typeFlag === "private"
         ? $("#channelPrivateCreate").modal("hide")
@@ -42,13 +47,11 @@ function createChannelData(typeFlag) {
     const result = checkCreateData(typeFlag);
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
-    let fileType;
-    let fileSelect;
-    let fileName;
-
     fileSelect = $(`#${typeFlag}_file_thumnail`)[0].files[0];
-    fileName = fileSelect.name;
-    fileType = fileSelect.type;
+    if (fileSelect) {
+        fileName = fileSelect.name;
+        fileType = fileSelect.type;
+    }
 
     if (!result.success) {
         alert(`Please enter ${result.failData}`);
@@ -144,11 +147,14 @@ $("#private_file_thumnail").change((e) => {
 });
 
 function fileSizeCheck(typeFlag) {
-    let fileSize = $(`#${typeFlag}_file_thumnail`)[0].files[0].size;
-    let maxFileSize = 2 * 1024 * 1024;
-
-    if (fileSize > maxFileSize) {
-        return false;
+    fileSelect = $(`#${typeFlag}_file_thumnail`)[0].files[0];
+    if (fileSelect) {
+        let fileSize = fileSelect.size;
+        maxFileSize = 2 * 1024 * 1024;
+        if (fileSize > maxFileSize) {
+            return false;
+        }
+    } else {
+        return true;
     }
-    return true;
 }
