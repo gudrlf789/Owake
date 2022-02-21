@@ -1,3 +1,4 @@
+let socket = io();
 const localVideoBox = document.createElement("div");
 localVideoBox.id = "local__videoBox";
 localVideoBox.className = "player";
@@ -89,6 +90,7 @@ $(document).on("click", ".player", (e) => {
 });
 
 async function join() {
+    socket.on("connect", handleConnect);
     options.uid = window.sessionStorage.getItem("uid");
     options.channel = window.sessionStorage.getItem("channel");
 
@@ -261,4 +263,31 @@ function handleUserUnpublished(user) {
     delete totalUsers[id];
     delete remoteUsers[id];
     revertLocalTrackToMain(id);
+}
+
+/**
+ * Socket Connect
+ * @anthor 전형동
+ * @date 2020.02.21
+ * @Description Socket Handler Func
+ */
+
+function handleConnect() {
+    console.log("Connected to signaling server");
+
+    let myPeerId = socket.id;
+    console.log("My peer id [ " + myPeerId + " ]");
+    joinToChannel();
+}
+
+function joinToChannel() {
+    console.log("join to channel", options.channel);
+    sendToServer("join", {
+        channel: options.channel,
+        peerId: socket.id,
+        peerName: options.uid,
+    });
+}
+async function sendToServer(msg, config = {}) {
+    await socket.emit(msg, config);
 }

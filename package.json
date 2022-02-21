@@ -7,8 +7,9 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "nodemon --experimental-modules server/server.js",
-        "start": "pm2 start server/server.js",
-        "stop": "pm2 stop server/server.js"
+        "start": "node server/server.js",
+        "start:pm2": "pm2 start server/server.js",
+        "stop:pm2": "pm2 stop server/server.js"
     },
     "keywords": [],
     "author": "Owake",
