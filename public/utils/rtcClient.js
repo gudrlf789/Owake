@@ -14,7 +14,7 @@ let totalUsers = {};
 let remoteUsers = {};
 
 let options = {
-    // appid: "8d4f054da71f427b93df3e27ca31bb54",
+    // appid : "8d4f054da71f427b93df3e27ca31bb54"
     appid: "50b9cd9de2d54849a139e3db52e7928a",
     channel: null,
     uid: null,
@@ -40,7 +40,8 @@ $("#leave").click(function (e) {
 });
 
 $(document).on("click", ".player", (e) => {
-    const localUid = document.getElementById("local__videoBox").uid;
+    const localUid = localVideoBox.uid;
+    console.log(localUid);
     const remoteUid = e.currentTarget.id.replace("player-", "");
     let remoteTag = document.getElementById(`player-wrapper-${remoteUid}`);
 
@@ -48,7 +49,7 @@ $(document).on("click", ".player", (e) => {
         totalUsers[localUid].videoTrack
             ? totalUsers[localUid].videoTrack.stop()
             : "";
-        document.getElementById("local__videoBox").remove();
+        localVideoBox.remove();
         totalUsers[remoteUid].videoTrack
             ? totalUsers[remoteUid].videoTrack.stop()
             : "";
@@ -263,6 +264,7 @@ function handleUserUnpublished(user) {
     delete totalUsers[id];
     delete remoteUsers[id];
     revertLocalTrackToMain(id);
+    socket.on("disconnect", handleDisconnect);
 }
 
 /**
@@ -278,6 +280,10 @@ function handleConnect() {
     let myPeerId = socket.id;
     console.log("My peer id [ " + myPeerId + " ]");
     joinToChannel();
+}
+
+function handleDisconnect(reason) {
+    console.log("Disconnected from signaling server", { reason: reason });
 }
 
 function joinToChannel() {

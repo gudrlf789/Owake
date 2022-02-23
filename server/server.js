@@ -10,6 +10,10 @@ const port = process.env.PORT || 1227;
 let channels = {}; // collect channels
 let sockets = {}; // collect sockets
 let peers = {}; // collect peers info grp by channels
+let channel;
+let peerId;
+let peerName;
+
 let io, server;
 
 const CORS_fn = (req, res) => {
@@ -134,9 +138,9 @@ io.on("connection", (socket) => {
     socket.on("join", (config) => {
         log.debug("[" + socket.id + "] join ", config);
 
-        let channel = config.channel;
-        let peerId = config.peerId;
-        let peerName = config.peerName;
+        channel = config.channel;
+        peerId = config.peerId;
+        peerName = config.peerName;
 
         if (channel in socket.channels) {
             log.debug("[" + socket.id + "] [Warning] already joined", channel);

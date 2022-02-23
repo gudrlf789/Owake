@@ -26,18 +26,16 @@ audioEl.preload = "metadata";
 fileInputEl.type = "file";
 
 export const fileShare = () => {
-    (function () {
-        fileTransfer();
-        fileShareActivate();
-        fileReadAction();
-        fileShareSocket.on("send-fileShare", (data) => {
-            console.log(data);
-            // textArea.textContent = data;
-            // imageArea.src = data;
-            audioEl.src = data;
-            // videoEl.src = data;
-        });
-    })();
+    fileTransfer();
+    fileShareActivate();
+    fileReadAction();
+    fileShareSocket.on("send-fileShare", (data) => {
+        console.log(data);
+        // textArea.textContent = data;
+        // imageArea.src = data;
+        audioEl.src = data;
+        // videoEl.src = data;
+    });
 };
 
 /**
