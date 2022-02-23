@@ -297,6 +297,9 @@
 
 video {
     animation: show 0.4s ease;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
 }
 
 video:hover {
