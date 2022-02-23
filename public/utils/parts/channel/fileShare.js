@@ -1,15 +1,12 @@
-export const fileShare = () => {
-    (function () {
-        fileTransfer();
-    })();
-};
-
 /**
  * @author 전형동
- * @version 1.0 FileShare와 FileTransfer로 함수를 나누었음.
+ * @version 1.0 FileShare
  * @data 2022.02.21
+ * @description
+ * FShare 추가 예정
  */
-function fileTransfer() {
+
+export const fileShare = () => {
     function updateDevice() {
         $.ajax({
             url: "https://send-anywhere.com/web/v1/device",
@@ -104,4 +101,6 @@ function fileTransfer() {
             .removeClass("text-danger")
             .addClass("text-success");
     });
-}
+
+    updateDevice();
+};
