@@ -7,14 +7,15 @@
  */
 
 export const fileShare = () => {
-    // DOM Select
+    fileDelivery();
+};
 
-    const params = {
-        api_key: "503d6430f3c124e0f239092e9c916b932a869dfe",
-        profile_name: "owake",
-    };
-
+function fileDelivery() {
     $(document).ready(() => {
+        const params = {
+            api_key: "503d6430f3c124e0f239092e9c916b932a869dfe",
+            profile_name: "owake",
+        };
         function updateDevice() {
             $.ajax({
                 url: "https://send-anywhere.com/web/v1/device",
@@ -109,4 +110,4 @@ export const fileShare = () => {
         });
         updateDevice();
     });
-};
+}
