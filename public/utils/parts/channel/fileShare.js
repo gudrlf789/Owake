@@ -83,24 +83,24 @@ export const fileShare = () => {
             $("<iframe />").attr("src", url).hide().appendTo("body");
         }
 
-        $("#sendBtn").click(function () {
+        $(document).on("click", "#sendBtn", function () {
             let files = $("#fileInput").prop("files");
             if (files.length > 0) {
                 createKey(files);
             }
         });
 
-        $("#receiveBtn").click(function () {
+        $(document).on("click", "#receiveBtn", function () {
             receiveKey($("#keyInput").val());
         });
 
-        $("#keyInput").keyup(function (e) {
+        $(document).on("keyup", "#keyInput", function (e) {
             if (e.keyCode == 13) {
                 $("#receiveBtn").click();
             }
         });
 
-        $("#keyInput").keydown(function () {
+        $(document).on("keydown", "#keyInput", function (e) {
             $("#receiveForm .form-group").removeClass("has-error");
             $("#status")
                 .text("")
