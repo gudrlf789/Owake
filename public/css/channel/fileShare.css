@@ -1,14 +1,48 @@
 .fileShareContainer {
     position: absolute;
-    background-color: lightblue;
+    background-color: #fff;
     width: 100%;
     height: 100%;
     border-radius: 25px;
     top: 0;
     z-index: 10;
+    overflow: auto;
 }
 
-.fileShareContainer video {
+.fileShare-navbar {
+    position: relative;
+    display: flex;
+    padding: 10px;
+    margin: 10px;
+}
+
+.fileShare-contentBox {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    height: 100%;
+}
+
+.fileShare-contentBox > video {
+    width: 100%;
+}
+
+.fileShare-contentBox > img {
+    max-width: -webkit-fill-available;
+}
+
+.fileShare-contentBox > audio {
+    width: 100%;
+}
+
+.fileShare-contentBox > textarea {
+    width: 100%;
+    height: 75vh;
+}
+
+.fileShare-progressBar {
+    width: 150px;
+    border: 1px solid #000;
 }

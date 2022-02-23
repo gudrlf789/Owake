@@ -241,7 +241,7 @@ body {
     display: -webkit-box;
     line-height: 23px;
     /* max-height: 32px; */
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     /* 표시하고자 하는 라인 수 */
     -webkit-box-orient: vertical;
 }
@@ -413,7 +413,7 @@ body {
     display: -webkit-box;
     line-height: 23px;
     /* max-height: 32px; */
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     /* 표시하고자 하는 라인 수 */
     -webkit-box-orient: vertical;
 }

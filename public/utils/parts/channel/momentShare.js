@@ -47,6 +47,7 @@ export const momentShareFunc = () => {
         localVideoContainer.append(momentShareArea);
         momentShareArea.hidden = false;
         momentShareBtn.style.color = "rgb(165, 199, 236)";
+
         momentSocket.emit("join-web", window.sessionStorage.getItem("channel"));
     }
 
@@ -110,7 +111,6 @@ export const momentShareFunc = () => {
 
     const youtubeUrlReplarce = (search) => {
         let str = search;
-        console.log(str);
         const regExp =
             /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
         let match = str.match(regExp);

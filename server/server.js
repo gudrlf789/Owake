@@ -197,12 +197,16 @@ io.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("fileShare", (channel, data) => {
-        log.debug("Channel:::::::", channel);
-        log.debug("data:::::::", data);
-        // Channel을 연결하면 안나옴 왜 안나오는지 모르겠음....
-        // socket.broadcast.to(channel).emit("send-fileShare", data);
-        socket.broadcast.emit("send-fileShare", data);
+    socket.on("join-fileShare", (channelName) => {
+        socket.join(channelName);
+    });
+
+    socket.on("leave-fileShare", (channelName) => {
+        socket.leave(channelName);
+    });
+
+    socket.on("fileShare", (channelName, data, type) => {
+        socket.broadcast.to(channelName).emit("send-fileShare", data, type);
     });
 });
 
