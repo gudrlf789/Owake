@@ -7,6 +7,14 @@
  */
 
 export const fileShare = () => {
+    // DOM Select
+    const sendBtn = document.querySelector("#sendBtn");
+    const receiveBtn = document.querySelector("#receiveBtn");
+    const keyInput = document.querySelector("#keyInput");
+    const status = document.querySelector("#status");
+
+    const fileInput = document.querySelector("#fileInput");
+
     function updateDevice() {
         $.ajax({
             url: "https://send-anywhere.com/web/v1/device",
@@ -20,10 +28,10 @@ export const fileShare = () => {
         }).done(function (data) {});
     }
     function createKey(files) {
-        var params = { file: [] };
-        var formData = new FormData();
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
+        let params = { file: [] };
+        let formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
             params.file.push({ name: file.name, size: file.size });
             formData.append("file" + i, file, file.name);
         }
@@ -77,29 +85,33 @@ export const fileShare = () => {
         $("<iframe />").attr("src", url).hide().appendTo("body");
     }
 
-    $("#sendBtn").click(function () {
-        var files = $("#fileInput").prop("files");
+    sendBtn.addEventListener("click", () => {
+        let files = fileInput.files;
+        console.log(files);
         if (files.length > 0) {
             createKey(files);
         }
     });
 
-    $("#receiveBtn").click(function () {
-        receiveKey($("#keyInput").val());
+    receiveBtn.addEventListener("click", () => {
+        receiveKey(keyInput.value);
     });
 
-    $("#keyInput").keyup(function (e) {
+    keyInput.addEventListener("keyup", (e) => {
         if (e.keyCode == 13) {
-            $("#receiveBtn").click();
+            receiveBtn.addEventListener("click", () => {
+                receiveKey(keyInput.value);
+            });
         }
     });
 
-    $("#keyInput").keydown(function () {
-        $("#receiveForm .form-group").removeClass("has-error");
-        $("#status")
-            .text("")
-            .removeClass("text-danger")
-            .addClass("text-success");
+    keyInput.addEventListener("keydown", () => {
+        document
+            .querySelector("#receiveForm .form-group")
+            .classList.remove("has-error");
+        status.text.classList
+            .remove(text - danger)
+            .classList.add("text-success");
     });
 
     updateDevice();
