@@ -30,14 +30,20 @@ export const recodingDeviceCtrl = () => {
     deviceSettingBtn.addEventListener("click", async (e) => {
         $(".cam-list").delegate("a", "click", function (e) {
             videoBox = document.querySelector("#local__videoBox");
-            if (this.text.includes("back")) {
-                switchCamera(this.text);
+            console.log(this.text);
+            if (
+                this.text.includes("facing back") ||
+                this.text.includes("camera2 0")
+            ) {
+                console.log("back Camera");
                 videoBox.style.setProperty(
                     "transform",
                     "rotateY(0deg)",
                     "!important"
                 );
+                switchCamera(this.text);
             } else {
+                console.log("front Camera");
                 switchCamera(this.text);
             }
         });
