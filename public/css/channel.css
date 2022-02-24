@@ -83,14 +83,15 @@
     font-size: small;
 }
 
-#sendBtn {
+.fileDeliveryBtn {
     border: 1px solid #000;
     border-radius: 25px;
+    cursor: pointer;
 }
 
-#receiveBtn {
-    border: 1px solid #000;
-    border-radius: 25px;
+.fileDeliveryBtn:hover {
+    color: #858828;
+    font-size: 17px;
 }
 
 .deviceSetting {
@@ -304,6 +305,8 @@
 
 video {
     animation: show 0.4s ease;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    -webkit-appearance: none;
 }
 
 video:hover {

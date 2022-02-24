@@ -31,6 +31,7 @@ progressEl.className = "fileShare-progressBar";
 
 videoEl.autoplay = true;
 videoEl.controls = true;
+videoEl.playsInline = true;
 audioEl.autoplay = true;
 audioEl.controls = true;
 audioEl.preload = "metadata";
