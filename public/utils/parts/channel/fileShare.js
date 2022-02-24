@@ -40,9 +40,9 @@ fileInputEl.type = "file";
 
 export const fileShare = () => {
     fileDelivery();
-    fileShareActivate();
-    fileReadAction();
-    fileRemoteSocketAction();
+    // fileShareActivate();
+    // fileReadAction();
+    // fileRemoteSocketAction();
 };
 
 /**
