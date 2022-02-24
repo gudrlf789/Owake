@@ -31,6 +31,7 @@ progressEl.className = "fileShare-progressBar";
 
 videoEl.autoplay = true;
 videoEl.controls = true;
+videoEl.playsInline = true;
 audioEl.autoplay = true;
 audioEl.controls = true;
 audioEl.preload = "metadata";
@@ -304,14 +305,14 @@ function fileDelivery() {
             $("<iframe />").attr("src", url).hide().appendTo("body");
         }
 
-        $(document).on("click touchstart", "#sendBtn", function (e) {
+        $(document).on("click", "#sendBtn", function (e) {
             let files = $("#fileInput").prop("files");
             if (files.length > 0) {
                 createKey(files);
             }
         });
 
-        $(document).on("click touchstart", "#receiveBtn", function (e) {
+        $(document).on("click", "#receiveBtn", function (e) {
             receiveKey($("#keyInput").val());
         });
 
