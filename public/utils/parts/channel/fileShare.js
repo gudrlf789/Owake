@@ -13,6 +13,9 @@ const audioEl = document.createElement("audio");
 const textEl = document.createElement("textArea");
 const imageEl = document.createElement("img");
 const fileInputEl = document.createElement("input");
+const sendBtn = document.querySelector("#sendBtn");
+const receiveBtn = document.querySelector("#receiveBtn");
+const keyInput = document.querySelector("#keyInput");
 
 const localContainer = document.querySelector("#local__video__container");
 const fileShareBtn = document.querySelector("#fileShareBtn");
@@ -228,7 +231,7 @@ function fileRemoteSocketAction() {
  * @version 1.0 FileDelivery
  * @data 2022.02.22
  * @description
- * 코드 재조정... Sapari 업데이트 예정
+ * 코드 재조정... Safari 업데이트 예정
  */
 
 function fileDelivery() {
@@ -298,6 +301,8 @@ function fileDelivery() {
                         .text("failed")
                         .removeClass("text-success")
                         .addClass("text-danger");
+                    console.log(textStatus);
+                    console.log(error);
                 });
         }
 
@@ -305,30 +310,36 @@ function fileDelivery() {
             $("<iframe />").attr("src", url).hide().appendTo("body");
         }
 
-        $(document).on("click touchstart", "#sendBtn", function (e) {
+        function sendAction() {
             let files = $("#fileInput").prop("files");
             if (files.length > 0) {
                 createKey(files);
             }
-        });
+        }
 
-        $(document).on("click touchstart", "#receiveBtn", function (e) {
+        function receiveAction() {
             receiveKey($("#keyInput").val());
-        });
+        }
 
-        $(document).on("keyup", "#keyInput", function (e) {
+        function keyupAction() {
             if (e.keyCode == 13) {
-                $("#receiveBtn").click();
+                receiveBtn.click();
             }
-        });
+        }
 
-        $(document).on("keydown", "#keyInput", function (e) {
+        function keydownAction() {
             $("#receiveForm .form-group").removeClass("has-error");
             $("#status")
                 .text("")
                 .removeClass("text-danger")
                 .addClass("text-success");
-        });
+        }
+
+        sendBtn.addEventListener("click", sendAction);
+        receiveBtn.addEventListener("click", receiveAction);
+        keyInput.addEventListener("keyup", keyupAction);
+        keyInput.addEventListener("keydown", keydownAction);
+
         updateDevice();
     });
 }
