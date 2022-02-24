@@ -5,7 +5,9 @@
  * @description
  * FileShare 새로 추가
  * ---------------- 문제점 ----------------
- * 1. 소켓 연결시 데이터는 넘어가지만 이미지, 동영상, 텍스트, 오디오 등 제대로 브라우징이 안됨.
+ * 1. Blob ArrayBuffer로 소켓 연결시 데이터는 넘어가지만 이미지, 동영상, 텍스트, 오디오 등 제대로 브라우징이 안됨.
+ * 1-1. 원인은 URL.createObjectURL 때문으로 추정됨. 다른 브라우저에서 재사용이 불가능함.
+ * 1-2 결국은 파일 사이즈를 쪼개서 보내는 방식으로 진행해야 될 듯...
  * 2. 클릭버튼 넘겨야됨.
  * 3. 호스트 권한과 게스트 권한 넘겨서 클릭버튼 컨트롤 해야됨.
  */
@@ -13,7 +15,6 @@
 let fileShareSocket = io();
 let fileShareBtnActive = false;
 let channel = window.sessionStorage.getItem("channel");
-let receiverID;
 
 // DOM Element
 const el = document.createElement("div");
@@ -84,43 +85,52 @@ function fileReadAction() {
 function fileInputControlChangeEventHandler(e) {
     let fileInputControl = e.target;
     let files = fileInputControl.files;
-    let firstFile = files[0];
-    console.log(firstFile.type);
+    let file = files[0];
+    let chunkCounter;
+    let filename = file.name;
+    let filesize = file.size;
+    let start = 0; //파일의 시작위치
+    let chunkEnd;
+    let chunkSize = 10 * 1024 * 1024;
+    let numberOfChunks = Math.ceil(file.size / chunkSize);
+
     let fileReader = new FileReader();
+    let fileData = new ArrayBuffer();
+
     let videoTypeCheck =
-        firstFile.type.includes("mp4") ||
-        firstFile.type.includes("mov") ||
-        firstFile.type.includes("wmv") ||
-        firstFile.type.includes("flv") ||
-        firstFile.type.includes("avi") ||
-        firstFile.type.includes("webm") ||
-        firstFile.type.includes("mkv") ||
-        firstFile.type.includes("x-matroska");
+        file.type.includes("mp4") ||
+        file.type.includes("mov") ||
+        file.type.includes("wmv") ||
+        file.type.includes("flv") ||
+        file.type.includes("avi") ||
+        file.type.includes("webm") ||
+        file.type.includes("mkv") ||
+        file.type.includes("x-matroska");
 
     let audioTypeCheck =
-        firstFile.type.includes("mp3") ||
-        firstFile.type.includes("mpeg") ||
-        firstFile.type.includes("wav") ||
-        firstFile.type.includes("aac") ||
-        firstFile.type.includes("aacp") ||
-        firstFile.type.includes("ogg") ||
-        firstFile.type.includes("flac") ||
-        firstFile.type.includes("x-caf");
+        file.type.includes("mp3") ||
+        file.type.includes("mpeg") ||
+        file.type.includes("wav") ||
+        file.type.includes("aac") ||
+        file.type.includes("aacp") ||
+        file.type.includes("ogg") ||
+        file.type.includes("flac") ||
+        file.type.includes("x-caf");
 
     let textTypeCheck =
-        firstFile.type.match(/text.*/) ||
-        firstFile.type.includes("html") ||
-        firstFile.type.includes("js") ||
-        firstFile.type.includes("ejs") ||
-        firstFile.type.includes("css");
+        file.type.match(/text.*/) ||
+        file.type.includes("html") ||
+        file.type.includes("js") ||
+        file.type.includes("ejs") ||
+        file.type.includes("css");
 
     let imageTypeCheck =
-        firstFile.type.includes("png") ||
-        firstFile.type.includes("jpg") ||
-        firstFile.type.includes("jpeg") ||
-        firstFile.type.includes("gif") ||
-        firstFile.type.includes("svg") ||
-        firstFile.type.includes("webp");
+        file.type.includes("png") ||
+        file.type.includes("jpg") ||
+        file.type.includes("jpeg") ||
+        file.type.includes("gif") ||
+        file.type.includes("svg") ||
+        file.type.includes("webp");
 
     let fileType = {
         video: 0,
@@ -130,14 +140,19 @@ function fileInputControlChangeEventHandler(e) {
         pdf: 4,
     };
 
+    if (textTypeCheck) {
+        fileReader.readAsText(file);
+    } else {
+        // fileReader.readAsArrayBuffer(file);
+        fileReader.readAsDataURL(file);
+    }
+
     fileReader.onload = (e) => {
-        // Progress 준비중...
         console.log("fileReader loading........");
-        let preview = fileReader.result;
-        // let buffer = new Uint8Array(preview);
+        // let buffer = new Uint8Array(fileReader.result);
         // let dataBlob = new Blob([buffer]);
         // let data = window.URL.createObjectURL(dataBlob);
-        let data = preview;
+        let data = fileReader.result;
 
         if (videoTypeCheck) {
             bodyEl.append(videoEl);
@@ -165,36 +180,25 @@ function fileInputControlChangeEventHandler(e) {
             fileShareSocket.emit("fileShare", channel, data, fileType.image);
         }
     };
-
-    if (textTypeCheck) {
-        fileReader.readAsText(firstFile);
-    } else {
-        //fileReader.readAsArrayBuffer(firstFile);
-        fileReader.readAsDataURL(firstFile);
-    }
 }
 
 // Video
 function fileVideoElement(content) {
-    console.log(content);
     bodyEl.append(videoEl);
     videoEl.src = content;
 }
 // Audio
 function fileAudioElement(content) {
-    console.log(content);
     bodyEl.append(audioEl);
     audioEl.src = content;
 }
 // Text
 function fileTextElement(content) {
-    console.log(content);
     bodyEl.append(textEl);
     textEl.textContent = content;
 }
 // Image
 function fileImageElement(content) {
-    console.log(content);
     bodyEl.append(imageEl);
     imageEl.src = content;
 }
