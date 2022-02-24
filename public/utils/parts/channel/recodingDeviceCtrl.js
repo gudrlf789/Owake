@@ -32,7 +32,11 @@ export const recodingDeviceCtrl = () => {
             videoBox = document.querySelector("#local__videoBox");
             if (this.text.includes("back")) {
                 switchCamera(this.text);
-                videoBox.style.transform = "rotateY(0deg)";
+                videoBox.style.setProperty(
+                    "transform",
+                    "rotateY(0deg)",
+                    "!important"
+                );
             } else {
                 switchCamera(this.text);
             }
