@@ -321,7 +321,7 @@ function fileDelivery() {
             receiveKey($("#keyInput").val());
         }
 
-        function keyupAction() {
+        function keyupAction(e) {
             if (e.keyCode == 13) {
                 receiveBtn.click();
             }
@@ -337,7 +337,9 @@ function fileDelivery() {
 
         sendBtn.addEventListener("click", sendAction);
         receiveBtn.addEventListener("click", receiveAction);
-        keyInput.addEventListener("keyup", keyupAction);
+        keyInput.addEventListener("keyup", (e) => {
+            keyupAction(e);
+        });
         keyInput.addEventListener("keydown", keydownAction);
 
         updateDevice();
