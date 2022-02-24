@@ -34,12 +34,13 @@ export const recodingDeviceCtrl = () => {
                 this.text.includes("facing back") ||
                 this.text.includes("camera2 0")
             ) {
-                console.log("back Camera");
+                alert("Switch the camera.");
                 switchCamera(this.text);
                 // Back Camera Transform 변경
                 videoBox.childNodes[0].childNodes[0].style.setProperty(
                     "transform",
-                    "rotateY(0deg)"
+                    "rotateY(0deg)",
+                    "!important"
                 );
             } else {
                 console.log("front Camera");
