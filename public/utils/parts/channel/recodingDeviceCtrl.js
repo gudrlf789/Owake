@@ -36,7 +36,12 @@ export const recodingDeviceCtrl = () => {
                 setTimeout(() => {
                     videoBox.childNodes[0].childNodes[0].style.setProperty(
                         "transform",
-                        "none",
+                        "rotateX(180deg)",
+                        "!important"
+                    );
+                    videoBox.childNodes[0].childNodes[0].style.setProperty(
+                        "transform",
+                        "rotateY(0deg)",
                         "!important"
                     );
                 }, 3500);
