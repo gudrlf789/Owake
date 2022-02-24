@@ -7,7 +7,6 @@ export const recodingDeviceCtrl = () => {
 
     const deviceSettingBtn = document.getElementById("deviceSettingBtn");
     const dropdownItem = document.querySelector(".dropdown-item");
-    let videoBox = document.querySelector("#local__videoBox");
 
     $(async () => {
         // get mics
@@ -28,6 +27,7 @@ export const recodingDeviceCtrl = () => {
     });
 
     deviceSettingBtn.addEventListener("click", async (e) => {
+        const videoBox = document.querySelector("#local__videoBox");
         $(".cam-list").delegate("a", "click", function (e) {
             console.log(this.text);
             if (
@@ -36,16 +36,14 @@ export const recodingDeviceCtrl = () => {
             ) {
                 console.log("back Camera");
                 switchCamera(this.text);
+                // Back Camera Transform 변경
+                videoBox.childNodes[0].childNodes[0].style.setProperty(
+                    "transform",
+                    "rotateY(0deg)"
+                );
             } else {
                 console.log("front Camera");
                 switchCamera(this.text);
-                // Back Camera Transform 변경
-                setTimeout(() => {
-                    videoBox.childNodes[0].childNodes[0].style.setProperty(
-                        "transform",
-                        "rotateY(0deg)"
-                    );
-                }, 3000);
             }
         });
         $(".mic-list").delegate("a", "click", function (e) {
