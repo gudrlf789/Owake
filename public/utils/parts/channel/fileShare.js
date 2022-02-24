@@ -3,7 +3,7 @@ let fileShareBtnActive = false;
 let channel = window.sessionStorage.getItem("channel");
 let receiverID;
 
-// DOM Element
+// Create DOM Element
 const el = document.createElement("div");
 const navEl = document.createElement("div");
 const progressEl = document.createElement("div");
@@ -16,6 +16,9 @@ const fileInputEl = document.createElement("input");
 const sendBtn = document.querySelector("#sendBtn");
 const receiveBtn = document.querySelector("#receiveBtn");
 const keyInput = document.querySelector("#keyInput");
+
+// Select DOM Element
+const fileDeliveryInput = document.querySelector("#fileInput");
 
 const localContainer = document.querySelector("#local__video__container");
 const fileShareBtn = document.querySelector("#fileShareBtn");
@@ -247,7 +250,9 @@ function fileDelivery() {
                 dataType: "jsonp",
                 data: params,
                 cache: false,
-            }).done((data) => {});
+            }).done((data) => {
+                console.log(data);
+            });
         }
 
         function createKey(files) {
@@ -266,7 +271,7 @@ function fileDelivery() {
                 dataType: "jsonp",
                 cache: false,
             }).done(function (data, textStatus, xhr) {
-                $("#key").text(data.key);
+                document.querySelector("#key").textContent = data.key;
                 sendFile(data.weblink, formData);
             });
         }
@@ -283,7 +288,7 @@ function fileDelivery() {
         }
 
         function receiveKey(key) {
-            $("#status").text("waiting");
+            document.querySelector("#status").textContent = "waiting";
             $.ajax({
                 url: "https://send-anywhere.com/web/v1/key/" + key,
                 type: "GET",
@@ -293,16 +298,21 @@ function fileDelivery() {
             })
                 .done(function (data) {
                     receiveFile(data.weblink);
-                    $("#status").text("done");
+                    document.querySelector("#status").textContent = "done";
                 })
                 .fail(function (xhr, textStatus, error) {
-                    $("#receiveForm .form-group").addClass("has-error");
-                    $("#status")
-                        .text("failed")
-                        .removeClass("text-success")
-                        .addClass("text-danger");
-                    console.log(textStatus);
-                    console.log(error);
+                    document
+                        .querySelector("#receiveForm .form-group")
+                        .classList.add("has-error");
+                    document.querySelector("#status").textContent =
+                        "failed".classList
+                            .remove("has-success")
+                            .classList.add("text-danger");
+                    // $("#receiveForm .form-group").addClass("has-error");
+                    // $("#status")
+                    //     .text("failed")
+                    //     .removeClass("text-success")
+                    //     .addClass("text-danger");
                 });
         }
 
@@ -311,7 +321,7 @@ function fileDelivery() {
         }
 
         function sendAction() {
-            let files = $("#fileInput").prop("files");
+            let files = fileDeliveryInput.files;
             if (files.length > 0) {
                 createKey(files);
             }
@@ -328,11 +338,18 @@ function fileDelivery() {
         }
 
         function keydownAction() {
-            $("#receiveForm .form-group").removeClass("has-error");
-            $("#status")
-                .text("")
-                .removeClass("text-danger")
-                .addClass("text-success");
+            document
+                .querySelector("#receiveForm .form-group")
+                .classList.add("has-error");
+            document.querySelector("#status").textContent = "".classList
+                .remove("text-danger")
+                .classList.add("text-success");
+
+            // $("#receiveForm .form-group").removeClass("has-error");
+            // $("#status")
+            //     .text("")
+            //     .removeClass("text-danger")
+            //     .addClass("text-success");
         }
 
         sendBtn.addEventListener("click", sendAction);
