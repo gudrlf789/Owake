@@ -96,7 +96,7 @@ $(document).on("click", ".player", (e) => {
 });
 
 async function join() {
-    socket.on("connect", handleConnect);
+    // socket.on("connect", handleConnect);
     options.uid = window.sessionStorage.getItem("uid");
     options.channel = window.sessionStorage.getItem("channel");
 
@@ -269,7 +269,7 @@ function handleUserUnpublished(user) {
     delete totalUsers[id];
     delete remoteUsers[id];
     revertLocalTrackToMain(id);
-    socket.on("disconnect", handleDisconnect);
+    // socket.on("disconnect", handleDisconnect);
 }
 
 /**
