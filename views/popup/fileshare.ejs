@@ -11,7 +11,7 @@
                 <form id="sendForm" class="col-sm-6">
                     <div class="form-group filebox">
                         <input id="fileInput" name="file[]" type="file" class="form-control" multiple /><br />
-                        <input type="button" id="sendBtn" class="btn btn-default form-control"
+                        <input type="button" id="sendBtn" class="btn btn-default form-control fileDeliveryBtn"
                             value="Send"></input><br /><br />
                         <label for="">Key: </label> <span id="key" class="text-success"></span>
                     </div>
@@ -19,7 +19,7 @@
                 <form id="receiveForm" class="col-sm-6">
                     <div class="form-group">
                         <input id="keyInput" class="form-control" onkeypress="return event.keyCode != 13;" /><br />
-                        <input type="button" id="receiveBtn" class="btn btn-default form-control"
+                        <input type="button" id="receiveBtn" class="btn btn-default form-control fileDeliveryBtn"
                             value="Recevie"></input><br /><br />
                         <label for="">Status: </label> <span id="status" class="text-success"></span>
                     </div>

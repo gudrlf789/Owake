@@ -18,6 +18,8 @@ export const mobileDisplayCtr = () => {
         mainRight.hidden = true;
         showChat.style.color = "#fff";
     }
+
+    document.activeElement.blur();
 };
 
 export const scrollToBottom = () => {

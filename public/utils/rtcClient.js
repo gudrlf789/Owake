@@ -1,7 +1,11 @@
 let socket = io();
 const localVideoBox = document.createElement("div");
+const selectVideo = document.querySelector("video");
 localVideoBox.id = "local__videoBox";
 localVideoBox.className = "player";
+if (selectVideo) {
+    selectVideo.setAttribute("playsinline", "playsinline");
+}
 
 let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
