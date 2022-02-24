@@ -86,11 +86,13 @@
 #sendBtn {
     border: 1px solid #000;
     border-radius: 25px;
+    curosr: pointer;
 }
 
 #receiveBtn {
     border: 1px solid #000;
     border-radius: 25px;
+    curosr: pointer;
 }
 
 .deviceSetting {
@@ -305,6 +307,7 @@
 video {
     animation: show 0.4s ease;
     -webkit-mask-image: -webkit-radial-gradient(white, black);
+    -webkit-appearance: none;
 }
 
 video:hover {
