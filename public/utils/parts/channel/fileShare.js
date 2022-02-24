@@ -105,12 +105,10 @@ function fileInputControlChangeEventHandler(e) {
         firstFile.type.includes("aacp") ||
         firstFile.type.includes("ogg") ||
         firstFile.type.includes("flac") ||
-        firstFile.type.includes("webm") ||
         firstFile.type.includes("x-caf");
 
     let textTypeCheck =
-        firstFile.type.includes("txt") ||
-        firstFile.type.includes("text") ||
+        firstFile.type.match(/text.*/) ||
         firstFile.type.includes("html") ||
         firstFile.type.includes("js") ||
         firstFile.type.includes("ejs") ||
@@ -136,9 +134,10 @@ function fileInputControlChangeEventHandler(e) {
         // Progress 준비중...
         console.log("fileReader loading........");
         let preview = fileReader.result;
-        let buffer = new Uint8Array(preview);
-        let dataBlob = new Blob([buffer]);
-        let data = window.URL.createObjectURL(dataBlob);
+        // let buffer = new Uint8Array(preview);
+        // let dataBlob = new Blob([buffer]);
+        // let data = window.URL.createObjectURL(dataBlob);
+        let data = preview;
 
         if (videoTypeCheck) {
             bodyEl.append(videoEl);
