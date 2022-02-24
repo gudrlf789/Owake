@@ -123,56 +123,6 @@ app.get("/newsfeed", (req, res, next) => {
  */
 
 io.on("connection", (socket) => {
-    socket.channels = {};
-    sockets[socket.id] = socket;
-
-    socket.on("connect", (socket) => {
-        log.debug("[" + socket.id + "] connection accepted");
-    });
-
-    socket.on("disconnect", (reason) => {
-        log.debug("[" + socket.id + "] disconnected", { reason: reason });
-        delete sockets[socket.id];
-    });
-
-    socket.on("join", (config) => {
-        log.debug("[" + socket.id + "] join ", config);
-
-        channel = config.channel;
-        peerId = config.peerId;
-        peerName = config.peerName;
-
-        if (channel in socket.channels) {
-            log.debug("[" + socket.id + "] [Warning] already joined", channel);
-            return;
-        }
-
-        // no channel aka room in channels init
-        if (!(channel in channels)) channels[channel] = {};
-
-        // no channel aka room in peers init
-        if (!(channel in peers)) peers[channel] = {};
-
-        // room locked by the participants can't join
-        if (peers[channel]["Locked"] === true) {
-            log.debug("[" + socket.id + "] [Warning] Room Is Locked", channel);
-            socket.emit("roomIsLocked");
-            return;
-        }
-
-        // collect peers info grp by channels
-        peers[channel][socket.id] = {
-            peer_Id: peerId,
-            peer_name: peerName,
-        };
-        log.debug("connected peers grp by roomId", peers);
-
-        channels[channel][socket.id] = socket;
-        socket.channels[channel] = channel;
-
-        socket.join(channel);
-    });
-
     socket.on("join-web", (channelName) => {
         socket.join(channelName);
     });
