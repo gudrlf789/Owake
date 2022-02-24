@@ -206,7 +206,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("fileShare", (channelName, data, type) => {
-        socket.broadcast.to(channelName).emit("send-fileShare", data, type);
+        socket.to(channelName).emit("send-fileShare", data, type);
     });
 });
 

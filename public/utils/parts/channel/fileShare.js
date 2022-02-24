@@ -1,4 +1,3 @@
-
 /**
  * @author 전형동
  * @version 1.0
@@ -50,7 +49,6 @@ audioEl.controls = true;
 audioEl.preload = "metadata";
 
 fileInputEl.type = "file";
-
 
 function fileShareActivate() {
     if (fileShareBtn) {
@@ -136,9 +134,10 @@ function fileInputControlChangeEventHandler(e) {
 
     fileReader.onload = (e) => {
         // Progress 준비중...
-        let buffer = new Uint8Array(fileReader.result);
-        let fileContents = e.target.result;
-        let dataBlob = new Blob([new Uint8Array(fileContents)]);
+        console.log("fileReader loading........");
+        let preview = fileReader.result;
+        let buffer = new Uint8Array(preview);
+        let dataBlob = new Blob([buffer]);
         let data = window.URL.createObjectURL(dataBlob);
 
         if (videoTypeCheck) {
@@ -171,7 +170,8 @@ function fileInputControlChangeEventHandler(e) {
     if (textTypeCheck) {
         fileReader.readAsText(firstFile);
     } else {
-        fileReader.readAsArrayBuffer(firstFile);
+        //fileReader.readAsArrayBuffer(firstFile);
+        fileReader.readAsDataURL(firstFile);
     }
 }
 
