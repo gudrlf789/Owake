@@ -304,6 +304,7 @@
 
 video {
     animation: show 0.4s ease;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 video:hover {
