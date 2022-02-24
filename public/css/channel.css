@@ -86,13 +86,13 @@
 #sendBtn {
     border: 1px solid #000;
     border-radius: 25px;
-    curosr: pointer;
+    cursor: pointer;
 }
 
 #receiveBtn {
     border: 1px solid #000;
     border-radius: 25px;
-    curosr: pointer;
+    cursor: pointer;
 }
 
 .deviceSetting {
