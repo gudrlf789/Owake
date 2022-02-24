@@ -29,17 +29,13 @@ export const recodingDeviceCtrl = () => {
     deviceSettingBtn.addEventListener("click", async (e) => {
         const videoBox = document.querySelector("#local__videoBox");
         $(".cam-list").delegate("a", "click", function (e) {
-            console.log(this.text);
-            if (
-                this.text.includes("facing back") ||
-                this.text.includes("camera2 0")
-            ) {
-                alert("Switch the camera.");
+            e.preventDefault();
+            if (this.text.includes("back") || this.text.includes("camera2 0")) {
                 switchCamera(this.text);
                 // Back Camera Transform 변경
                 videoBox.childNodes[0].childNodes[0].style.setProperty(
                     "transform",
-                    "rotateY(0deg)",
+                    "none",
                     "!important"
                 );
             } else {
@@ -48,6 +44,7 @@ export const recodingDeviceCtrl = () => {
             }
         });
         $(".mic-list").delegate("a", "click", function (e) {
+            e.preventDefault();
             switchMicrophone(this.text);
         });
         volumeAnimation = requestAnimationFrame(setVolumeWave);
