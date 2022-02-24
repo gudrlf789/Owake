@@ -4,10 +4,10 @@ export const recodingDeviceCtrl = () => {
     let currentMic; // the microphone you are using
     let currentCam; // the camera you are using
     let volumeAnimation;
-    let videoBox;
 
     const deviceSettingBtn = document.getElementById("deviceSettingBtn");
     const dropdownItem = document.querySelector(".dropdown-item");
+    let videoBox = document.querySelector("#local__videoBox");
 
     $(async () => {
         // get mics
@@ -29,22 +29,23 @@ export const recodingDeviceCtrl = () => {
 
     deviceSettingBtn.addEventListener("click", async (e) => {
         $(".cam-list").delegate("a", "click", function (e) {
-            videoBox = document.querySelector("#local__videoBox");
             console.log(this.text);
             if (
                 this.text.includes("facing back") ||
                 this.text.includes("camera2 0")
             ) {
                 console.log("back Camera");
-                videoBox.style.setProperty(
-                    "transform",
-                    "rotateY(0deg)",
-                    "!important"
-                );
                 switchCamera(this.text);
             } else {
                 console.log("front Camera");
                 switchCamera(this.text);
+                // Back Camera Transform 변경
+                setTimeout(() => {
+                    videoBox.childNodes[0].childNodes[0].style.setProperty(
+                        "transform",
+                        "rotateY(0deg)"
+                    );
+                }, 3000);
             }
         });
         $(".mic-list").delegate("a", "click", function (e) {
