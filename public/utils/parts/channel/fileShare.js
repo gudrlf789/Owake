@@ -318,7 +318,7 @@ function fileDelivery() {
         }
 
         function receiveAction() {
-            receiveKey($("#keyInput").val());
+            receiveKey(keyInput.value);
         }
 
         function keyupAction(e) {
