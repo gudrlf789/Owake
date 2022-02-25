@@ -17,6 +17,10 @@ let localTracks = {
 let totalUsers = {};
 let remoteUsers = {};
 
+/**
+ * 2022 02 25
+ * Geo Fencing List
+ */
 let areas = [
     { label: "GLOBAL", detail: "Global", value: "GLOBAL" },
     {
@@ -35,6 +39,10 @@ let areas = [
     },
 ];
 
+/**
+ * 2022 02 25
+ * Video Resolution List
+ */
 let videoProfiles = [
     { label: "480p_1", detail: "640×480, 15fps, 500Kbps", value: "480p_1" },
     { label: "480p_2", detail: "640×480, 30fps, 1000Kbps", value: "480p_2" },
@@ -61,8 +69,8 @@ let curVideoProfile;
 
 let options = {
     // appid : "8d4f054da71f427b93df3e27ca31bb54"
-    appid: "e44f4580aea5429e921e3dbffaa69f33",
     // appid: "50b9cd9de2d54849a139e3db52e7928a",
+    appid: "e44f4580aea5429e921e3dbffaa69f33",
     channel: null,
     uid: null,
     token: null,
