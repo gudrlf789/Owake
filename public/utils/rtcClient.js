@@ -121,7 +121,9 @@ async function join() {
 
     // 카메라 디바이스가 없을시
     if (checkDeskTopCamera.length != 0) {
-        localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack();
+        localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({
+            encoderConfig: "1080p_2",
+        });
     } else {
         localTracks.videoTrack = undefined;
         localVideoBox.style.backgroundRepeat = "no-repeat";
