@@ -6,6 +6,7 @@ export const recodingDeviceCtrl = () => {
     let volumeAnimation;
     let videoBox;
     let cameraSwitchActive = false;
+    let area;
 
     const deviceSettingBtn = document.getElementById("deviceSettingBtn");
     const dropdownItem = document.querySelector(".dropdown-item");
@@ -103,4 +104,36 @@ export const recodingDeviceCtrl = () => {
             "rotateY(180deg)"
         );
     }
+
+    // geoFencing
+    async function geoFencing() {
+        initAreas();
+
+        console.log("geoFencing::::Start");
+
+        $(".profile-list").delegate("a", "click", function (e) {
+            changeArea(this.getAttribute("label"));
+        });
+
+        async function changeArea(label) {
+            area = areas.find((profile) => profile.label === label);
+            $(".profile-input").val(`${area.detail}`);
+            // Specify the region for connection as North America
+            AgoraRTC.setArea({
+                areaCode: area.value,
+            });
+        }
+
+        async function initAreas() {
+            areas.forEach((profile) => {
+                $(".profile-list").append(
+                    `<a class="dropdown-item" label="${profile.label}">${profile.label}: ${profile.detail}</a>`
+                );
+            });
+            area = areas[0];
+            $(".profile-input").val(`${area.detail}`);
+        }
+    }
+
+    geoFencing();
 };

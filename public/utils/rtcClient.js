@@ -14,6 +14,24 @@ let localTracks = {
     audioTrack: null,
 };
 
+let areas = [
+    { label: "GLOBAL", detail: "Global", value: "GLOBAL" },
+    {
+        label: "ASIA",
+        detail: "Asia, excluding Mainland China",
+        value: "ASIA",
+    },
+    { label: "CHINA", detail: "China", value: "CHINA" },
+    { label: "EUROPE", detail: "Europe", value: "EUROPE" },
+    { label: "INDIA", detail: "India", value: "INDIA" },
+    { label: "JAPAN", detail: "Japan", value: "JAPAN" },
+    {
+        label: "NORTH_AMERICA",
+        detail: "North America",
+        value: "NORTH_AMERICA",
+    },
+];
+
 let totalUsers = {};
 let remoteUsers = {};
 
