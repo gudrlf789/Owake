@@ -4,9 +4,12 @@ export const recodingDeviceCtrl = () => {
     let currentMic; // the microphone you are using
     let currentCam; // the camera you are using
     let volumeAnimation;
+    let videoBox;
+    let cameraSwitchActive = false;
 
     const deviceSettingBtn = document.getElementById("deviceSettingBtn");
     const dropdownItem = document.querySelector(".dropdown-item");
+    const cameraSwitchBtn = document.querySelector("#camera-switching");
 
     $(async () => {
         // get mics
@@ -27,15 +30,11 @@ export const recodingDeviceCtrl = () => {
     });
 
     deviceSettingBtn.addEventListener("click", async (e) => {
-        const videoBox = document.querySelector("#local__videoBox");
+        videoBox = document.querySelector("#local__videoBox");
         $(".cam-list").delegate("a", "click", function (e) {
             e.preventDefault();
             if (this.text.includes("back") || this.text.includes("camera2 0")) {
                 switchCamera(this.text);
-                videoBox.childNodes[0].classList.add("back");
-                document
-                    .querySelector("#local-player-name")
-                    .classList.add("back");
                 setTimeout(() => {
                     videoBox.childNodes[0].childNodes[0].style.setProperty(
                         "transform",
@@ -43,7 +42,6 @@ export const recodingDeviceCtrl = () => {
                     );
                 }, 3000);
             } else {
-                videoBox.childNodes[0].classList.add("front");
                 switchCamera(this.text);
             }
         });
@@ -52,6 +50,11 @@ export const recodingDeviceCtrl = () => {
             switchMicrophone(this.text);
         });
         volumeAnimation = requestAnimationFrame(setVolumeWave);
+    });
+
+    cameraSwitchBtn.addEventListener("click", () => {
+        cameraSwitchActive = !cameraSwitchActive;
+        cameraSwitchActive ? cameraSwitchEnable() : cameraSwitchDisable();
     });
 
     $("#deviceSettingModal").on("hidden.bs.modal", function (e) {
@@ -82,6 +85,22 @@ export const recodingDeviceCtrl = () => {
         $(".progress-bar").attr(
             "aria-valuenow",
             localTracks.audioTrack.getVolumeLevel() * 100
+        );
+    }
+
+    function cameraSwitchEnable() {
+        videoBox = document.querySelector("#local__videoBox");
+        videoBox.childNodes[0].childNodes[0].style.setProperty(
+            "transform",
+            "rotateY(0deg)"
+        );
+    }
+
+    function cameraSwitchDisable() {
+        videoBox = document.querySelector("#local__videoBox");
+        videoBox.childNodes[0].childNodes[0].style.setProperty(
+            "transform",
+            "rotateY(180deg)"
         );
     }
 };

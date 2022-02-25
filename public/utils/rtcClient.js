@@ -120,9 +120,17 @@ async function join() {
     }
 
     // 카메라 디바이스가 없을시
+    /**
+     * @another 전형동
+     * @date 20220225
+     * @description
+     * 카메라 인코딩 적용
+     * 1080p을 적용시켜보았으나 데이터 전송속도가 너무 느렸음.
+     * 720p_1로 지켜볼 예정
+     */
     if (checkDeskTopCamera.length != 0) {
         localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({
-            encoderConfig: "1080p_2",
+            encoderConfig: "720p_1",
         });
     } else {
         localTracks.videoTrack = undefined;
