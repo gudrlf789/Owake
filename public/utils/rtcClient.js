@@ -87,17 +87,8 @@ $(document).on("click", ".player", (e) => {
         }
     }
 
-    if (
-        localVideoBox.childNodes.length != 0 &&
-        localVideoBox.childNodes[0].id
-    ) {
-        if (localVideoBox.childNodes[0].id.includes("Screen")) {
-            localVideoBox.childNodes[0].childNodes[0].style.objectFit =
-                "contain";
-        } else {
-            localVideoBox.childNodes[0].childNodes[0].style.objectFit = "cover";
-        }
-    }
+    // Video 화면회전
+    videoTransformAction();
 });
 
 async function join() {
@@ -169,6 +160,8 @@ async function join() {
     } else {
         alert("인식된 디바이스가 아무것도 없음");
     }
+
+    videoTransformAction();
 }
 
 async function leave() {
@@ -306,4 +299,30 @@ function joinToChannel() {
 }
 async function sendToServer(msg, config = {}) {
     await socket.emit(msg, config);
+}
+
+/**
+ * Video Transform Action
+ * @anthor 전형동
+ * @date 2020.02.25
+ * @Description
+ * LocalVideo 서치 후 Transform 스타일 180도 변경
+ */
+
+function videoTransformAction() {
+    if (
+        localVideoBox.childNodes.length != 0 &&
+        localVideoBox.childNodes[0].id
+    ) {
+        if (localVideoBox.childNodes[0].id.includes("Screen")) {
+            localVideoBox.childNodes[0].childNodes[0].style.objectFit =
+                "contain";
+        } else {
+            localVideoBox.childNodes[0].childNodes[0].style.objectFit = "cover";
+            localVideoBox.childNodes[0].childNodes[0].style.setProperty(
+                "transform",
+                "rotateY(180deg)"
+            );
+        }
+    }
 }
