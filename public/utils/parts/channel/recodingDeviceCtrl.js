@@ -33,6 +33,7 @@ export const recodingDeviceCtrl = () => {
             if (this.text.includes("back") || this.text.includes("camera2 0")) {
                 switchCamera(this.text);
                 setTimeout(() => {
+                    videoBox.childNodes[0].classList.add("back");
                     videoBox.childNodes[0].childNodes[0].style.setProperty(
                         "transform",
                         "rotateY(0deg)"
