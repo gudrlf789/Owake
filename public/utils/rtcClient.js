@@ -319,7 +319,12 @@ function videoTransformAction() {
         if (localVideoBox.childNodes[0].id.includes("Screen")) {
             localVideoBox.childNodes[0].childNodes[0].style.objectFit =
                 "contain";
-        } else if (localVideoBox.childNodes[0].className.includes("back")) {
+        } else if (
+            localVideoBox.childNodes[0].className.includes("back") ||
+            document
+                .querySelector("#local-player-name")
+                .className.includes("back")
+        ) {
             localVideoBox.childNodes[0].childNodes[0].style.setProperty(
                 "transform",
                 "rotateY(180deg)"

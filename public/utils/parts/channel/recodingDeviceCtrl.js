@@ -32,16 +32,18 @@ export const recodingDeviceCtrl = () => {
             e.preventDefault();
             if (this.text.includes("back") || this.text.includes("camera2 0")) {
                 switchCamera(this.text);
+                videoBox.childNodes[0].classList.add("back");
+                document
+                    .querySelector("#local-player-name")
+                    .classList.add("back");
                 setTimeout(() => {
-                    videoBox.childNodes[0].classList.add("back");
-                    document.querySelector("#local-player-name").value +=
-                        " back`";
                     videoBox.childNodes[0].childNodes[0].style.setProperty(
                         "transform",
                         "rotateY(0deg)"
                     );
                 }, 3000);
             } else {
+                videoBox.childNodes[0].classList.add("front");
                 switchCamera(this.text);
             }
         });
