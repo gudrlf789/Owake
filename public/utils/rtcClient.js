@@ -91,7 +91,12 @@ $(document).on("click", ".player", (e) => {
         localVideoBox.childNodes.length != 0 &&
         localVideoBox.childNodes[0].id
     ) {
-        localVideoBox.childNodes[0].childNodes[0].style.objectFit = "contain";
+        if (localVideoBox.childNodes[0].id.includes("Screen")) {
+            localVideoBox.childNodes[0].childNodes[0].style.objectFit =
+                "contain";
+        } else {
+            localVideoBox.childNodes[0].childNodes[0].style.objectFit = "cover";
+        }
     }
 });
 
