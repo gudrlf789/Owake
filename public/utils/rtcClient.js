@@ -14,6 +14,9 @@ let localTracks = {
     audioTrack: null,
 };
 
+let totalUsers = {};
+let remoteUsers = {};
+
 let areas = [
     { label: "GLOBAL", detail: "Global", value: "GLOBAL" },
     {
@@ -32,8 +35,29 @@ let areas = [
     },
 ];
 
-let totalUsers = {};
-let remoteUsers = {};
+let videoProfiles = [
+    { label: "480p_1", detail: "640×480, 15fps, 500Kbps", value: "480p_1" },
+    { label: "480p_2", detail: "640×480, 30fps, 1000Kbps", value: "480p_2" },
+    { label: "720p_1", detail: "1280×720, 15fps, 1130Kbps", value: "720p_1" },
+    { label: "720p_2", detail: "1280×720, 30fps, 2000Kbps", value: "720p_2" },
+    {
+        label: "1080p_1",
+        detail: "1920×1080, 15fps, 2080Kbps",
+        value: "1080p_1",
+    },
+    {
+        label: "1080p_2",
+        detail: "1920×1080, 30fps, 3000Kbps",
+        value: "1080p_2",
+    },
+    {
+        label: "200×640",
+        detail: "200×640, 30fps",
+        value: { width: 200, height: 640, frameRate: 30 },
+    }, // custom video profile
+];
+
+let curVideoProfile;
 
 let options = {
     // appid : "8d4f054da71f427b93df3e27ca31bb54"
