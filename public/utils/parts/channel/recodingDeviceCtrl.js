@@ -34,6 +34,8 @@ export const recodingDeviceCtrl = () => {
                 switchCamera(this.text);
                 setTimeout(() => {
                     videoBox.childNodes[0].classList.add("back");
+                    document.querySelector("#local-player-name").value +=
+                        " back`";
                     videoBox.childNodes[0].childNodes[0].style.setProperty(
                         "transform",
                         "rotateY(0deg)"
