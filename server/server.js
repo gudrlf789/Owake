@@ -13,6 +13,7 @@ let peers = {}; // collect peers info grp by channels
 let channel;
 let peerId;
 let peerName;
+let channelURL;
 
 let io, server;
 
@@ -30,8 +31,9 @@ const CORS_fn = (req, res) => {
 
 server = require("http").createServer(app, CORS_fn);
 io = new Server({
-    pingTimeout: 60000,
-    upgradeTimeout: 100000,
+    pingInterval: 100000,
+    pingTimeout: 100000,
+    maxHttpBufferSize: 1e8,
 
     cors: {
         origin: "*",
@@ -86,6 +88,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/:channelName/:channelType", (req, res) => {
+    channelURL = req.params.channelName;
     res.render("channel", {
         channelName: req.params.channelName,
         channelType: req.params.channelType,
@@ -205,8 +208,12 @@ io.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("fileShare", (channelName, data, type) => {
-        socket.to(channelName).emit("send-fileShare", data, type);
+    socket.on("fileShare", (channelName, element, data, type, reader) => {
+        console.log(reader);
+        //broadcast 동일하게 가능 자신 제외 룸안의 유저
+        socket
+            .in(channelName)
+            .emit("send-fileShare", element, data, type, reader);
     });
 });
 

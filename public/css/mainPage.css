@@ -29,6 +29,12 @@
     padding: 0;
 }
 
+/* IOS 스크롤바 멈추는 문제 해결 */
+body,
+html {
+    -webkit-overflow-scrolling: touch;
+}
+
 body {
     font-family: "NEXON Lv2 Gothic" !important;
 }

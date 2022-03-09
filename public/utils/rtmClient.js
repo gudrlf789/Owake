@@ -1,4 +1,4 @@
-import { scrollToBottom } from "./channel/chat.js";
+import { scrollToBottom } from "./parts/channel/chat.js";
 
 const messageList = document.getElementById("messages");
 let channelMessageText = document.getElementById("chat_message");
@@ -21,6 +21,18 @@ $(async () => {
 
 // Initialize rtmClient
 let rtmClient = AgoraRTM.createInstance(options.appid);
+
+/**
+ * @Auther 전형동
+ * @Date : 2022 03 09
+ * @Description : RTM Connection Log..
+ */
+// RTM State Log....
+rtmClient.on("ConnectionStateChanged", (newState, reason) => {
+    messageAreaFunc();
+    messageArea.textContent = reason;
+    messageList.append(messageArea);
+});
 
 async function joinRtm() {
     channel = rtmClient.createChannel(window.sessionStorage.getItem("channel"));

@@ -1,7 +1,7 @@
 /**
  * @author 전형동
  * @version 1.0
- * @data 2022.02.24 / 03 10
+ * @data 2022.02.24
  * @description
  * FileShare 새로 추가
  * ---------------- 문제점 ----------------
@@ -10,11 +10,6 @@
  * 1-2 결국은 파일 사이즈를 쪼개서 보내는 방식으로 진행해야 될 듯...
  * 2. 클릭버튼 넘겨야됨.
  * 3. 호스트 권한과 게스트 권한 넘겨서 클릭버튼 컨트롤 해야됨.
- * 4. 프로그레스 넘겨야 함.
- * ---------------- 수정사항 ---------------
- * 1. Blob 슬라이스 적용 못해서 5MB로 차라리 쉐어파일 용량에 제한 두었음.
- * 2. 디스플레이 크기에 따라 컨텐츠 컨테이너 크기 조정 적용
- * 3. Empty 버튼 추가
  */
 
 export const fileShare = () => {
@@ -125,16 +120,8 @@ function fileReadAction() {
 function fileInputControlChangeEventHandler(e) {
     let fileInputControl = e.target;
     let files = fileInputControl.files;
-    if (!fileInputControl) {
-        return;
-    }
 
     for (let i = 0, file; (file = files[i]); i++) {
-        if (file.size > 5 * 1024 * 1024) {
-            alert("Please upload the file that can be shared less than 5MB.");
-            return;
-        }
-
         let fileReader = new FileReader();
         let videoTypeCheck =
             file.type.includes("mp4") ||
@@ -179,6 +166,8 @@ function fileInputControlChangeEventHandler(e) {
             pdf: 4,
         };
 
+        slice = file.slice(0, 100000);
+
         if (textTypeCheck) {
             fileReader.readAsText(file);
         } else {
@@ -218,7 +207,7 @@ function fileInputControlChangeEventHandler(e) {
                         "fileShare",
                         channel,
                         textEl,
-                        data,
+                        fileContents,
                         fileType.text,
                         fileReader
                     );
@@ -297,28 +286,18 @@ function fileRemoteSocketAction() {
  * 데이터 전송받아 Element에 담아 호출하는 함수
  */
 
-function receiveDataElement(element, content, reader) {
+function receiveDataElement(element, content) {
     bodyEl.append(fileTabList);
     spanEl = document.createElement("span");
     spanEl.classList.add("fileTab");
-    const containerWidth = document.querySelector(
-        ".fileShareContainer"
-    ).offsetWidth;
-    const containerHeight = document.querySelector(
-        ".fileShareContainer"
-    ).offsetHeight;
-
-    const contentsWidth = containerWidth / 1.4 + "px";
-    const contentsHeight = containerHeight / 1.4 + "px";
-
     if (element === "textarea") {
         spanEl.innerHTML = [
-            `<${element} class="thumbnail" style= "width: ${contentsWidth}; height: ${contentsHeight};">${content}</${element}>`,
+            `<${element} class="thumbnail" textContent="${content}"/>`,
         ].join("");
         fileTabList.insertBefore(spanEl, null);
     } else {
         spanEl.innerHTML = [
-            `<${element} class="thumbnail" style= "width: ${contentsWidth}; height: ${contentsHeight};" src="${content}"/>`,
+            `<${element} class="thumbnail" src="${content}"/>`,
         ].join("");
         fileTabList.insertBefore(spanEl, null);
     }
@@ -332,6 +311,7 @@ function receiveDataElement(element, content, reader) {
  */
 function selectFileAction() {
     $(document).on("click", ".fileTab", (e) => {
+        console.log(e);
         e.stopImmediatePropagation();
         let element = e.target;
         let url = element.src;
@@ -349,13 +329,8 @@ function selectFileAction() {
 function handlerFileRemove() {
     fileEmpty.addEventListener("click", () => {
         const bodyThumbnail = document.querySelector(".thumbnailBodyContainer");
-
-        if (bodyThumbnail.childNodes.length > 0) {
-            for (let i = 0; i < bodyThumbnail.children.length; i++) {
-                bodyThumbnail.remove();
-            }
-        } else {
-            return;
+        for (let i = 0; i < bodyThumbnail.children.length; i++) {
+            bodyThumbnail.remove();
         }
     });
 }

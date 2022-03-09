@@ -17,9 +17,7 @@ export const fileDelivery = () => {
                 dataType: "jsonp",
                 data: params,
                 cache: false,
-            }).done((data) => {
-                console.log(data);
-            });
+            }).done((data) => {});
         }
 
         function createKey(files) {

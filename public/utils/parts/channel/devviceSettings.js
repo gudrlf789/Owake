@@ -1,3 +1,16 @@
+/**
+ * @author 전형동
+ * @date 2022 03 10
+ * @description
+ * 디바이스 셋팅
+ *
+ * ---------------- 수정사항 ---------------
+ * 1. 비디오 프로필 기능 추가  / videoResolutionCtrlFunc
+ * 2. 카메라 스위치 기능 추가  / cameraSwitchFunc
+ */
+
+
+
 export const recodingDeviceCtrl = () => {
     // Select DOM
     const deviceSettingBtn = document.getElementById("deviceSettingBtn");
@@ -11,12 +24,50 @@ export const recodingDeviceCtrl = () => {
     let volumeAnimation;
     let videoBox;
     let cameraSwitchActive = false;
-    let area;
+
+    /**
+     * 2022 02 25
+     * Video Resolution List
+     */
+    let videoProfiles = [
+        { label: "480p_1", detail: "640×480, 15fps, 500Kbps", value: "480p_1" },
+        {
+            label: "480p_2",
+            detail: "640×480, 30fps, 1000Kbps",
+            value: "480p_2",
+        },
+        {
+            label: "720p_1",
+            detail: "1280×720, 15fps, 1130Kbps",
+            value: "720p_1",
+        },
+        {
+            label: "720p_2",
+            detail: "1280×720, 30fps, 2000Kbps",
+            value: "720p_2",
+        },
+        {
+            label: "1080p_1",
+            detail: "1920×1080, 15fps, 2080Kbps",
+            value: "1080p_1",
+        },
+        {
+            label: "1080p_2",
+            detail: "1920×1080, 30fps, 3000Kbps",
+            value: "1080p_2",
+        },
+        {
+            label: "200×640",
+            detail: "200×640, 30fps",
+            value: { width: 200, height: 640, frameRate: 30 },
+        }, // custom video profile
+    ];
+
+    let curVideoProfile;
 
     (function () {
         deviceSettingFunc();
         cameraSwitchFunc();
-        geoFencing();
         videoResolutionCtrlFunc();
     })();
 
@@ -124,44 +175,11 @@ export const recodingDeviceCtrl = () => {
         );
     }
 
-    // geoFencing
-    async function geoFencing() {
-        initAreas();
-
-        console.log("geoFencing::::Start");
-
-        $("#geoFencing-profile-list").delegate("a", "click", function (e) {
-            changeArea(this.getAttribute("label"));
-        });
-
-        async function changeArea(label) {
-            area = areas.find((profile) => profile.label === label);
-            $("#geoFencing-profile-input").val(`${area.detail}`);
-            // Specify the region for connection as North America
-            AgoraRTC.setArea({
-                areaCode: area.value,
-            });
-        }
-
-        async function initAreas() {
-            areas.forEach((profile) => {
-                $("#geoFencing-profile-list").append(
-                    `<a class="dropdown-item" label="${profile.label}">${profile.label}: ${profile.detail}</a>`
-                );
-            });
-            area = areas[0];
-            $("#geoFencing-profile-input").val(`${area.detail}`);
-        }
-    }
-
     function videoResolutionCtrlFunc() {
         initVideoProfiles();
         $("#video-profile-list").delegate("a", "click", function (e) {
             changeVideoProfile(this.getAttribute("label"));
         });
-
-        initVideoProfiles();
-        changeVideoProfile();
     }
 
     function initVideoProfiles() {
@@ -170,6 +188,7 @@ export const recodingDeviceCtrl = () => {
                 `<a class="dropdown-item" label="${profile.label}">${profile.label}: ${profile.detail}</a>`
             );
         });
+
         curVideoProfile = videoProfiles[0];
         $("#video-profile-input").val(`${curVideoProfile.detail}`);
     }

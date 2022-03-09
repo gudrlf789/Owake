@@ -15,62 +15,9 @@ let localTracks = {
 };
 
 let totalUsers = {};
-let remoteUsers = {};
-
-/**
- * 2022 02 25
- * Geo Fencing List
- */
-let areas = [
-    { label: "GLOBAL", detail: "Global", value: "GLOBAL" },
-    {
-        label: "ASIA",
-        detail: "Asia, excluding Mainland China",
-        value: "ASIA",
-    },
-    { label: "CHINA", detail: "China", value: "CHINA" },
-    { label: "EUROPE", detail: "Europe", value: "EUROPE" },
-    { label: "INDIA", detail: "India", value: "INDIA" },
-    { label: "JAPAN", detail: "Japan", value: "JAPAN" },
-    {
-        label: "NORTH_AMERICA",
-        detail: "North America",
-        value: "NORTH_AMERICA",
-    },
-];
-
-/**
- * 2022 02 25
- * Video Resolution List
- */
-let videoProfiles = [
-    { label: "480p_1", detail: "640×480, 15fps, 500Kbps", value: "480p_1" },
-    { label: "480p_2", detail: "640×480, 30fps, 1000Kbps", value: "480p_2" },
-    { label: "720p_1", detail: "1280×720, 15fps, 1130Kbps", value: "720p_1" },
-    { label: "720p_2", detail: "1280×720, 30fps, 2000Kbps", value: "720p_2" },
-    {
-        label: "1080p_1",
-        detail: "1920×1080, 15fps, 2080Kbps",
-        value: "1080p_1",
-    },
-    {
-        label: "1080p_2",
-        detail: "1920×1080, 30fps, 3000Kbps",
-        value: "1080p_2",
-    },
-    {
-        label: "200×640",
-        detail: "200×640, 30fps",
-        value: { width: 200, height: 640, frameRate: 30 },
-    }, // custom video profile
-];
-
-let curVideoProfile;
 
 let options = {
-    // appid : "8d4f054da71f427b93df3e27ca31bb54"
-    // appid: "50b9cd9de2d54849a139e3db52e7928a",
-    appid: "e44f4580aea5429e921e3dbffaa69f33",
+    appid: "4343e4c08654493cb8997de783a9aaeb",
     channel: null,
     uid: null,
     token: null,
@@ -178,8 +125,10 @@ async function join() {
      * 1080p을 적용시켜보았으나 데이터 전송속도가 너무 느렸음.
      * 720p_1로 지켜볼 예정
      */
+
     if (checkDeskTopCamera.length != 0) {
         localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({
+            optimizationMode: "detail",
             encoderConfig: "720p_1",
         });
     } else {
@@ -235,7 +184,6 @@ async function leave() {
     }
 
     localTracks = {};
-    remoteUsers = {};
     totalUsers = {};
     // 로컬트랙 배경이미지 초기화
     localVideoBox.style.backgroundImage = "";
@@ -315,7 +263,6 @@ function revertLocalTrackToMain(leftUid) {
 function handleUserJoined(user) {
     const id = user.uid;
     totalUsers[id] = user;
-    remoteUsers[id] = user;
 }
 
 function handleUserPublished(user, mediaType) {
@@ -325,7 +272,6 @@ function handleUserPublished(user, mediaType) {
 function handleUserUnpublished(user) {
     const id = user.uid;
     delete totalUsers[id];
-    delete remoteUsers[id];
     revertLocalTrackToMain(id);
     socket.on("disconnect", handleDisconnect);
 }
@@ -396,3 +342,20 @@ function videoTransformAction() {
         }
     }
 }
+
+/**
+ * @Auther 전형동
+ * @Date 2022 03 09
+ * @Descripton : Player Container 중복제거
+ */
+
+// $(document).ready(async () => {
+//     const remotePlayerList = document.querySelector("#remote-playerlist");
+//     if (remotePlayerList.childNodes.length !== 0) {
+//         const playerQuantity = document.querySelector(`player-${options.uid}`)
+//             .childNodes.length;
+//         if (playerQuantity === 0 || playerQuantity === "0") {
+//             playerQuantity.remove();
+//         }
+//     }
+// });

@@ -17,13 +17,15 @@
             <script async src="owake_rtm.js"></script>
 
             <!-- Jquery -->
-            <script src="jquery-3.4.1.min.js"></script>
+            <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
             <!-- Bootstrap -->
-            <script src="bootstrap.bundle.min.js"></script>
+            <script type="text/javascript" src="bootstrap.bundle.min.js"></script>
             <!-- Socket.io -->
-            <script src="/socket.io/socket.io.js"></script>
+            <script type="text/javascript" src="/socket.io/socket.io.js"></script>
             <!-- axios -->
-            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <!-- download -->
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/downloadjs@1.4.7/download.min.js"></script>
 
             <title>Owake</title>
 
@@ -75,16 +77,19 @@
             <img class="img__logo" src="logo.svg" alt="">
         </div>
         <div class="nav__container">
+
+            <div id="video-grid-button" class="options__button">
+                <i class="fas fa-th"></i>
+                <span>Grid</span>
+            </div>
             <div id="copyUrl" class="options__button">
                 <i class="far fa-clipboard"></i>
                 <span>Invite</span>
             </div>
-            <form id="join-form">
-                <div id="leave" class="options__button">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Leave</span>
-                </div>
-            </form>
+            <div id="leave" class="options__button">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Leave</span>
+            </div>
         </div>
     </div>
     </div>
