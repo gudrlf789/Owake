@@ -333,12 +333,17 @@ function videoTransformAction() {
                 "transform",
                 "rotateY(180deg)"
             );
-        } else {
+        } else if (
+            localVideoBox.childNodes[0].childNodes[0] !==
+            document.querySelector("li")
+        ) {
             localVideoBox.childNodes[0].childNodes[0].style.objectFit = "cover";
             localVideoBox.childNodes[0].childNodes[0].style.setProperty(
                 "transform",
                 "rotateY(180deg)"
             );
+        } else {
+            return;
         }
     }
 }

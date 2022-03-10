@@ -1,6 +1,5 @@
 function realUpdateChannel() {
     const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
-    const formData = new FormData();
 
     let fileType;
     let fileSelect;
@@ -8,60 +7,81 @@ function realUpdateChannel() {
 
     fileSelect = $(`#update_file_thumnail`)[0].files[0];
 
-    formData.append("adminId", $(`#update_adminId`).val());
-    formData.append("adminPassword", $(`#update_adminPassword`).val());
-    formData.append(
-        "channelType",
-        $("input:radio[name=update_channelType]:checked").val()
-    );
-    formData.append("channelName", $(`#update_channelName`).val());
-    formData.append("channelPassword", $(`#update_channelPassword`).val());
-    formData.append("channelCategory", $(`#update_theme-category`).val());
-    formData.append(
-        "channelDescription",
-        $(`#update_channel-description`).val()
-    );
-
-    if (fileSelect) {
-        fileName = fileSelect.name;
-        fileType = fileSelect.type;
-        const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-        if (korean.test(fileName)) {
-            alert(
-                "The file name contains Korean. Please change the file name to English."
-            );
-            return;
-        }
-        if (imageType.test(fileType)) {
-            formData.append("image", fileSelect);
-            formData.append("imageName", fileName);
-        } else {
-            alert("You can only select the image file");
-            return;
-        }
-    } else {
-        formData.append("imageName", $("#update_upload").val());
+    if (!fileSelect) {
+        return;
     }
 
-    axios.post("/channel/update", formData).then((res) => {
-        if (res.data.success) {
-            alert("The channel has been successfully modified");
-            $("#channelUpdateModal").modal("hide");
-            $(`#update_adminId`).val("");
-            $(`#update_adminPassword`).val("");
-            $(`#update_channelName`).val("");
-            $(`#update_channelPassword`).val("");
-            $(`#update_theme-category`).val("News");
-            $("#update_file_thumnail").val("");
-            $("#update_upload").val("");
-            $(`#update_channel-description`).val("");
+    new Compressor(fileSelect, {
+        quality: 0.2,
 
-            callChannelList();
-        } else {
-            alert("The channel hasn't been modified");
-            $("#channelUpdate").modal("hide");
-            return;
-        }
+        success(result) {
+            const formData = new FormData();
+
+            formData.append("adminId", $(`#update_adminId`).val());
+            formData.append("adminPassword", $(`#update_adminPassword`).val());
+            formData.append(
+                "channelType",
+                $("input:radio[name=update_channelType]:checked").val()
+            );
+            formData.append("channelName", $(`#update_channelName`).val());
+            formData.append(
+                "channelPassword",
+                $(`#update_channelPassword`).val()
+            );
+            formData.append(
+                "channelCategory",
+                $(`#update_theme-category`).val()
+            );
+            formData.append(
+                "channelDescription",
+                $(`#update_channel-description`).val()
+            );
+
+            if (fileSelect) {
+                fileName = fileSelect.name;
+                fileType = fileSelect.type;
+                const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+                if (korean.test(fileName)) {
+                    alert(
+                        "The file name contains Korean. Please change the file name to English."
+                    );
+                    return;
+                }
+                if (imageType.test(fileType)) {
+                    formData.append("image", result, fileName);
+                    formData.append("imageName", result.name);
+                } else {
+                    alert("You can only select the image file");
+                    return;
+                }
+            } else {
+                formData.append("imageName", $("#update_upload").val());
+            }
+
+            axios.post("/channel/update", formData).then((res) => {
+                if (res.data.success) {
+                    alert("The channel has been successfully modified");
+                    $("#channelUpdateModal").modal("hide");
+                    $(`#update_adminId`).val("");
+                    $(`#update_adminPassword`).val("");
+                    $(`#update_channelName`).val("");
+                    $(`#update_channelPassword`).val("");
+                    $(`#update_theme-category`).val("News");
+                    $("#update_file_thumnail").val("");
+                    $("#update_upload").val("");
+                    $(`#update_channel-description`).val("");
+
+                    callChannelList();
+                } else {
+                    alert("The channel hasn't been modified");
+                    $("#channelUpdate").modal("hide");
+                    return;
+                }
+            });
+        },
+        error(err) {
+            console.log(err.message);
+        },
     });
 }
 

@@ -1,3 +1,19 @@
+/**
+ * @author 전형동
+ * @date 2022 03 10
+ * @description
+ * 이미지 최적화 적용
+ * New Compressor
+ * Quality	Input size	Output size	Compression ratio	Description
+    0	    2.12 MB	    114.61  KB	       94.72%	        -
+    0.2	    2.12 MB	    349.57  KB	       83.90%	        -
+    0.4	    2.12 MB	    517.10  KB	       76.18%	        -
+    0.6	    2.12 MB	    694.99  KB	       67.99%	    Recommend
+    0.8	    2.12 MB	    1.14    MB	       46.41%	    Recommend
+    1	    2.12 MB	    2.12    MB	         0%	        Not recommend
+    NaN	    2.12 MB	    2.01    MB	        5.02%	        -
+ */
+
 let fileType;
 let fileSelect;
 let fileName;
@@ -43,14 +59,14 @@ function checkCreateData(typeFlag) {
 function createChannelData(typeFlag) {
     console.log(":::::: createChannelData ::::::");
     const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
-    const formData = new FormData();
+    // const formData = new FormData();
     const result = checkCreateData(typeFlag);
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
     fileSelect = $(`#${typeFlag}_file_thumnail`)[0].files[0];
-    if (fileSelect) {
-        fileName = fileSelect.name;
-        fileType = fileSelect.type;
+
+    if (!fileSelect) {
+        return;
     }
 
     if (!result.success) {
@@ -58,59 +74,85 @@ function createChannelData(typeFlag) {
         return;
     }
 
-    formData.append("adminId", $(`#${typeFlag}_adminId`).val());
-    formData.append("adminPassword", $(`#${typeFlag}_adminPassword`).val());
-    formData.append(
-        "channelType",
-        typeFlag === "private" ? "Private" : "Public"
-    );
-    formData.append("channelName", $(`#${typeFlag}_channelName`).val());
-    formData.append("channelPassword", $(`#${typeFlag}_channelPassword`).val());
-    formData.append("channelCategory", $(`#${typeFlag}-theme-category`).val());
-    formData.append(
-        "channelDescription",
-        $(`#${typeFlag}_channel-description`).val()
-    );
+    new Compressor(fileSelect, {
+        quality: 0.2,
+        // The compression process is asynchronous,
+        // which means you have to access the `result` in the `success` hook function.
+        success(result) {
+            const formData = new FormData();
 
-    if (fileSelect) {
-        if (korean.test(fileName)) {
-            alert(
-                "The file name contains Korean. Please change the file name to English."
-            );
-            return;
-        }
-
-        if (imageType.test(fileType)) {
-            formData.append("image", fileSelect);
-            formData.append("imageName", fileName);
-        } else {
-            alert("You can only select the image file");
-            return;
-        }
-    }
-
-    if (
-        !korean.test(formData.get("adminId")) &&
-        !korean.test(formData.get("channelName"))
-    ) {
-        axios.post("/channel/register", formData).then((res) => {
-            if (res.data.success) {
-                alert("The channel has been successfully created");
-                afterAction(typeFlag);
-                callChannelList();
-            } else {
-                alert(
-                    `ChannelName: ${$(
-                        `#${typeFlag}_channelName`
-                    ).val()} is already existed. please choice another type or channelName`
-                );
-                $(`#${typeFlag}_channelName`).val("");
+            if (fileSelect) {
+                fileName = fileSelect.name;
+                fileType = fileSelect.type;
             }
-        });
-    } else {
-        alert("You can only type AdminId and channelName in English.");
-        afterAction(typeFlag);
-    }
+
+            formData.append("adminId", $(`#${typeFlag}_adminId`).val());
+            formData.append(
+                "adminPassword",
+                $(`#${typeFlag}_adminPassword`).val()
+            );
+            formData.append(
+                "channelType",
+                typeFlag === "private" ? "Private" : "Public"
+            );
+            formData.append("channelName", $(`#${typeFlag}_channelName`).val());
+            formData.append(
+                "channelPassword",
+                $(`#${typeFlag}_channelPassword`).val()
+            );
+            formData.append(
+                "channelCategory",
+                $(`#${typeFlag}-theme-category`).val()
+            );
+            formData.append(
+                "channelDescription",
+                $(`#${typeFlag}_channel-description`).val()
+            );
+
+            if (fileSelect) {
+                if (korean.test(fileName)) {
+                    alert(
+                        "The file name contains Korean. Please change the file name to English."
+                    );
+                    return;
+                }
+
+                if (imageType.test(fileType)) {
+                    formData.append("image", result, fileName);
+                    formData.append("imageName", fileName);
+                } else {
+                    alert("You can only select the image file");
+                    return;
+                }
+            }
+
+            if (
+                !korean.test(formData.get("adminId")) &&
+                !korean.test(formData.get("channelName"))
+            ) {
+                axios.post("/channel/register", formData).then((res) => {
+                    if (res.data.success) {
+                        alert("The channel has been successfully created");
+                        afterAction(typeFlag);
+                        callChannelList();
+                    } else {
+                        alert(
+                            `ChannelName: ${$(
+                                `#${typeFlag}_channelName`
+                            ).val()} is already existed. please choice another type or channelName`
+                        );
+                        $(`#${typeFlag}_channelName`).val("");
+                    }
+                });
+            } else {
+                alert("You can only type AdminId and channelName in English.");
+                afterAction(typeFlag);
+            }
+        },
+        error(err) {
+            console.log(err.message);
+        },
+    });
 }
 
 $("#private_create").click((e) => {
