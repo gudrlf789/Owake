@@ -190,7 +190,7 @@ async function leave() {
     $("#remote-playerlist").html("");
 
     await client.leave();
-    $("#newUserModal").modal("hide");
+    // $("#newUserModal").modal("hide");
 
     //세션 스토리지 clear
     window.sessionStorage.clear();

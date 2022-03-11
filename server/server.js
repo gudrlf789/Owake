@@ -14,6 +14,9 @@ let channel;
 let peerId;
 let peerName;
 let channelURL;
+var text = {
+    text: "",
+};
 
 let io, server;
 
@@ -63,6 +66,8 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
 app.use(express.static(path.join(__dirname, "../public/img")));
 app.use(express.static(path.join(__dirname, "../public/lib")));
+app.use(express.static(path.join(__dirname, "../public/lib/p5")));
+app.use(express.static(path.join(__dirname, "../public/lib/p5/addons")));
 app.use(express.static(path.join(__dirname, "../public/utils")));
 app.use(express.static(path.join(__dirname, "../public/utils/parts")));
 app.use(express.static(path.join(__dirname, "../public/img/favicon")));
@@ -215,6 +220,23 @@ io.on("connection", (socket) => {
             .in(channelName)
             .emit("send-fileShare", element, data, type, reader);
     });
+
+    socket.on("join-textShare", (channelName) => {
+        socket.join(channelName);
+    });
+
+    socket.on("leave-textShare", (channelName) => {
+        socket.leave(channelName);
+    });
+
+    socket.emit("newUser", text);
+
+    socket.on("text", handleTextSent);
+
+    function handleTextSent(channelName, data) {
+        text.text = data.text;
+        socket.to(channelName).emit("text", data);
+    }
 });
 
 server.listen(port, () => {

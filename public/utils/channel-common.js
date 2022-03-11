@@ -14,6 +14,7 @@ import { responsiveFunc } from "./parts/channel/responsive.js";
 import { copyInfo } from "./parts/channel/copyUrl.js";
 import { browserEvent } from "./parts/channel/browserEvent.js";
 import { gridView } from "./parts/channel/videoViewGridMode.js";
+import { shareEditerFunc } from "./parts/channel/shareEditer.js";
 
 mobileDisplayCtr();
 f12defense();
@@ -31,3 +32,4 @@ responsiveFunc();
 copyInfo();
 browserEvent();
 gridView();
+shareEditerFunc();
