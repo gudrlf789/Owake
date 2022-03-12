@@ -9,7 +9,7 @@ const localContainer = document.querySelector("#local__video__container");
 
 const textContainer = document.createElement("section");
 const textArea = document.createElement("textarea");
-textContainer.className = "container";
+textContainer.className = "textContainer";
 textContainer.id = "textContainer";
 textArea.id = "text";
 
@@ -34,6 +34,7 @@ function editerEnable() {
     textContainer.append(textArea);
     localContainer.append(textContainer);
     setup();
+    removeLicense();
     socket.emit("join-textShare", channel);
 }
 
@@ -106,10 +107,6 @@ function styleElementFunc() {
     head.appendChild(linkCodemirrorMin);
     head.appendChild(froalaEditor);
     head.appendChild(froalaStyle);
-
-    setTimeout(() => {
-        removeLicense();
-    }, 3000);
 }
 
 function setup() {
