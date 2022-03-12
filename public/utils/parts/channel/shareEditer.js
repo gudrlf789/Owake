@@ -106,6 +106,8 @@ function styleElementFunc() {
     head.appendChild(linkCodemirrorMin);
     head.appendChild(froalaEditor);
     head.appendChild(froalaStyle);
+
+    removeLicense();
 }
 
 function setup() {
@@ -180,4 +182,12 @@ function handleRecievedText(data) {
     let editor = $("#text").data("froala.editor");
     editor.selection.setAtEnd(editor.$el.get(0));
     editor.selection.restore();
+}
+
+async function removeLicense() {
+    const selectDivEl = document.querySelector(".show-placeholder");
+    if (selectDivEl.childNodes[0].firstChild) {
+        let licenseRemove = await selectDivEl.childNodes[0].firstChild.remove();
+        return licenseRemove;
+    }
 }
