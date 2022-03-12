@@ -107,7 +107,9 @@ function styleElementFunc() {
     head.appendChild(froalaEditor);
     head.appendChild(froalaStyle);
 
-    removeLicense();
+    setTimeout(() => {
+        removeLicense();
+    }, 3000);
 }
 
 function setup() {
