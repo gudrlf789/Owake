@@ -213,30 +213,27 @@ io.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("fileShare", (channelName, element, data, type, reader) => {
-        console.log(reader);
+    socket.on("file-meta", (data) => {
         //broadcast 동일하게 가능 자신 제외 룸안의 유저
-        socket
-            .in(channelName)
-            .emit("send-fileShare", element, data, type, reader);
+        socket.in(data.channel).emit("fs-meta", data);
     });
 
-    socket.on("join-textShare", (channelName) => {
-        socket.join(channelName);
-    });
+    // socket.on("join-textShare", (channelName) => {
+    //     socket.join(channelName);
+    // });
 
-    socket.on("leave-textShare", (channelName) => {
-        socket.leave(channelName);
-    });
+    // socket.on("leave-textShare", (channelName) => {
+    //     socket.leave(channelName);
+    // });
 
-    socket.emit("newUser", text);
+    // socket.emit("newUser", text);
 
-    socket.on("text", handleTextSent);
+    // socket.on("text", handleTextSent);
 
-    function handleTextSent(channelName, data) {
-        text.text = data.text;
-        socket.to(channelName).emit("text", data);
-    }
+    // function handleTextSent(channelName, data) {
+    //     text.text = data.text;
+    //     socket.to(channelName).emit("text", data);
+    // }
 });
 
 server.listen(port, () => {
