@@ -138,19 +138,17 @@ function fileReadAction() {
 
 function fileInputControlChangeEventHandler(e) {
     let fileInputControl = e.target;
-
-    let chunkSize = 1024 * 1024; // bytes
-    let offset = 0;
-    let size = chunkSize;
-    let partial;
-    let index = 0;
-
     let files = fileInputControl.files;
     if (!fileInputControl) {
         return;
     }
 
     for (let i = 0, file; (file = files[i]); i++) {
+        if (file.size > 30 * 1024 * 1024) {
+            alert("Please upload the file that can be shared less than 30MB.");
+            return;
+        }
+
         let videoTypeCheck =
             file.type.includes("mp4") ||
             file.type.includes("mov") ||
@@ -194,90 +192,82 @@ function fileInputControlChangeEventHandler(e) {
             pdf: 4,
         };
 
-        if (offset < file.size) {
-            let reader = new FileReader();
-            partial = file.slice(offset, offset + size);
-            reader.size = chunkSize;
-            reader.offset = offset;
-            reader.index = index;
-            reader.onload = (e) => {
-                let buffer = new Uint8Array(e.target.result);
-                if (videoTypeCheck) {
-                    receiveDataElement(videoEl, buffer);
-                    shareFile(
-                        {
-                            channel: channel,
-                            element: videoEl,
-                            filename: file.name,
-                            filetype: fileType.video,
-                            total_buffer_size: buffer.length,
-                            buffer_size: bufferSize,
-                            buffer,
-                        },
-                        buffer,
-                        progressEl
-                    );
-                }
-                if (audioTypeCheck) {
-                    receiveDataElement(audioEl, buffer);
-                    shareFile(
-                        {
-                            channel: channel,
-                            element: audioEl,
-                            filename: file.name,
-                            filetype: fileType.audio,
-                            total_buffer_size: buffer.length,
-                            buffer_size: bufferSize,
-                            buffer,
-                        },
-                        buffer,
-                        progressEl
-                    );
-                }
-                if (textTypeCheck) {
-                    receiveDataElement(textEl, buffer);
-                    shareFile(
-                        {
-                            channel: channel,
-                            element: textEl,
-                            filename: file.name,
-                            filetype: fileType.text,
-                            total_buffer_size: buffer.length,
-                            buffer_size: bufferSize,
-                            buffer,
-                        },
-                        buffer,
-                        progressEl
-                    );
-                }
+        let reader = new FileReader();
 
-                if (imageTypeCheck) {
-                    receiveDataElement(imageEl, buffer);
-                    shareFile(
-                        {
-                            channel: channel,
-                            element: imageEl,
-                            filename: file.name,
-                            filetype: fileType.image,
-                            total_buffer_size: buffer.length,
-                            buffer_size: bufferSize,
-                            buffer,
-                        },
+        reader.onload = (e) => {
+            let buffer = new Uint8Array(e.target.result);
+            if (videoTypeCheck) {
+                receiveDataElement(videoEl, buffer);
+                shareFile(
+                    {
+                        channel: channel,
+                        element: videoEl,
+                        filename: file.name,
+                        filetype: fileType.video,
+                        total_buffer_size: buffer.length,
+                        buffer_size: bufferSize,
                         buffer,
-                        progressEl
-                    );
-                }
-            };
-            if (textTypeCheck) {
-                reader.readAsText(file);
-            } else {
-                reader.readAsArrayBuffer(file);
+                    },
+                    buffer,
+                    progressEl
+                );
             }
-            readFileProgress(reader);
+            if (audioTypeCheck) {
+                receiveDataElement(audioEl, buffer);
+                shareFile(
+                    {
+                        channel: channel,
+                        element: audioEl,
+                        filename: file.name,
+                        filetype: fileType.audio,
+                        total_buffer_size: buffer.length,
+                        buffer_size: bufferSize,
+                        buffer,
+                    },
+                    buffer,
+                    progressEl
+                );
+            }
+            if (textTypeCheck) {
+                receiveDataElement(textEl, buffer);
+                shareFile(
+                    {
+                        channel: channel,
+                        element: textEl,
+                        filename: file.name,
+                        filetype: fileType.text,
+                        total_buffer_size: buffer.length,
+                        buffer_size: bufferSize,
+                        buffer,
+                    },
+                    buffer,
+                    progressEl
+                );
+            }
 
-            offset += chunkSize;
-            index += 1;
+            if (imageTypeCheck) {
+                receiveDataElement(imageEl, buffer);
+                shareFile(
+                    {
+                        channel: channel,
+                        element: imageEl,
+                        filename: file.name,
+                        filetype: fileType.image,
+                        total_buffer_size: buffer.length,
+                        buffer_size: bufferSize,
+                        buffer,
+                    },
+                    buffer,
+                    progressEl
+                );
+            }
+        };
+        if (textTypeCheck) {
+            reader.readAsText(file);
+        } else {
+            reader.readAsArrayBuffer(file);
         }
+        readFileProgress(reader);
     }
 }
 
