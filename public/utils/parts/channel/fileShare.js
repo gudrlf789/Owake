@@ -179,6 +179,13 @@ function fileInputControlChangeEventHandler(e) {
             pdf: 4,
         };
 
+        if (textTypeCheck) {
+            fileReader.readAsText(file);
+        } else {
+            fileReader.readAsDataURL(file);
+            // fileReader.readAsArrayBuffer(file);
+        }
+
         fileReader.onload = ((e) => {
             return (e) => {
                 let data = fileReader.result;
@@ -225,13 +232,6 @@ function fileInputControlChangeEventHandler(e) {
                 }
             };
         })(file);
-
-        if (textTypeCheck) {
-            fileReader.readAsText(file);
-        } else {
-            fileReader.readAsDataURL(file);
-            // fileReader.readAsArrayBuffer(file);
-        }
 
         readFileProgress(fileReader);
     }
