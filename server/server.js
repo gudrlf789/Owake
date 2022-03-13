@@ -213,10 +213,15 @@ io.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("file-meta", (data) => {
+    socket.on("fileShare", (channel, element, data, type) => {
         //broadcast 동일하게 가능 자신 제외 룸안의 유저
-        socket.in(data.channel).emit("fs-meta", data);
+        socket.in(channel).emit("send-fileShare", element, data, type);
     });
+
+    // socket.on("file-meta", (data) => {
+    //     //broadcast 동일하게 가능 자신 제외 룸안의 유저
+    //     socket.in(data.channel).emit("fs-meta", data);
+    // });
 
     // socket.on("join-textShare", (channelName) => {
     //     socket.join(channelName);
