@@ -79,8 +79,6 @@ fileEmpty.style.setProperty("width", "100px");
 fileListActivator.textContent = "File Tab";
 fileEmpty.textContent = "Empty";
 
-fileShareContainer.style.setProperty("-webkit-overflow-scrolling", "touch");
-
 function fileShareActivate() {
     if (fileShareBtn) {
         fileShareBtn.addEventListener("click", (e) => {
@@ -112,6 +110,8 @@ function fileShareActionEnable(e) {
     handlerFileListCtrl();
     handlerFileRemove();
     fileRemoteSocketAction();
+
+    fileShareContainer.style.setProperty("-webkit-overflow-scrolling", "touch");
 }
 
 function fileShareActionDisable(e) {
