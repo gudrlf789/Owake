@@ -213,32 +213,15 @@ io.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("fileShare", (channel, element, data, type) => {
-        //broadcast 동일하게 가능 자신 제외 룸안의 유저
-        socket.in(channel).emit("send-fileShare", element, data, type);
-    });
-
-    // socket.on("file-meta", (data) => {
+    // socket.on("fileShare", (channel, element, data, type) => {
     //     //broadcast 동일하게 가능 자신 제외 룸안의 유저
-    //     socket.in(data.channel).emit("fs-meta", data);
+    //     socket.in(channel).emit("send-fileShare", element, data, type);
     // });
 
-    // socket.on("join-textShare", (channelName) => {
-    //     socket.join(channelName);
-    // });
-
-    // socket.on("leave-textShare", (channelName) => {
-    //     socket.leave(channelName);
-    // });
-
-    // socket.emit("newUser", text);
-
-    // socket.on("text", handleTextSent);
-
-    // function handleTextSent(channelName, data) {
-    //     text.text = data.text;
-    //     socket.to(channelName).emit("text", data);
-    // }
+    socket.on("file-meta", (data) => {
+        //broadcast 동일하게 가능 자신 제외 룸안의 유저
+        socket.in(data.channel).emit("fs-meta", data);
+    });
 });
 
 server.listen(port, () => {
