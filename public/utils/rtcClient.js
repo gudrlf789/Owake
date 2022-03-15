@@ -128,7 +128,7 @@ async function join() {
 
     if (checkDeskTopCamera.length != 0) {
         localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({
-            optimizationMode: "detail",
+            optimizationMode: "motion",
             encoderConfig: "720p_1",
         });
     } else {
