@@ -27,6 +27,11 @@ const MicrophoneAudioTrackInitConfig = {
     AEC: true,
     ANS: true,
     AGC: false,
+    encoderConfig: {
+        sampleRate: 48000,
+        stereo: true,
+        bitrate: 128,
+    },
 };
 
 $(async () => {

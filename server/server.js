@@ -1,7 +1,7 @@
 const { Server } = require("socket.io");
 const express = require("express");
-const cors = require("cors");
 const app = express();
+const cors = require("cors");
 const path = require("path");
 const Logger = require("./Logger");
 const log = new Logger("server");
@@ -13,10 +13,6 @@ let peers = {}; // collect peers info grp by channels
 let channel;
 let peerId;
 let peerName;
-let channelURL;
-var text = {
-    text: "",
-};
 
 let io, server;
 
@@ -33,6 +29,7 @@ const CORS_fn = (req, res) => {
 };
 
 server = require("http").createServer(app, CORS_fn);
+
 io = new Server({
     pingInterval: 100000,
     pingTimeout: 100000,
@@ -44,13 +41,14 @@ io = new Server({
         preflightContinue: false,
     },
 }).listen(server);
+
 /** Router */
 const mainRouter = require("./routes/router.js");
 
 /** https Redirecting Setting */
 function redirectSec(req, res, next) {
     if (req.headers["x-forwarded-proto"] == "http") {
-        var redirect = "https://" + req.headers.host + req.path;
+        let redirect = "https://" + req.headers.host + req.path;
         res.redirect(redirect);
     } else {
         return next();
@@ -61,6 +59,12 @@ app.set("view engine", "ejs");
 
 app.use(cors());
 app.use(redirectSec);
+
+app.use(
+    express.urlencoded({
+        extended: true,
+    })
+);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
@@ -76,12 +80,6 @@ app.use(express.static(path.join(__dirname, "../public/img/channel")));
 app.use(express.static(path.join(__dirname, "../public/img/nav-icon")));
 app.use(express.static(path.join(__dirname, "./uploads/")));
 app.use(express.static(path.join(__dirname, "../views")));
-
-app.use(
-    express.urlencoded({
-        extended: true,
-    })
-);
 
 app.use(express.json());
 
