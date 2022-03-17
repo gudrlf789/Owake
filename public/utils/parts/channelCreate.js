@@ -66,6 +66,7 @@ function createChannelData(typeFlag) {
     fileSelect = $(`#${typeFlag}_file_thumnail`)[0].files[0];
 
     if (!fileSelect) {
+        alert("Please insert the image.");
         return;
     }
 
