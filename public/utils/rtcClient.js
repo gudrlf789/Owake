@@ -42,7 +42,19 @@ $(async () => {
 });
 
 $("#leave").click(function (e) {
-    leave();
+    const reqData = {
+        channelType: window.sessionStorage.getItem("channelType"),
+        channelName: window.sessionStorage.getItem("channel"),
+        userId: window.sessionStorage.getItem("uid")
+    };
+
+    axios.post("/channel/removeUserNameOnChannel", reqData).then((res) => {
+        if(res.data.success) {
+            leave();
+        }else {
+            alert(res.data.error);
+        }
+    })
 });
 
 $(document).on("click", ".player", (e) => {
