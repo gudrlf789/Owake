@@ -1,8 +1,10 @@
+import { localTracks, totalUsers, options } from "../../rtcClient.js";
+
 export const muteUtilsFunc = () => {
     const videoIcon = document.getElementById("videoIcon");
     const audioIcon = document.getElementById("audioIcon");
 
-    var localTrackState = {
+    let localTrackState = {
         videoTrackMuted: false,
         audioTrackMuted: false,
     };

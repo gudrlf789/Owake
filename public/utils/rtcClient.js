@@ -12,23 +12,22 @@ if (selectVideo) {
 
 localVideoContainer.className = "grid-off";
 
-const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
-const localTracks = {
+export let localTracks = {
     videoTrack: null,
     audioTrack: null,
 };
 
-let totalUsers = {};
-
-export const options = {
+export let totalUsers = {};
+export let options = {
     appid: "4343e4c08654493cb8997de783a9aaeb",
     channel: null,
     uid: null,
     token: null,
 };
 
-const MicrophoneAudioTrackInitConfig = {
+let MicrophoneAudioTrackInitConfig = {
     AEC: true,
     ANS: true,
     AGC: false,
