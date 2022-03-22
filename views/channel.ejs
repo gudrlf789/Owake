@@ -27,40 +27,74 @@
             <title>Owake</title>
 
             <script>
-                let channelSession = window.sessionStorage.getItem('channel');
-                let userNameSession = window.sessionStorage.getItem('uid');
-                const channelType = '<%= channelType %>';
+                /**
+                 * @anthor 박형길
+                 * @date 2022.03.22
+                 * @version 1.0
+                 * @descrption
+                 * 유저 이름 중복 체크 & 등록
+                 */
+                 function enrollAndCheckUserName() {
+                    const channelType = window.sessionStorage.getItem('channelType');
+                    const channelName = window.sessionStorage.getItem('channel');
 
-                if (channelSession === null) {
-                    channelSession = '<%= channelName %>';
-                    window.sessionStorage.setItem('channel', '<%= channelName %>');
-                }
-                if (userNameSession === null) {
                     const reqData = {
                         channelType: channelType,
-                        channelName: channelSession
+                        channelName: channelName
                     };
 
-                    userNameSession = window.prompt("Enter the name");
+                    let userNameSession = window.prompt("Enter the name");
                     window.sessionStorage.setItem("uid", userNameSession);
 
                     axios.post("/channel/info", reqData).then((res) => {
                         if (res.data.success) {
-                            if (res.data.channelInfo.channelPassword !== "") {
+                            const result = res.data.channelInfo.userNames.filter(userName => userName === userNameSession);
+                            if(result.length > 0) {
+                                alert("Duplicate username exists");
+                                sessionStorage.clear();
+                                window.location.href = "/";
+                            }else {
+                                reqData.userId = userNameSession;
+                                const channelPassword = res.data.channelInfo.channelPassword;
 
-                                const roomPassword = window.prompt("Enter the password");
+                                if (channelPassword !== "") {
+                                    const roomPassword = window.prompt("Enter the password");
 
-                                if (res.data.channelInfo.channelPassword !== roomPassword) {
-                                    alert("Wrong Password");
-                                    window.location.href = "/";
+                                    if (channelPassword !== roomPassword) {
+                                        alert("Wrong Password");
+                                        sessionStorage.clear();
+                                        window.location.href = "/";
+                                    }else {
+                                        axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => {});
+                                    }
+
+                                }else {
+                                    axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => {});
                                 }
                             }
+
                         } else {
                             alert(res.data.error);
                             window.location.href = "/";
                         }
                     });
+                }
 
+                /**
+                 * @anthor 박형길
+                 * @date 2022.03.22
+                 * @version 1.0
+                 * @descrption
+                 * 1. 새로고침 시에 세션스토리지에 값이 있는 경우
+                 * 유저 이름 DB에서 삭제 후에 다시 등록
+                 * 2. 새로고침 시에 세션스토리지에 값이 비어있는 경우
+                 * 유저 이름 DB에 바로 등록
+                 */
+                if(window.sessionStorage.length === 0) {
+                    window.sessionStorage.setItem('channel', '<%= channelName %>');
+                    window.sessionStorage.setItem('channelType', '<%= channelType %>');
+
+                    enrollAndCheckUserName();
                 }
             </script>
 
