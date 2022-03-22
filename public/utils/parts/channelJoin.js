@@ -6,13 +6,66 @@ function checkUserId(userId) {
     }
 }
 
+/**
+ * @anthor 박형길
+ * @date 2022.03.22
+ * @version 1.0
+ * @descrption
+ * 유저 이름 등록
+ */
+function enrollUserNameOnChannel(userId, channelName, channelType) {
+    const reqData = {
+        channelType: channelType,
+        channelName: channelName,
+        userId: userId
+    };
+
+    axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => {
+        if(res.data.success){
+            window.sessionStorage.setItem("channel", channelName);
+            window.sessionStorage.setItem("channelType", channelType);
+            window.sessionStorage.setItem("uid", userId);
+            window.location.href = `/${channelName}/${channelType}`;
+        }else {
+            alert(res.data.error);
+        }
+    });
+}
+
+/**
+ * @anthor 박형길
+ * @date 2022.03.22
+ * @version 1.0
+ * @descrption
+ * 유저 이름 중복 체크
+ */
+function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
+    const reqData = {
+        channelType: channelType,
+        channelName: channelName,
+        userId: userId
+    };
+
+    axios.post("/channel/info", reqData).then((res) => {
+        if(res.data.success){
+            const result = res.data.channelInfo.userNames.filter(userName => userName === userId);
+
+            if(result.length > 0) {
+                alert("Duplicate username exists");
+            }else {
+                enrollUserNameOnChannel(userId, channelName, channelType);
+            }
+        }else {
+            alert(res.data.error);
+        }
+    });
+}
+
 function checkKorean(userId, channelName, channelType) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
     if (!korean.test(userId)) {
-        window.sessionStorage.setItem("channel", channelName);
-        window.sessionStorage.setItem("uid", userId);
-        window.location.href = `/${channelName}/${channelType}`;
+        checkDuplicateUserNameOnChannel(userId, channelName, channelType);
     } else {
         alert("You can only type User Name in English.");
         return;

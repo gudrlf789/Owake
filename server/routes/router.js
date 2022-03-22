@@ -101,8 +101,9 @@ router.get("/kronosaChannelList", (req, res, next) => {
 
 router.post("/register", upload.single("image"), async (req, res) => {
     const bodyData = req.body;
-    bodyData.imageName =
-        bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName;
+    bodyData.imageName = bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName;
+    bodyData.userNames = [];
+
     const docName =
         bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
 
@@ -282,6 +283,65 @@ router.post("/info", async (req, res) => {
             error: "It's a channel that doesn't exist",
         });
     }
+});
+/**
+ * @anthor 박형길
+ * @date 2022.03.22
+ * @version 1.0
+ * @descrption
+ * 유저 이름 DB에 등록
+ */
+router.post("/enrollUserNameOnChannel", async (req, res) => {
+    const bodyData = req.body;
+    const docName =
+        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
+
+    firebaseCollection
+        .doc(docName)
+        .update({
+            userNames: firebase.firestore.FieldValue.arrayUnion(bodyData.userId)
+        })
+        .then((e) => {
+            return res.status(200).json({
+                success: true,
+            });
+        })
+        .catch((err) => {
+            return res.status(500).json({
+                success: false,
+                error: err,
+            });
+        });
+});
+
+/**
+ * @anthor 박형길
+ * @date 2022.03.22
+ * @version 1.0
+ * @descrption
+ * 유저 이름 DB에서 삭제
+ */
+router.post("/removeUserNameOnChannel", async (req, res) => {
+    const bodyData = req.body;
+    const docName =
+        bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
+
+    firebaseCollection
+        .doc(docName)
+        .update({
+            userNames: firebase.firestore.FieldValue.arrayRemove(bodyData.userId)
+        })
+        .then((e) => {
+            return res.status(200).json({
+                success: true,
+            });
+        })
+        .catch((err) => {
+            return res.status(500).json({
+                success: false,
+                error: err,
+            });
+        });
 });
 
 module.exports = router;
