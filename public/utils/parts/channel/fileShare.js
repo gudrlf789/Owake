@@ -68,18 +68,18 @@ export const fileShare = () => {
                     document.querySelector("#status").textContent = "done";
                 })
                 .fail(function (xhr, textStatus, error) {
-                    document
-                        .querySelector("#receiveForm .form-group")
-                        .classList.add("has-error");
-                    document.querySelector("#status").textContent =
-                        "failed".classList
-                            .remove("has-success")
-                            .classList.add("text-danger");
-                    // $("#receiveForm .form-group").addClass("has-error");
-                    // $("#status")
-                    //     .text("failed")
-                    //     .removeClass("text-success")
-                    //     .addClass("text-danger");
+                    // document
+                    //     .querySelector("#receiveForm .form-group")
+                    //     .classList.add("has-error");
+                    // document.querySelector("#status").textContent =
+                    //     "failed".classList
+                    //         .remove("has-success")
+                    //         .classList.add("text-danger");
+                    $("#receiveForm .form-group").addClass("has-error");
+                    $("#status")
+                        .text("failed")
+                        .removeClass("text-success")
+                        .addClass("text-danger");
                 });
         }
 
@@ -105,18 +105,18 @@ export const fileShare = () => {
         }
 
         function keydownAction() {
-            document
-                .querySelector("#receiveForm .form-group")
-                .classList.add("has-error");
-            document.querySelector("#status").textContent = "".classList
-                .remove("text-danger")
-                .classList.add("text-success");
+            // document
+            //     .querySelector("#receiveForm .form-group")
+            //     .classList.add("has-error");
+            // document.querySelector("#status").textContent = "".classList
+            //     .remove("text-danger")
+            //     .classList.add("text-success");
 
-            // $("#receiveForm .form-group").removeClass("has-error");
-            // $("#status")
-            //     .text("")
-            //     .removeClass("text-danger")
-            //     .addClass("text-success");
+            $("#receiveForm .form-group").removeClass("has-error");
+            $("#status")
+                .text("")
+                .removeClass("text-danger")
+                .addClass("text-success");
         }
 
         sendBtn.addEventListener("click", sendAction);
