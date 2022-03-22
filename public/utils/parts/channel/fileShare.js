@@ -1,3 +1,4 @@
+import { socketInitFunc } from "./socket.js";
 /**
  * @author 전형동
  * @version 1.0
@@ -28,7 +29,7 @@ export const fileShare = () => {
     }
 };
 
-let fileShareSocket = io();
+const fileShareSocket = socketInitFunc();
 
 // Options
 let bufferSize = 64000;

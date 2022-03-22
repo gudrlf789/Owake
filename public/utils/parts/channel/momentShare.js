@@ -1,5 +1,7 @@
+import { socketInitFunc } from "./socket.js";
+
 export const momentShareFunc = () => {
-    let momentSocket = io();
+    const momentSocket = socketInitFunc();
     let momentShareActive = false;
     let searchResult;
 

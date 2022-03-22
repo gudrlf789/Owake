@@ -26,7 +26,8 @@
 
             <title>Owake</title>
 
-            <script>
+            <script async>
+                let checkSocket = io("/");
                 let channelSession = window.sessionStorage.getItem('channel');
                 let userNameSession = window.sessionStorage.getItem('uid');
                 const channelType = '<%= channelType %>';
@@ -41,7 +42,20 @@
                         channelName: channelSession
                     };
 
-                    userNameSession = window.prompt("Enter the name");
+                    userNameSession = window.prompt("Please enter your name.");
+
+                    // checkSocket.emit(
+                    //     "users",
+                    //     (params = { user: userNameSession, channel: channelSession })
+                    // );
+
+                    // axios.get(`/userCheck?user=${userNameSession}`).then(res => {
+                    //     if (res.data) {
+                    //         alert(res.data);
+                    //         window.location.href = "/";
+                    //     }
+                    // });
+
                     window.sessionStorage.setItem("uid", userNameSession);
 
                     axios.post("/channel/info", reqData).then((res) => {

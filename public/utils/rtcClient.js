@@ -1,5 +1,8 @@
-let socket = io();
+import { socketInitFunc } from "./parts/channel/socket.js";
+
+const socket = socketInitFunc();
 const localVideoBox = document.createElement("div");
+const localVideoContainer = document.querySelector("#local__video__container");
 const selectVideo = document.querySelector("video");
 localVideoBox.id = "local__videoBox";
 localVideoBox.className = "player";
@@ -7,16 +10,19 @@ if (selectVideo) {
     selectVideo.setAttribute("playsinline", "playsinline");
 }
 
-let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+localVideoContainer.className = "grid-off";
 
-let localTracks = {
+const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+
+const localTracks = {
     videoTrack: null,
     audioTrack: null,
 };
 
-let totalUsers = {};
+const totalUsers = {};
+const userList = [];
 
-let options = {
+export const options = {
     appid: "4343e4c08654493cb8997de783a9aaeb",
     channel: null,
     uid: null,
@@ -38,6 +44,7 @@ $(async () => {
     // 새로고침시에 세션스토리지에 값이 저장되었는지 확인 후
     // 값이 존재하면 해당 채널, uid  값으로 재접속
     if (window.sessionStorage.length != 0) {
+        socket.on("connect", handleConnect);
         await join();
     }
 });
@@ -46,55 +53,7 @@ $("#leave").click(function (e) {
     leave();
 });
 
-$(document).on("click", ".player", (e) => {
-    const localUid = localVideoBox.uid;
-    console.log(localUid);
-    const remoteUid = e.currentTarget.id.replace("player-", "");
-    let remoteTag = document.getElementById(`player-wrapper-${remoteUid}`);
-
-    if (e.currentTarget.id != "local__videoBox") {
-        totalUsers[localUid].videoTrack
-            ? totalUsers[localUid].videoTrack.stop()
-            : "";
-        localVideoBox.remove();
-        totalUsers[remoteUid].videoTrack
-            ? totalUsers[remoteUid].videoTrack.stop()
-            : "";
-
-        localVideoBox.uid = remoteUid;
-        remoteTag.id = `player-wrapper-${localUid}`;
-        remoteTag.children[1].id = `player-${localUid}`;
-
-        if (totalUsers[localUid].videoTrack) {
-            remoteTag.children[0].textContent = `${localUid}`;
-            totalUsers[localUid].videoTrack.play(`player-${localUid}`);
-        } else {
-            remoteTag.children[0].textContent = `${localUid}`;
-            remoteTag.children[0].style.color = "white";
-            remoteTag.children[1].style.backgroundRepeat = "no-repeat";
-            remoteTag.children[1].style.backgroundImage =
-                "url(../img/person.png)";
-            remoteTag.children[1].style.backgroundSize = "contain";
-        }
-
-        $("#local-player-name").text(`${remoteUid}`);
-        if (totalUsers[remoteUid].videoTrack) {
-            $("#local__video__container").append(localVideoBox);
-            totalUsers[remoteUid].videoTrack.play(localVideoBox);
-        } else {
-            localVideoBox.style.backgroundRepeat = "no-repeat";
-            localVideoBox.style.backgroundImage = "url(../img/person.png)";
-            localVideoBox.style.backgroundSize = "contain";
-            $("#local__video__container").append(localVideoBox);
-        }
-    }
-
-    // Video 화면회전
-    videoTransformAction();
-});
-
 async function join() {
-    socket.on("connect", handleConnect);
     options.uid = window.sessionStorage.getItem("uid");
     options.channel = window.sessionStorage.getItem("channel");
 
@@ -107,9 +66,9 @@ async function join() {
 
     await client.join(
         options.appid,
-        options.channel || window.sessionStorage.getItem("channel"),
+        options.channel,
         options.token || null,
-        options.uid || window.sessionStorage.getItem("uid") || null
+        options.uid
     );
 
     // 오디오 디바이스가 없을시
@@ -222,21 +181,24 @@ async function subscribe(user, mediaType) {
         user.videoTrack.play(`player-${uid}`);
     }
 
-    if (mediaType === "audio") {
-        user.audioTrack.play();
-        // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에
-        // 아이콘 화면이 나타나게 수정
-        if (!user.hasVideo && user.hasAudio) {
-            const iconPlayer = $(`
-                <div id="player-wrapper-${uid}">
-                <p class="player-name" style="color: white">${uid}</p>
-                <div id="player-${uid}" class="player" uid="${uid}" 
-                    style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
-                </div>
-            `);
-            $("#remote-playerlist").append(iconPlayer);
-        }
-    }
+    /**
+     * 화면이 퍼블리싱 될 때 트랙이 중첩되는 것을 막기 위해 주석처리 함.
+     */
+    // if (mediaType === "audio") {
+    //     user.audioTrack.play();
+    //     // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에
+    //     // 아이콘 화면이 나타나게 수정
+    //     if (!user.hasVideo && user.hasAudio) {
+    //         const iconPlayer = $(`
+    //             <div id="player-wrapper-${uid}">
+    //             <p class="player-name" style="color: white">${uid}</p>
+    //             <div id="player-${uid}" class="player" uid="${uid}"
+    //                 style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
+    //             </div>
+    //         `);
+    //         $("#remote-playerlist").append(iconPlayer);
+    //     }
+    // }
 }
 
 function revertLocalTrackToMain(leftUid) {
@@ -289,11 +251,24 @@ function handleUserUnpublished(user) {
 
 function handleConnect() {
     console.log("Connected to signaling server");
-
     let myPeerId = socket.id;
     console.log("My peer id [ " + myPeerId + " ]");
+
+    let userList = Object.keys(totalUsers);
+    console.log("Connected user list ", userList);
+
     joinToChannel();
 }
+
+// socket.on("userIsDuplicate", (result) => {
+//     console.log(result);
+//     const resultState = result;
+//     console.log("User 중복체크 상태 : ", resultState);
+//     if (resultState === true || resultState == true) {
+//         alert("The name you just entered is in use.");
+//         window.location.href = `/`;
+//     }
+// });
 
 function handleDisconnect(reason) {
     console.log("Disconnected from signaling server", { reason: reason });
@@ -353,18 +328,68 @@ function videoTransformAction() {
 }
 
 /**
- * @Auther 전형동
- * @Date 2022 03 09
- * @Descripton : Player Container 중복제거
+ * @author 전형동
+ * @date 2022 03 20
+ * @description
+ * 카메라 스위칭 이벤트
+ * Grid mode 시에 카메라 스위칭이 진행되지 않도록 설정
  */
 
-// $(document).ready(async () => {
-//     const remotePlayerList = document.querySelector("#remote-playerlist");
-//     if (remotePlayerList.childNodes.length !== 0) {
-//         const playerQuantity = document.querySelector(`player-${options.uid}`)
-//             .childNodes.length;
-//         if (playerQuantity === 0 || playerQuantity === "0") {
-//             playerQuantity.remove();
-//         }
-//     }
-// });
+$(document).on("click", ".player", (e) => {
+    if (localVideoContainer.className === "grid-off") {
+        cameraSwitchEnableFunc(e);
+    } else {
+        cameraSwitchDisableFunc(e);
+    }
+});
+
+function cameraSwitchEnableFunc(e) {
+    const localUid = localVideoBox.uid;
+    const remoteUid = e.currentTarget.id.replace("player-", "");
+    let remoteTag = document.getElementById(`player-wrapper-${remoteUid}`);
+
+    if (e.currentTarget.id != "local__videoBox") {
+        totalUsers[localUid].videoTrack
+            ? totalUsers[localUid].videoTrack.stop()
+            : "";
+        localVideoBox.remove();
+        totalUsers[remoteUid].videoTrack
+            ? totalUsers[remoteUid].videoTrack.stop()
+            : "";
+
+        localVideoBox.uid = remoteUid;
+        remoteTag.id = `player-wrapper-${localUid}`;
+        remoteTag.children[1].id = `player-${localUid}`;
+
+        if (totalUsers[localUid].videoTrack) {
+            remoteTag.children[0].textContent = `${localUid}`;
+            totalUsers[localUid].videoTrack.play(`player-${localUid}`);
+        } else {
+            remoteTag.children[0].textContent = `${localUid}`;
+            remoteTag.children[0].style.color = "white";
+            remoteTag.children[1].style.backgroundRepeat = "no-repeat";
+            remoteTag.children[1].style.backgroundImage =
+                "url(../img/person.png)";
+            remoteTag.children[1].style.backgroundSize = "contain";
+        }
+
+        $("#local-player-name").text(`${remoteUid}`);
+        if (totalUsers[remoteUid].videoTrack) {
+            $("#local__video__container").append(localVideoBox);
+            totalUsers[remoteUid].videoTrack.play(localVideoBox);
+        } else {
+            localVideoBox.style.backgroundRepeat = "no-repeat";
+            localVideoBox.style.backgroundImage = "url(../img/person.png)";
+            localVideoBox.style.backgroundSize = "contain";
+            $("#local__video__container").append(localVideoBox);
+        }
+    }
+
+    // Video 화면회전
+    videoTransformAction();
+}
+
+function cameraSwitchDisableFunc(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}

@@ -14,11 +14,13 @@
 let gridViewActivator = false;
 let localVideoSave = [];
 let remoteVideoSave = [];
+let newRemoteVideoSave;
 let gridViewPeer;
 let number = 0;
 
 const gridContainer = document.createElement("ul");
 const localPlayerName = document.querySelector("#local-player-name");
+const localVideoContainer = document.querySelector("#local__video__container");
 
 let remotePlayList = document.querySelector("#remote-playerlist");
 let viewChangeBtn = document.querySelector("#video-grid-button");
@@ -37,10 +39,15 @@ function gridViewBtnActivator() {
         e.stopPropagation();
         gridViewActivator = !gridViewActivator;
         gridViewActivator ? gridViewEnable() : gridViewDisable();
+
+        // 찌꺼기 li 제거
+        scrapsBoxRemove();
     });
 }
 
 function gridViewEnable() {
+    localVideoContainer.classList.remove("grid-off");
+    localVideoContainer.classList.add("grid-on");
     viewChangeBtn.children[0].classList.remove("fa-th");
     viewChangeBtn.children[0].classList.add("fa-grip-vertical");
 
@@ -64,19 +71,19 @@ function gridViewEnable() {
                 `#player-wrapper-${gridViewPeer[number]}`
             );
 
-            // if (number > 0) {
-            //     remoteVideoSave.push(remotePeer);
-            // }
             remoteVideoSave.push(remotePeer);
         }
         remotePlayList.removeChild(remotePlayList.firstChild);
     }
 
-    for (number = 1; number < remoteVideoSave.length; number++) {
-        if (remoteVideoSave.length >= 1) {
+    // 배열에서 null값 제거
+    newRemoteVideoSave = remoteVideoSave.filter((element) => element !== null);
+
+    for (number = 0; number < newRemoteVideoSave.length; number++) {
+        if (newRemoteVideoSave.length > 0) {
             gridList = document.createElement("li");
             gridContainer.append(gridList);
-            gridList.append(remoteVideoSave[number]);
+            gridList.append(newRemoteVideoSave[number]);
         }
     }
 
@@ -87,6 +94,8 @@ function gridViewEnable() {
 }
 
 function gridViewDisable() {
+    localVideoContainer.classList.remove("grid-on");
+    localVideoContainer.classList.add("grid-off");
     localPlayerName.hidden = false;
 
     viewChangeBtn.children[0].classList.remove("fa-grip-vertical");
@@ -95,29 +104,29 @@ function gridViewDisable() {
     while (localVideoBox.hasChildNodes()) {
         localVideoBox.removeChild(localVideoBox.firstChild);
     }
-    while (gridContainer.hasChildNodes()) {
-        gridContainer.removeChild(gridContainer.firstChild);
-    }
 
     localVideoBox.append(localVideoSave[0]);
-    for (number = 1; number < remoteVideoSave.length; number++) {
-        remotePlayList.append(remoteVideoSave[number]);
+    for (number = 0; number < newRemoteVideoSave.length; number++) {
+        remotePlayList.append(newRemoteVideoSave[number]);
     }
 }
 
-// function clickEnable() {
-//     document.querySelector("video").addEventListener("click", (e) => {
-//         if (e.preventDefault() || e.stopPropagation()) {
-//             !e.preventDefault() && !e.stopPropagation()
-//         }
-//         return true;
-//     });
-// }
+/**
+ * @author 전형동
+ * @date 2022 03 20
+ * @description
+ * Grid Enable 시에 생기는 공백 li 태그를 제거한다.
+ */
 
-// function clickDisable() {
-//     document.querySelector("video").addEventListener("click", (e) => {
-//         e.preventDefault();
-//         e.stopPropagation();
-//         return false;
-//     });
-// }
+function scrapsBoxRemove() {
+    let liLength;
+
+    if (gridContainer.childNodes) {
+        for (let i = 0; i < gridContainer.childNodes.length; i++) {
+            liLength = gridContainer.childNodes[i];
+            if (liLength.childElementCount < 1) {
+                liLength.remove();
+            }
+        }
+    }
+}
