@@ -240,8 +240,15 @@ io.sockets.on("connect", (socket) => {
     // });
 
     socket.on("file-meta", (data) => {
+        console.log(data);
         //broadcast 동일하게 가능 자신 제외 룸안의 유저
         socket.in(data.channel).emit("fs-meta", data);
+    });
+
+    socket.on("file-progress", (progress, channel) => {
+        console.log(progress);
+        //broadcast 동일하게 가능 자신 제외 룸안의 유저
+        socket.in(channel).emit("fs-progress", progress);
     });
 
     /**
@@ -278,19 +285,6 @@ io.sockets.on("connect", (socket) => {
         }
     }
 });
-
-/**
- *
- * @param  arr
- * @returns
- * users 중복체크
- */
-function isDuplicate(arr) {
-    const isDup = arr.some((x) => {
-        return arr.indexOf(x) !== arr.lastIndexOf(x);
-    });
-    return isDup;
-}
 
 server.listen(port, () => {
     log.debug(`Server Listen... ${port}`);

@@ -37,6 +37,10 @@ let fileShareBtnActive = false;
 let fileListBtnActive = false;
 let channel = window.sessionStorage.getItem("channel");
 let spanEl;
+let file;
+let uid;
+let fileData;
+let fileArr = [];
 
 // Progress Element
 const progressLabel = document.createElement("label");
@@ -143,7 +147,15 @@ function fileInputControlChangeEventHandler(e) {
         return;
     }
 
-    for (let i = 0, file; (file = files[i]); i++) {
+    for (let i = 0; i < files.length; i++) {
+        file = files[i];
+
+        uid = uuidv4();
+        fileData = fileDataInit(file.name, file.size, file.type, uid);
+
+        // File 배열에 데이터 삽입
+        fileArr[i] = fileData;
+
         if (file.size > 25 * 1024 * 1024) {
             alert("Please upload the file that can be shared less than 25MB.");
             return;
@@ -195,71 +207,61 @@ function fileInputControlChangeEventHandler(e) {
         let reader = new FileReader();
 
         reader.onload = (e) => {
+            let content = e.target.result;
             let buffer = new Uint8Array(e.target.result);
+
             if (videoTypeCheck) {
-                receiveDataElement(videoEl, buffer);
-                shareFile(
-                    {
-                        channel: channel,
-                        element: videoEl,
-                        filename: file.name,
-                        filetype: fileType.video,
-                        total_buffer_size: buffer.length,
-                        buffer_size: bufferSize,
-                        buffer,
-                    },
+                receiveDataElement(videoEl, buffer, fileArr[i].fileUid);
+                shareFile({
+                    channel: channel,
+                    element: videoEl,
+                    filetype: fileType.video,
+                    buffer_size: bufferSize,
                     buffer,
-                    progressEl
-                );
+                    filename: fileArr[i].fileName,
+                    total_buffer_size: fileArr[i].fileSize,
+                    uid: fileArr[i].fileUid,
+                });
             }
             if (audioTypeCheck) {
-                receiveDataElement(audioEl, buffer);
-                shareFile(
-                    {
-                        channel: channel,
-                        element: audioEl,
-                        filename: file.name,
-                        filetype: fileType.audio,
-                        total_buffer_size: buffer.length,
-                        buffer_size: bufferSize,
-                        buffer,
-                    },
+                receiveDataElement(audioEl, buffer, fileArr[i].fileUid);
+                shareFile({
+                    channel: channel,
+                    element: audioEl,
+                    filetype: fileType.audio,
+                    buffer_size: bufferSize,
                     buffer,
-                    progressEl
-                );
+                    filename: fileArr[i].fileName,
+                    total_buffer_size: fileArr[i].fileSize,
+                    uid: fileArr[i].fileUid,
+                });
             }
             if (textTypeCheck) {
-                receiveDataElement(textEl, buffer);
-                shareFile(
-                    {
-                        channel: channel,
-                        element: textEl,
-                        filename: file.name,
-                        filetype: fileType.text,
-                        total_buffer_size: buffer.length,
-                        buffer_size: bufferSize,
-                        buffer,
-                    },
-                    buffer,
-                    progressEl
-                );
+                receiveDataElement(textEl, content, fileArr[i].fileUid);
+                shareFile({
+                    channel: channel,
+                    element: textEl,
+                    filetype: fileType.text,
+                    buffer_size: bufferSize,
+                    content,
+                    filename: fileArr[i].fileName,
+                    total_buffer_size: fileArr[i].fileSize,
+                    uid: fileArr[i].fileUid,
+                });
             }
 
             if (imageTypeCheck) {
-                receiveDataElement(imageEl, buffer);
-                shareFile(
-                    {
-                        channel: channel,
-                        element: imageEl,
-                        filename: file.name,
-                        filetype: fileType.image,
-                        total_buffer_size: buffer.length,
-                        buffer_size: bufferSize,
-                        buffer,
-                    },
+                receiveDataElement(imageEl, buffer, fileArr[i].fileUid);
+                shareFile({
+                    channel: channel,
+                    element: imageEl,
+                    filetype: fileType.image,
+                    buffer_size: bufferSize,
                     buffer,
-                    progressEl
-                );
+                    filename: fileArr[i].fileName,
+                    total_buffer_size: fileArr[i].fileSize,
+                    uid: fileArr[i].fileUid,
+                });
             }
         };
         if (textTypeCheck) {
@@ -274,34 +276,20 @@ function fileInputControlChangeEventHandler(e) {
 // File Progress
 function readFileProgress(reader) {
     reader.onprogress = (e) => {
+        let num = 0;
         if (e.loaded && e.total) {
             const percent = (e.loaded / e.total) * 100;
-            progressEl.value = Math.round(percent);
+            num = num + Math.round(percent);
+            progressEl.value = num;
+            fileShareSocket.emit("file-progress", num, channel);
         }
     };
 }
 
-// Video
-function fileVideoElement(element, content) {
-    receiveDataElement(element, content);
-}
-// Audio
-function fileAudioElement(element, content) {
-    receiveDataElement(element, content);
-}
-// Text
-function fileTextElement(element, content) {
-    receiveDataElement(element, content);
-}
-// Image
-function fileImageElement(element, content) {
-    receiveDataElement(element, content);
-}
-
-// PDF
-function filePDFElement(element, content) {}
-// CSV
-function fileCSVElement(element, content) {}
+// Recevie Progress
+fileShareSocket.on("fs-progress", (progress) => {
+    progressEl.value = progress;
+});
 
 function shareFile(metadata) {
     fileShareSocket.emit("file-meta", metadata);
@@ -309,18 +297,12 @@ function shareFile(metadata) {
 
 function shareReceiveFile() {
     fileShareSocket.on("fs-meta", (data) => {
-        if (data.filetype === 0) {
-            fileVideoElement(data.element, data.buffer);
-        } else if (data.filetype === 1) {
-            fileAudioElement(data.element, data.buffer);
-        } else if (data.filetype === 2) {
-            fileTextElement(data.element, data.buffer);
-        } else if (data.filetype === 3) {
-            fileImageElement(data.element, data.buffer);
-        } else if (data.filetype === 4) {
-            filePDFElement(data.element, data.buffer);
+        if (data.buffer) {
+            receiveDataElement(data.element, data.buffer, data.uid);
+        } else if (data.content) {
+            receiveDataElement(data.element, data.content, data.uid);
         } else {
-            alert("Type Error!!");
+            return;
         }
     });
 }
@@ -332,7 +314,7 @@ function shareReceiveFile() {
  * 데이터 전송받아 Element에 담아 호출하는 함수
  */
 
-function receiveDataElement(element, content) {
+function receiveDataElement(element, content, uid) {
     let blobData = new Blob([content]);
     let url = window.URL.createObjectURL(blobData);
 
@@ -342,21 +324,30 @@ function receiveDataElement(element, content) {
     const containerWidth = document.querySelector(
         ".fileShareContainer"
     ).offsetWidth;
+    const containerHeight = document.querySelector(
+        ".fileShareContainer"
+    ).offsetHeight;
 
     const contentsWidth = containerWidth / 1.4 + "px";
+    const contentsHeight = containerHeight / 1.4 + "px";
 
     if (element === "textarea") {
         spanEl.innerHTML = [
-            `<${element} class="thumbnail" style= "width: ${contentsWidth};">${content}</${element}>`,
+            `<${element} class="thumbnail-${uid}" style= "width: ${contentsWidth}; height: ${contentsHeight};">${content}</${element}>`,
+        ].join("");
+        fileTabList.insertBefore(spanEl, null);
+    } else if (
+        element === "img" ||
+        element === "video" ||
+        element === "audio"
+    ) {
+        spanEl.innerHTML = [
+            `<${element} class="thumbnail-${uid}" style= "width: ${contentsWidth};" src="${url}"/>`,
         ].join("");
         fileTabList.insertBefore(spanEl, null);
     } else {
-        spanEl.innerHTML = [
-            `<${element} class="thumbnail" style= "width: ${contentsWidth};" src="${url}"/>`,
-        ].join("");
-        fileTabList.insertBefore(spanEl, null);
+        return;
     }
-
     window.URL.revokeObjectURL(element.src);
 }
 
@@ -442,4 +433,43 @@ function handlerFileListCtrlEnable() {
 
 function handlerFileListCtrlDisable() {
     fileTabList.hidden = false;
+}
+
+/**
+ * @author 전형동
+ * @date 2022 03 23
+ * @description
+ * File Data 객체 초기화 함수
+ */
+
+function fileDataInit(name, size, type, uid) {
+    let data = {
+        fileName: null,
+        fileSize: null,
+        fileType: null,
+        fileUid: null,
+    };
+
+    data.fileName = name;
+    data.fileSize = size;
+    data.fileType = type;
+    data.fileUid = uid;
+
+    return data;
+}
+
+/**
+ * @author 전형동
+ * @date 2022 03 23
+ * @description
+ * file UID 생성 함수
+ */
+
+function uuidv4() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+        (
+            c ^
+            (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+        ).toString(16)
+    );
 }
