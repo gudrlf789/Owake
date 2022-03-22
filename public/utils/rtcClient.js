@@ -19,8 +19,7 @@ const localTracks = {
     audioTrack: null,
 };
 
-const totalUsers = {};
-const userList = [];
+let totalUsers = {};
 
 export const options = {
     appid: "4343e4c08654493cb8997de783a9aaeb",
@@ -259,16 +258,6 @@ function handleConnect() {
 
     joinToChannel();
 }
-
-// socket.on("userIsDuplicate", (result) => {
-//     console.log(result);
-//     const resultState = result;
-//     console.log("User 중복체크 상태 : ", resultState);
-//     if (resultState === true || resultState == true) {
-//         alert("The name you just entered is in use.");
-//         window.location.href = `/`;
-//     }
-// });
 
 function handleDisconnect(reason) {
     console.log("Disconnected from signaling server", { reason: reason });

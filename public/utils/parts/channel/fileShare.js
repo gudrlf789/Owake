@@ -37,7 +37,6 @@ let fileShareBtnActive = false;
 let fileListBtnActive = false;
 let channel = window.sessionStorage.getItem("channel");
 let spanEl;
-let file_share = {};
 
 // Progress Element
 const progressLabel = document.createElement("label");
