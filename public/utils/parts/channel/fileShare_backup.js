@@ -51,6 +51,23 @@ let uid;
 let fileData;
 let fileArr = [];
 
+// elements Object
+let elements = {
+    video: "video",
+    audio: "audio",
+    text: "textarea",
+    img: "img",
+};
+
+// fileType Object
+let fileType = {
+    video: 0,
+    audio: 1,
+    text: 2,
+    image: 3,
+    pdf: 4,
+};
+
 // Progress Element
 const progressLabel = document.createElement("label");
 const progressEl = document.createElement("progress");
@@ -158,12 +175,7 @@ function fileInputControlChangeEventHandler(e) {
 
     for (let i = 0; i < files.length; i++) {
         file = files[i];
-
         uid = uuidv4();
-        fileData = fileDataInit(file.name, file.size, file.type, uid);
-
-        // File 배열에 데이터 삽입
-        fileArr[i] = fileData;
 
         if (file.size > 25 * 1024 * 1024) {
             alert("Please upload the file that can be shared less than 25MB.");
@@ -205,95 +217,93 @@ function fileInputControlChangeEventHandler(e) {
             file.type.includes("svg") ||
             file.type.includes("webp");
 
-        let fileType = {
-            video: 0,
-            audio: 1,
-            text: 2,
-            image: 3,
-            pdf: 4,
-        };
-
         let reader = new FileReader();
 
         reader.onload = (e) => {
             let content = e.target.result;
             let buffer = new Uint8Array(e.target.result);
 
+            fileData = fileDataInit(
+                channel,
+                file.name,
+                file.size,
+                file.type,
+                fileType,
+                uid,
+                elements,
+                bufferSize,
+                buffer,
+                content
+            );
+
+            // File 배열에 데이터 삽입
+            fileArr[i] = fileData;
+
+            console.log(fileArr[i]);
+
             if (videoTypeCheck) {
-                receiveDataElement(
-                    videoEl,
-                    buffer,
-                    fileArr[i].fileUid,
-                    fileArr[i].peerID
-                );
+                receiveDataElement(fileArr[i]);
                 shareFile({
-                    channel: channel,
-                    element: videoEl,
-                    filetype: fileType.video,
-                    buffer_size: bufferSize,
-                    buffer,
-                    filename: fileArr[i].fileName,
-                    total_buffer_size: fileArr[i].fileSize,
-                    uid: fileArr[i].fileUid,
-                    peer: fileArr[i].peerID,
+                    channel: fileArr[i].channel,
+                    fileElement: fileArr[i].fileElement.video,
+                    fileTypeNumber: fileArr[i].fileTypeNumber.video,
+                    fileBufferSize: fileArr[i].fileBufferSize,
+                    fileType: fileArr[i].fileType,
+                    fileBuffer: fileArr[i].fileBuffer,
+                    fileName: fileArr[i].fileName,
+                    fileSize: fileArr[i].fileSize,
+                    fileUid: fileArr[i].fileUid,
+                    peerID: fileArr[i].peerID,
+                    fileContent: null,
                 });
             }
             if (audioTypeCheck) {
-                receiveDataElement(
-                    audioEl,
-                    buffer,
-                    fileArr[i].fileUid,
-                    fileArr[i].peerID
-                );
+                receiveDataElement(fileArr[i]);
                 shareFile({
-                    channel: channel,
-                    element: audioEl,
-                    filetype: fileType.audio,
-                    buffer_size: bufferSize,
-                    buffer,
-                    filename: fileArr[i].fileName,
-                    total_buffer_size: fileArr[i].fileSize,
-                    uid: fileArr[i].fileUid,
-                    peer: fileArr[i].peerID,
+                    channel: fileArr[i].channel,
+                    fileElement: fileArr[i].fileElement.audio,
+                    fileTypeNumber: fileArr[i].fileTypeNumber.audio,
+                    fileBufferSize: fileArr[i].fileBufferSize,
+                    fileType: fileArr[i].fileType,
+                    fileBuffer: fileArr[i].fileBuffer,
+                    fileName: fileArr[i].fileName,
+                    fileSize: fileArr[i].fileSize,
+                    fileUid: fileArr[i].fileUid,
+                    peerID: fileArr[i].peerID,
+                    fileContent: null,
                 });
             }
             if (textTypeCheck) {
-                receiveDataElement(
-                    textEl,
-                    content,
-                    fileArr[i].fileUid,
-                    fileArr[i].peerID
-                );
+                receiveDataElement(fileArr[i]);
                 shareFile({
-                    channel: channel,
-                    element: textEl,
-                    filetype: fileType.text,
-                    buffer_size: bufferSize,
-                    content,
-                    filename: fileArr[i].fileName,
-                    total_buffer_size: fileArr[i].fileSize,
-                    uid: fileArr[i].fileUid,
-                    peer: fileArr[i].peerID,
+                    channel: fileArr[i].channel,
+                    fileElement: fileArr[i].fileElement.text,
+                    fileTypeNumber: fileArr[i].fileTypeNumber.text,
+                    fileBufferSize: fileArr[i].fileBufferSize,
+                    fileType: fileArr[i].fileType,
+                    fileBuffer: null,
+                    fileName: fileArr[i].fileName,
+                    fileSize: fileArr[i].fileSize,
+                    fileUid: fileArr[i].fileUid,
+                    peerID: fileArr[i].peerID,
+                    fileContent: fileArr[i].fileContent,
                 });
             }
 
             if (imageTypeCheck) {
-                receiveDataElement(
-                    imageEl,
-                    buffer,
-                    fileArr[i].fileUid,
-                    fileArr[i].peerID
-                );
+                receiveDataElement(fileArr[i]);
                 shareFile({
-                    channel: channel,
-                    element: imageEl,
-                    filetype: fileType.image,
-                    buffer_size: bufferSize,
-                    buffer,
-                    filename: fileArr[i].fileName,
-                    total_buffer_size: fileArr[i].fileSize,
-                    uid: fileArr[i].fileUid,
-                    peer: fileArr[i].peerID,
+                    channel: fileArr[i].channel,
+                    fileElement: fileArr[i].fileElement.img,
+                    fileTypeNumber: fileArr[i].fileTypeNumber.image,
+                    fileBufferSize: fileArr[i].fileBufferSize,
+                    fileType: fileArr[i].fileType,
+                    fileBuffer: fileArr[i].fileBuffer,
+                    fileName: fileArr[i].fileName,
+                    fileSize: fileArr[i].fileSize,
+                    fileUid: fileArr[i].fileUid,
+                    peerID: fileArr[i].peerID,
+                    fileContent: null,
                 });
             }
         };
@@ -325,25 +335,17 @@ fileShareSocket.on("fs-progress", (progress) => {
 });
 
 function shareFile(metadata) {
+    console.log(metadata);
     fileShareSocket.emit("file-meta", metadata);
 }
 
 function shareReceiveFile() {
     fileShareSocket.on("fs-meta", (data) => {
-        if (data.buffer) {
-            receiveDataElement(
-                data.element,
-                data.buffer,
-                data.uid,
-                data.peerID
-            );
-        } else if (data.content) {
-            receiveDataElement(
-                data.element,
-                data.content,
-                data.uid,
-                data.peerID
-            );
+        console.log(data);
+        if (data.fileBuffer !== null) {
+            receiveDataElement(data);
+        } else if (data.fileContent !== null) {
+            receiveDataElement(data);
         } else {
             return;
         }
@@ -357,8 +359,16 @@ function shareReceiveFile() {
  * 데이터 전송받아 Element에 담아 호출하는 함수
  */
 
-function receiveDataElement(element, content, uid, peer) {
-    let blobData = new Blob([content]);
+function receiveDataElement(data) {
+    console.log(":::receiveDataElement:::::", data);
+    let uid = data.fileUid;
+    let peer = data.peerID;
+    let filename = data.fileName;
+    let element = data.fileElement;
+    let fileType = data.fileType;
+    let fileTypeNumber = data.fileTypeNumber;
+
+    let blobData = new Blob([data.fileBuffer]);
     let url = window.URL.createObjectURL(blobData);
 
     bodyEl.append(fileTabList);
@@ -374,29 +384,34 @@ function receiveDataElement(element, content, uid, peer) {
     const contentsWidth = containerWidth / 1.4 + "px";
     const contentsHeight = containerHeight / 1.4 + "px";
 
-    if (element === "textarea") {
+    if (fileType.includes("text")) {
         spanEl.innerHTML = [
             `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth}; height: ${contentsHeight};">${content}</${element}>`,
         ].join("");
+        // spanEl.innerHTML = [`${filename}`].join("");
         fileTabList.insertBefore(spanEl, null);
-    } else if (element === "img") {
+    } else if (fileTypeNumber === 3) {
         spanEl.innerHTML = [
             `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth};" src="${url}"/>`,
         ].join("");
+        // spanEl.innerHTML = [`${filename}`].join("");
         fileTabList.insertBefore(spanEl, null);
-    } else if (element === "video") {
+    } else if (fileTypeNumber === 0) {
         spanEl.innerHTML = [
             `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth};" src="${url}"/>`,
         ].join("");
+        // spanEl.innerHTML = [`${filename}`].join("");
         fileTabList.insertBefore(spanEl, null);
-    } else if (element === "audio") {
+    } else if (fileTypeNumber === 1) {
         spanEl.innerHTML = [
             `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth};" src="${url}"/>`,
         ].join("");
+        // spanEl.innerHTML = [`${filename}`].join("");
         fileTabList.insertBefore(spanEl, null);
     } else {
         return;
     }
+
     window.URL.revokeObjectURL(element.src);
 }
 
@@ -418,20 +433,6 @@ function selectFileAction() {
             if (fileTab.childNodes.length === 0) {
                 fileTab.remove();
             }
-        }
-    });
-}
-
-function handlerFileRemove() {
-    fileEmpty.addEventListener("click", () => {
-        const bodyThumbnail = document.querySelector(".thumbnailBodyContainer");
-
-        if (bodyThumbnail.childNodes.length > 0) {
-            for (let i = 0; i < bodyThumbnail.children.length; i++) {
-                bodyThumbnail.remove();
-            }
-        } else {
-            return;
         }
     });
 }
@@ -458,6 +459,20 @@ function thumbnailBodyContainer(element, content) {
     thumbnailBodyEl.classList.add("thumbnailBodyContainer");
     thumbnailBodyEl.append(element);
     bodyEl.append(thumbnailBodyEl);
+}
+
+function handlerFileRemove() {
+    fileEmpty.addEventListener("click", () => {
+        const bodyThumbnail = document.querySelector(".thumbnailBodyContainer");
+
+        if (bodyThumbnail.childNodes.length > 0) {
+            for (let i = 0; i < bodyThumbnail.children.length; i++) {
+                bodyThumbnail.remove();
+            }
+        } else {
+            return;
+        }
+    });
 }
 
 /**
@@ -491,20 +506,31 @@ function handlerFileListCtrlDisable() {
  * File Data 객체 초기화 함수
  */
 
-function fileDataInit(name, size, type, uid) {
+function fileDataInit(
+    channel,
+    name,
+    size,
+    type,
+    typeNumber,
+    uid,
+    element,
+    bufferSize,
+    buffer,
+    content
+) {
     let data = {
+        channel: channel,
         fileName: name,
         fileSize: size,
         fileType: type,
+        fileTypeNumber: typeNumber,
         fileUid: uid,
+        fileElement: element,
+        fileBuffer: buffer,
+        fileBufferSize: bufferSize,
+        fileContent: content,
         peerID: options.uid,
     };
-
-    // data.fileName = name;
-    // data.fileSize = size;
-    // data.fileType = type;
-    // data.fileUid = uid;
-    // data.peerID = options.uid;
 
     return data;
 }

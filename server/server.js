@@ -240,6 +240,7 @@ io.sockets.on("connect", (socket) => {
     // });
 
     socket.on("file-meta", (data) => {
+        console.log(data);
         //broadcast 동일하게 가능 자신 제외 룸안의 유저
         socket.in(data.channel).emit("fs-meta", data);
     });

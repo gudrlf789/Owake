@@ -1,3 +1,5 @@
+import { localTracks } from "../../rtcClient.js";
+
 /**
  * @author 전형동
  * @date 2022 03 10
@@ -9,199 +11,187 @@
  * 2. 카메라 스위치 기능 추가  / cameraSwitchFunc
  */
 
+// Select DOM
+const deviceSettingBtn = document.getElementById("deviceSettingBtn");
+const cameraSwitchBtn = document.querySelector("#camera-switching");
+const dropdownItem = document.querySelector(".dropdown-item");
 
+let mics = []; // all microphones devices you can use
+let cams = []; // all cameras devices you can use
+let currentMic; // the microphone you are using
+let currentCam; // the camera you are using
+let volumeAnimation;
+let videoBox;
+let cameraSwitchActive = false;
+
+/**
+ * 2022 02 25
+ * Video Resolution List
+ */
+let videoProfiles = [
+    {
+        label: "480p_2",
+        detail: "640×480, 30fps, 1000Kbps",
+        value: "480p_2",
+    },
+    {
+        label: "720p_1",
+        detail: "1280×720, 15fps, 1130Kbps",
+        value: "720p_1",
+    },
+    {
+        label: "720p_2",
+        detail: "1280×720, 30fps, 2000Kbps",
+        value: "720p_2",
+    },
+    {
+        label: "1080p_1",
+        detail: "1920×1080, 15fps, 2080Kbps",
+        value: "1080p_1",
+    },
+    {
+        label: "1080p_2",
+        detail: "1920×1080, 30fps, 3000Kbps",
+        value: "1080p_2",
+    },
+    {
+        label: "200×640",
+        detail: "200×640, 30fps",
+        value: { width: 200, height: 640, frameRate: 30 },
+    }, // custom video profile
+];
+
+let curVideoProfile;
 
 export const recodingDeviceCtrl = () => {
-    // Select DOM
-    const deviceSettingBtn = document.getElementById("deviceSettingBtn");
-    const cameraSwitchBtn = document.querySelector("#camera-switching");
-    const dropdownItem = document.querySelector(".dropdown-item");
+    getDeviceFunc();
+    cameraSwitchFunc();
+    videoResolutionCtrlFunc();
 
-    let mics = []; // all microphones devices you can use
-    let cams = []; // all cameras devices you can use
-    let currentMic; // the microphone you are using
-    let currentCam; // the camera you are using
-    let volumeAnimation;
-    let videoBox;
-    let cameraSwitchActive = false;
+    $("#deviceSettingModal").on("hidden.bs.modal", function (e) {
+        cancelAnimationFrame(volumeAnimation);
+    });
 
-    /**
-     * 2022 02 25
-     * Video Resolution List
-     */
-    let videoProfiles = [
-        { label: "480p_1", detail: "640×480, 15fps, 500Kbps", value: "480p_1" },
-        {
-            label: "480p_2",
-            detail: "640×480, 30fps, 1000Kbps",
-            value: "480p_2",
-        },
-        {
-            label: "720p_1",
-            detail: "1280×720, 15fps, 1130Kbps",
-            value: "720p_1",
-        },
-        {
-            label: "720p_2",
-            detail: "1280×720, 30fps, 2000Kbps",
-            value: "720p_2",
-        },
-        {
-            label: "1080p_1",
-            detail: "1920×1080, 15fps, 2080Kbps",
-            value: "1080p_1",
-        },
-        {
-            label: "1080p_2",
-            detail: "1920×1080, 30fps, 3000Kbps",
-            value: "1080p_2",
-        },
-        {
-            label: "200×640",
-            detail: "200×640, 30fps",
-            value: { width: 200, height: 640, frameRate: 30 },
-        }, // custom video profile
-    ];
-
-    let curVideoProfile;
-
-    (function () {
-        deviceSettingFunc();
-        cameraSwitchFunc();
-        videoResolutionCtrlFunc();
-    })();
-
-    function deviceSettingFunc() {
-        $(async () => {
-            // get mics
-            mics = await AgoraRTC.getMicrophones();
-            currentMic = mics[0];
-            $(".mic-input").val(currentMic.label);
-            mics.forEach((mic) => {
-                $(".mic-list").append(
-                    `<a class="dropdown-item">${mic.label}</a>`
-                );
-            });
-
-            // get cameras
-            cams = await AgoraRTC.getCameras();
-            currentCam = cams[0];
-            $(".cam-input").val(currentCam.label);
-            cams.forEach((cam) => {
-                $(".cam-list").append(
-                    `<a class="dropdown-item">${cam.label}</a>`
-                );
-            });
-        });
-
-        deviceSettingBtn.addEventListener("click", async (e) => {
-            videoBox = document.querySelector("#local__videoBox");
-            $(".cam-list").delegate("a", "click", function (e) {
-                e.preventDefault();
-                if (
-                    this.text.includes("back") ||
-                    this.text.includes("camera2 0")
-                ) {
-                    switchCamera(this.text);
-                    setTimeout(() => {
-                        videoBox.childNodes[0].childNodes[0].style.setProperty(
-                            "transform",
-                            "rotateY(0deg)"
-                        );
-                    }, 3000);
-                } else {
-                    switchCamera(this.text);
-                }
-            });
-            $(".mic-list").delegate("a", "click", function (e) {
-                e.preventDefault();
-                switchMicrophone(this.text);
-            });
-            volumeAnimation = requestAnimationFrame(setVolumeWave);
-        });
-
-        $("#deviceSettingModal").on("hidden.bs.modal", function (e) {
-            cancelAnimationFrame(volumeAnimation);
-        });
-
-        async function switchCamera(label) {
-            currentCam = cams.find((cam) => cam.label === label);
-            $(".cam-input").val(currentCam.label);
-            // switch device of local video track.
-            await localTracks.videoTrack.setDevice(currentCam.deviceId);
-        }
-
-        async function switchMicrophone(label) {
-            currentMic = mics.find((mic) => mic.label === label);
-            $(".mic-input").val(currentMic.label);
-            // switch device of local audio track.
-            await localTracks.audioTrack.setDevice(currentMic.deviceId);
-        }
-
-        // show real-time volume while adjusting device.
-        function setVolumeWave() {
-            volumeAnimation = requestAnimationFrame(setVolumeWave);
-            $(".progress-bar").css(
-                "width",
-                localTracks.audioTrack.getVolumeLevel() * 100 + "%"
-            );
-            $(".progress-bar").attr(
-                "aria-valuenow",
-                localTracks.audioTrack.getVolumeLevel() * 100
-            );
-        }
-    }
-
-    function cameraSwitchFunc() {
-        cameraSwitchBtn.addEventListener("click", () => {
-            cameraSwitchActive = !cameraSwitchActive;
-            cameraSwitchActive ? cameraSwitchEnable() : cameraSwitchDisable();
-        });
-    }
-
-    function cameraSwitchEnable() {
-        videoBox = document.querySelector("#local__videoBox");
-        videoBox.childNodes[0].childNodes[0].style.setProperty(
-            "transform",
-            "rotateY(0deg)"
-        );
-    }
-
-    function cameraSwitchDisable() {
-        videoBox = document.querySelector("#local__videoBox");
-        videoBox.childNodes[0].childNodes[0].style.setProperty(
-            "transform",
-            "rotateY(180deg)"
-        );
-    }
-
-    function videoResolutionCtrlFunc() {
-        initVideoProfiles();
-        $("#video-profile-list").delegate("a", "click", function (e) {
-            changeVideoProfile(this.getAttribute("label"));
-        });
-    }
-
-    function initVideoProfiles() {
-        videoProfiles.forEach((profile) => {
-            $("#video-profile-list").append(
-                `<a class="dropdown-item" label="${profile.label}">${profile.label}: ${profile.detail}</a>`
-            );
-        });
-
-        curVideoProfile = videoProfiles[0];
-        $("#video-profile-input").val(`${curVideoProfile.detail}`);
-    }
-
-    async function changeVideoProfile(label) {
-        curVideoProfile = videoProfiles.find(
-            (profile) => profile.label === label
-        );
-        $("#video-profile-input").val(`${curVideoProfile.detail}`);
-        // change the local video track`s encoder configuration
-        localTracks.videoTrack &&
-            (await localTracks.videoTrack.setEncoderConfiguration(
-                curVideoProfile.value
-            ));
-    }
+    deviceSettingBtn.addEventListener("click", handlerDeviceSetting);
 };
+
+function getDeviceFunc() {
+    $(async () => {
+        // get mics
+        mics = await AgoraRTC.getMicrophones();
+        currentMic = mics[0];
+        $(".mic-input").val(currentMic.label);
+        mics.forEach((mic) => {
+            $(".mic-list").append(`<a class="dropdown-item">${mic.label}</a>`);
+        });
+
+        // get cameras
+        cams = await AgoraRTC.getCameras();
+        currentCam = cams[0];
+        $(".cam-input").val(currentCam.label);
+        cams.forEach((cam) => {
+            $(".cam-list").append(`<a class="dropdown-item">${cam.label}</a>`);
+        });
+    });
+}
+
+async function handlerDeviceSetting() {
+    videoBox = document.querySelector("#local__videoBox");
+    $(".cam-list").delegate("a", "click", (e) => {
+        e.preventDefault();
+        if (this.text.includes("back") || this.text.includes("camera2 0")) {
+            switchCamera(this.text);
+            setTimeout(() => {
+                videoBox.childNodes[0].childNodes[0].style.setProperty(
+                    "transform",
+                    "rotateY(0deg)"
+                );
+            }, 3000);
+        } else {
+            switchCamera(this.text);
+        }
+    });
+    $(".mic-list").delegate("a", "click", function (e) {
+        e.preventDefault();
+        switchMicrophone(this.text);
+    });
+    volumeAnimation = requestAnimationFrame(setVolumeWave);
+}
+
+async function switchCamera(label) {
+    currentCam = cams.find((cam) => cam.label === label);
+    $(".cam-input").val(currentCam.label);
+    // switch device of local video track.
+    await localTracks.videoTrack.setDevice(currentCam.deviceId);
+}
+
+async function switchMicrophone(label) {
+    currentMic = mics.find((mic) => mic.label === label);
+    $(".mic-input").val(currentMic.label);
+    // switch device of local audio track.
+    await localTracks.audioTrack.setDevice(currentMic.deviceId);
+}
+
+// show real-time volume while adjusting device.
+function setVolumeWave() {
+    volumeAnimation = requestAnimationFrame(setVolumeWave);
+    $(".progress-bar").css(
+        "width",
+        localTracks.audioTrack.getVolumeLevel() * 100 + "%"
+    );
+    $(".progress-bar").attr(
+        "aria-valuenow",
+        localTracks.audioTrack.getVolumeLevel() * 100
+    );
+}
+
+function cameraSwitchFunc() {
+    cameraSwitchBtn.addEventListener("click", () => {
+        cameraSwitchActive = !cameraSwitchActive;
+        cameraSwitchActive ? cameraSwitchEnable() : cameraSwitchDisable();
+    });
+}
+
+function cameraSwitchEnable() {
+    videoBox = document.querySelector("#local__videoBox");
+    videoBox.childNodes[0].childNodes[0].style.setProperty(
+        "transform",
+        "rotateY(0deg)"
+    );
+}
+
+function cameraSwitchDisable() {
+    videoBox = document.querySelector("#local__videoBox");
+    videoBox.childNodes[0].childNodes[0].style.setProperty(
+        "transform",
+        "rotateY(180deg)"
+    );
+}
+
+function videoResolutionCtrlFunc() {
+    initVideoProfiles();
+    $("#video-profile-list").delegate("a", "click", function (e) {
+        changeVideoProfile(this.getAttribute("label"));
+    });
+}
+
+function initVideoProfiles() {
+    videoProfiles.forEach((profile) => {
+        $("#video-profile-list").append(
+            `<a class="dropdown-item" label="${profile.label}">${profile.label}: ${profile.detail}</a>`
+        );
+    });
+
+    curVideoProfile = videoProfiles[0];
+    $("#video-profile-input").val(`${curVideoProfile.detail}`);
+}
+
+async function changeVideoProfile(label) {
+    curVideoProfile = videoProfiles.find((profile) => profile.label === label);
+    $("#video-profile-input").val(`${curVideoProfile.detail}`);
+    // change the local video track`s encoder configuration
+    localTracks.videoTrack &&
+        (await localTracks.videoTrack.setEncoderConfiguration(
+            curVideoProfile.value
+        ));
+}

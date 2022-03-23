@@ -38,6 +38,8 @@ let MicrophoneAudioTrackInitConfig = {
     },
 };
 
+let trackName;
+
 $(async () => {
     // 새로고침시에 세션스토리지에 값이 저장되었는지 확인 후
     // 값이 존재하면 해당 채널, uid  값으로 재접속
@@ -137,7 +139,7 @@ async function join() {
 
 async function leave() {
     for (trackName in localTracks) {
-        var track = localTracks[trackName];
+        let track = localTracks[trackName];
         if (track) {
             track.stop();
             track.close();
