@@ -14,7 +14,7 @@
 import { socketInitFunc } from "./parts/channel/socket.js";
 
 const socket = socketInitFunc();
-const localVideoBox = document.createElement("div");
+export const localVideoBox = document.createElement("div");
 const localVideoContainer = document.querySelector("#local__video__container");
 const selectVideo = document.querySelector("video");
 localVideoBox.id = "local__videoBox";

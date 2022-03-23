@@ -1,3 +1,5 @@
+import { totalUsers, localVideoBox } from "../../rtcClient.js";
+
 /**
  * @author 전형동
  * @date 2022 03 10
@@ -120,7 +122,6 @@ function gridViewDisable() {
 
 function scrapsBoxRemove() {
     let liLength;
-
     if (gridContainer.childNodes) {
         for (let i = 0; i < gridContainer.childNodes.length; i++) {
             liLength = gridContainer.childNodes[i];
