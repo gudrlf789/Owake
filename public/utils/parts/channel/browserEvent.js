@@ -14,16 +14,15 @@ function browserClose() {
      * 유저 이름을 DB에서 삭제하는 기능이 추가로 필요하다
      */
     window.addEventListener("beforeunload", (e) => {
-        if(window.sessionStorage.length > 0){
+        if (window.sessionStorage.length > 0) {
             const reqData = {
                 channelType: window.sessionStorage.getItem("channelType"),
                 channelName: window.sessionStorage.getItem("channel"),
-                userId: window.sessionStorage.getItem("uid")
+                userId: window.sessionStorage.getItem("uid"),
             };
-        
-            axios.post("/channel/removeUserNameOnChannel", reqData).then((res) => {
-                
-            });
+            axios
+                .post("/channel/removeUserNameOnChannel", reqData)
+                .then((res) => {});
         }
         sessionStorage.clear();
     });
