@@ -1,3 +1,16 @@
+/**
+ * @author 전형동
+ * @version 1.1
+ * @data 2022 03.24
+ * @description
+ * --------------- 수정사항 ---------------
+ * 1. 트랙 중복되는 현상은 오디오 트랙이 원인으로 추정됨.
+ * 해당 함수는 주석처리함 // 197번째 줄
+ * 2. 레이아웃 그리드 기능 추가
+ * 3. 카메라 스위칭 기능 추가 // cameraSwitchEnableFunc
+ * 4. 카메라 위치반전 기능 추가 // videoTransformAction
+ */
+
 import { socketInitFunc } from "./parts/channel/socket.js";
 
 const socket = socketInitFunc();
@@ -21,7 +34,7 @@ export let localTracks = {
 
 export let totalUsers = {};
 export let options = {
-    appid: "4343e4c08654493cb8997de783a9aaeb",
+    appid: appID,
     channel: null,
     uid: null,
     token: null,
@@ -37,8 +50,6 @@ let MicrophoneAudioTrackInitConfig = {
         bitrate: 128,
     },
 };
-
-let trackName;
 
 $(async () => {
     // 새로고침시에 세션스토리지에 값이 저장되었는지 확인 후
@@ -138,6 +149,7 @@ async function join() {
 }
 
 async function leave() {
+    let trackName;
     for (trackName in localTracks) {
         let track = localTracks[trackName];
         if (track) {

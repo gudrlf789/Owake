@@ -21,7 +21,6 @@ f12defense();
 fileDelivery();
 fileShare();
 momentShareFunc();
-muteUtilsFunc();
 optionsBtn();
 recodingDeviceCtrl();
 remoteDisplay();
@@ -32,4 +31,5 @@ responsiveFunc();
 copyInfo();
 browserEvent();
 gridView();
+muteUtilsFunc();
 // shareEditerFunc();--------------------- 서버에 올리면 Lisence 문제로 사용 불가능 구매해야 됨.

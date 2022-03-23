@@ -92,12 +92,11 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/:channelName/:channelType", (req, res) => {
-    channelUrl = req.params.channelName;
-    channelUrlType = req.params.channelType;
-
+    let appID = "4343e4c08654493cb8997de783a9aaeb";
     res.render("channel", {
         channelName: req.params.channelName,
         channelType: req.params.channelType,
+        appID,
     });
 });
 

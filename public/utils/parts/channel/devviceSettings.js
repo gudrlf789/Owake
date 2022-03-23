@@ -2,13 +2,16 @@ import { localTracks } from "../../rtcClient.js";
 
 /**
  * @author 전형동
- * @date 2022 03 10
+ * @date 2022 03 24
+ * @version 1.1
  * @description
  * 디바이스 셋팅
  *
  * ---------------- 수정사항 ---------------
- * 1. 비디오 프로필 기능 추가  / videoResolutionCtrlFunc
- * 2. 카메라 스위치 기능 추가  / cameraSwitchFunc
+ * 1. 함수위치 수정
+ * 2. 소리 안들리는 내용 수정
+ * 3. lcalTracks 변수를 rtcClient.js에서 가져왔음.
+ * 4. videoProfiles 객체에서 480p_1 제거
  */
 
 // Select DOM
