@@ -44,18 +44,6 @@
 
                     userNameSession = window.prompt("Please enter your name.");
 
-                    // checkSocket.emit(
-                    //     "users",
-                    //     (params = { user: userNameSession, channel: channelSession })
-                    // );
-
-                    // axios.get(`/userCheck?user=${userNameSession}`).then(res => {
-                    //     if (res.data) {
-                    //         alert(res.data);
-                    //         window.location.href = "/";
-                    //     }
-                    // });
-
                     window.sessionStorage.setItem("uid", userNameSession);
 
                     axios.post("/channel/info", reqData).then((res) => {

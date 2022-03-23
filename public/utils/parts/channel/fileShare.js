@@ -137,6 +137,11 @@ function fileShareActionEnable(e) {
     handlerFileListCtrl();
     handlerFileRemove();
     shareReceiveFile();
+
+    // Recevie Progress
+    fileShareSocket.on("fs-progress", (progress) => {
+        progressEl.value = progress;
+    });
 }
 
 function fileShareActionDisable(e) {
@@ -319,11 +324,6 @@ function readFileProgress(reader) {
     };
 }
 
-// Recevie Progress
-fileShareSocket.on("fs-progress", (progress) => {
-    progressEl.value = progress;
-});
-
 function shareFile(metadata) {
     fileShareSocket.emit("file-meta", metadata);
 }
@@ -409,11 +409,12 @@ function receiveDataElement(element, content, uid, peer) {
 function selectFileAction() {
     $(document).on("click", ".fileTab", (e) => {
         e.stopImmediatePropagation();
-        let element = e.target;
-        let url = element.src;
-        thumbnailBodyContainer(element, url);
-        const fileTab = document.querySelector(".fileTab");
+        const element = e.target;
+        const url = element.src;
 
+        thumbnailBodyContainer(element, url);
+
+        const fileTab = document.querySelector(".fileTab");
         for (let i = 0; i < fileTab.length; i++) {
             if (fileTab.childNodes.length === 0) {
                 fileTab.remove();
@@ -425,13 +426,16 @@ function selectFileAction() {
 function handlerFileRemove() {
     fileEmpty.addEventListener("click", () => {
         const bodyThumbnail = document.querySelector(".thumbnailBodyContainer");
+        const fileShareBody = document.querySelector("#fileShareBody");
 
-        if (bodyThumbnail.childNodes.length > 0) {
-            for (let i = 0; i < bodyThumbnail.children.length; i++) {
-                bodyThumbnail.remove();
+        if (fileShareBody.childNodes.length > 1) {
+            if (bodyThumbnail.childNodes.length > 0) {
+                for (let i = 0; i < bodyThumbnail.children.length; i++) {
+                    bodyThumbnail.remove();
+                }
+            } else {
+                return;
             }
-        } else {
-            return;
         }
     });
 }
@@ -499,12 +503,6 @@ function fileDataInit(name, size, type, uid) {
         fileUid: uid,
         peerID: options.uid,
     };
-
-    // data.fileName = name;
-    // data.fileSize = size;
-    // data.fileType = type;
-    // data.fileUid = uid;
-    // data.peerID = options.uid;
 
     return data;
 }

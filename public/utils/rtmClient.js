@@ -30,16 +30,9 @@ let rtmClient = AgoraRTM.createInstance(options.appid);
  * 같은 아이디로 리모트에서 로그인을 하면 로그인 되어있는 클라이언트는 튕긴다.
  */
 // RTM State Log....
-// rtmClient.on("ConnectionStateChanged", (newState, reason) => {
 rtmClient.on("ConnectionStateChanged", (newState, reason) => {
-    console.log(
-        `:::::::::::::::::::::${newState} | ${reason}::::::::::::::::::::`
-    );
     if (reason === "REMOTE_LOGIN" || newState === "ABORTED") {
-        alert(
-            "Another client connected with the same ID and the connection was lost."
-        );
-        window.location.href = "/";
+        alert("Someone tried to connect with the same ID.");
     }
 });
 
@@ -80,10 +73,6 @@ async function joinRtm() {
         messageList.append(messageArea);
     });
 }
-
-// document.getElementById("join").onclick = async function () {
-//     await joinRtm();
-// };
 
 if (
     document.getElementById("channelJoin-btn") ||

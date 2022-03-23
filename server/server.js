@@ -100,20 +100,6 @@ app.get("/:channelName/:channelType", (req, res) => {
     });
 });
 
-// app.get("/userCheck", (req, res) => {
-//     userList.push(req.query);
-//     for (let i = 0; i < userList.length; i++) {
-//         console.log(userList[i], req.query);
-//         if (userList[i] === req.query || userList[i] == req.query) {
-//             res.write(
-//                 "A user with the same name exists. Please change your nickname to another one."
-//             );
-//             res.end();
-//             return;
-//         }
-//     }
-// });
-
 app.get("/all", (req, res, next) => {
     res.render("all");
 });
@@ -191,16 +177,6 @@ io.sockets.on("connect", (socket) => {
         socket.channels[channel] = channel;
     });
 
-    // socket.on("users", (data) => {
-    //     userList.push(data.user);
-    //     if (userList.length !== 0) {
-    //         console.log(userList);
-    //         const result = isDuplicate(userList, data.user);
-    //         console.log("User 중복체크 상태 : ", result);
-    //         socket.to(data.channel).emit("userIsDuplicate", result);
-    //     }
-    // });
-
     socket.on("join-web", (channelName) => {
         socket.join(channelName);
     });
@@ -232,11 +208,6 @@ io.sockets.on("connect", (socket) => {
     socket.on("leave-fileShare", (channelName) => {
         socket.leave(channelName);
     });
-
-    // socket.on("fileShare", (channel, element, data, type) => {
-    //     //broadcast 동일하게 가능 자신 제외 룸안의 유저
-    //     socket.in(channel).emit("send-fileShare", element, data, type);
-    // });
 
     socket.on("file-meta", (data) => {
         console.log(data);
