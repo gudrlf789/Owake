@@ -409,6 +409,7 @@ function receiveDataElement(element, content, uid, peer) {
 function selectFileAction() {
     $(document).on("click", ".fileTab", (e) => {
         e.stopImmediatePropagation();
+
         const element = e.target;
         const url = element.src;
 

@@ -31,6 +31,7 @@
                 let channelSession = window.sessionStorage.getItem('channel');
                 let userNameSession = window.sessionStorage.getItem('uid');
                 const channelType = '<%= channelType %>';
+                const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
                 if (channelSession === null) {
                     channelSession = '<%= channelName %>';

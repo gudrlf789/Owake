@@ -266,8 +266,8 @@ function handleConnect() {
     let myPeerId = socket.id;
     console.log("My peer id [ " + myPeerId + " ]");
 
-    let userList = Object.keys(totalUsers);
-    console.log("Connected user list ", userList);
+    // let userList = Object.keys(totalUsers);
+    // console.log("Connected user list ", userList);
 
     joinToChannel();
 }
