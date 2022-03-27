@@ -219,6 +219,10 @@ io.sockets.on("connect", (socket) => {
         socket.in(channel).emit("fs-progress", progress);
     });
 
+    socket.on("file-receiver", (data) => {
+        socket.in(data.channel).emit("file-send", data.state, data.uid, data.peer);
+    });
+
     /**
      * Remove peers from channel aka room
      * @param {*} channel

@@ -57,7 +57,10 @@
     height: 130px;
 }
 
-#fileList > span > * {
+#fileList > span > img,
+video,
+textarea,
+audio {
     min-width: 100%;
     min-height: 100%;
 }
@@ -65,6 +68,29 @@
 .thumbnail {
     border: 1px solid #000;
     margin: 10px 5px 0 0;
+}
+
+.fileTabState {
+    width: 2em;
+    height: 2em;
+    position: absolute;
+    border-radius: 20px;
+    right: 0.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #000;
+    cursor: pointer;
+}
+
+.fileTabState:hover {
+    color: #285881;
+    background: grey;
+}
+
+.thumbnailBodyContainer > * {
+    width : 100%;
 }
 
 /* Chrome, Safari, Edge, Opera */

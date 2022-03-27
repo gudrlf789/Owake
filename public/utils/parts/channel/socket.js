@@ -8,6 +8,6 @@
  */
 
 export const socketInitFunc = () => {
-    const socket = io("/");
+    const socket = io.connect("/");
     return socket;
 };

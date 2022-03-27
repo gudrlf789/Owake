@@ -133,7 +133,6 @@ function fileShareActionEnable(e) {
     fileShareSocket.emit("join-fileShare", channel);
 
     fileReadAction();
-    selectFileAction();
     handlerFileListCtrl();
     handlerFileRemove();
     shareReceiveFile();
@@ -200,6 +199,7 @@ function fileInputControlChangeEventHandler(e) {
             file.type.includes("html") ||
             file.type.includes("js") ||
             file.type.includes("ejs") ||
+            file.type.includes("json") ||
             file.type.includes("css");
 
         let imageTypeCheck =
@@ -331,19 +331,9 @@ function shareFile(metadata) {
 function shareReceiveFile() {
     fileShareSocket.on("fs-meta", (data) => {
         if (data.buffer) {
-            receiveDataElement(
-                data.element,
-                data.buffer,
-                data.uid,
-                data.peerID
-            );
+            receiveDataElement(data.element, data.buffer, data.uid, data.peer);
         } else if (data.content) {
-            receiveDataElement(
-                data.element,
-                data.content,
-                data.uid,
-                data.peerID
-            );
+            receiveDataElement(data.element, data.content, data.uid, data.peer);
         } else {
             return;
         }
@@ -364,40 +354,36 @@ function receiveDataElement(element, content, uid, peer) {
     bodyEl.append(fileTabList);
     spanEl = document.createElement("span");
     spanEl.classList.add("fileTab");
-    const containerWidth = document.querySelector(
-        ".fileShareContainer"
-    ).offsetWidth;
-    const containerHeight = document.querySelector(
-        ".fileShareContainer"
-    ).offsetHeight;
-
-    const contentsWidth = containerWidth / 1.4 + "px";
-    const contentsHeight = containerHeight / 1.4 + "px";
 
     if (element === "textarea") {
         spanEl.innerHTML = [
-            `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth}; height: ${contentsHeight};">${content}</${element}>`,
+            `<${element} class="thumbnail ${uid} send-${peer}">${content}</${element}>`,
         ].join("");
         fileTabList.insertBefore(spanEl, null);
     } else if (element === "img") {
         spanEl.innerHTML = [
-            `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth};" src="${url}"/>`,
+            `<${element} class="thumbnail ${uid} send-${peer}" src="${url}"/>`,
         ].join("");
         fileTabList.insertBefore(spanEl, null);
     } else if (element === "video") {
         spanEl.innerHTML = [
-            `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth};" src="${url}"/>`,
+            `<${element} class="thumbnail ${uid} send-${peer}" src="${url}"/>`,
         ].join("");
         fileTabList.insertBefore(spanEl, null);
     } else if (element === "audio") {
+        spanEl.classList.add("fas", "fa-file-audio");
+        spanEl.style.setProperty("font-size", "6vw");
+        spanEl.style.setProperty("text-align", "center");
         spanEl.innerHTML = [
-            `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth};" src="${url}"/>`,
+            `<${element} class="thumbnail ${uid} send-${peer}" src="${url}"/>`,
         ].join("");
         fileTabList.insertBefore(spanEl, null);
     } else {
         return;
     }
     window.URL.revokeObjectURL(element.src);
+
+    selectFileAction(uid);
 }
 
 /**
@@ -406,22 +392,105 @@ function receiveDataElement(element, content, uid, peer) {
  * @description
  * FileTab Click Event
  */
-function selectFileAction() {
-    $(document).on("click", ".fileTab", (e) => {
-        e.stopImmediatePropagation();
+function selectFileAction(uid) {
+    let receiverState = false;
 
-        const element = e.target;
-        const url = element.src;
+    const thumbnail = document.querySelector(".thumbnail");
+    if (thumbnail) {
+        $(document).on("click", `.${uid}`, (e) => {
+            // thumbnail.addEventListener("click", (e) => {
+            const fileTab = document.querySelector(".fileTab");
+            const fileList = document.querySelector("#fileList");
 
-        thumbnailBodyContainer(element, url);
+            let element;
+            let url;
 
-        const fileTab = document.querySelector(".fileTab");
-        for (let i = 0; i < fileTab.length; i++) {
-            if (fileTab.childNodes.length === 0) {
-                fileTab.remove();
+            if (e.target.children.length > 0) {
+                element = e.target.children[0];
+                url = element.src;
+            } else {
+                element = e.target;
+                url = element.src;
             }
-        }
+
+            const copyElement = element.cloneNode();
+
+            receiverState = true;
+
+            // const receiverPeerID = document.createElement("p");
+            // receiverPeerID.textContent = options.uid;
+
+            // receiverPeerID.style.setProperty("position", "absolute");
+            // receiverPeerID.style.setProperty("display", "flex");
+            // receiverPeerID.style.setProperty("align-items", "center");
+            // receiverPeerID.style.setProperty("justify-content", "center");
+            // receiverPeerID.style.setProperty("background", "#1d2635");
+            // receiverPeerID.style.setProperty("border-radius", "2em");
+            // receiverPeerID.style.setProperty("width", "100px");
+            // receiverPeerID.style.setProperty("height", "2em");
+            // receiverPeerID.style.setProperty("text-align", "center");
+            // receiverPeerID.style.setProperty("color", "#fff");
+
+            fileShareSocket.emit("file-receiver", {
+                state: receiverState,
+                channel: channel,
+                uid: uid,
+                peer: options.uid,
+            });
+
+            thumbnailBodyContainer(element, url);
+
+            for (let i = 0; i < fileList.childNodes.length; i++) {
+                if (fileList.childNodes[i].childElementCount < 1) {
+                    fileTab.remove();
+                }
+            }
+        });
+    }
+}
+
+fileShareSocket.on("file-send", (state, uid, peer) => {
+    let stateActivate = false;
+    if (state === true) {
+        const fileTabState = document.createElement("span");
+        //  자바스크립트 selectr로는 클래스 uid를 잡을 수 없음 다른 방안을 생각해봐야 될듯...
+        const selectFile = $(`.${uid}`);
+
+        fileTabState.className = "fileTabState";
+        fileTabState.classList.add("fas", "fa-user-check");
+
+        selectFile.parent().append(fileTabState);
+
+        fileTabStateFunc(fileTabState, stateActivate, peer);
+    }
+});
+
+function fileTabStateFunc(fileTab, state, peer) {
+    fileTab.addEventListener("click", (e) => {
+        state = !state;
+        const fileStateWindow = document.createElement("div");
+        const fileShareBody = document.querySelector("#fileShareBody");
+        fileStateWindow.id = "fileStateWindow";
+
+        fileStateWindow.style.setProperty("width", "200px");
+        fileStateWindow.style.setProperty("height", "200px");
+        fileStateWindow.style.setProperty("border", "1px solid #000");
+
+        fileStateWindow.textContent = peer;
+
+        state
+            ? fileTabStateEnable(fileShareBody, fileStateWindow)
+            : fileTabStateDisable();
     });
+}
+
+function fileTabStateEnable(body, state) {
+    body.append(state);
+}
+
+function fileTabStateDisable() {
+    const fileStateWindow = document.querySelector("#fileStateWindow");
+    fileStateWindow.remove();
 }
 
 function handlerFileRemove() {
@@ -453,14 +522,25 @@ function thumbnailBodyContainer(element, content) {
     element.controls = true;
 
     const thumbnailBodyEl = document.createElement("section");
+    thumbnailBodyEl.classList.add("thumbnailBodyContainer");
     const selectFileShareContainer = document.querySelector(
         ".fileShare-contentBox"
     );
 
-    let width = localContainer.offsetWidth + "px";
+    const containerWidth = document.querySelector(
+        ".fileShareContainer"
+    ).offsetWidth;
+    const containerHeight = document.querySelector(
+        ".fileShareContainer"
+    ).offsetHeight;
 
-    selectFileShareContainer.style.setProperty("width", width);
-    thumbnailBodyEl.classList.add("thumbnailBodyContainer");
+    const contentsWidth = containerWidth / 1.4 + "px";
+    const contentsHeight = containerHeight / 1.4 + "px";
+
+    // let width = localContainer.offsetWidth + "px";
+
+    thumbnailBodyEl.style.setProperty("width", `${contentsWidth}`);
+
     thumbnailBodyEl.append(element);
     bodyEl.append(thumbnailBodyEl);
 }
