@@ -1,4 +1,5 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+@import url("https://unpkg.com/swiper/swiper-bundle.min.css");
 @import "./channel/momentShare.css";
 @import "./channel/chat.css";
 @import "./lib/bootstrap.min.css";
@@ -6,6 +7,7 @@
 @import "./channel/fileShare.css";
 @import "./channel/gridView.css";
 @import "./channel/shareEditer.css";
+@import "./channel/swiper.css";
 
 @font-face {
     font-family: "NEXON Lv2 Gothic";
