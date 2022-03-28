@@ -28,6 +28,9 @@ import { options } from "../../rtcClient.js";
  * 3. fileDataInit 함수 추가
  * 4. socket progress 적용
  * 5. file 객체에 PeerID 적용 / 파일이 누구의 것인지 체크
+ * ---------------- 3.28 수정사항 ---------------
+ * 1. 탭 클릭 시 클릭한 사람이 업로더라면 State 전송 안되게 수정.
+ * 2. 바디에 컨텐츠가 넘어갔을 때 남아있는 탭 찌꺼기 제거
  */
 
 export const fileShare = () => {
@@ -398,17 +401,14 @@ function selectFileAction(uid) {
     const thumbnail = document.querySelector(".thumbnail");
     if (thumbnail) {
         $(document).on("click", `.${uid}`, (e) => {
-            // thumbnail.addEventListener("click", (e) => {
-            const fileTab = document.querySelector(".fileTab");
-            const fileList = document.querySelector("#fileList");
+            let clickPeer = e.target.classList[2].substr(5);
 
             let element;
             let url;
 
-            if (e.target.children.length > 0) {
-                element = e.target.children[0];
-                url = element.src;
-            } else {
+            console.log(e.target.tagName);
+
+            if (e.target.tagName !== "SPAN") {
                 element = e.target;
                 url = element.src;
             }
@@ -436,22 +436,19 @@ function selectFileAction(uid) {
                 channel: channel,
                 uid: uid,
                 peer: options.uid,
+                receiverCheck: clickPeer,
             });
 
             thumbnailBodyContainer(element, url);
-
-            for (let i = 0; i < fileList.childNodes.length; i++) {
-                if (fileList.childNodes[i].childElementCount < 1) {
-                    fileTab.remove();
-                }
-            }
         });
     }
 }
 
-fileShareSocket.on("file-send", (state, uid, peer) => {
+fileShareSocket.on("file-send", (state, uid, peer, receiver) => {
     let stateActivate = false;
-    if (state === true) {
+    // 클릭한 유저와 컨텐츠 주인이 같지 않을 때만 State가 보인다.
+    console.log(peer, receiver);
+    if (state === true && peer !== receiver) {
         const fileTabState = document.createElement("span");
         //  자바스크립트 selectr로는 클래스 uid를 잡을 수 없음 다른 방안을 생각해봐야 될듯...
         const selectFile = $(`.${uid}`);
@@ -510,6 +507,22 @@ function handlerFileRemove() {
     });
 }
 
+function handlerFileTabRemove() {
+    const fileTab = document.querySelector(".fileTab");
+    const fileList = document.querySelector("#fileList");
+
+    for (let i = 0; i < fileList.childNodes.length; i++) {
+        if (fileList.childNodes[i].childElementCount < 1) {
+            fileTab.remove();
+        }
+        for (let k = 0; k < fileList.childNodes[i].childNodes.length; k++) {
+            if (fileList.childNodes[i].childNodes[k].tagName !== "IMG") {
+                fileTab.remove();
+            }
+        }
+    }
+}
+
 /**
  * @anthor 전형동
  * @data 2022 02 28
@@ -543,6 +556,8 @@ function thumbnailBodyContainer(element, content) {
 
     thumbnailBodyEl.append(element);
     bodyEl.append(thumbnailBodyEl);
+
+    handlerFileTabRemove();
 }
 
 /**
