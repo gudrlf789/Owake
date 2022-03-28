@@ -31,6 +31,7 @@ import { options } from "../../rtcClient.js";
  * ---------------- 3.28 수정사항 ---------------
  * 1. 탭 클릭 시 클릭한 사람이 업로더라면 State 전송 안되게 수정.
  * 2. 바디에 컨텐츠가 넘어갔을 때 남아있는 탭 찌꺼기 제거
+ * 3. Swiper 추가
  */
 
 export const fileShare = () => {
@@ -81,6 +82,9 @@ const fileInputEl = document.createElement("input");
 const fileTabList = document.createElement("output");
 const fileListActivator = document.createElement("button");
 const fileEmpty = document.createElement("button");
+const thumbnailBodyEl = document.createElement("section");
+const swiperContainer = document.createElement("div");
+const swiperWrapper = document.createElement("div");
 
 const localContainer = document.querySelector("#local__video__container");
 const fileShareBtn = document.querySelector("#fileShareBtn");
@@ -97,6 +101,13 @@ fileEmpty.id = "fileEmpty";
 
 navEl.className = "fileShare-navbar";
 bodyEl.className = "fileShare-contentBox";
+
+swiperContainer.classList.add("swiper", "mySwiper");
+swiperWrapper.classList.add("swiper-wrapper");
+
+thumbnailBodyEl.classList.add("thumbnailBodyContainer");
+
+swiperContainer.append(swiperWrapper);
 
 fileInputEl.type = "file";
 fileInputEl.name = "files[]";
@@ -122,6 +133,8 @@ function fileShareActivate() {
 }
 
 function fileShareActionEnable(e) {
+    bodyEl.append(thumbnailBodyEl);
+
     navEl.append(
         fileInputEl,
         progressLabel,
@@ -131,6 +144,7 @@ function fileShareActionEnable(e) {
         fileEmpty
     );
     el.append(navEl, bodyEl);
+
     localContainer.appendChild(el);
     fileShareBtn.style.color = "rgb(165, 199, 236)";
     fileShareSocket.emit("join-fileShare", channel);
@@ -417,20 +431,6 @@ function selectFileAction(uid) {
 
             receiverState = true;
 
-            // const receiverPeerID = document.createElement("p");
-            // receiverPeerID.textContent = options.uid;
-
-            // receiverPeerID.style.setProperty("position", "absolute");
-            // receiverPeerID.style.setProperty("display", "flex");
-            // receiverPeerID.style.setProperty("align-items", "center");
-            // receiverPeerID.style.setProperty("justify-content", "center");
-            // receiverPeerID.style.setProperty("background", "#1d2635");
-            // receiverPeerID.style.setProperty("border-radius", "2em");
-            // receiverPeerID.style.setProperty("width", "100px");
-            // receiverPeerID.style.setProperty("height", "2em");
-            // receiverPeerID.style.setProperty("text-align", "center");
-            // receiverPeerID.style.setProperty("color", "#fff");
-
             fileShareSocket.emit("file-receiver", {
                 state: receiverState,
                 channel: channel,
@@ -511,13 +511,15 @@ function handlerFileTabRemove() {
     const fileTab = document.querySelector(".fileTab");
     const fileList = document.querySelector("#fileList");
 
-    for (let i = 0; i < fileList.childNodes.length; i++) {
-        if (fileList.childNodes[i].childElementCount < 1) {
-            fileTab.remove();
-        }
-        for (let k = 0; k < fileList.childNodes[i].childNodes.length; k++) {
-            if (fileList.childNodes[i].childNodes[k].tagName !== "IMG") {
+    if (fileList.childNodes) {
+        for (let i = 0; i < fileList.childNodes.length; i++) {
+            if (fileList.childNodes[i].childElementCount < 1) {
                 fileTab.remove();
+            }
+            for (let k = 0; k < fileList.childNodes[i].childNodes.length; k++) {
+                if (fileList.childNodes[i].childNodes[k].tagName !== "IMG") {
+                    fileTab.remove();
+                }
             }
         }
     }
@@ -534,11 +536,9 @@ function thumbnailBodyContainer(element, content) {
     element.autoplay = true;
     element.controls = true;
 
-    const thumbnailBodyEl = document.createElement("section");
-    thumbnailBodyEl.classList.add("thumbnailBodyContainer");
-    const selectFileShareContainer = document.querySelector(
-        ".fileShare-contentBox"
-    );
+    const swiperSlide = document.createElement("div");
+    swiperSlide.classList.add("swiper-slide");
+    swiperSlide.append(element);
 
     const containerWidth = document.querySelector(
         ".fileShareContainer"
@@ -553,9 +553,8 @@ function thumbnailBodyContainer(element, content) {
     // let width = localContainer.offsetWidth + "px";
 
     thumbnailBodyEl.style.setProperty("width", `${contentsWidth}`);
-
-    thumbnailBodyEl.append(element);
-    bodyEl.append(thumbnailBodyEl);
+    thumbnailBodyEl.append(swiperContainer);
+    swiperWrapper.append(swiperSlide);
 
     handlerFileTabRemove();
 }

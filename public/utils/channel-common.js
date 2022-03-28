@@ -14,6 +14,7 @@ import { responsiveFunc } from "./parts/channel/responsive.js";
 import { copyInfo } from "./parts/channel/copyUrl.js";
 import { browserEvent } from "./parts/channel/browserEvent.js";
 import { gridView } from "./parts/channel/videoViewGridMode.js";
+import { SwiperFunc } from "./parts/channel/swiper.js";
 // import { shareEditerFunc } from "./parts/channel/shareEditer.js";
 
 mobileDisplayCtr();
@@ -33,3 +34,4 @@ browserEvent();
 gridView();
 muteUtilsFunc();
 // shareEditerFunc();--------------------- 서버에 올리면 Lisence 문제로 사용 불가능 구매해야 됨.
+SwiperFunc();
