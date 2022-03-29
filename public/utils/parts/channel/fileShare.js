@@ -33,6 +33,7 @@ import { options } from "../../rtcClient.js";
  * 2. 바디에 컨텐츠가 넘어갔을 때 남아있는 탭 찌꺼기 제거
  * 3. Swiper 추가
  * 4. Swiper CSS 제거
+
  */
 
 export const fileShare = () => {
@@ -107,8 +108,10 @@ swiperWrapper.classList.add("swiper-wrapper");
 swiperPagination.classList.add("swiper-pagination");
 
 thumbnailBodyEl.classList.add("thumbnailBodyContainer", "swiper", "mySwiper");
-
 thumbnailBodyEl.append(swiperWrapper, swiperPagination);
+
+swiperWrapper.classList.add("swiper-wrapper");
+thumbnailBodyEl.classList.add("thumbnailBodyContainer");
 
 fileInputEl.type = "file";
 fileInputEl.name = "files[]";
