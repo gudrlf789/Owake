@@ -32,6 +32,7 @@ import { options } from "../../rtcClient.js";
  * 1. 탭 클릭 시 클릭한 사람이 업로더라면 State 전송 안되게 수정.
  * 2. 바디에 컨텐츠가 넘어갔을 때 남아있는 탭 찌꺼기 제거
  * 3. Swiper 추가
+ * 4. Swiper CSS 제거
  */
 
 export const fileShare = () => {
@@ -83,8 +84,8 @@ const fileTabList = document.createElement("output");
 const fileListActivator = document.createElement("button");
 const fileEmpty = document.createElement("button");
 const thumbnailBodyEl = document.createElement("section");
-const swiperContainer = document.createElement("div");
 const swiperWrapper = document.createElement("div");
+const swiperPagination = document.createElement("div");
 
 const localContainer = document.querySelector("#local__video__container");
 const fileShareBtn = document.querySelector("#fileShareBtn");
@@ -102,12 +103,12 @@ fileEmpty.id = "fileEmpty";
 navEl.className = "fileShare-navbar";
 bodyEl.className = "fileShare-contentBox";
 
-swiperContainer.classList.add("swiper", "mySwiper");
 swiperWrapper.classList.add("swiper-wrapper");
+swiperPagination.classList.add("swiper-pagination");
 
-thumbnailBodyEl.classList.add("thumbnailBodyContainer");
+thumbnailBodyEl.classList.add("thumbnailBodyContainer", "swiper", "mySwiper");
 
-swiperContainer.append(swiperWrapper);
+thumbnailBodyEl.append(swiperWrapper, swiperPagination);
 
 fileInputEl.type = "file";
 fileInputEl.name = "files[]";
@@ -491,17 +492,12 @@ function fileTabStateDisable() {
 
 function handlerFileRemove() {
     fileEmpty.addEventListener("click", () => {
-        const bodyThumbnail = document.querySelector(".thumbnailBodyContainer");
-        const fileShareBody = document.querySelector("#fileShareBody");
-
-        if (fileShareBody.childNodes.length > 1) {
-            if (bodyThumbnail.childNodes.length > 0) {
-                for (let i = 0; i < bodyThumbnail.children.length; i++) {
-                    bodyThumbnail.remove();
-                }
-            } else {
-                return;
+        if (swiperWrapper.childNodes.length > 0) {
+            for (let i = 0; i < swiperWrapper.children.length; i++) {
+                swiperWrapper.children[i].remove();
             }
+        } else {
+            return;
         }
     });
 }
@@ -515,9 +511,17 @@ function handlerFileTabRemove() {
             if (fileList.childNodes[i].childElementCount < 1) {
                 fileTab.remove();
             }
-            for (let k = 0; k < fileList.childNodes[i].childNodes.length; k++) {
-                if (fileList.childNodes[i].childNodes[k].tagName !== "IMG") {
-                    fileTab.remove();
+            if (fileList.childNodes[i]) {
+                for (
+                    let k = 0;
+                    k < fileList.childNodes[i].childNodes.length;
+                    k++
+                ) {
+                    if (
+                        fileList.childNodes[i].childNodes[k].tagName !== "IMG"
+                    ) {
+                        fileTab.remove();
+                    }
                 }
             }
         }
@@ -552,7 +556,6 @@ function thumbnailBodyContainer(element, content) {
     // let width = localContainer.offsetWidth + "px";
 
     thumbnailBodyEl.style.setProperty("width", `${contentsWidth}`);
-    thumbnailBodyEl.append(swiperContainer);
     swiperWrapper.append(swiperSlide);
 
     handlerFileTabRemove();

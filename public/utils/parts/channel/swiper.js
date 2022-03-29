@@ -1,9 +1,9 @@
 export const SwiperFunc = () => {
-    const swiper = new Swiper(".mySwiper", {
-        effect: "cards",
-        grabCursor: true,
-        zoom: true,
+    let swiper = new Swiper(".mySwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+        },
     });
 
-    console.log(swiper);
+    return swiper;
 };
