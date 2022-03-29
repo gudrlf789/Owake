@@ -102,8 +102,11 @@ async function handlerDeviceSetting() {
     videoBox = document.querySelector("#local__videoBox");
     $(".cam-list").delegate("a", "click", (e) => {
         e.preventDefault();
-        if (this.text.includes("back") || this.text.includes("camera2 0")) {
-            switchCamera(this.text);
+        if (
+            e.target.innerText.includes("back") ||
+            e.target.innerText.includes("camera2 0")
+        ) {
+            switchCamera(e.target.innerText);
             setTimeout(() => {
                 videoBox.childNodes[0].childNodes[0].style.setProperty(
                     "transform",
@@ -111,12 +114,12 @@ async function handlerDeviceSetting() {
                 );
             }, 3000);
         } else {
-            switchCamera(this.text);
+            switchCamera(e.target.innerText);
         }
     });
     $(".mic-list").delegate("a", "click", function (e) {
         e.preventDefault();
-        switchMicrophone(this.text);
+        switchMicrophone(e.target.innerText);
     });
     volumeAnimation = requestAnimationFrame(setVolumeWave);
 }
