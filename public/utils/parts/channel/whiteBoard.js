@@ -1,5 +1,7 @@
+import { socketInitFunc } from "./socket.js";
+
 export const whiteBoardFunc = () => {
-    let whiteboardSocket = io();
+    const whiteboardSocket = socketInitFunc();
     // Container Publising...
     const whiteBoardContainer = document.createElement("div");
     const whiteBoardOptionsContainer = document.createElement("div");

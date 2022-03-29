@@ -28,10 +28,6 @@ import { options } from "../../rtcClient.js";
  * 3. fileDataInit 함수 추가
  * 4. socket progress 적용
  * 5. file 객체에 PeerID 적용 / 파일이 누구의 것인지 체크
- * ---------------- 3.28 수정사항 ---------------
- * 1. 탭 클릭 시 클릭한 사람이 업로더라면 State 전송 안되게 수정.
- * 2. 바디에 컨텐츠가 넘어갔을 때 남아있는 탭 찌꺼기 제거
- * 3. Swiper 추가
  */
 
 export const fileShare = () => {
@@ -54,6 +50,23 @@ let file;
 let uid;
 let fileData;
 let fileArr = [];
+
+// elements Object
+let elements = {
+    video: "video",
+    audio: "audio",
+    text: "textarea",
+    img: "img",
+};
+
+// fileType Object
+let fileType = {
+    video: 0,
+    audio: 1,
+    text: 2,
+    image: 3,
+    pdf: 4,
+};
 
 // Progress Element
 const progressLabel = document.createElement("label");
@@ -82,9 +95,6 @@ const fileInputEl = document.createElement("input");
 const fileTabList = document.createElement("output");
 const fileListActivator = document.createElement("button");
 const fileEmpty = document.createElement("button");
-const thumbnailBodyEl = document.createElement("section");
-const swiperContainer = document.createElement("div");
-const swiperWrapper = document.createElement("div");
 
 const localContainer = document.querySelector("#local__video__container");
 const fileShareBtn = document.querySelector("#fileShareBtn");
@@ -101,13 +111,6 @@ fileEmpty.id = "fileEmpty";
 
 navEl.className = "fileShare-navbar";
 bodyEl.className = "fileShare-contentBox";
-
-swiperContainer.classList.add("swiper", "mySwiper");
-swiperWrapper.classList.add("swiper-wrapper");
-
-thumbnailBodyEl.classList.add("thumbnailBodyContainer");
-
-swiperContainer.append(swiperWrapper);
 
 fileInputEl.type = "file";
 fileInputEl.name = "files[]";
@@ -133,8 +136,6 @@ function fileShareActivate() {
 }
 
 function fileShareActionEnable(e) {
-    bodyEl.append(thumbnailBodyEl);
-
     navEl.append(
         fileInputEl,
         progressLabel,
@@ -144,20 +145,15 @@ function fileShareActionEnable(e) {
         fileEmpty
     );
     el.append(navEl, bodyEl);
-
     localContainer.appendChild(el);
     fileShareBtn.style.color = "rgb(165, 199, 236)";
     fileShareSocket.emit("join-fileShare", channel);
 
     fileReadAction();
+    selectFileAction();
     handlerFileListCtrl();
     handlerFileRemove();
     shareReceiveFile();
-
-    // Recevie Progress
-    fileShareSocket.on("fs-progress", (progress) => {
-        progressEl.value = progress;
-    });
 }
 
 function fileShareActionDisable(e) {
@@ -179,12 +175,7 @@ function fileInputControlChangeEventHandler(e) {
 
     for (let i = 0; i < files.length; i++) {
         file = files[i];
-
         uid = uuidv4();
-        fileData = fileDataInit(file.name, file.size, file.type, uid);
-
-        // File 배열에 데이터 삽입
-        fileArr[i] = fileData;
 
         if (file.size > 25 * 1024 * 1024) {
             alert("Please upload the file that can be shared less than 25MB.");
@@ -216,7 +207,6 @@ function fileInputControlChangeEventHandler(e) {
             file.type.includes("html") ||
             file.type.includes("js") ||
             file.type.includes("ejs") ||
-            file.type.includes("json") ||
             file.type.includes("css");
 
         let imageTypeCheck =
@@ -227,95 +217,93 @@ function fileInputControlChangeEventHandler(e) {
             file.type.includes("svg") ||
             file.type.includes("webp");
 
-        let fileType = {
-            video: 0,
-            audio: 1,
-            text: 2,
-            image: 3,
-            pdf: 4,
-        };
-
         let reader = new FileReader();
 
         reader.onload = (e) => {
             let content = e.target.result;
             let buffer = new Uint8Array(e.target.result);
 
+            fileData = fileDataInit(
+                channel,
+                file.name,
+                file.size,
+                file.type,
+                fileType,
+                uid,
+                elements,
+                bufferSize,
+                buffer,
+                content
+            );
+
+            // File 배열에 데이터 삽입
+            fileArr[i] = fileData;
+
+            console.log(fileArr[i]);
+
             if (videoTypeCheck) {
-                receiveDataElement(
-                    videoEl,
-                    buffer,
-                    fileArr[i].fileUid,
-                    fileArr[i].peerID
-                );
+                receiveDataElement(fileArr[i]);
                 shareFile({
-                    channel: channel,
-                    element: videoEl,
-                    filetype: fileType.video,
-                    buffer_size: bufferSize,
-                    buffer,
-                    filename: fileArr[i].fileName,
-                    total_buffer_size: fileArr[i].fileSize,
-                    uid: fileArr[i].fileUid,
-                    peer: fileArr[i].peerID,
+                    channel: fileArr[i].channel,
+                    fileElement: fileArr[i].fileElement.video,
+                    fileTypeNumber: fileArr[i].fileTypeNumber.video,
+                    fileBufferSize: fileArr[i].fileBufferSize,
+                    fileType: fileArr[i].fileType,
+                    fileBuffer: fileArr[i].fileBuffer,
+                    fileName: fileArr[i].fileName,
+                    fileSize: fileArr[i].fileSize,
+                    fileUid: fileArr[i].fileUid,
+                    peerID: fileArr[i].peerID,
+                    fileContent: null,
                 });
             }
             if (audioTypeCheck) {
-                receiveDataElement(
-                    audioEl,
-                    buffer,
-                    fileArr[i].fileUid,
-                    fileArr[i].peerID
-                );
+                receiveDataElement(fileArr[i]);
                 shareFile({
-                    channel: channel,
-                    element: audioEl,
-                    filetype: fileType.audio,
-                    buffer_size: bufferSize,
-                    buffer,
-                    filename: fileArr[i].fileName,
-                    total_buffer_size: fileArr[i].fileSize,
-                    uid: fileArr[i].fileUid,
-                    peer: fileArr[i].peerID,
+                    channel: fileArr[i].channel,
+                    fileElement: fileArr[i].fileElement.audio,
+                    fileTypeNumber: fileArr[i].fileTypeNumber.audio,
+                    fileBufferSize: fileArr[i].fileBufferSize,
+                    fileType: fileArr[i].fileType,
+                    fileBuffer: fileArr[i].fileBuffer,
+                    fileName: fileArr[i].fileName,
+                    fileSize: fileArr[i].fileSize,
+                    fileUid: fileArr[i].fileUid,
+                    peerID: fileArr[i].peerID,
+                    fileContent: null,
                 });
             }
             if (textTypeCheck) {
-                receiveDataElement(
-                    textEl,
-                    content,
-                    fileArr[i].fileUid,
-                    fileArr[i].peerID
-                );
+                receiveDataElement(fileArr[i]);
                 shareFile({
-                    channel: channel,
-                    element: textEl,
-                    filetype: fileType.text,
-                    buffer_size: bufferSize,
-                    content,
-                    filename: fileArr[i].fileName,
-                    total_buffer_size: fileArr[i].fileSize,
-                    uid: fileArr[i].fileUid,
-                    peer: fileArr[i].peerID,
+                    channel: fileArr[i].channel,
+                    fileElement: fileArr[i].fileElement.text,
+                    fileTypeNumber: fileArr[i].fileTypeNumber.text,
+                    fileBufferSize: fileArr[i].fileBufferSize,
+                    fileType: fileArr[i].fileType,
+                    fileBuffer: null,
+                    fileName: fileArr[i].fileName,
+                    fileSize: fileArr[i].fileSize,
+                    fileUid: fileArr[i].fileUid,
+                    peerID: fileArr[i].peerID,
+                    fileContent: fileArr[i].fileContent,
                 });
             }
 
             if (imageTypeCheck) {
-                receiveDataElement(
-                    imageEl,
-                    buffer,
-                    fileArr[i].fileUid,
-                    fileArr[i].peerID
-                );
+                receiveDataElement(fileArr[i]);
                 shareFile({
-                    channel: channel,
-                    element: imageEl,
-                    filetype: fileType.image,
-                    buffer_size: bufferSize,
-                    buffer,
-                    filename: fileArr[i].fileName,
-                    total_buffer_size: fileArr[i].fileSize,
-                    uid: fileArr[i].fileUid,
-                    peer: fileArr[i].peerID,
+                    channel: fileArr[i].channel,
+                    fileElement: fileArr[i].fileElement.img,
+                    fileTypeNumber: fileArr[i].fileTypeNumber.image,
+                    fileBufferSize: fileArr[i].fileBufferSize,
+                    fileType: fileArr[i].fileType,
+                    fileBuffer: fileArr[i].fileBuffer,
+                    fileName: fileArr[i].fileName,
+                    fileSize: fileArr[i].fileSize,
+                    fileUid: fileArr[i].fileUid,
+                    peerID: fileArr[i].peerID,
+                    fileContent: null,
                 });
             }
         };
@@ -341,16 +329,23 @@ function readFileProgress(reader) {
     };
 }
 
+// Recevie Progress
+fileShareSocket.on("fs-progress", (progress) => {
+    progressEl.value = progress;
+});
+
 function shareFile(metadata) {
+    console.log(metadata);
     fileShareSocket.emit("file-meta", metadata);
 }
 
 function shareReceiveFile() {
     fileShareSocket.on("fs-meta", (data) => {
-        if (data.buffer) {
-            receiveDataElement(data.element, data.buffer, data.uid, data.peer);
-        } else if (data.content) {
-            receiveDataElement(data.element, data.content, data.uid, data.peer);
+        console.log(data);
+        if (data.fileBuffer !== null) {
+            receiveDataElement(data);
+        } else if (data.fileContent !== null) {
+            receiveDataElement(data);
         } else {
             return;
         }
@@ -364,43 +359,60 @@ function shareReceiveFile() {
  * 데이터 전송받아 Element에 담아 호출하는 함수
  */
 
-function receiveDataElement(element, content, uid, peer) {
-    let blobData = new Blob([content]);
+function receiveDataElement(data) {
+    console.log(":::receiveDataElement:::::", data);
+    let uid = data.fileUid;
+    let peer = data.peerID;
+    let filename = data.fileName;
+    let element = data.fileElement;
+    let fileType = data.fileType;
+    let fileTypeNumber = data.fileTypeNumber;
+
+    let blobData = new Blob([data.fileBuffer]);
     let url = window.URL.createObjectURL(blobData);
 
     bodyEl.append(fileTabList);
     spanEl = document.createElement("span");
     spanEl.classList.add("fileTab");
+    const containerWidth = document.querySelector(
+        ".fileShareContainer"
+    ).offsetWidth;
+    const containerHeight = document.querySelector(
+        ".fileShareContainer"
+    ).offsetHeight;
 
-    if (element === "textarea") {
+    const contentsWidth = containerWidth / 1.4 + "px";
+    const contentsHeight = containerHeight / 1.4 + "px";
+
+    if (fileType.includes("text")) {
         spanEl.innerHTML = [
-            `<${element} class="thumbnail ${uid} send-${peer}">${content}</${element}>`,
+            `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth}; height: ${contentsHeight};">${content}</${element}>`,
         ].join("");
+        // spanEl.innerHTML = [`${filename}`].join("");
         fileTabList.insertBefore(spanEl, null);
-    } else if (element === "img") {
+    } else if (fileTypeNumber === 3) {
         spanEl.innerHTML = [
-            `<${element} class="thumbnail ${uid} send-${peer}" src="${url}"/>`,
+            `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth};" src="${url}"/>`,
         ].join("");
+        // spanEl.innerHTML = [`${filename}`].join("");
         fileTabList.insertBefore(spanEl, null);
-    } else if (element === "video") {
+    } else if (fileTypeNumber === 0) {
         spanEl.innerHTML = [
-            `<${element} class="thumbnail ${uid} send-${peer}" src="${url}"/>`,
+            `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth};" src="${url}"/>`,
         ].join("");
+        // spanEl.innerHTML = [`${filename}`].join("");
         fileTabList.insertBefore(spanEl, null);
-    } else if (element === "audio") {
-        spanEl.classList.add("fas", "fa-file-audio");
-        spanEl.style.setProperty("font-size", "6vw");
-        spanEl.style.setProperty("text-align", "center");
+    } else if (fileTypeNumber === 1) {
         spanEl.innerHTML = [
-            `<${element} class="thumbnail ${uid} send-${peer}" src="${url}"/>`,
+            `<${element} class="thumbnail-${uid}-${peer}" style= "width: ${contentsWidth};" src="${url}"/>`,
         ].join("");
+        // spanEl.innerHTML = [`${filename}`].join("");
         fileTabList.insertBefore(spanEl, null);
     } else {
         return;
     }
-    window.URL.revokeObjectURL(element.src);
 
-    selectFileAction(uid);
+    window.URL.revokeObjectURL(element.src);
 }
 
 /**
@@ -409,119 +421,20 @@ function receiveDataElement(element, content, uid, peer) {
  * @description
  * FileTab Click Event
  */
-function selectFileAction(uid) {
-    let receiverState = false;
+function selectFileAction() {
+    $(document).on("click", ".fileTab", (e) => {
+        e.stopImmediatePropagation();
+        let element = e.target;
+        let url = element.src;
+        thumbnailBodyContainer(element, url);
+        const fileTab = document.querySelector(".fileTab");
 
-    const thumbnail = document.querySelector(".thumbnail");
-    if (thumbnail) {
-        $(document).on("click", `.${uid}`, (e) => {
-            let clickPeer = e.target.classList[2].substr(5);
-
-            let element;
-            let url;
-
-            console.log(e.target.tagName);
-
-            if (e.target.tagName !== "SPAN") {
-                element = e.target;
-                url = element.src;
-            }
-
-            const copyElement = element.cloneNode();
-
-            receiverState = true;
-
-            fileShareSocket.emit("file-receiver", {
-                state: receiverState,
-                channel: channel,
-                uid: uid,
-                peer: options.uid,
-                receiverCheck: clickPeer,
-            });
-
-            thumbnailBodyContainer(element, url);
-        });
-    }
-}
-fileShareSocket.on("file-send", (state, uid, peer, receiver) => {
-    let stateActivate = false;
-    // 클릭한 유저와 컨텐츠 주인이 같지 않을 때만 State가 보인다.
-    console.log(peer, receiver);
-    if (state === true && peer !== receiver) {
-        const fileTabState = document.createElement("span");
-        //  자바스크립트 selectr로는 클래스 uid를 잡을 수 없음 다른 방안을 생각해봐야 될듯...
-        const selectFile = $(`.${uid}`);
-
-        fileTabState.className = "fileTabState";
-        fileTabState.classList.add("fas", "fa-user-check");
-
-        selectFile.parent().append(fileTabState);
-
-        fileTabStateFunc(fileTabState, stateActivate, peer);
-    }
-});
-
-function fileTabStateFunc(fileTab, state, peer) {
-    fileTab.addEventListener("click", (e) => {
-        state = !state;
-        const fileStateWindow = document.createElement("div");
-        const fileShareBody = document.querySelector("#fileShareBody");
-        fileStateWindow.id = "fileStateWindow";
-
-        fileStateWindow.style.setProperty("width", "200px");
-        fileStateWindow.style.setProperty("height", "200px");
-        fileStateWindow.style.setProperty("border", "1px solid #000");
-
-        fileStateWindow.textContent = peer;
-
-        state
-            ? fileTabStateEnable(fileShareBody, fileStateWindow)
-            : fileTabStateDisable();
-    });
-}
-
-function fileTabStateEnable(body, state) {
-    body.append(state);
-}
-
-function fileTabStateDisable() {
-    const fileStateWindow = document.querySelector("#fileStateWindow");
-    fileStateWindow.remove();
-}
-
-function handlerFileRemove() {
-    fileEmpty.addEventListener("click", () => {
-        const bodyThumbnail = document.querySelector(".thumbnailBodyContainer");
-        const fileShareBody = document.querySelector("#fileShareBody");
-
-        if (fileShareBody.childNodes.length > 1) {
-            if (bodyThumbnail.childNodes.length > 0) {
-                for (let i = 0; i < bodyThumbnail.children.length; i++) {
-                    bodyThumbnail.remove();
-                }
-            } else {
-                return;
-            }
-        }
-    });
-}
-
-function handlerFileTabRemove() {
-    const fileTab = document.querySelector(".fileTab");
-    const fileList = document.querySelector("#fileList");
-
-    if (fileList.childNodes) {
-        for (let i = 0; i < fileList.childNodes.length; i++) {
-            if (fileList.childNodes[i].childElementCount < 1) {
+        for (let i = 0; i < fileTab.length; i++) {
+            if (fileTab.childNodes.length === 0) {
                 fileTab.remove();
             }
-            for (let k = 0; k < fileList.childNodes[i].childNodes.length; k++) {
-                if (fileList.childNodes[i].childNodes[k].tagName !== "IMG") {
-                    fileTab.remove();
-                }
-            }
         }
-    }
+    });
 }
 
 /**
@@ -535,27 +448,31 @@ function thumbnailBodyContainer(element, content) {
     element.autoplay = true;
     element.controls = true;
 
-    const swiperSlide = document.createElement("div");
-    swiperSlide.classList.add("swiper-slide");
-    swiperSlide.append(element);
+    const thumbnailBodyEl = document.createElement("section");
+    const selectFileShareContainer = document.querySelector(
+        ".fileShare-contentBox"
+    );
 
-    const containerWidth = document.querySelector(
-        ".fileShareContainer"
-    ).offsetWidth;
-    const containerHeight = document.querySelector(
-        ".fileShareContainer"
-    ).offsetHeight;
+    let width = localContainer.offsetWidth + "px";
 
-    const contentsWidth = containerWidth / 1.4 + "px";
-    const contentsHeight = containerHeight / 1.4 + "px";
+    selectFileShareContainer.style.setProperty("width", width);
+    thumbnailBodyEl.classList.add("thumbnailBodyContainer");
+    thumbnailBodyEl.append(element);
+    bodyEl.append(thumbnailBodyEl);
+}
 
-    // let width = localContainer.offsetWidth + "px";
+function handlerFileRemove() {
+    fileEmpty.addEventListener("click", () => {
+        const bodyThumbnail = document.querySelector(".thumbnailBodyContainer");
 
-    thumbnailBodyEl.style.setProperty("width", `${contentsWidth}`);
-    thumbnailBodyEl.append(swiperContainer);
-    swiperWrapper.append(swiperSlide);
-
-    handlerFileTabRemove();
+        if (bodyThumbnail.childNodes.length > 0) {
+            for (let i = 0; i < bodyThumbnail.children.length; i++) {
+                bodyThumbnail.remove();
+            }
+        } else {
+            return;
+        }
+    });
 }
 
 /**
@@ -589,12 +506,29 @@ function handlerFileListCtrlDisable() {
  * File Data 객체 초기화 함수
  */
 
-function fileDataInit(name, size, type, uid) {
+function fileDataInit(
+    channel,
+    name,
+    size,
+    type,
+    typeNumber,
+    uid,
+    element,
+    bufferSize,
+    buffer,
+    content
+) {
     let data = {
+        channel: channel,
         fileName: name,
         fileSize: size,
         fileType: type,
+        fileTypeNumber: typeNumber,
         fileUid: uid,
+        fileElement: element,
+        fileBuffer: buffer,
+        fileBufferSize: bufferSize,
+        fileContent: content,
         peerID: options.uid,
     };
 
