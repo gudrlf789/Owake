@@ -158,6 +158,22 @@ io.on("connection", (socket) => {
     socket.on("fileShare", (channelName, data, type) => {
         socket.broadcast.to(channelName).emit("send-fileShare", data, type);
     });
+    
+    socket.on("join-hash", (channelName) => {
+        socket.join(channelName);
+    });
+
+    socket.on("submit_hash", (hash, textHtmlId, channelName) => {
+        let data = {
+            hash: hash,
+            textHtmlId: textHtmlId
+        }
+        socket.to(channelName).emit("input_hash", data);
+    });
+
+    socket.on("leave-hash", (channelName) => {
+        socket.leave(channelName);
+    });
 });
 
 server.listen(port, () => {

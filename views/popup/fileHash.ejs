@@ -1,0 +1,38 @@
+<div class="modal fade" id="fileHashModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-label">File Hash</h5>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div>
+                        <button id="login">Sync</button>
+                    </div>
+                    <div id="file">
+                        <input type="file" id="file1">
+                    </div>
+                    <div class="hash">
+                        <button id="btn1">Hash</button>
+                        <input type="text" id="hashText1" placeholder="Hash Data" readonly>
+                    </div>		
+                </div>
+                <div class="container">
+                    <div id="file">
+                        <input type="file" id="file2">
+                    </div>
+                    <div class="hash">
+                        <button id="btn2">Hash</button>
+                        <input type="text" id="hashText2" placeholder="Hash Data" readonly>
+                    </div>		
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="text" id="compareResult" placeholder="result of comparing" readonly>
+                <button type="button" class="btn btn-primary" id="compare">Compare</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="finish">Finish</button>
+            </div>
+        </div>
+    </div>
+</div>

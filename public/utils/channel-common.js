@@ -12,6 +12,7 @@ import { mobileReflashClose } from "./parts/channel/mobileReflashClose.js";
 import { responsiveFunc } from "./parts/channel/responsive.js";
 import { copyInfo } from "./parts/channel/copyUrl.js";
 import { browserEvent } from "./parts/channel/browserEvent.js";
+import { fileHash } from "./parts/channel/fileHash.js";
 
 mobileDisplayCtr();
 f12defense();
@@ -27,3 +28,4 @@ mobileReflashClose();
 responsiveFunc();
 copyInfo();
 browserEvent();
+fileHash();
