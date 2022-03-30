@@ -17,6 +17,7 @@ const upload = multer({
     storage: storage,
 });
 const path = require("path");
+const axios = require("axios");
 
 /** Firebase Settings */
 const firebase = require("firebase/app");
@@ -342,6 +343,31 @@ router.post("/removeUserNameOnChannel", async (req, res) => {
                 error: err,
             });
         });
+});
+
+/**
+ * @anthor 박형길
+ * @date 2022.03.25
+ * @version 1.0
+ * @descrption
+ * trustOS api 사용하여 파일 해쉬화
+ */
+router.post("/jwt", async (req, res) => {
+    const bodyData = req.body;
+    bodyData.id = process.env.trustOsId;
+    bodyData.password = process.env.trustOsPassword;
+
+    axios.post('https://pro.virtualtrust.io/cert/login', bodyData)
+      .then(result => {
+        res.json({
+            jwt: result.data.message
+        });
+      })
+      .catch(err => {
+        res.json({
+            error: err
+        });
+      });
 });
 
 module.exports = router;

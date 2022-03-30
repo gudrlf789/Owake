@@ -214,7 +214,6 @@ io.sockets.on("connect", (socket) => {
         //broadcast 동일하게 가능 자신 제외 룸안의 유저
         socket.in(data.channel).emit("fs-meta", data);
     });
-
     socket.on("file-progress", (progress, channel) => {
         socket.in(channel).emit("fs-progress", progress);
     });
@@ -229,6 +228,22 @@ io.sockets.on("connect", (socket) => {
                 data.peer,
                 data.receiverCheck
             );
+    });
+
+    socket.on("join-hash", (channelName) => {
+        socket.join(channelName);
+    });
+
+    socket.on("submit_hash", (hash, textHtmlId, channelName) => {
+        let data = {
+            hash: hash,
+            textHtmlId: textHtmlId,
+        };
+        socket.to(channelName).emit("input_hash", data);
+    });
+
+    socket.on("leave-hash", (channelName) => {
+        socket.leave(channelName);
     });
 
     /**

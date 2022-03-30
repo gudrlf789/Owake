@@ -15,6 +15,7 @@
     "author": "Owake",
     "license": "ISC",
     "dependencies": {
+        "axios": "^0.26.1",
         "cors": "^2.8.5",
         "ejs": "^3.1.6",
         "express": "^4.17.1",

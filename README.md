@@ -5,3 +5,4 @@
 3. File Tab 클릭 했을 때 한꺼번에 사라지는 에러 수정
 4. File Remove 컨테이너 밑에 자식이 있을 때만 삭제되게 수정
 5. Swiper JS 적용 / CSS 수정 필요함.
+6. Trust OS API 파일 해시 적용.
