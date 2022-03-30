@@ -20,9 +20,11 @@ const selectVideo = document.querySelector("video");
 localVideoBox.id = "local__videoBox";
 localVideoBox.className = "player";
 
-// if (selectVideo) {
-//     selectVideo.setAttribute("playsinline", "playsinline");
-// }
+if (selectVideo) {
+    selectVideo.setAttribute("playsinline", "playsinline");
+    selectVideo.muted = true;
+    selectVideo.volume = 0;
+}
 
 localVideoContainer.className = "grid-off";
 
@@ -39,17 +41,13 @@ export let options = {
     channel: null,
     uid: null,
     token: null,
+    accountName: null,
 };
 
 let MicrophoneAudioTrackInitConfig = {
     AEC: true,
     ANS: true,
     AGC: false,
-    encoderConfig: {
-        sampleRate: 48000,
-        stereo: true,
-        bitrate: 128,
-    },
 };
 
 $(async () => {
@@ -65,16 +63,16 @@ $("#leave").click(function (e) {
     const reqData = {
         channelType: window.sessionStorage.getItem("channelType"),
         channelName: window.sessionStorage.getItem("channel"),
-        userId: window.sessionStorage.getItem("uid")
+        userId: window.sessionStorage.getItem("uid"),
     };
 
     axios.post("/channel/removeUserNameOnChannel", reqData).then((res) => {
-        if(res.data.success) {
+        if (res.data.success) {
             leave();
-        }else {
+        } else {
             alert(res.data.error);
         }
-    })
+    });
 });
 
 async function join() {
@@ -95,7 +93,7 @@ async function join() {
         options.uid
     );
 
-    // 오디오 디바이스가 없을시
+    // // 오디오 디바이스가 없을시
     if (checkDeskTopAudio.length != 0) {
         localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack(
             MicrophoneAudioTrackInitConfig
@@ -135,8 +133,8 @@ async function join() {
 
     localVideoBox.uid = client.uid;
     $("#local__video__container").append(localVideoBox);
-
     $("#local-player-name").text(`${options.uid}`);
+
     if (
         localTracks.videoTrack !== undefined &&
         localTracks.audioTrack !== undefined
@@ -148,12 +146,12 @@ async function join() {
         localTracks.audioTrack !== undefined
     ) {
         await client.publish(localTracks.audioTrack);
-    } else if (
-        localTracks.videoTrack !== undefined &&
-        localTracks.audioTrack === undefined
-    ) {
-        localTracks.videoTrack.play(localVideoBox);
-        await client.publish(localTracks.videoTrack);
+        // } else if (
+        //     localTracks.videoTrack !== undefined &&
+        //     localTracks.audioTrack === undefined
+        // ) {
+        //     localTracks.videoTrack.play(localVideoBox);
+        //     await client.publish(localTracks.videoTrack);
     } else {
         alert("인식된 디바이스가 아무것도 없음");
     }
@@ -206,24 +204,21 @@ async function subscribe(user, mediaType) {
         user.videoTrack.play(`player-${uid}`);
     }
 
-    /**
-     * 화면이 퍼블리싱 될 때 트랙이 중첩되는 것을 막기 위해 주석처리 함.
-     */
-    // if (mediaType === "audio") {
-    //     user.audioTrack.play();
-    //     // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에
-    //     // 아이콘 화면이 나타나게 수정
-    //     if (!user.hasVideo && user.hasAudio) {
-    //         const iconPlayer = $(`
-    //             <div id="player-wrapper-${uid}">
-    //             <p class="player-name" style="color: white">${uid}</p>
-    //             <div id="player-${uid}" class="player" uid="${uid}"
-    //                 style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
-    //             </div>
-    //         `);
-    //         $("#remote-playerlist").append(iconPlayer);
-    //     }
-    // }
+    if (mediaType === "audio") {
+        user.audioTrack.play();
+        // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에
+        // 아이콘 화면이 나타나게 수정
+        if (!user.hasVideo && user.hasAudio) {
+            const iconPlayer = $(`
+                <div id="player-wrapper-${uid}">
+                <p class="player-name" style="color: white">${uid}</p>
+                <div id="player-${uid}" class="player" uid="${uid}"
+                    style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
+                </div>
+            `);
+            $("#remote-playerlist").append(iconPlayer);
+        }
+    }
 }
 
 function revertLocalTrackToMain(leftUid) {

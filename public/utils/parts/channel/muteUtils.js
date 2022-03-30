@@ -22,6 +22,7 @@ export const muteUtilsFunc = () => {
     $(async () => {
         setTimeout(() => {
             muteVideo();
+            muteAudio();
         }, 3000);
     });
 
@@ -48,28 +49,36 @@ export const muteUtilsFunc = () => {
 
 async function muteAudio() {
     if (!localTracks.audioTrack) return;
-    totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = false;
     localTrackState.audioTrackMuted = true;
+    totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = false;
+    // totalUsers[options.uid].audioTrack.setMuted(true);
+    // totalUsers[options.uid].audioTrack.setEnabled(false);
     audioIcon.className = "fa fa-microphone-slash";
 }
 
 async function unmuteAudio() {
     if (!localTracks.audioTrack) return;
-    totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = true;
     localTrackState.audioTrackMuted = false;
+    totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = true;
+    // totalUsers[options.uid].audioTrack.setMuted(false);
+    // totalUsers[options.uid].audioTrack.setEnabled(true);
     audioIcon.className = "fa fa-microphone";
 }
 
 async function muteVideo() {
     if (!localTracks.videoTrack) return;
-    totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = false;
     localTrackState.videoTrackMuted = true;
+    totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = false;
+    // totalUsers[options.uid].videoTrack.setMuted(true);
+    // totalUsers[options.uid].videoTrack.setEnabled(false);
     videoIcon.className = "fas fa-video-slash";
 }
 
 async function unmuteVideo() {
     if (!localTracks.videoTrack) return;
-    totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = true;
     localTrackState.videoTrackMuted = false;
+    totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = true;
+    // totalUsers[options.uid].videoTrack.setMuted(false);
+    // totalUsers[options.uid].videoTrack.setEnabled(true);
     videoIcon.className = "fas fa-video";
 }
