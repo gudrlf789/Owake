@@ -131,10 +131,16 @@ app.get("/newsfeed", (req, res, next) => {
  */
 
 io.sockets.on("connect", (socket) => {
+    // io.on("connection", (socket) => {
     socket.channels = {};
     sockets[socket.id] = socket;
 
     log.debug("[" + socket.id + "] connection accepted");
+
+    socket.conn.on("upgrade", () => {
+        const upgradedTransport = socket.conn.transport.name; // in most cases, "websocket"
+        console.log(upgradedTransport);
+    });
 
     socket.on("disconnect", (reason) => {
         for (let channel in socket.channels) {

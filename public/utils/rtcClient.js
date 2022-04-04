@@ -13,7 +13,7 @@
 
 import { socketInitFunc } from "./parts/channel/socket.js";
 
-const socket = socketInitFunc();
+let socket = socketInitFunc();
 export const localVideoBox = document.createElement("div");
 const localVideoContainer = document.querySelector("#local__video__container");
 const selectVideo = document.querySelector("video");
@@ -221,8 +221,6 @@ async function subscribe(user, mediaType) {
             $("#remote-playerlist").append(iconPlayer);
         }
     }
-
-    cameraResidue();
 }
 
 function revertLocalTrackToMain(leftUid) {
@@ -279,6 +277,15 @@ function handleConnect() {
     console.log("Connected to signaling server");
     let myPeerId = socket.id;
     console.log("My peer id [ " + myPeerId + " ]");
+
+    const transport = socket.io.engine.transport.name; // in most cases, "polling"
+
+    console.log(transport);
+
+    socket.io.engine.on("upgrade", () => {
+        const upgradedTransport = socket.io.engine.transport.name; // in most cases, "websocket"
+        console.log(upgradedTransport);
+    });
 
     // let userList = Object.keys(totalUsers);
     // console.log("Connected user list ", userList);
@@ -408,30 +415,4 @@ function cameraSwitchEnableFunc(e) {
 function cameraSwitchDisableFunc(e) {
     e.preventDefault();
     e.stopPropagation();
-}
-
-/**
- * @author 전형동
- * @date 2022 03 31
- * @description
- * 카메라 트랙 컨테이너 찌꺼기 삭제 함수
- */
-
-function cameraResidue() {
-    const playerTag = $(`#player-wrapper-${options.uid}`);
-    $(document).on(`#player-wrapper-${options.uid}`),
-        () => {
-            if (
-                playerTag.find("video") === null ||
-                playerTag.find("video") === undefined ||
-                playerTag.find("video") === "" ||
-                !playerTag.find("video") ||
-                playerTag.find("img") === null ||
-                playerTag.find("img") === undefined ||
-                playerTag.find("img") === "" ||
-                !playerTag.find("img")
-            ) {
-                playerTag.remove();
-            }
-        };
 }
