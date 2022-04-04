@@ -146,12 +146,12 @@ async function join() {
         localTracks.audioTrack !== undefined
     ) {
         await client.publish(localTracks.audioTrack);
-        // } else if (
-        //     localTracks.videoTrack !== undefined &&
-        //     localTracks.audioTrack === undefined
-        // ) {
-        //     localTracks.videoTrack.play(localVideoBox);
-        //     await client.publish(localTracks.videoTrack);
+    } else if (
+        localTracks.videoTrack !== undefined &&
+        localTracks.audioTrack === undefined
+    ) {
+        localTracks.videoTrack.play(localVideoBox);
+        await client.publish(localTracks.videoTrack);
     } else {
         alert("인식된 디바이스가 아무것도 없음");
     }
@@ -208,7 +208,9 @@ async function subscribe(user, mediaType) {
         user.audioTrack.play();
         // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에
         // 아이콘 화면이 나타나게 수정
-        if (!user.hasVideo && user.hasAudio) {
+
+        // if (!user.hasVideo && user.hasAudio) {
+        if (!user.hasVideo) {
             const iconPlayer = $(`
                 <div id="player-wrapper-${uid}">
                 <p class="player-name" style="color: white">${uid}</p>
@@ -219,30 +221,33 @@ async function subscribe(user, mediaType) {
             $("#remote-playerlist").append(iconPlayer);
         }
     }
+
+    cameraResidue();
 }
 
 function revertLocalTrackToMain(leftUid) {
-    const localUid = document.getElementById("local__videoBox").uid;
+    if (localVideoBox) {
+        const localUid = localVideoBox.uid;
+        if (localUid == leftUid) {
+            localVideoBox.uid = options.uid;
 
-    if (localUid == leftUid) {
-        localVideoBox.uid = options.uid;
+            if (totalUsers[options.uid].videoTrack) {
+                totalUsers[options.uid].videoTrack.stop();
+                $("#local-player-name").text(`${options.uid}`);
+                $("#local__video__container").append(localVideoBox);
+                totalUsers[options.uid].videoTrack.play(localVideoBox);
+            } else {
+                $("#local-player-name").text(`${options.uid}`);
+                localVideoBox.style.backgroundRepeat = "no-repeat";
+                localVideoBox.style.backgroundImage = "url(../img/person.png)";
+                localVideoBox.style.backgroundSize = "contain";
+                $("#local__video__container").append(localVideoBox);
+            }
 
-        if (totalUsers[options.uid].videoTrack) {
-            totalUsers[options.uid].videoTrack.stop();
-            $("#local-player-name").text(`${options.uid}`);
-            $("#local__video__container").append(localVideoBox);
-            totalUsers[options.uid].videoTrack.play(localVideoBox);
+            $(`#player-wrapper-${options.uid}`).remove();
         } else {
-            $("#local-player-name").text(`${options.uid}`);
-            localVideoBox.style.backgroundRepeat = "no-repeat";
-            localVideoBox.style.backgroundImage = "url(../img/person.png)";
-            localVideoBox.style.backgroundSize = "contain";
-            $("#local__video__container").append(localVideoBox);
+            $(`#player-wrapper-${leftUid}`).remove();
         }
-
-        $(`#player-wrapper-${options.uid}`).remove();
-    } else {
-        $(`#player-wrapper-${leftUid}`).remove();
     }
 }
 
@@ -403,4 +408,30 @@ function cameraSwitchEnableFunc(e) {
 function cameraSwitchDisableFunc(e) {
     e.preventDefault();
     e.stopPropagation();
+}
+
+/**
+ * @author 전형동
+ * @date 2022 03 31
+ * @description
+ * 카메라 트랙 컨테이너 찌꺼기 삭제 함수
+ */
+
+function cameraResidue() {
+    const playerTag = $(`#player-wrapper-${options.uid}`);
+    $(document).on(`#player-wrapper-${options.uid}`),
+        () => {
+            if (
+                playerTag.find("video") === null ||
+                playerTag.find("video") === undefined ||
+                playerTag.find("video") === "" ||
+                !playerTag.find("video") ||
+                playerTag.find("img") === null ||
+                playerTag.find("img") === undefined ||
+                playerTag.find("img") === "" ||
+                !playerTag.find("img")
+            ) {
+                playerTag.remove();
+            }
+        };
 }

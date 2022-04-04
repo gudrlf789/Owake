@@ -23,8 +23,8 @@ async function screenShareJoin() {
 
     await screenClient.join(
         options.appid,
-        options.channel || window.sessionStorage.getItem("channel"),
-        null,
+        options.channel,
+        options.token || null,
         `${options.uid}Screen` ||
             `${window.sessionStorage.getItem("uid")}Screen`
     );
@@ -36,6 +36,10 @@ async function screenShareJoin() {
                 bitrateMax: 4780,
                 bitrateMin: 3150,
             },
+            // encoderConfig: "1080p_5", // frameRate : 60, bitrateMax : 4780
+            // optimizationMode: "detail",   // 영상의 품질을 우선
+            optimizationMode: "motion", // 영상의 부드러움을 우선
+            screenSourceType: "screen", // 'screen', 'application', 'window'
         },
         "auto"
     );

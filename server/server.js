@@ -145,7 +145,6 @@ io.sockets.on("connect", (socket) => {
     });
 
     socket.on("join", (config) => {
-        socket.join(channel);
         log.debug("[" + socket.id + "] join ", config);
 
         channel = config.channel;
@@ -175,18 +174,21 @@ io.sockets.on("connect", (socket) => {
 
         channels[channel][socket.id] = socket;
         socket.channels[channel] = channel;
+
+        socket.join(channel);
     });
 
     socket.on("join-web", (channelName) => {
         socket.join(channelName);
     });
 
-    socket.on("submit_address", (address, channelName) => {
-        socket.to(channelName).emit("input_address", address);
-    });
-
     socket.on("leave-web", (channelName) => {
         socket.leave(channelName);
+    });
+
+    socket.on("submit_address", (address, channelName) => {
+        console.log(address);
+        socket.in(channelName).emit("input_address", address);
     });
 
     socket.on("join-whiteboard", (channelName) => {
@@ -210,7 +212,7 @@ io.sockets.on("connect", (socket) => {
     });
 
     socket.on("file-meta", (data) => {
-        console.log(data);
+        // console.log(data);
         //broadcast 동일하게 가능 자신 제외 룸안의 유저
         socket.in(data.channel).emit("fs-meta", data);
     });

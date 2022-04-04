@@ -51,16 +51,18 @@ export const momentShareFunc = () => {
         momentShareArea.hidden = false;
         momentShareBtn.style.color = "rgb(165, 199, 236)";
 
-        momentSocket.emit("join-web", window.sessionStorage.getItem("channel"));
+        // momentSocket.emit("join-web", window.sessionStorage.getItem("channel"));
+        momentSocket.emit("join-web", options.channel);
     }
 
     function momentShareDisable() {
         momentShareArea.hidden = true;
         momentShareBtn.style.color = "#fff";
-        momentSocket.emit(
-            "leave-web",
-            window.sessionStorage.getItem("channel")
-        );
+        // momentSocket.emit(
+        //     "leave-web",
+        //     window.sessionStorage.getItem("channel")
+        // );
+        momentSocket.emit("leave-web", options.channel);
     }
 
     momentSocket.on("input_address", (address) => {

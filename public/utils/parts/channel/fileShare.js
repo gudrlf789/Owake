@@ -509,6 +509,9 @@ function handlerFileTabRemove() {
     const fileTab = document.querySelector(".fileTab");
     const fileList = document.querySelector("#fileList");
 
+    // $(document).on(".fileTab", () => {
+
+    // });
     if (fileList.childNodes) {
         for (let i = 0; i < fileList.childNodes.length; i++) {
             if (fileList.childNodes[i].childElementCount < 1) {
@@ -521,7 +524,9 @@ function handlerFileTabRemove() {
                     k++
                 ) {
                     if (
-                        fileList.childNodes[i].childNodes[k].tagName !== "IMG"
+                        fileList.childNodes[i].childNodes[k].tagName !==
+                            "IMG" ||
+                        fileList.childNodes[i].childNodes[k].tagName !== "SPAN"
                     ) {
                         fileTab.remove();
                     }
