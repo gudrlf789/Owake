@@ -12,15 +12,16 @@ const port = process.env.PORT || 1227;
 let channels = {}; // collect channels
 let sockets = {}; // collect sockets
 let peers = {}; // collect peers info grp by channels
-let userList = [];
 let channel;
 let peerId;
 let peerName;
+let urlParams;
 
 let site = [];
 let siteSet;
 let siteArr;
-let url;
+
+let peerWebURLArr = [];
 
 let io, server;
 
@@ -133,6 +134,7 @@ app.get("/newsfeed", (req, res, next) => {
  * @version 1.1
  * @descrption
  * 모멘트 쉐어링 개발중
+ * 클라이언트 페이지 호출
  */
 
 app.post("/urlSearch", async (req, res) => {
@@ -141,16 +143,18 @@ app.post("/urlSearch", async (req, res) => {
     );
     fs.createReadStream("views/site.ejs").pipe(res);
 
-    let urlParams = req.query[0];
-    url = `https://${urlParams.replace(/^(https?:\/\/)?(www\.)?/, "")}`;
-    site.push(url);
+    urlParams = req.query[0];
+    site.push(urlParams);
     siteSet = new Set(site);
     siteArr = Array.from(siteSet);
 });
 
 app.get("/site", async (req, res) => {
-    console.log(siteArr);
-    fetchWebsite(siteArr[0]);
+    for (let i = 0; i < siteArr.length; i++) {
+        if (urlParams === siteArr[i]) {
+            fetchWebsite(urlParams);
+        }
+    }
     res.render("site");
 });
 
@@ -160,17 +164,23 @@ app.get("/site", async (req, res) => {
  * @version 1.1
  * @descrption
  * 웹사이트 내용 긁어오는 소스
+ * 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
  */
 
 const fetchWebsite = (url) => {
-    execSync(
-        `wget -q -O - ${url} > views/site.ejs`,
-        (error, stdout, stderr) => {
-            if (error !== null) {
-                return false;
+    if (url.includes("undefined")) {
+        // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
+        return log.debug("The entered URL is invalid.");
+    } else {
+        execSync(
+            `wget -q -O - ${url} > views/site.ejs`,
+            (error, stdout, stderr) => {
+                if (error !== null) {
+                    return false;
+                }
             }
-        }
-    );
+        );
+    }
 };
 
 /**
@@ -217,12 +227,14 @@ io.sockets.on("connect", (socket) => {
         if (!(channel in peers)) peers[channel] = {};
 
         // collect peers info grp by channels
-        peers[channel][socket.id] = {
-            peer_Id: peerId,
-            peer_name: peerName,
-        };
+        // peers[channel][socket.id] = {
+        //     peer_Id: peerId,
+        //     peer_name: peerName,
+        // };
 
-        userList.push(peers[channel][socket.id].peer_name);
+        peers[channel][peerName] = {
+            peer_Id: peerId,
+        };
 
         log.debug("connected peers grp by roomId", peers);
 
@@ -240,9 +252,21 @@ io.sockets.on("connect", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("submit_address", (address, channelName) => {
-        console.log("address:::::::::", address);
-        socket.in(channelName).emit("input_address", address);
+    socket.on("submit_address", (address, config) => {
+        // 이 코드 리펙토링 필수!  - 참조 : /urlSearch
+        peerWebURLArr.push(address);
+        let peerWebURLArrSet = new Set(peerWebURLArr);
+        let resultURLArr = Array.from(peerWebURLArrSet);
+
+        resultURLArr.forEach((url) => {
+            peers[config.channel][config.peerID] = {
+                web: url,
+            };
+        });
+
+        log.debug("connected peers grp by Peer Address ", peers);
+
+        socket.in(config.channel).emit("input_address", address);
     });
 
     socket.on("join-whiteboard", (channelName) => {

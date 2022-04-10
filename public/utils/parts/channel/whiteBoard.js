@@ -132,7 +132,6 @@ export const whiteBoardFunc = () => {
         whiteboardSocket.on("drawing", onDrawingEvent);
 
         window.addEventListener("resize", onResize, false);
-        onResize();
 
         function drawLine(x0, y0, x1, y1, color, size, emit) {
             context.beginPath();

@@ -1,10 +1,24 @@
+/**
+ * @author 전형동
+ * @version 1.0
+ * @data 2022.04.10
+ * @description
+ * resultURLprotocolCheck,
+ * searchUrlTransfer
+ * resultURLContentCheck
+ * 함수 추가
+ *
+ * searchContainer에 있는 Form 태그 삭제 (필요없음)
+ *
+ */
+
 import { socketInitFunc } from "./socket.js";
 import { options } from "../../rtcClient.js";
 
 export const momentShareFunc = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
-    let searchResult;
+    let clickCount = 0;
 
     const momentShareBtn = document.querySelector("#momentShare");
     const momentShareIcon = document.querySelector(".fa-brain");
@@ -48,6 +62,8 @@ export const momentShareFunc = () => {
         momentShareArea.hidden = false;
         momentShareBtn.style.color = "rgb(165, 199, 236)";
         momentSocket.emit("join-web", options.channel);
+
+        mouseEventFunc();
     }
 
     function momentShareDisable() {
@@ -78,14 +94,23 @@ export const momentShareFunc = () => {
 
     function searchUrlTransfer(address) {
         let resultURL;
+        let config;
         if (address === null || address === undefined || address === "") {
             resultURL = resultURLprotocolCheck();
             axios.post("/urlSearch", null, { params: resultURL });
-            momentSocket.emit("submit_address", resultURL, options.channel);
+            momentSocket.emit(
+                "submit_address",
+                resultURL,
+                (config = { peerID: options.uid, channel: options.channel })
+            );
         } else {
             resultURL = resultURLprotocolCheck(address);
             axios.post("/urlSearch", null, { params: resultURL });
-            momentSocket.emit("submit_address", resultURL, options.channel);
+            momentSocket.emit(
+                "submit_address",
+                resultURL,
+                (config = { peerID: options.uid, channel: options.channel })
+            );
         }
 
         resultURLContentCheck(resultURL);
@@ -106,6 +131,8 @@ export const momentShareFunc = () => {
         } else {
             return (momentShare.src = "/site");
         }
+
+        pageInnerAtagSelect();
     }
 
     /**
@@ -154,4 +181,74 @@ export const momentShareFunc = () => {
             return result;
         }
     };
+
+    let clickIframe = window.setInterval(checkFocus, 100);
+
+    function mouseEventFunc() {
+        let mouseEventObj = {
+            iframeMouseOver: false,
+        };
+
+        window.addEventListener("blur", async () => {
+            if (mouseEventObj.iframeMouseOver) {
+                console.log("Wow! Iframe Click!", clickIframe);
+            }
+        });
+
+        momentShare.contentWindow.addEventListener(
+            "mouseover",
+            async (e) => {
+                mouseEventObj.iframeMouseOver = true;
+                console.log("mouseover", e.clientX);
+                console.log("mouseover", e.clientY);
+            },
+            false
+        );
+
+        momentShare.contentWindow.addEventListener(
+            "mouseup",
+            async (e) => {
+                mouseEventObj.iframeMouseOver = false;
+                console.log("mouseup", e.clientX);
+                console.log("mouseup", e.clientY);
+            },
+            false
+        );
+
+        momentShare.contentWindow.addEventListener(
+            "mousemove",
+            async (e) => {
+                mouseEventObj.iframeMouseOver = true;
+                console.log("mousemove", e.clientX);
+                console.log("mousemove", e.clientY);
+            },
+            false
+        );
+
+        momentShare.contentWindow.addEventListener(
+            "mouseout",
+            async (e) => {
+                mouseEventObj.iframeMouseOver = false;
+            },
+            false
+        );
+
+        momentShare.contentWindow.addEventListener(
+            "wheel",
+            async (e) => {
+                const delta = Math.sign(e.deltaY);
+                console.info(delta);
+            },
+            false
+        );
+    }
+
+    function checkFocus() {
+        if (document.activeElement == momentShare) {
+            console.log("clicked " + clickCount++);
+            window.focus();
+        }
+    }
+
+    function mousePointerFocus() {}
 };
