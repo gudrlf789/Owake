@@ -4,6 +4,8 @@ const app = express();
 const cors = require("cors");
 const path = require("path");
 const Logger = require("./Logger");
+const { execSync } = require("child_process");
+const fs = require("fs");
 const log = new Logger("server");
 const port = process.env.PORT || 1227;
 
@@ -14,6 +16,11 @@ let userList = [];
 let channel;
 let peerId;
 let peerName;
+
+let site = [];
+let siteSet;
+let siteArr;
+let url;
 
 let io, server;
 
@@ -122,6 +129,52 @@ app.get("/newsfeed", (req, res, next) => {
 
 /**
  * @anthor 전형동
+ * @date 2022.04.05
+ * @version 1.1
+ * @descrption
+ * 모멘트 쉐어링 개발중
+ */
+
+app.post("/urlSearch", async (req, res) => {
+    fs.writeFileSync("views/site.ejs", "", () =>
+        console.log("Created site.ejs")
+    );
+    fs.createReadStream("views/site.ejs").pipe(res);
+
+    let urlParams = req.query[0];
+    url = `https://${urlParams.replace(/^(https?:\/\/)?(www\.)?/, "")}`;
+    site.push(url);
+    siteSet = new Set(site);
+    siteArr = Array.from(siteSet);
+});
+
+app.get("/site", async (req, res) => {
+    console.log(siteArr);
+    fetchWebsite(siteArr[0]);
+    res.render("site");
+});
+
+/**
+ * @anthor 전형동
+ * @date 2022.04.05
+ * @version 1.1
+ * @descrption
+ * 웹사이트 내용 긁어오는 소스
+ */
+
+const fetchWebsite = (url) => {
+    execSync(
+        `wget -q -O - ${url} > views/site.ejs`,
+        (error, stdout, stderr) => {
+            if (error !== null) {
+                return false;
+            }
+        }
+    );
+};
+
+/**
+ * @anthor 전형동
  * @date 2022.02.21
  * @version 1.1
  * @descrption
@@ -136,11 +189,6 @@ io.sockets.on("connect", (socket) => {
     sockets[socket.id] = socket;
 
     log.debug("[" + socket.id + "] connection accepted");
-
-    socket.conn.on("upgrade", () => {
-        const upgradedTransport = socket.conn.transport.name; // in most cases, "websocket"
-        console.log(upgradedTransport);
-    });
 
     socket.on("disconnect", (reason) => {
         for (let channel in socket.channels) {
@@ -193,7 +241,7 @@ io.sockets.on("connect", (socket) => {
     });
 
     socket.on("submit_address", (address, channelName) => {
-        console.log(address);
+        console.log("address:::::::::", address);
         socket.in(channelName).emit("input_address", address);
     });
 

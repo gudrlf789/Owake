@@ -24,6 +24,8 @@ export const momentShareFunc = () => {
     searchInput.style.textAlign = "center";
     momentShare.id = "momentShare-iframe";
     momentShare.name = "momentShare";
+    searchForm.target = "momentShare";
+    searchForm.method = "get";
     momentShareArea.id = "momentShareArea";
     searchContainer.id = "searchContainer";
     searchInput.id = "searchInput";
@@ -32,8 +34,9 @@ export const momentShareFunc = () => {
 
     searchInputBtnIcon.className = "fas fa-search";
 
+    searchForm.append(searchInput);
     searchInputBtn.appendChild(searchInputBtnIcon);
-    searchContainer.append(searchInput, searchInputBtn);
+    searchContainer.append(searchForm, searchInputBtn);
     momentShareArea.append(searchContainer, momentShare);
     momentShareArea.append(momentShare);
     momentShare.frameborder = "0";
@@ -47,94 +50,57 @@ export const momentShareFunc = () => {
         localVideoContainer.append(momentShareArea);
         momentShareArea.hidden = false;
         momentShareBtn.style.color = "rgb(165, 199, 236)";
+
+        // momentSocket.emit("join-web", window.sessionStorage.getItem("channel"));
         momentSocket.emit("join-web", options.channel);
     }
 
     function momentShareDisable() {
         momentShareArea.hidden = true;
         momentShareBtn.style.color = "#fff";
+        // momentSocket.emit(
+        //     "leave-web",
+        //     window.sessionStorage.getItem("channel")
+        // );
         momentSocket.emit("leave-web", options.channel);
     }
 
     momentSocket.on("input_address", (address) => {
-        resultURLContentCheck(address);
+        const momentShare = document.getElementById("momentShare-iframe");
+        momentShare.src = `https://${address.replace(
+            /^(https?:\/\/)?(www\.)?/,
+            ""
+        )}`;
     });
 
-    searchInputBtn.addEventListener("click", (e) => {
-        if (searchInput.value.length === 0) {
-            alert("Please enter your address.");
-        } else {
-            searchUrlTransfer();
-        }
-    });
-
-    searchInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            searchUrlTransfer();
-        } else {
-            return;
+    $(document).on("click", "#searchInputBtn", (e) => {
+        if (searchInput.value.length !== 0) {
+            searchResult = searchUrlStringCheck();
+            momentSocket.emit("submit_address", searchResult, options.channel);
         }
     });
 
-    function searchUrlTransfer(address) {
-        let resultURL;
-        if (address === null || address === undefined || address === "") {
-            resultURL = resultURLprotocolCheck();
-            axios.post("/urlSearch", null, { params: resultURL });
-            momentSocket.emit("submit_address", resultURL, options.channel);
-        } else {
-            resultURL = resultURLprotocolCheck(address);
-            axios.post("/urlSearch", null, { params: resultURL });
-            momentSocket.emit("submit_address", resultURL, options.channel);
+    $(document).on("keydown", "#searchInput", (e) => {
+        if (e.which === 13 && searchInput.value.length !== 0) {
+            searchResult = searchUrlStringCheck();
+            momentSocket.emit("submit_address", searchResult, options.channel);
         }
+    });
 
-        resultURLContentCheck(resultURL);
-    }
-
-    /**
-     * @author 전형동
-     * @version 1.0
-     * @data 2022.04.10
-     * @description
-     * resultURLContentCheck
-     * 리턴되는 URL의 컨텐츠 체크하는 함수
-     */
-
-    function resultURLContentCheck(address) {
-        if (address.includes("youtube")) {
-            return (momentShare.src = address);
-        } else {
-            return (momentShare.src = "/site");
-        }
-    }
-
-    /**
-     * @author 전형동
-     * @version 1.0
-     * @data 2022.04.10
-     * @description
-     * resultURLprotocolCheck
-     * 입력된 URL의 프로토콜 체크 함수
-     */
-    function resultURLprotocolCheck(address) {
+    function searchUrlStringCheck() {
         let returnUrl;
-        let url;
-
-        if (address) {
-            url = `https://${address.replace(/^(https?:\/\/)?(www\.)?/, "")}`;
-        } else {
-            url = `https://${searchInput.value.replace(
-                /^(https?:\/\/)?(www\.)?/,
-                ""
-            )}`;
-        }
+        let url = `https://${searchInput.value.replace(
+            /^(https?:\/\/)?(www\.)?/,
+            ""
+        )}`;
 
         if (url.includes("youtube") || url.includes("youtu.be")) {
-            returnUrl = "https://" + youtubeUrlReplarce(url);
+            returnUrl = searchForm.action =
+                "https://" + youtubeUrlReplarce(url);
             searchInput.value = "";
             return returnUrl;
         } else {
-            returnUrl = url;
+            returnUrl = searchForm.action = url;
             searchInput.value = "";
             return returnUrl;
         }

@@ -278,15 +278,6 @@ function handleConnect() {
     let myPeerId = socket.id;
     console.log("My peer id [ " + myPeerId + " ]");
 
-    const transport = socket.io.engine.transport.name; // in most cases, "polling"
-
-    console.log(transport);
-
-    socket.io.engine.on("upgrade", () => {
-        const upgradedTransport = socket.io.engine.transport.name; // in most cases, "websocket"
-        console.log(upgradedTransport);
-    });
-
     // let userList = Object.keys(totalUsers);
     // console.log("Connected user list ", userList);
 
