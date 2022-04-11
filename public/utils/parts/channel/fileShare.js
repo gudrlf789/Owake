@@ -46,12 +46,11 @@ export const fileShare = () => {
 const fileShareSocket = socketInitFunc();
 
 // Options
-let bufferSize = 1024;
+let bufferSize = 64 * 1024;
 let fileShareBtnActive = false;
 let fileListBtnActive = false;
-let channel = window.sessionStorage.getItem("channel");
+let channel = options.channel;
 let spanEl;
-let file;
 let uid;
 let fileData;
 let fileArr = [];
@@ -176,6 +175,10 @@ async function fileReadAction() {
 async function fileInputControlChangeEventHandler(e) {
     let fileInputControl = e.target;
     let files = fileInputControl.files;
+    let start = 0;
+    let file;
+    let blob;
+
     if (!fileInputControl) {
         return;
     }
@@ -183,16 +186,16 @@ async function fileInputControlChangeEventHandler(e) {
     for (let i = 0; i < files.length; i++) {
         file = files[i];
 
+        if (file.size > 25 * 1024 * 1024) {
+            alert("Please upload the file that can be shared less than 25MB.");
+            return;
+        }
+
         uid = uuidv4();
         fileData = fileDataInit(file.name, file.size, file.type, uid);
 
         // File 배열에 데이터 삽입
         fileArr[i] = fileData;
-
-        if (file.size > 25 * 1024 * 1024) {
-            alert("Please upload the file that can be shared less than 25MB.");
-            return;
-        }
 
         let videoTypeCheck =
             file.type.includes("mp4") ||
@@ -322,11 +325,25 @@ async function fileInputControlChangeEventHandler(e) {
                 });
             }
         };
+
+        // 개발중
+
+        // for (let data = 0; data < file.size; data += bufferSize) {
+        //     blob = file.slice(start, start + data);
+        // }
+
+        // if (textTypeCheck) {
+        //     reader.readAsText(blob);
+        // } else {
+        //     reader.readAsArrayBuffer(blob);
+        // }
+
         if (textTypeCheck) {
             reader.readAsText(file);
         } else {
             reader.readAsArrayBuffer(file);
         }
+
         readFileProgress(reader);
     }
 }
