@@ -186,10 +186,10 @@ async function fileInputControlChangeEventHandler(e) {
     for (let i = 0; i < files.length; i++) {
         file = files[i];
 
-        if (file.size > 25 * 1024 * 1024) {
-            alert("Please upload the file that can be shared less than 25MB.");
-            return;
-        }
+        // if (file.size > 25 * 1024 * 1024) {
+        //     alert("Please upload the file that can be shared less than 25MB.");
+        //     return;
+        // }
 
         uid = uuidv4();
         fileData = fileDataInit(file.name, file.size, file.type, uid);
@@ -328,21 +328,21 @@ async function fileInputControlChangeEventHandler(e) {
 
         // 개발중
 
-        // for (let data = 0; data < file.size; data += bufferSize) {
-        //     blob = file.slice(start, start + data);
-        // }
-
-        // if (textTypeCheck) {
-        //     reader.readAsText(blob);
-        // } else {
-        //     reader.readAsArrayBuffer(blob);
-        // }
+        for (let data = 0; data < file.size; data += bufferSize) {
+            blob = file.slice(start, start + data);
+        }
 
         if (textTypeCheck) {
-            reader.readAsText(file);
+            reader.readAsText(blob);
         } else {
-            reader.readAsArrayBuffer(file);
+            reader.readAsArrayBuffer(blob);
         }
+
+        // if (textTypeCheck) {
+        //     reader.readAsText(file);
+        // } else {
+        //     reader.readAsArrayBuffer(file);
+        // }
 
         readFileProgress(reader);
     }

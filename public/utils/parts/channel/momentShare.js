@@ -131,8 +131,6 @@ export const momentShareFunc = () => {
         } else {
             return (momentShare.src = "/site");
         }
-
-        pageInnerAtagSelect();
     }
 
     /**
@@ -201,6 +199,25 @@ export const momentShareFunc = () => {
                 mouseEventObj.iframeMouseOver = true;
                 console.log("mouseover", e.clientX);
                 console.log("mouseover", e.clientY);
+
+                console.log("mouseover OffsetX", e.offsetX);
+                console.log("mouseover OffsetY", e.offsetY);
+                console.log("mouseover ScreenX", e.screenX);
+                console.log("mouseover ScreenY", e.screenY);
+            },
+            false
+        );
+
+        momentShare.contentWindow.addEventListener(
+            "mousedown",
+            async (e) => {
+                mouseEventObj.iframeMouseOver = true;
+                console.log("mousedown ClientX", e.clientX);
+                console.log("mousedown ClientY", e.clientY);
+                console.log("mousedown OffsetX", e.offsetX);
+                console.log("mousedown OffsetY", e.offsetY);
+                console.log("mousedown ScreenX", e.screenX);
+                console.log("mousedown ScreenY", e.screenY);
             },
             false
         );
@@ -211,6 +228,10 @@ export const momentShareFunc = () => {
                 mouseEventObj.iframeMouseOver = false;
                 console.log("mouseup", e.clientX);
                 console.log("mouseup", e.clientY);
+                console.log("mouseup OffsetX", e.offsetX);
+                console.log("mouseup OffsetY", e.offsetY);
+                console.log("mouseup ScreenX", e.screenX);
+                console.log("mouseup ScreenY", e.screenY);
             },
             false
         );
@@ -221,6 +242,10 @@ export const momentShareFunc = () => {
                 mouseEventObj.iframeMouseOver = true;
                 console.log("mousemove", e.clientX);
                 console.log("mousemove", e.clientY);
+                console.log("mousemove OffsetX", e.offsetX);
+                console.log("mousemove OffsetY", e.offsetY);
+                console.log("mousemove ScreenX", e.screenX);
+                console.log("mousemove ScreenY", e.screenY);
             },
             false
         );
@@ -229,6 +254,14 @@ export const momentShareFunc = () => {
             "mouseout",
             async (e) => {
                 mouseEventObj.iframeMouseOver = false;
+
+                console.log("mouseout", e.clientX);
+                console.log("mouseout", e.clientY);
+
+                console.log("mouseout OffsetX", e.offsetX);
+                console.log("mouseout OffsetY", e.offsetY);
+                console.log("mouseout ScreenX", e.screenX);
+                console.log("mouseout ScreenY", e.screenY);
             },
             false
         );
