@@ -1,4 +1,5 @@
-import { scrollToBottom } from "./channel/chat.js";
+import { scrollToBottom } from "./parts/channel/chat.js";
+import { options } from "./rtcClient.js";
 
 const messageList = document.getElementById("messages");
 let channelMessageText = document.getElementById("chat_message");
@@ -21,6 +22,19 @@ $(async () => {
 
 // Initialize rtmClient
 let rtmClient = AgoraRTM.createInstance(options.appid);
+
+/**
+ * @Auther 전형동
+ * @Date : 2022 03 09
+ * @Description : RTM Connection Log..
+ * 같은 아이디로 리모트에서 로그인을 하면 로그인 되어있는 클라이언트는 튕긴다.
+ */
+// RTM State Log....
+rtmClient.on("ConnectionStateChanged", (newState, reason) => {
+    if (reason === "REMOTE_LOGIN" || newState === "ABORTED") {
+        alert("Someone tried to connect with the same ID.");
+    }
+});
 
 async function joinRtm() {
     channel = rtmClient.createChannel(window.sessionStorage.getItem("channel"));
@@ -59,10 +73,6 @@ async function joinRtm() {
         messageList.append(messageArea);
     });
 }
-
-// document.getElementById("join").onclick = async function () {
-//     await joinRtm();
-// };
 
 if (
     document.getElementById("channelJoin-btn") ||

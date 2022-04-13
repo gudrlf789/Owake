@@ -1,4 +1,5 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+@import url("https://unpkg.com/@themesberg/flowbite@1.2.0/dist/flowbite.min.css");
 @import "./lib/bootstrap.min.css";
 
 @font-face {
@@ -27,6 +28,12 @@
 * {
     margin: 0;
     padding: 0;
+}
+
+/* IOS 스크롤바 멈추는 문제 해결 */
+body,
+html {
+    -webkit-overflow-scrolling: touch;
 }
 
 body {

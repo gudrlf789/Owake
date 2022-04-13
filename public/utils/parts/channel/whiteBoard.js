@@ -1,5 +1,7 @@
+import { socketInitFunc } from "./socket.js";
+
 export const whiteBoardFunc = () => {
-    let whiteboardSocket = io();
+    const whiteboardSocket = socketInitFunc();
     // Container Publising...
     const whiteBoardContainer = document.createElement("div");
     const whiteBoardOptionsContainer = document.createElement("div");
@@ -130,7 +132,6 @@ export const whiteBoardFunc = () => {
         whiteboardSocket.on("drawing", onDrawingEvent);
 
         window.addEventListener("resize", onResize, false);
-        onResize();
 
         function drawLine(x0, y0, x1, y1, color, size, emit) {
             context.beginPath();

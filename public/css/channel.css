@@ -4,6 +4,9 @@
 @import "./lib/bootstrap.min.css";
 @import "./channel/whiteBoard.css";
 @import "./channel/fileShare.css";
+@import "./channel/gridView.css";
+@import "./channel/shareEditer.css";
+@import "./channel/swiper.css";
 
 @font-face {
     font-family: "NEXON Lv2 Gothic";
@@ -40,6 +43,12 @@
 * {
     margin: 0;
     padding: 0;
+}
+
+/* IOS 스크롤바 멈추는 문제 해결 */
+body,
+html {
+    -webkit-overflow-scrolling: touch;
 }
 
 .header {
@@ -273,7 +282,8 @@
 
 #remote-playerlist {
     position: relative;
-    margin: 8px;
+    margin-left: 8px;
+    margin-bottom: 8px;
 }
 
 #remote-playerlist > div {
@@ -304,7 +314,7 @@
 }
 
 video {
-    animation: show 0.4s ease;
+    animation: show 0.3s ease;
     -webkit-mask-image: -webkit-radial-gradient(white, black);
     -webkit-appearance: none;
 }
@@ -335,6 +345,12 @@ video:hover {
 
 .owake-btn {
     display: none;
+}
+
+@media (min-width: 768px) {
+    #remote__video__container {
+        height: min-content;
+    }
 }
 
 @media (max-width: 768px) {
@@ -398,10 +414,6 @@ video:hover {
 
     .player-name {
         margin: 8px;
-    }
-
-    video {
-        animation: show 0.4s ease;
     }
 
     #remote__videoBox {

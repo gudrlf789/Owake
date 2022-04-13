@@ -1,20 +1,21 @@
 export const f12defense = () => {
-    //F12
-    $(() => {
-        $(document).bind("keydown", function (e) {
-            if (e.keyCode == 123 /* F12 */) {
-                e.preventDefault();
-                e.returnValue = false;
-            }
-        });
-    }); // 우측 클릭 방지
-    document.onmousedown = disableclick;
-    status = "Right click is not available.";
+    // 오른쪽 버튼 비활성화
+    document.addEventListener(
+        "contextmenu",
+        function (e) {
+            e.preventDefault();
+        },
+        false
+    );
 
-    function disableclick(event) {
-        if (event.button == 2) {
-            alert(status);
-            return false;
-        }
-    }
+    // 소스 보기 바로가기 키 비활성화
+    // USE THIS TO DISABLE CONTROL AND ALL FUNCTION KEYS
+    // if (e.ctrlKey || (e.keyCode>=112 && e.keyCode<=123)) {
+    // THIS WILL ONLY DISABLE CONTROL AND F12
+    // document.addEventListener("keydown", (e) => {
+    //     if (e.ctrlKey || e.keyCode == 123) {
+    //         e.stopPropagation();
+    //         e.preventDefault();
+    //     }
+    // });
 };

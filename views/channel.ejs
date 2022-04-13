@@ -13,20 +13,22 @@
             <base href="/">
             <link rel="stylesheet" href="channel.css" media="all">
 
-            <script async src="owake_rtm.js"></script>
-
+            <script type="text/javascript" src="owake_rtc.js"></script>
+            <script type="text/javascript" src="owake_rtm.js"></script>
             <!-- Jquery -->
-            <script src="jquery-3.4.1.min.js"></script>
+            <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
             <!-- Bootstrap -->
-            <script src="bootstrap.bundle.min.js"></script>
+            <script type="text/javascript" src="bootstrap.bundle.min.js"></script>
             <!-- Socket.io -->
-            <script src="/socket.io/socket.io.js"></script>
+            <script type="text/javascript" src="/socket.io/socket.io.js"></script>
             <!-- axios -->
-            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <!-- Swiper -->
+            <script type="text/javascript" src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
             <title>Owake</title>
 
-            <script>
+            <script async>
                 /**
                  * @anthor 박형길
                  * @date 2022.03.22
@@ -34,7 +36,7 @@
                  * @descrption
                  * 유저 이름 중복 체크 & 등록
                  */
-                 function enrollAndCheckUserName() {
+                function enrollAndCheckUserName() {
                     const channelType = window.sessionStorage.getItem('channelType');
                     const channelName = window.sessionStorage.getItem('channel');
 
@@ -49,11 +51,11 @@
                     axios.post("/channel/info", reqData).then((res) => {
                         if (res.data.success) {
                             const result = res.data.channelInfo.userNames.filter(userName => userName === userNameSession);
-                            if(result.length > 0) {
+                            if (result.length > 0) {
                                 alert("Duplicate username exists");
                                 sessionStorage.clear();
                                 window.location.href = "/";
-                            }else {
+                            } else {
                                 reqData.userId = userNameSession;
                                 const channelPassword = res.data.channelInfo.channelPassword;
 
@@ -64,12 +66,12 @@
                                         alert("Wrong Password");
                                         sessionStorage.clear();
                                         window.location.href = "/";
-                                    }else {
-                                        axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => {});
+                                    } else {
+                                        axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => { });
                                     }
 
-                                }else {
-                                    axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => {});
+                                } else {
+                                    axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => { });
                                 }
                             }
 
@@ -90,7 +92,7 @@
                  * 2. 새로고침 시에 세션스토리지에 값이 비어있는 경우
                  * 유저 이름 DB에 바로 등록
                  */
-                if(window.sessionStorage.length === 0) {
+                if (window.sessionStorage.length === 0) {
                     window.sessionStorage.setItem('channel', '<%= channelName %>');
                     window.sessionStorage.setItem('channelType', '<%= channelType %>');
 
@@ -100,7 +102,7 @@
 
             <%- include("./popup/fileshare") %>
                 <%- include("./popup/deviceSettings") %>
-                <%- include("./popup/fileHash") %>
+                    <%- include("./popup/fileHash") %>
 </head>
 
 <body>
@@ -109,16 +111,18 @@
             <img class="img__logo" src="logo.svg" alt="">
         </div>
         <div class="nav__container">
+            <!-- <div id="video-grid-button" class="options__button">
+                <i class="fas fa-th"></i>
+                <span>Grid</span>
+            </div> -->
             <div id="copyUrl" class="options__button">
                 <i class="far fa-clipboard"></i>
                 <span>Invite</span>
             </div>
-            <form id="join-form">
-                <div id="leave" class="options__button">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Leave</span>
-                </div>
-            </form>
+            <div id="leave" class="options__button">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Leave</span>
+            </div>
         </div>
     </div>
     </div>
@@ -160,11 +164,17 @@
                         <i class="fab fa-creative-commons-share"></i>
                         <span>FShare</span>
                     </div> -->
+                    <!-- 
+                    <div id="textShare" class="options__button">
+                        <i class="fas fa-file-alt"></i>
+                        <span>TShare</span>
+                    </div> 
+                    -->
                     <div id="whiteBoard" class="options__button">
                         <i class="fas fa-palette"></i>
                         <span>WhiteBoard</span>
                     </div>
-                    <div class="options__button" id="fileshareBtn" data-toggle="modal" data-target="#fileshareModal">
+                    <div class="options__button" id="fileDeliveryBtn" data-toggle="modal" data-target="#fileshareModal">
                         <i class="far fa-folder-open"></i>
                         <span>File</span>
                     </div>
@@ -173,11 +183,9 @@
                         <i class="fas fa-cog"></i>
                         <span>Device</span>
                     </div>
-                    
-                    <div class="options__button" id="fileHashBtn" data-toggle="modal"
-                        data-target="#fileHashModal">
-                        <i class="fa fa-key" aria-hidden="true"></i>
-                        <span>Hash</span>
+                    <div class="options__button" id="fileHashBtn" data-toggle="modal" data-target="#fileHashModal">
+                        <i class="fas fa-file-invoice" aria-hidden="true"></i>
+                        <span>Identifier</span>
                     </div>
                 </div>
             </div>
