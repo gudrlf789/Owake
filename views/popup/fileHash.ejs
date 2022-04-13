@@ -3,36 +3,65 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-label">File Hash</h5>
+                <h5 class="modal-title" id="modal-label">File Identifier Verification</h5>
             </div>
             <div class="modal-body">
-                <div class="container">
-                    <div>
-                        <button id="login">Sync</button>
+                <section class="form-signin">
+
+                    <div id="top_container" style="margin :0.7rem;">
+                        <span>Step 1. <p>Please click <a id="syncBtn">'Sync'</a> to connect with other users</p></span>
                     </div>
-                    <div id="file">
-                        <input type="file" id="file1">
+
+                    <div id="middle_container" style="display: flex; margin: 0.5rem; flex-direction: column;">
+
+                        <span>Step 2. <p>Please <label for="selectFile_1">'Check'</label>
+                                the identify code of an
+                                original file</p></span>
+
+                        <input type="file" id="selectFile_1" style="display: none">
+                        <input class="input-group input-group-sm mb-3" id="selectOriginalInput" type=" text"
+                            placeholder="Hash Code" readonly="readonly">
+
+
+                        <span>Step 3. <p>Please <label for="selectFile_2">'Check'</label> the identify code of a
+                                comparison file</p></span>
+
+                        <input type="file" id="selectFile_2" style="display: none">
+                        <input class="input-group input-group-sm mb-3" id="selectComparisonInput" type=" text"
+                            placeholder="Hash Code" readonly="readonly">
+
+                        <span>Step 4. <p>Please click <a id="clickVerifyFile">'Verify'</a> to verify the
+                                identity of the
+                                file(s)</p></span>
+                        <input class="input-group input-group-sm mb-3" type="text" id="compareResult"
+                            placeholder="Result" readonly>
                     </div>
-                    <div class="hash">
-                        <button id="btn1">Hash</button>
-                        <input type="text" id="hashText1" placeholder="Hash Data" readonly>
-                    </div>		
+                </section>
+
+                <div class=" modal-footer">
+                    <button type="button" class="btn btn-lg" data-dismiss="modal" id="closeBtn">Close</button>
                 </div>
-                <div class="container">
-                    <div id="file">
-                        <input type="file" id="file2">
-                    </div>
-                    <div class="hash">
-                        <button id="btn2">Hash</button>
-                        <input type="text" id="hashText2" placeholder="Hash Data" readonly>
-                    </div>		
-                </div>
-            </div>
-            <div class="modal-footer">
-                <input type="text" id="compareResult" placeholder="result of comparing" readonly>
-                <button type="button" class="btn btn-primary" id="compare">Compare</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="finish">Finish</button>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    const selectFile_1 = document.querySelector("#selectFile_1");
+    const selectFile_2 = document.querySelector("#selectFile_2");
+    const selectOriginalInput = document.querySelector("#selectOriginalInput");
+    const selectComparisonInput = document.querySelector("#selectComparisonInput");
+
+    let selectFile;
+
+    selectFile_1.addEventListener("change", (e) => {
+        selectFile = e.target.files[0];
+        selectOriginalInput.value = selectFile.name;
+    });
+
+    selectFile_2.addEventListener("change", (e) => {
+        selectFile = e.target.files[0];
+        selectComparisonInput.value = selectFile.name;
+    });
+
+</script>

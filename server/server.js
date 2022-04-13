@@ -197,7 +197,7 @@ const fetchWebsite = (url) => {
  * FileShare Socket 추가
  */
 
-io.sockets.on("connect", (socket) => {
+io.sockets.on("connection", (socket) => {
     // io.on("connection", (socket) => {
     socket.channels = {};
     sockets[socket.id] = socket;
@@ -322,6 +322,105 @@ io.sockets.on("connect", (socket) => {
 
     socket.on("leave-hash", (channelName) => {
         socket.leave(channelName);
+    });
+
+    /**
+     * @Author 전형동
+     * @param {*} mouseEvent
+     * @Date 2022 04 12
+     * @Description
+     * Socket Mouse Event
+     * @returns pageX, pageY, clientX, clientY, offsetX, offsetY, screenX, screenY
+     */
+
+    let mouseData = {
+        mousePeer: null,
+        clientX: null,
+        clientY: null,
+        offsetX: null,
+        offsetY: null,
+        screenX: null,
+        screenY: null,
+        pageX: null,
+        pageY: null,
+    };
+
+    socket.on("active_mouseover", (config) => {
+        mouseData.mousePeer = config.peer;
+        mouseData.clientX = config.clientX;
+        mouseData.clientY = config.clientY;
+        mouseData.offsetX = config.offsetX;
+        mouseData.offsetY = config.offsetY;
+        mouseData.screenX = config.screenX;
+        mouseData.screenY = config.screenY;
+        mouseData.pageX = config.pageX;
+        mouseData.pageY = config.pageY;
+        socket.in(config.channel).emit("receive_mouseover", mouseData);
+    });
+
+    socket.on("active_mouseup", (config) => {
+        mouseData.mousePeer = config.peer;
+        mouseData.clientX = config.clientX;
+        mouseData.clientY = config.clientY;
+        mouseData.offsetX = config.offsetX;
+        mouseData.offsetY = config.offsetY;
+        mouseData.screenX = config.screenX;
+        mouseData.screenY = config.screenY;
+        mouseData.pageX = config.pageX;
+        mouseData.pageY = config.pageY;
+        socket.in(config.channel).emit("receive_mouseover", mouseData);
+    });
+
+    socket.on("active_mousedown", (config) => {
+        mouseData.mousePeer = config.peer;
+        mouseData.clientX = config.clientX;
+        mouseData.clientY = config.clientY;
+        mouseData.offsetX = config.offsetX;
+        mouseData.offsetY = config.offsetY;
+        mouseData.screenX = config.screenX;
+        mouseData.screenY = config.screenY;
+        mouseData.pageX = config.pageX;
+        mouseData.pageY = config.pageY;
+        socket.in(config.channel).emit("receive_mouseover", mouseData);
+    });
+
+    socket.on("active_mouseout", (config) => {
+        mouseData.mousePeer = config.peer;
+        mouseData.clientX = config.clientX;
+        mouseData.clientY = config.clientY;
+        mouseData.offsetX = config.offsetX;
+        mouseData.offsetY = config.offsetY;
+        mouseData.screenX = config.screenX;
+        mouseData.screenY = config.screenY;
+        mouseData.pageX = config.pageX;
+        mouseData.pageY = config.pageY;
+        socket.in(config.channel).emit("receive_mouseover", mouseData);
+    });
+
+    socket.on("active_mousemove", (config) => {
+        mouseData.mousePeer = config.peer;
+        mouseData.clientX = config.clientX;
+        mouseData.clientY = config.clientY;
+        mouseData.offsetX = config.offsetX;
+        mouseData.offsetY = config.offsetY;
+        mouseData.screenX = config.screenX;
+        mouseData.screenY = config.screenY;
+        mouseData.pageX = config.pageX;
+        mouseData.pageY = config.pageY;
+        socket.in(config.channel).emit("receive_mouseover", mouseData);
+    });
+
+    socket.on("active_wheel", (config) => {
+        mouseData.mousePeer = config.peer;
+        mouseData.clientX = config.clientX;
+        mouseData.clientY = config.clientY;
+        mouseData.offsetX = config.offsetX;
+        mouseData.offsetY = config.offsetY;
+        mouseData.screenX = config.screenX;
+        mouseData.screenY = config.screenY;
+        mouseData.pageX = config.pageX;
+        mouseData.pageY = config.pageY;
+        socket.in(config.channel).emit("receive_wheel", mouseData);
     });
 
     /**

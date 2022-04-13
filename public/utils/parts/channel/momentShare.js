@@ -63,7 +63,8 @@ export const momentShareFunc = () => {
         momentShareBtn.style.color = "rgb(165, 199, 236)";
         momentSocket.emit("join-web", options.channel);
 
-        mouseEventFunc();
+        momentShare.addEventListener("load", mouseEventFunc, false);
+        momentShare.addEventListener("load", receiveMouseEventFunc, false);
     }
 
     function momentShareDisable() {
@@ -186,6 +187,7 @@ export const momentShareFunc = () => {
         let mouseEventObj = {
             iframeMouseOver: false,
         };
+        let config;
 
         window.addEventListener("blur", async () => {
             if (mouseEventObj.iframeMouseOver) {
@@ -197,6 +199,23 @@ export const momentShareFunc = () => {
             "mouseover",
             async (e) => {
                 mouseEventObj.iframeMouseOver = true;
+
+                momentSocket.emit(
+                    "active_mouseover",
+                    (config = {
+                        peer: options.uid,
+                        channel: options.channel,
+                        clientX: e.clientX,
+                        clientY: e.clientY,
+                        offsetX: e.offsetX,
+                        offsetY: e.offsetY,
+                        screenX: e.screenX,
+                        screenY: e.screenY,
+                        pageX: e.pageX,
+                        pageY: e.pageY,
+                    })
+                );
+
                 console.log("mouseover", e.clientX);
                 console.log("mouseover", e.clientY);
 
@@ -212,6 +231,23 @@ export const momentShareFunc = () => {
             "mousedown",
             async (e) => {
                 mouseEventObj.iframeMouseOver = true;
+
+                momentSocket.emit(
+                    "active_mousedown",
+                    (config = {
+                        peer: options.uid,
+                        channel: options.channel,
+                        clientX: e.clientX,
+                        clientY: e.clientY,
+                        offsetX: e.offsetX,
+                        offsetY: e.offsetY,
+                        screenX: e.screenX,
+                        screenY: e.screenY,
+                        pageX: e.pageX,
+                        pageY: e.pageY,
+                    })
+                );
+
                 console.log("mousedown ClientX", e.clientX);
                 console.log("mousedown ClientY", e.clientY);
                 console.log("mousedown OffsetX", e.offsetX);
@@ -226,6 +262,23 @@ export const momentShareFunc = () => {
             "mouseup",
             async (e) => {
                 mouseEventObj.iframeMouseOver = false;
+
+                momentSocket.emit(
+                    "active_mouseup",
+                    (config = {
+                        peer: options.uid,
+                        channel: options.channel,
+                        clientX: e.clientX,
+                        clientY: e.clientY,
+                        offsetX: e.offsetX,
+                        offsetY: e.offsetY,
+                        screenX: e.screenX,
+                        screenY: e.screenY,
+                        pageX: e.pageX,
+                        pageY: e.pageY,
+                    })
+                );
+
                 console.log("mouseup", e.clientX);
                 console.log("mouseup", e.clientY);
                 console.log("mouseup OffsetX", e.offsetX);
@@ -240,6 +293,23 @@ export const momentShareFunc = () => {
             "mousemove",
             async (e) => {
                 mouseEventObj.iframeMouseOver = true;
+
+                momentSocket.emit(
+                    "active_mousemove",
+                    (config = {
+                        peer: options.uid,
+                        channel: options.channel,
+                        clientX: e.clientX,
+                        clientY: e.clientY,
+                        offsetX: e.offsetX,
+                        offsetY: e.offsetY,
+                        screenX: e.screenX,
+                        screenY: e.screenY,
+                        pageX: e.pageX,
+                        pageY: e.pageY,
+                    })
+                );
+
                 console.log("mousemove", e.clientX);
                 console.log("mousemove", e.clientY);
                 console.log("mousemove OffsetX", e.offsetX);
@@ -254,6 +324,22 @@ export const momentShareFunc = () => {
             "mouseout",
             async (e) => {
                 mouseEventObj.iframeMouseOver = false;
+
+                momentSocket.emit(
+                    "active_mouseout",
+                    (config = {
+                        peer: options.uid,
+                        channel: options.channel,
+                        clientX: e.clientX,
+                        clientY: e.clientY,
+                        offsetX: e.offsetX,
+                        offsetY: e.offsetY,
+                        screenX: e.screenX,
+                        screenY: e.screenY,
+                        pageX: e.pageX,
+                        pageY: e.pageY,
+                    })
+                );
 
                 console.log("mouseout", e.clientX);
                 console.log("mouseout", e.clientY);
@@ -270,10 +356,24 @@ export const momentShareFunc = () => {
             "wheel",
             async (e) => {
                 const delta = Math.sign(e.deltaY);
+
+                momentSocket.emit(
+                    "active_wheel",
+                    (config = {
+                        peer: options.uid,
+                        channel: options.channel,
+                        wheel: delta,
+                    })
+                );
+
                 console.info(delta);
             },
             false
         );
+    }
+
+    function receiveMouseEventFunc() {
+        
     }
 
     function checkFocus() {
@@ -283,5 +383,4 @@ export const momentShareFunc = () => {
         }
     }
 
-    function mousePointerFocus() {}
 };

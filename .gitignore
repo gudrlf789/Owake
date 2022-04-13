@@ -1,6 +1,6 @@
 /server/uploads/
 yarn.lock
-site.ejs
+/views/popup/site.ejs
 
 # Logs
 

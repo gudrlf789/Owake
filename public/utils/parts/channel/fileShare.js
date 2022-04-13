@@ -241,7 +241,7 @@ async function fileInputControlChangeEventHandler(e) {
             pdf: 4,
         };
 
-        let reader = new FileReader();
+        let reader = new FileReaderSync();
 
         reader.onload = (e) => {
             let content = e.target.result;
@@ -323,6 +323,17 @@ async function fileInputControlChangeEventHandler(e) {
                     uid: fileArr[i].fileUid,
                     peer: fileArr[i].peerID,
                 });
+            }
+        };
+
+        reader.onerror = () => {
+            let errorCode = reader.error.code;
+            if (errorCode === reader.error.NOT_READABLE_ERR) {
+                alert("You do not have permission to read files.");
+            } else if (errorCode === reader.error.ABORT_ERR) {
+                alert("File read has been stopped.");
+            } else {
+                alert("Failed to read file.");
             }
         };
 
