@@ -368,7 +368,7 @@ io.sockets.on("connection", (socket) => {
         mouseData.screenY = config.screenY;
         mouseData.pageX = config.pageX;
         mouseData.pageY = config.pageY;
-        socket.in(config.channel).emit("receive_mouseover", mouseData);
+        socket.in(config.channel).emit("receive_mouseup", mouseData);
     });
 
     socket.on("active_mousedown", (config) => {
@@ -381,7 +381,7 @@ io.sockets.on("connection", (socket) => {
         mouseData.screenY = config.screenY;
         mouseData.pageX = config.pageX;
         mouseData.pageY = config.pageY;
-        socket.in(config.channel).emit("receive_mouseover", mouseData);
+        socket.in(config.channel).emit("receive_mousedown", mouseData);
     });
 
     socket.on("active_mouseout", (config) => {
@@ -394,7 +394,7 @@ io.sockets.on("connection", (socket) => {
         mouseData.screenY = config.screenY;
         mouseData.pageX = config.pageX;
         mouseData.pageY = config.pageY;
-        socket.in(config.channel).emit("receive_mouseover", mouseData);
+        socket.in(config.channel).emit("receive_mouseout", mouseData);
     });
 
     socket.on("active_mousemove", (config) => {
@@ -407,7 +407,7 @@ io.sockets.on("connection", (socket) => {
         mouseData.screenY = config.screenY;
         mouseData.pageX = config.pageX;
         mouseData.pageY = config.pageY;
-        socket.in(config.channel).emit("receive_mouseover", mouseData);
+        socket.in(config.channel).emit("receive_mousemove", mouseData);
     });
 
     socket.on("active_wheel", (config) => {

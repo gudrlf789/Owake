@@ -373,7 +373,26 @@ export const momentShareFunc = () => {
     }
 
     function receiveMouseEventFunc() {
-        
+        let mouseEventObj;
+        momentSocket.on("receive_mouseover", (mouseEventObj) => {
+            // console.log(mouseEventObj);
+        });
+        momentSocket.on("receive_mouseup", (mouseEventObj) => {
+            // console.log(mouseEventObj);
+        });
+        momentSocket.on("receive_mousedown", (mouseEventObj) => {
+            console.log(mouseEventObj);
+            console.log(momentShare.contentWindow);
+        });
+        momentSocket.on("receive_mouseout", (mouseEventObj) => {
+            // console.log(mouseEventObj);
+        });
+        momentSocket.on("receive_mousemove", (mouseEventObj) => {
+            // console.log(mouseEventObj);
+        });
+        momentSocket.on("receive_wheel", (mouseEventObj) => {
+            // console.log(mouseEventObj);
+        });
     }
 
     function checkFocus() {
@@ -382,5 +401,4 @@ export const momentShareFunc = () => {
             window.focus();
         }
     }
-
 };
