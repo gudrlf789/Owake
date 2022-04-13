@@ -62,15 +62,15 @@ export const fileHash = () => {
         $(`#${data.textHtmlId}`).val(`${data.hash}`);
     });
 
-    $("#login").click((e) => {
+    $("#syncBtn").click((e) => {
         hashSocket.emit("join-hash", window.sessionStorage.getItem("channel"));
-
+        debugger;
         axios
             .post("/channel/jwt", loginData)
             .then((res) => {
                 jwt = res.data.jwt;
-                $("#btn1").attr("disabled", false);
-                $("#btn2").attr("disabled", false);
+                //$("#btn1").attr("disabled", false);
+                //$("#btn2").attr("disabled", false);
             })
             .catch((err) => {
                 alert(err);
