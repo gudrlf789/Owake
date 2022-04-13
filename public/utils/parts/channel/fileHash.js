@@ -64,7 +64,6 @@ export const fileHash = () => {
 
     $("#syncBtn").click((e) => {
         hashSocket.emit("join-hash", window.sessionStorage.getItem("channel"));
-        debugger;
         axios
             .post("/channel/jwt", loginData)
             .then((res) => {
