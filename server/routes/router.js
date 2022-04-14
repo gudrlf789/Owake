@@ -18,7 +18,6 @@ const upload = multer({
 });
 const path = require("path");
 const axios = require("axios");
-const requestIp = require('request-ip');
 
 /** Firebase Settings */
 const firebase = require("firebase/app");
@@ -57,7 +56,6 @@ fs.readdir("./server/uploads", (err) => {
 let fileName;
 
 router.get("/list", (req, res, next) => {
-    console.log("ip1: " + requestIp.getClientIp(req));
     const roomArray = [];
     firebaseCollection
         .get()
@@ -355,7 +353,6 @@ router.post("/removeUserNameOnChannel", async (req, res) => {
  * trustOS api 사용하여 파일 해쉬화
  */
 router.post("/jwt", async (req, res) => {
-    console.log("ip2: " + requestIp.getClientIp(req));
     const bodyData = req.body;
     bodyData.id = process.env.trustOsId;
     bodyData.password = process.env.trustOsPassword;

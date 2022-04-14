@@ -7,6 +7,7 @@ const Logger = require("./Logger");
 const { execSync } = require("child_process");
 const fs = require("fs");
 const log = new Logger("server");
+const requestIp = require('request-ip');
 const port = process.env.PORT || 1227;
 
 let channels = {}; // collect channels
@@ -91,11 +92,13 @@ app.use(express.static(path.join(__dirname, "./uploads/")));
 app.use(express.static(path.join(__dirname, "../views")));
 
 app.use(express.json());
+app.use(requestIp.mw());
 
 /** Routing Settings */
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
+    console.log("ip: " + req.clientIp)
     res.render("index");
 });
 
