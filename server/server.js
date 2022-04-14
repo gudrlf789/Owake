@@ -27,6 +27,7 @@ let peerWebURLArr = [];
 let io, server;
 
 const CORS_fn = (req, res) => {
+    console.log("확인용: " + req.connection.remoteAddress);
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Methods", "*");
