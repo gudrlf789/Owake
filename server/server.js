@@ -98,7 +98,9 @@ app.use(requestIp.mw());
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
-    console.log("ip: " + req.clientIp)
+    console.log("ip: " + req.clientIp);
+    const ip = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress;
+    console.log("ip2: " + ip);
     res.render("index");
 });
 
