@@ -27,7 +27,6 @@ let peerWebURLArr = [];
 let io, server;
 
 const CORS_fn = (req, res) => {
-    console.log("확인용: " + req.connection.remoteAddress);
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Methods", "*");
@@ -99,7 +98,6 @@ app.use(requestIp.mw());
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
-    console.log("ip: " + req.clientIp);
     res.render("index");
 });
 
@@ -113,7 +111,6 @@ app.get("/:channelName/:channelType", (req, res) => {
 });
 
 app.get("/all", (req, res, next) => {
-    console.log("ip2: " + req.clientIp);
     res.render("all");
 });
 
