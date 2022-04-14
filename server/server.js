@@ -99,8 +99,6 @@ app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
     console.log("ip: " + req.clientIp);
-    const ip = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress;
-    console.log("ip2: " + ip);
     res.render("index");
 });
 
@@ -114,6 +112,7 @@ app.get("/:channelName/:channelType", (req, res) => {
 });
 
 app.get("/all", (req, res, next) => {
+    console.log("ip2: " + req.clientIp);
     res.render("all");
 });
 
