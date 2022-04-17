@@ -13,8 +13,20 @@ const storage = multer.diskStorage({
         cb(null, req.body.adminId + "_" + nowDate + "_" + file.originalname);
     },
 });
+const contentsStorage = multer.diskStorage({
+    destination: function (req, res, cb) {
+        cb(null, `./server/contents`);
+    },
+    filename: function (req, file, cb) {
+        //cb(null, req.body.userName + "_"  + file.originalname);
+        cb(null, file.originalname);
+    },
+});
 const upload = multer({
     storage: storage,
+});
+const contentsUpload = multer({
+    storage: contentsStorage,
 });
 const path = require("path");
 const axios = require("axios");
@@ -43,6 +55,13 @@ const firebaseCollection = db.collection("ChannelList");
 fs.readdir("./server/uploads", (err) => {
     if (err) {
         fs.mkdirSync("./server/uploads");
+    }
+});
+
+//contents 폴더 없을시 생성
+fs.readdir("./server/contents", (err) => {
+    if (err) {
+        fs.mkdirSync("./server/contents");
     }
 });
 
@@ -368,6 +387,12 @@ router.post("/jwt", async (req, res) => {
             error: err
         });
       });
+});
+
+router.post("/contentUpload", contentsUpload.single("content"), (req, res) => {
+    return res.status(200).json({
+        success: true
+    });
 });
 
 module.exports = router;
