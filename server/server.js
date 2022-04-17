@@ -7,7 +7,6 @@ const Logger = require("./Logger");
 const { execSync } = require("child_process");
 const fs = require("fs");
 const log = new Logger("server");
-const requestIp = require('request-ip');
 const port = process.env.PORT || 1227;
 
 let channels = {}; // collect channels
@@ -27,7 +26,6 @@ let peerWebURLArr = [];
 let io, server;
 
 const CORS_fn = (req, res) => {
-    console.log("확인용: " + req.connection.remoteAddress);
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Methods", "*");
@@ -90,16 +88,15 @@ app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../public/img/channel")));
 app.use(express.static(path.join(__dirname, "../public/img/nav-icon")));
 app.use(express.static(path.join(__dirname, "./uploads/")));
+app.use(express.static(path.join(__dirname, "./contents/")));
 app.use(express.static(path.join(__dirname, "../views")));
 
 app.use(express.json());
-app.use(requestIp.mw());
 
 /** Routing Settings */
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
-    console.log("ip: " + req.clientIp);
     res.render("index");
 });
 
@@ -113,7 +110,6 @@ app.get("/:channelName/:channelType", (req, res) => {
 });
 
 app.get("/all", (req, res, next) => {
-    console.log("ip2: " + req.clientIp);
     res.render("all");
 });
 
@@ -326,6 +322,35 @@ io.sockets.on("connection", (socket) => {
     });
 
     socket.on("leave-hash", (channelName) => {
+        socket.leave(channelName);
+    });
+
+    socket.on("join-contents", (channelName) => {
+        socket.join(channelName);
+    });
+
+    socket.on("content-info", (channelName, userName, fileName, fileType) => {
+        let data = {
+            userName: userName,
+            fileName: fileName,
+            fileType: fileType
+        };
+        socket.to(channelName).emit("input-content", data);
+    });
+
+    socket.on("play-origin", (channelName, flag) => {
+        socket.to(channelName).emit("play-remote", flag);
+    });
+
+    socket.on("pause-origin", (channelName, flag) => {
+        socket.to(channelName).emit("pause-remote", flag);
+    });
+
+    socket.on("currentTime-origin", (channelName, currentTime) => {
+        socket.to(channelName).emit("currentTime-remote", currentTime);
+    });
+
+    socket.on("leave-contents", (channelName) => {
         socket.leave(channelName);
     });
 
