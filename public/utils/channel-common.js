@@ -17,6 +17,7 @@ import { gridView } from "./parts/channel/videoViewGridMode.js";
 import { SwiperFunc } from "./parts/channel/swiper.js";
 // import { shareEditerFunc } from "./parts/channel/shareEditer.js";
 import { fileHash } from "./parts/channel/fileHash.js";
+import { contentsFunc } from "./parts/channel/contents.js";
 
 mobileDisplayCtr();
 f12defense();
@@ -37,3 +38,4 @@ muteUtilsFunc();
 // shareEditerFunc();--------------------- 서버에 올리면 Lisence 문제로 사용 불가능 구매해야 됨.
 SwiperFunc();
 fileHash();
+contentsFunc();
