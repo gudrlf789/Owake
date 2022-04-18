@@ -103,6 +103,7 @@
             <%- include("./popup/fileshare") %>
                 <%- include("./popup/deviceSettings") %>
                     <%- include("./popup/fileHash") %>
+                    <%- include("./popup/contents") %>
 </head>
 
 <body>
@@ -186,6 +187,10 @@
                     <div class="options__button" id="fileHashBtn" data-toggle="modal" data-target="#fileHashModal">
                         <i class="fas fa-file-invoice" aria-hidden="true"></i>
                         <span>Identifier</span>
+                    </div>
+                    <div class="options__button" id="contentsBtn" data-toggle="modal" data-target="#contentsModal">
+                        <i class="fas fa-file-invoice" aria-hidden="true"></i>
+                        <span>contents</span>
                     </div>
                 </div>
             </div>
