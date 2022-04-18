@@ -18,7 +18,7 @@ import { options } from "../../rtcClient.js";
 export const momentShareFunc = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
-    let InputURL;
+    let clickCount = 0;
 
     const momentShareBtn = document.querySelector("#momentShare");
     const momentShareIcon = document.querySelector(".fa-brain");
@@ -34,12 +34,6 @@ export const momentShareFunc = () => {
     const momentShare = document.createElement("iframe");
     const searchForm = document.createElement("form");
 
-    const navContainer = document.createElement("section");
-    const momentTabArea = document.createElement("div");
-
-    navContainer.id = "navContainer";
-    momentTabArea.id = "momentTabArea";
-
     searchInput.placeholder = "Enter a URL";
     searchInput.style.textAlign = "center";
     momentShare.id = "momentShare-iframe";
@@ -52,20 +46,13 @@ export const momentShareFunc = () => {
 
     searchInputBtnIcon.className = "fas fa-search";
 
-    navContainer.append(searchContainer, momentTabArea);
     searchInputBtn.appendChild(searchInputBtnIcon);
     searchContainer.append(searchInput, searchInputBtn);
-
-    momentShareArea.append(navContainer, momentShare);
+    momentShareArea.append(searchContainer, momentShare);
     momentShareArea.append(momentShare);
     momentShare.frameborder = "0";
 
-    momentTabArea.style.setProperty("height", "3rem");
-    momentTabArea.style.setProperty("background", "#fff");
-    momentTabArea.style.setProperty("border", "2px solid #000");
-    momentTabArea.style.setProperty("display", "flex");
-    momentTabArea.style.setProperty("align-items", "center");
-    momentTabArea.style.setProperty("overflow-x", "auto");
+    momentShareArea.style.setProperty("overflow", "auto");
 
     momentShareBtn.addEventListener("click", (e) => {
         momentShareActive = !momentShareActive;
@@ -93,22 +80,18 @@ export const momentShareFunc = () => {
     });
 
     searchInputBtn.addEventListener("click", (e) => {
-        InputURL = searchInput.value;
         if (searchInput.value.length === 0) {
             alert("Please enter your address.");
         } else {
-            searchUrlTransfer(InputURL);
+            searchUrlTransfer();
         }
     });
 
     searchInput.addEventListener("keypress", (e) => {
-        InputURL = searchInput.value;
         if (e.key === "Enter") {
-            if (searchInput.value.length === 0) {
-                alert("Please enter your address.");
-            } else {
-                searchUrlTransfer(InputURL);
-            }
+            searchUrlTransfer();
+        } else {
+            return;
         }
     });
 
@@ -116,21 +99,23 @@ export const momentShareFunc = () => {
         console.log("searchUrlTransfer:::", address);
 
         let resultURL;
+        let config;
         if (address === null || address === undefined || address === "") {
             resultURL = resultURLprotocolCheck();
             axios.post("/urlSearch", null, { params: resultURL });
-            momentSocket.emit("submit_address", resultURL, {
-                peerID: options.uid,
-                channel: options.channel,
-            });
+            momentSocket.emit(
+                "submit_address",
+                resultURL,
+                (config = { peerID: options.uid, channel: options.channel })
+            );
         } else {
             resultURL = resultURLprotocolCheck(address);
-            console.log(resultURL);
             axios.post("/urlSearch", null, { params: resultURL });
-            momentSocket.emit("submit_address", resultURL, {
-                peerID: options.uid,
-                channel: options.channel,
-            });
+            momentSocket.emit(
+                "submit_address",
+                resultURL,
+                (config = { peerID: options.uid, channel: options.channel })
+            );
         }
 
         resultURLContentCheck(resultURL);
@@ -146,37 +131,11 @@ export const momentShareFunc = () => {
      */
 
     function resultURLContentCheck(address) {
-        console.log("resultURLContentCheck : 진입");
-        let staticURL = "/site";
-
-        createMomentTabFunc(address);
-
-        try {
-            if (address.includes("youtube")) {
-                momentShare.src = address;
-                momentShare.contentWindow.location = address;
-                // momentShare.contentWindow.document.open(address);
-            } else {
-                momentShare.src = staticURL;
-                momentShare.contentWindow.location = staticURL;
-                // momentShare.contentWindow.document.open(staticURL);
-            }
-        } catch (e) {
-            console.log("resultURLContentCheck Error : ", e);
+        if (address.includes("youtube")) {
+            return (momentShare.src = address);
+        } else {
+            return (momentShare.src = "/site");
         }
-    }
-
-    function createMomentTabFunc(url) {
-        const momentTab = document.createElement("span");
-
-        momentTab.id = "momentTab";
-        momentTab.style.setProperty("margin", "0.4rem");
-        momentTab.style.setProperty("background", "#182843");
-        momentTab.style.setProperty("color", "#fff");
-        momentTab.style.setProperty("cursor", "pointer");
-
-        momentTab.textContent = url;
-        momentTabArea.append(momentTab);
     }
 
     /**
@@ -226,80 +185,67 @@ export const momentShareFunc = () => {
         }
     };
 
+    let clickIframe = window.setInterval(checkFocus, 100);
+
     function mouseEventFunc() {
         let mouseEventObj = {
             iframeMouseOver: false,
         };
+        let mouseEventConfig = {
+            peer: null,
+            channel: null,
+            clientX: null,
+            clientY: null,
+            offsetX: null,
+            offsetY: null,
+            screenX: null,
+            screenY: null,
+            pageX: null,
+            pageY: null,
+            scrollX: null,
+            scrollY: null,
+            link: null,
+            wheel: null,
+        };
 
-        momentShare.contentWindow.addEventListener(
-            "mouseover",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = true;
+        // mouseEventConfig.peer = options.uid;
+        // mouseEventConfig.channel = options.channel;
+        // mouseEventConfig.clientX = e.clientX;
+        // mouseEventConfig.clientY = e.clientY;
+        // mouseEventConfig.offsetX = e.offsetX;
+        // mouseEventConfig.offsetY = e.offsetY;
+        // mouseEventConfig.screenX = e.screenX;
+        // mouseEventConfig.screenY = e.screenY;
+        // mouseEventConfig.pageX = e.pageX;
+        // mouseEventConfig.pageY = e.pageY;
+        // mouseEventConfig.scrollX = e.scrollX;
+        // mouseEventConfig.scrollY = e.scrollY;
 
-                momentSocket.emit("active_mouseover", {
-                    peer: options.uid,
-                    channel: options.channel,
-                });
-            },
-            false
-        );
+        window.addEventListener("blur", async (e) => {
+            if (mouseEventObj.iframeMouseOver) {
+                console.log("Wow! Iframe Click!", clickIframe);
+                console.log(e);
+            }
+        });
+
+        momentShare.contentWindow.addEventListener("mouseover", async (e) => {
+            console.log(e);
+        });
 
         momentShare.contentWindow.addEventListener(
             "mousedown",
             async (e) => {
                 mouseEventObj.iframeMouseOver = true;
 
-                let sendURL = e.target.href;
+                console.log(e);
+                console.log(e.target);
+                console.log(e.target.href);
 
-                if (sendURL.includes("https") || sendURL.includes("http")) {
-                    momentShare.contentWindow.location = sendURL;
-                    // searchUrlTransfer(sendURL);
-                }
+                mouseEventConfig.peer = options.uid;
+                mouseEventConfig.channel = options.channel;
+                mouseEventConfig.link = e.target.href;
 
-                momentSocket.emit("active_mousedown", {
-                    peer: options.uid,
-                    channel: options.channel,
-                    link: sendURL,
-                });
-            },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
-            "mouseup",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = false;
-
-                momentSocket.emit("active_mouseup", {
-                    peer: options.uid,
-                    channel: options.channel,
-                });
-            },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
-            "mousemove",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = true;
-
-                momentSocket.emit("active_mousemove", {
-                    peer: options.uid,
-                    channel: options.channel,
-                });
-            },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
-            "mouseout",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = false;
-
-                momentSocket.emit("active_mouseout", {
-                    peer: options.uid,
-                    channel: options.channel,
-                });
+                momentSocket.emit("active_mousedown", mouseEventConfig);
             },
             false
         );
@@ -308,12 +254,7 @@ export const momentShareFunc = () => {
             "scroll",
             async (e) => {
                 mouseEventObj.iframeMouseOver = false;
-
-                momentSocket.emit("active_scroll", {
-                    peer: options.uid,
-                    channel: options.channel,
-                    scrollY: e.currentTarget.scrollY,
-                });
+                momentSocket.emit("active_scroll", mouseEventConfig);
             },
             false
         );
@@ -323,12 +264,11 @@ export const momentShareFunc = () => {
             async (e) => {
                 const delta = Math.sign(e.deltaY);
 
-                momentSocket.emit("active_wheel", {
-                    peer: options.uid,
-                    channel: options.channel,
-                    wheel: delta,
-                });
+                mouseEventConfig.peer = options.uid;
+                mouseEventConfig.channel = options.channel;
+                mouseEventConfig.wheel = delta;
 
+                momentSocket.emit("active_wheel", mouseEventConfig);
                 console.info(delta);
             },
             false
@@ -336,32 +276,47 @@ export const momentShareFunc = () => {
     }
 
     function receiveMouseEventFunc() {
+        let mouseEventObj;
         let rect = currentFrameAbsolutePosition();
         // let rect = momentShare.getBoundingClientRect();
 
-        momentSocket.on("receive_mouseover", (mouseEvent) => {
-            // console.log(mouseEvent);
+        const pointer = document.createElement("div");
+        pointer.className = "pointer";
+        pointer.style.setProperty("width", "15px");
+        pointer.style.setProperty("height", "15px");
+        pointer.style.setProperty("background", "#2585");
+        pointer.style.setProperty("border-radius", "20px");
+        pointer.style.setProperty("z-index", "9999");
+        pointer.style.setProperty("position", "absolute");
+
+        momentSocket.on("receive_mouseover", (mouseEventObj) => {
+            // console.log(mouseEventObj);
         });
-        momentSocket.on("receive_mouseup", (mouseEvent) => {
-            // console.log(mouseEvent);
-        });
-        momentSocket.on("receive_mousedown", (mouseEvent) => {
-            console.log(mouseEvent);
-            let receiveURL = resultURLprotocolCheck(mouseEvent.link);
-            momentShare.contentWindow.location = receiveURL;
-        });
-        momentSocket.on("receive_mouseout", (mouseEvent) => {
-            // console.log(mouseEvent);
-        });
-        momentSocket.on("receive_mousemove", (mouseEvent) => {
-            // console.log(mouseEvent);
+        momentSocket.on("receive_mouseup", (mouseEventObj) => {
+            // console.log(mouseEventObj);
         });
 
-        momentSocket.on("receive_scroll", (mouseEvent) => {
-            momentShare.contentWindow.scrollTo(0, mouseEvent.scrollY + rect.y);
+        momentSocket.on("receive_mousedown", (mouseEventObj) => {
+            console.log(mouseEventObj);
+            let receiveURL = resultURLprotocolCheck(mouseEventObj.link);
+            momentShare.src = receiveURL;
         });
 
-        momentSocket.on("receive_wheel", (mouseEvent) => {
+        momentSocket.on("receive_mouseout", (mouseEventObj) => {
+            // console.log(mouseEventObj);
+        });
+        momentSocket.on("receive_mousemove", (mouseEventObj) => {
+            // console.log(mouseEventObj);
+        });
+
+        momentSocket.on("receive_scroll", (mouseEventObj) => {
+            momentShare.contentWindow.scrollTo(
+                0,
+                mouseEventObj.scrollY + rect.y
+            );
+        });
+
+        momentSocket.on("receive_wheel", (mouseEventObj) => {
             // console.log(mouseEventObj);
         });
     }
@@ -399,10 +354,10 @@ export const momentShareFunc = () => {
         );
     }
 
-    $(document).on("click", "#momentTab", (e) => {
-        console.log(e);
-        let tabURL = e.target.innerText;
-        momentShare.src = tabURL;
-        momentShare.contentWindow.location.href = tabURL;
-    });
+    function checkFocus() {
+        if (document.activeElement == momentShare) {
+            console.log("clicked " + clickCount++);
+            window.focus();
+        }
+    }
 };

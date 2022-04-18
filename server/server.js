@@ -25,30 +25,12 @@ let peerWebURLArr = [];
 
 let io, server;
 
-const CORS_fn = (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Methods", "*");
-    res.setHeader("Access-Control-Allow-Headers", "*");
-    if (req.method === "OPTIONS") {
-        res.writeHead(200);
-        res.end();
-        return;
-    }
-};
-
-server = require("http").createServer(app, CORS_fn);
+server = require("http").createServer(app);
 
 io = new Server({
     pingInterval: 100000,
     pingTimeout: 100000,
     maxHttpBufferSize: 1e8,
-
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-        preflightContinue: false,
-    },
 }).listen(server);
 
 /** Router */
@@ -66,7 +48,13 @@ function redirectSec(req, res, next) {
 
 app.set("view engine", "ejs");
 
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+        methods: ["GET", "POST"],
+        preflightContinue: false,
+    })
+);
 app.use(redirectSec);
 
 app.use(
@@ -101,6 +89,7 @@ app.get("/", (req, res, next) => {
 
 app.get("/:channelName/:channelType", (req, res) => {
     let appID = "4343e4c08654493cb8997de783a9aaeb";
+
     res.render("channel", {
         channelName: req.params.channelName,
         channelType: req.params.channelType,
@@ -168,6 +157,7 @@ app.get("/site", async (req, res) => {
  */
 
 const fetchWebsite = (url) => {
+    log.debug(url);
     try {
         if (url.includes("undefined")) {
             // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
@@ -333,94 +323,33 @@ io.sockets.on("connection", (socket) => {
      * @returns pageX, pageY, clientX, clientY, offsetX, offsetY, screenX, screenY
      */
 
-    let mouseData = {
-        mousePeer: null,
-        clientX: null,
-        clientY: null,
-        offsetX: null,
-        offsetY: null,
-        screenX: null,
-        screenY: null,
-        pageX: null,
-        pageY: null,
-    };
-
     socket.on("active_mouseover", (config) => {
-        mouseData.mousePeer = config.peer;
-        mouseData.clientX = config.clientX;
-        mouseData.clientY = config.clientY;
-        mouseData.offsetX = config.offsetX;
-        mouseData.offsetY = config.offsetY;
-        mouseData.screenX = config.screenX;
-        mouseData.screenY = config.screenY;
-        mouseData.pageX = config.pageX;
-        mouseData.pageY = config.pageY;
-        socket.in(config.channel).emit("receive_mouseover", mouseData);
+        socket.in(config.channel).emit("receive_mouseover", config);
     });
 
     socket.on("active_mouseup", (config) => {
-        mouseData.mousePeer = config.peer;
-        mouseData.clientX = config.clientX;
-        mouseData.clientY = config.clientY;
-        mouseData.offsetX = config.offsetX;
-        mouseData.offsetY = config.offsetY;
-        mouseData.screenX = config.screenX;
-        mouseData.screenY = config.screenY;
-        mouseData.pageX = config.pageX;
-        mouseData.pageY = config.pageY;
-        socket.in(config.channel).emit("receive_mouseup", mouseData);
+        socket.in(config.channel).emit("receive_mouseup", config);
     });
 
     socket.on("active_mousedown", (config) => {
-        mouseData.mousePeer = config.peer;
-        mouseData.clientX = config.clientX;
-        mouseData.clientY = config.clientY;
-        mouseData.offsetX = config.offsetX;
-        mouseData.offsetY = config.offsetY;
-        mouseData.screenX = config.screenX;
-        mouseData.screenY = config.screenY;
-        mouseData.pageX = config.pageX;
-        mouseData.pageY = config.pageY;
-        socket.in(config.channel).emit("receive_mousedown", mouseData);
+        console.log(config);
+        socket.in(config.channel).emit("receive_mousedown", config);
     });
 
     socket.on("active_mouseout", (config) => {
-        mouseData.mousePeer = config.peer;
-        mouseData.clientX = config.clientX;
-        mouseData.clientY = config.clientY;
-        mouseData.offsetX = config.offsetX;
-        mouseData.offsetY = config.offsetY;
-        mouseData.screenX = config.screenX;
-        mouseData.screenY = config.screenY;
-        mouseData.pageX = config.pageX;
-        mouseData.pageY = config.pageY;
-        socket.in(config.channel).emit("receive_mouseout", mouseData);
+        socket.in(config.channel).emit("receive_mouseout", config);
     });
 
     socket.on("active_mousemove", (config) => {
-        mouseData.mousePeer = config.peer;
-        mouseData.clientX = config.clientX;
-        mouseData.clientY = config.clientY;
-        mouseData.offsetX = config.offsetX;
-        mouseData.offsetY = config.offsetY;
-        mouseData.screenX = config.screenX;
-        mouseData.screenY = config.screenY;
-        mouseData.pageX = config.pageX;
-        mouseData.pageY = config.pageY;
-        socket.in(config.channel).emit("receive_mousemove", mouseData);
+        socket.in(config.channel).emit("receive_mousemove", config);
+    });
+
+    socket.on("active_scroll", (config) => {
+        socket.in(config.channel).emit("receive_scroll", config);
     });
 
     socket.on("active_wheel", (config) => {
-        mouseData.mousePeer = config.peer;
-        mouseData.clientX = config.clientX;
-        mouseData.clientY = config.clientY;
-        mouseData.offsetX = config.offsetX;
-        mouseData.offsetY = config.offsetY;
-        mouseData.screenX = config.screenX;
-        mouseData.screenY = config.screenY;
-        mouseData.pageX = config.pageX;
-        mouseData.pageY = config.pageY;
-        socket.in(config.channel).emit("receive_wheel", mouseData);
+        socket.in(config.channel).emit("receive_wheel", config);
     });
 
     /**
