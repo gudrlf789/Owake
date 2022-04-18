@@ -1,4 +1,3 @@
-//
 export const contentsFunc = () => {
     let contentsSocket = io();
 
@@ -12,13 +11,15 @@ export const contentsFunc = () => {
     const userName = window.sessionStorage.getItem("uid");
     const channelName = window.sessionStorage.getItem("channel");
     let originUser = userName;
+    let choiceFile = "";
 
     const makeBtnTemplate = (userName, fileType, fileName) => {
         const html = 
         `
             <div class="middleContainerBtn">
                 <input type="hidden" value=${fileType}>
-                <button>${fileName}</button>
+                <input type="hidden" value="${fileName}">
+                <button>${userName}-${fileName}</button>
             </div>
         `;
 
@@ -45,29 +46,32 @@ export const contentsFunc = () => {
         makeBtnTemplate(data.userName, data.fileType, data.fileName);
     });
 
-    contentsSocket.on("play-remote", (data) => {
+    contentsSocket.on("play-remote", (playingFile) => {
         const mediaFile = document.getElementsByClassName("mediaFile");
-        if(mediaFile.length !== 0){
+        if(mediaFile.length !== 0 && choiceFile === playingFile){
             mediaFile[0].play();
         }
     });
 
-    contentsSocket.on("pause-remote", (data) => {
+    contentsSocket.on("pause-remote", (playingFile) => {
         const mediaFile = document.getElementsByClassName("mediaFile");
-        if(mediaFile.length !== 0){
+        if(mediaFile.length !== 0 && choiceFile === playingFile){
             mediaFile[0].pause();
         }
     });
 
-    contentsSocket.on("currentTime-remote", (currentTime) => {
+    contentsSocket.on("currentTime-remote", (currentTime, playingFile) => {
         const mediaFile = document.getElementsByClassName("mediaFile");
-        if(mediaFile.length !== 0){
+        if(mediaFile.length !== 0 && choiceFile === playingFile){
             mediaFile[0].currentTime = currentTime;
         }
     });
 
     $(document).on("click", ".middleContainerBtn", (e) => {
-        const fileName = e.currentTarget.children[1].innerText;
+        //const fileName = e.currentTarget.children[2].innerText;
+        const fileName = e.currentTarget.children[1].value;
+        choiceFile = fileName;
+
         mainContainer.innerHTML = 
         //`
         //    <img src="${fileName}" />
@@ -81,13 +85,13 @@ export const contentsFunc = () => {
 
     document.addEventListener('play', function (e) {
         if(originUser === userName) {
-            contentsSocket.emit("play-origin", channelName, true);
+            contentsSocket.emit("play-origin", channelName, choiceFile);
         }
     }, true);
 
     document.addEventListener('pause', function (e) {
         if(originUser === userName) {
-            contentsSocket.emit("pause-origin", channelName, true);
+            contentsSocket.emit("pause-origin", channelName, choiceFile);
         }
     }, true);
 
@@ -98,7 +102,7 @@ export const contentsFunc = () => {
     document.addEventListener('seeked', function (e) {
         if(originUser === userName) {
             const currentTime = document.getElementsByClassName("mediaFile")[0].currentTime;
-            contentsSocket.emit("currentTime-origin", channelName, currentTime);
+            contentsSocket.emit("currentTime-origin", channelName, currentTime, choiceFile);
         }
     }, true);
 
