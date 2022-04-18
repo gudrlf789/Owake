@@ -1,3 +1,4 @@
+//
 export const contentsFunc = () => {
     let contentsSocket = io();
 
