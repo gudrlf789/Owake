@@ -338,16 +338,16 @@ io.sockets.on("connection", (socket) => {
         socket.to(channelName).emit("input-content", data);
     });
 
-    socket.on("play-origin", (channelName, flag) => {
-        socket.to(channelName).emit("play-remote", flag);
+    socket.on("play-origin", (channelName, fileName) => {
+        socket.to(channelName).emit("play-remote", fileName);
     });
 
-    socket.on("pause-origin", (channelName, flag) => {
-        socket.to(channelName).emit("pause-remote", flag);
+    socket.on("pause-origin", (channelName, fileName) => {
+        socket.to(channelName).emit("pause-remote", fileName);
     });
 
-    socket.on("currentTime-origin", (channelName, currentTime) => {
-        socket.to(channelName).emit("currentTime-remote", currentTime);
+    socket.on("currentTime-origin", (channelName, currentTime, fileName) => {
+        socket.to(channelName).emit("currentTime-remote", currentTime, fileName);
     });
 
     socket.on("leave-contents", (channelName) => {
