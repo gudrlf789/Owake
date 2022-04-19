@@ -61,12 +61,13 @@ export const momentShareFunc = () => {
     momentShare.frameborder = "0";
 
     momentTabArea.style.setProperty("height", "3rem");
+    momentTabArea.style.setProperty("width", "100%");
     momentTabArea.style.setProperty("background", "#fff");
     momentTabArea.style.setProperty("border", "2px solid #000");
     momentTabArea.style.setProperty("display", "flex");
     momentTabArea.style.setProperty("align-items", "center");
     momentTabArea.style.setProperty("overflow-x", "auto");
-    momentTabArea.style.setProperty("position", "fixed");
+    momentTabArea.style.setProperty("position", "absolute");
     momentTabArea.style.setProperty("z-index", "5");
 
     momentShareBtn.addEventListener("click", (e) => {
