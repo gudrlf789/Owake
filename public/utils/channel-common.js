@@ -39,3 +39,18 @@ muteUtilsFunc();
 SwiperFunc();
 fileHash();
 contentsFunc();
+
+// const momentShareBtn = document.querySelector("#momentShare");
+// const fileShareBtn = document.querySelector("#fileShareBtn");
+// const whiteBoardBtn = document.querySelector("#whiteBoard");
+// const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
+// const deviceSettingBtn = document.querySelector("#deviceSettingBtn");
+// const fileHashBtn = document.querySelector("#fileHashBtn");
+
+// momentShareBtn.addEventListener("click", momentShareFunc, false);
+// fileShareBtn.addEventListener("click", fileShare, false);
+// whiteBoardBtn.addEventListener("click", whiteBoardFunc, false);
+// fileDeliveryBtn.addEventListener("click", fileDelivery, false);
+// deviceSettingBtn.addEventListener("click", recodingDeviceCtrl, false);
+// fileHashBtn.addEventListener("click", fileHash, false);
+

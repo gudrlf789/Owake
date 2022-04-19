@@ -1,7 +1,3 @@
-#momentShare-iframe {
-    border: none;
-}
-
 #momentShareArea {
     position: absolute;
     background: #546362;
@@ -22,6 +18,9 @@
     width: 100%;
     height: 92%;
     border-radius: 25px;
+    border: none;
+    left: 0;
+    bottom: 0;
 }
 
 #searchContainer {
