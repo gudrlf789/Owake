@@ -346,6 +346,10 @@ io.sockets.on("connection", (socket) => {
         socket.to(channelName).emit("pause-remote", fileName);
     });
 
+    socket.on("volume-origin", (channelName, originVolume, fileName) => {
+        socket.to(channelName).emit("volume-remote", originVolume, fileName);
+    });
+
     socket.on("currentTime-origin", (channelName, currentTime, fileName) => {
         socket.to(channelName).emit("currentTime-remote", currentTime, fileName);
     });
