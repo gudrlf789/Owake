@@ -1,5 +1,7 @@
+import { socketInitFunc } from "./socket.js";
+
 export const contentsFunc = () => {
-    let contentsSocket = io();
+    let contentsSocket = socketInitFunc();
     const imageType = /(.*?)\/(jpg|JPG|jpeg|png|gif|bmp)$/i;
     const medioType = /(.*?)\/(mp4|m4v|avi|wmv|mwa|asf|mpg|mpeg|ts|mkv|mov|3gp|3g2|webm)$/i;
 
