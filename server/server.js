@@ -25,12 +25,30 @@ let peerWebURLArr = [];
 
 let io, server;
 
-server = require("http").createServer(app);
+const CORS_fn = (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Methods", "*");
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    if (req.method === "OPTIONS") {
+        res.writeHead(200);
+        res.end();
+        return;
+    }
+};
+
+server = require("http").createServer(app, CORS_fn);
 
 io = new Server({
     pingInterval: 100000,
     pingTimeout: 100000,
     maxHttpBufferSize: 1e8,
+
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+        preflightContinue: false,
+    },
 }).listen(server);
 
 /** Router */
@@ -48,13 +66,7 @@ function redirectSec(req, res, next) {
 
 app.set("view engine", "ejs");
 
-app.use(
-    cors({
-        origin: "*",
-        methods: ["GET", "POST"],
-        preflightContinue: false,
-    })
-);
+app.use(cors());
 app.use(redirectSec);
 
 app.use(
@@ -89,7 +101,6 @@ app.get("/", (req, res, next) => {
 
 app.get("/:channelName/:channelType", (req, res) => {
     let appID = "4343e4c08654493cb8997de783a9aaeb";
-
     res.render("channel", {
         channelName: req.params.channelName,
         channelType: req.params.channelType,
@@ -157,7 +168,6 @@ app.get("/site", async (req, res) => {
  */
 
 const fetchWebsite = (url) => {
-    log.debug(url);
     try {
         if (url.includes("undefined")) {
             // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
@@ -332,7 +342,6 @@ io.sockets.on("connection", (socket) => {
     });
 
     socket.on("active_mousedown", (config) => {
-        console.log(config);
         socket.in(config.channel).emit("receive_mousedown", config);
     });
 

@@ -66,6 +66,8 @@ export const momentShareFunc = () => {
     momentTabArea.style.setProperty("display", "flex");
     momentTabArea.style.setProperty("align-items", "center");
     momentTabArea.style.setProperty("overflow-x", "auto");
+    momentTabArea.style.setProperty("position", "fixed");
+    momentTabArea.style.setProperty("z-index", "5");
 
     momentShareBtn.addEventListener("click", (e) => {
         momentShareActive = !momentShareActive;
@@ -94,7 +96,7 @@ export const momentShareFunc = () => {
 
     searchInputBtn.addEventListener("click", (e) => {
         InputURL = searchInput.value;
-        if (searchInput.value.length === 0) {
+        if (InputURL.length === 0) {
             alert("Please enter your address.");
         } else {
             searchUrlTransfer(InputURL);
@@ -104,7 +106,7 @@ export const momentShareFunc = () => {
     searchInput.addEventListener("keypress", (e) => {
         InputURL = searchInput.value;
         if (e.key === "Enter") {
-            if (searchInput.value.length === 0) {
+            if (InputURL.length === 0) {
                 alert("Please enter your address.");
             } else {
                 searchUrlTransfer(InputURL);
@@ -156,6 +158,9 @@ export const momentShareFunc = () => {
                 momentShare.src = address;
                 momentShare.contentWindow.location = address;
                 // momentShare.contentWindow.document.open(address);
+            } else if (address.includes("google")) {
+                momentShare.src = address;
+                momentShare.contentWindow.location = address;
             } else {
                 momentShare.src = staticURL;
                 momentShare.contentWindow.location = staticURL;
@@ -164,19 +169,6 @@ export const momentShareFunc = () => {
         } catch (e) {
             console.log("resultURLContentCheck Error : ", e);
         }
-    }
-
-    function createMomentTabFunc(url) {
-        const momentTab = document.createElement("span");
-
-        momentTab.id = "momentTab";
-        momentTab.style.setProperty("margin", "0.4rem");
-        momentTab.style.setProperty("background", "#182843");
-        momentTab.style.setProperty("color", "#fff");
-        momentTab.style.setProperty("cursor", "pointer");
-
-        momentTab.textContent = url;
-        momentTabArea.append(momentTab);
     }
 
     /**
@@ -201,7 +193,11 @@ export const momentShareFunc = () => {
         }
 
         if (url.includes("youtube") || url.includes("youtu.be")) {
-            returnUrl = "https://" + youtubeUrlReplarce(url);
+            returnUrl = youtubeUrlReplarce(url);
+            searchInput.value = "";
+            return returnUrl;
+        } else if (url.includes("google")) {
+            returnUrl = url + "/search?igu=1";
             searchInput.value = "";
             return returnUrl;
         } else {
@@ -219,7 +215,8 @@ export const momentShareFunc = () => {
         if (match && match[2].length == 11) {
             console.log(match[2]);
             let sepratedID = match[2];
-            let embedUrl = "www.youtube.com/embed/" + sepratedID;
+            let embedUrl =
+                "www.youtube.com/embed/" + sepratedID + "?autoplay=1&mute=1";
             let result = search.replace(str, embedUrl);
             console.log(result);
             return result;
@@ -227,29 +224,24 @@ export const momentShareFunc = () => {
     };
 
     function mouseEventFunc() {
-        let mouseEventObj = {
-            iframeMouseOver: false,
-        };
-
-        momentShare.contentWindow.addEventListener(
-            "mouseover",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = true;
-
-                momentSocket.emit("active_mouseover", {
-                    peer: options.uid,
-                    channel: options.channel,
-                });
-            },
-            false
-        );
+        let scroll = false;
 
         momentShare.contentWindow.addEventListener(
             "mousedown",
             async (e) => {
-                mouseEventObj.iframeMouseOver = true;
-
                 let sendURL = e.target.href;
+
+                console.log(sendURL);
+
+                if (
+                    sendURL === "" ||
+                    sendURL === undefined ||
+                    sendURL === null
+                ) {
+                    return;
+                }
+
+                createMomentTabFunc(sendURL);
 
                 if (sendURL.includes("https") || sendURL.includes("http")) {
                     momentShare.contentWindow.location = sendURL;
@@ -266,103 +258,42 @@ export const momentShareFunc = () => {
         );
 
         momentShare.contentWindow.addEventListener(
-            "mouseup",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = false;
-
-                momentSocket.emit("active_mouseup", {
-                    peer: options.uid,
-                    channel: options.channel,
-                });
-            },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
-            "mousemove",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = true;
-
-                momentSocket.emit("active_mousemove", {
-                    peer: options.uid,
-                    channel: options.channel,
-                });
-            },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
-            "mouseout",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = false;
-
-                momentSocket.emit("active_mouseout", {
-                    peer: options.uid,
-                    channel: options.channel,
-                });
-            },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
             "scroll",
             async (e) => {
-                mouseEventObj.iframeMouseOver = false;
-
-                momentSocket.emit("active_scroll", {
-                    peer: options.uid,
-                    channel: options.channel,
-                    scrollY: e.currentTarget.scrollY,
-                });
-            },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
-            "wheel",
-            async (e) => {
-                const delta = Math.sign(e.deltaY);
-
-                momentSocket.emit("active_wheel", {
-                    peer: options.uid,
-                    channel: options.channel,
-                    wheel: delta,
-                });
-
-                console.info(delta);
+                e.preventDefault();
+                scroll = true;
+                if (scroll) {
+                    momentSocket.emit("active_scroll", {
+                        peer: options.uid,
+                        channel: options.channel,
+                        scrollY: e.currentTarget.scrollY,
+                    });
+                }
             },
             false
         );
     }
 
     function receiveMouseEventFunc() {
+        let scroll = false;
+        let scrollY = 0;
+        let scrollX = 0;
         let rect = currentFrameAbsolutePosition();
         // let rect = momentShare.getBoundingClientRect();
 
-        momentSocket.on("receive_mouseover", (mouseEvent) => {
-            // console.log(mouseEvent);
-        });
-        momentSocket.on("receive_mouseup", (mouseEvent) => {
-            // console.log(mouseEvent);
-        });
         momentSocket.on("receive_mousedown", (mouseEvent) => {
-            console.log(mouseEvent);
+            console.log("receive_mousedown : ", mouseEvent);
             let receiveURL = resultURLprotocolCheck(mouseEvent.link);
             momentShare.contentWindow.location = receiveURL;
         });
-        momentSocket.on("receive_mouseout", (mouseEvent) => {
-            // console.log(mouseEvent);
-        });
-        momentSocket.on("receive_mousemove", (mouseEvent) => {
-            // console.log(mouseEvent);
-        });
 
         momentSocket.on("receive_scroll", (mouseEvent) => {
-            momentShare.contentWindow.scrollTo(0, mouseEvent.scrollY + rect.y);
-        });
+            scroll = true;
+            scrollY = mouseEvent.scrollY + rect.y;
 
-        momentSocket.on("receive_wheel", (mouseEvent) => {
-            // console.log(mouseEventObj);
+            if (scroll) {
+                momentShare.contentWindow.scrollTo(0, scrollY);
+            }
         });
     }
 
@@ -399,10 +330,35 @@ export const momentShareFunc = () => {
         );
     }
 
-    $(document).on("click", "#momentTab", (e) => {
+    function createMomentTabFunc(url) {
+        const momentTab = document.createElement("span");
+
+        momentTab.id = "momentTab";
+        momentTab.style.setProperty("margin", "0.4rem");
+        momentTab.style.setProperty("padding", "0.2rem");
+        momentTab.style.setProperty("background", "#182843");
+        momentTab.style.setProperty("color", "#fff");
+        momentTab.style.setProperty("cursor", "pointer");
+        momentTab.style.setProperty("white-space", "nowrap");
+        momentTab.style.setProperty("overflow", "hidden");
+        momentTab.style.setProperty("text-overflow", "ellipsis");
+        momentTab.style.setProperty("width", "10rem");
+        momentTab.style.setProperty("text-align", "center");
+
+        if (url !== null || url !== "" || url !== undefined) {
+            momentTab.textContent = url;
+            momentTabArea.append(momentTab);
+        }
+    }
+
+    $(document).on("keydown", ".gLFyf", (e) => {
         console.log(e);
+        alert("google alert");
+    });
+
+    $(document).on("click", "#momentTab", (e) => {
         let tabURL = e.target.innerText;
-        momentShare.src = tabURL;
-        momentShare.contentWindow.location.href = tabURL;
+        momentShare.contentWindow.location = tabURL;
+        // searchUrlTransfer(tabURL);
     });
 };
