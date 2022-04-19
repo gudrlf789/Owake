@@ -18,10 +18,10 @@ const contentsStorage = multer.diskStorage({
         cb(null, `./server/contents`);
     },
     filename: function (req, file, cb) {
-        //cb(null, req.body.userName + "_"  + file.originalname);
-        cb(null, file.originalname);
+        cb(null, req.body.userName + "_"  + file.originalname);
     },
 });
+
 const upload = multer({
     storage: storage,
 });
@@ -389,7 +389,7 @@ router.post("/jwt", async (req, res) => {
       });
 });
 
-router.post("/contentUpload", contentsUpload.single("content"), (req, res) => {
+router.post("/contentsUpload", contentsUpload.single("content"), (req, res) => {
     return res.status(200).json({
         success: true
     });
