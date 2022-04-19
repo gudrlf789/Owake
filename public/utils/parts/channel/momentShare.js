@@ -158,17 +158,38 @@ export const momentShareFunc = () => {
         createMomentTabFunc(receiveURL);
 
         try {
-            if (address.includes("youtube")) {
-                momentShare.src = receiveURL;
-                momentShare.contentWindow.location = receiveURL;
-                // momentShare.contentWindow.document.open(address);
-            } else if (address.includes("google")) {
-                momentShare.src = receiveURL;
-                momentShare.contentWindow.location = receiveURL;
+            if (receiveURL.includes("youtube")) {
+                youtubeTVPlayer(receiveURL);
+            } else if (receiveURL.includes("google")) {
+                defaultMomentShare(receiveURL);
+            } else if (receiveURL.includes("twitch")) {
+                // let twitchEndPoint = receiveURL.indexOf("tv/");
+                // let channel = receiveURL.substring(
+                //     twitchEndPoint + 3,
+                //     receiveURL.length
+                // );
+
+                // let twitchOriginalURL = receiveURL.substring(
+                //     0,
+                //     twitchEndPoint + 3
+                // );
+
+                // console.log(twitchOriginalURL);
+                // console.log(channel);
+
+                // let twitchPlayer =
+                //     twitchOriginalURL +
+                //     `?channel=${channel}&parent=streamernews.example.com`;
+
+                // console.log(twitchPlayer);
+
+                // momentShare.src = twitchPlayer;
+                // momentShare.contentWindow.location = twitchPlayer;
+                alert("Twitch is Developing..");
+            } else if (receiveURL.includes("tv.naver")) {
+                naverTVPlayer(receiveURL);
             } else {
-                momentShare.src = staticURL;
-                momentShare.contentWindow.location = staticURL;
-                // momentShare.contentWindow.document.open(staticURL);
+                defaultMomentShare(staticURL);
             }
         } catch (e) {
             console.log("resultURLContentCheck Error : ", e);
@@ -374,14 +395,68 @@ export const momentShareFunc = () => {
         }
     }
 
-    $(document).on("keydown", ".gLFyf", (e) => {
-        console.log(e);
-        alert("google alert");
-    });
-
+    // Click To Tab Function
     $(document).on("click", "#momentTab", (e) => {
         let tabURL = e.target.innerText;
-        momentShare.contentWindow.location = tabURL;
-        // searchUrlTransfer(tabURL);
+        try {
+            if (tabURL.includes("youtube")) {
+                youtubeTVPlayer(tabURL);
+            } else if (tabURL.includes("google")) {
+                defaultMomentShare(tabURL);
+            } else if (tabURL.includes("twitch")) {
+                // let twitchEndPoint = receiveURL.indexOf("tv/");
+                // let channel = receiveURL.substring(
+                //     twitchEndPoint + 3,
+                //     receiveURL.length
+                // );
+
+                // let twitchOriginalURL = receiveURL.substring(
+                //     0,
+                //     twitchEndPoint + 3
+                // );
+
+                // console.log(twitchOriginalURL);
+                // console.log(channel);
+
+                // let twitchPlayer =
+                //     twitchOriginalURL +
+                //     `?channel=${channel}&parent=streamernews.example.com`;
+
+                // console.log(twitchPlayer);
+
+                // momentShare.src = twitchPlayer;
+                // momentShare.contentWindow.location = twitchPlayer;
+                alert("Twitch is Developing..");
+            } else if (tabURL.includes("tv.naver")) {
+                naverTVPlayer(tabURL);
+            } else {
+                defaultMomentShare(tabURL);
+            }
+        } catch (e) {
+            console.log("resultURLContentCheck Error : ", e);
+        }
     });
+
+    // WebShare / TVShare Function
+    function naverTVPlayer(url) {
+        let urlEndPoint = url.indexOf("/v/");
+        console.log(urlEndPoint);
+        let channel = url.substring(urlEndPoint + 3, url.indexOf("/list/"));
+        let originalURL = url.substring(0, urlEndPoint);
+        console.log(originalURL);
+        console.log(channel);
+        let createURL = `${originalURL}/embed/${channel}?autoPlay=true`;
+        momentShare.src = createURL;
+        momentShare.contentWindow.location = createURL;
+    }
+
+    function youtubeTVPlayer(url) {
+        momentShare.src = url;
+        momentShare.contentWindow.location = url;
+    }
+
+    function defaultMomentShare(url) {
+        momentShare.src = url;
+        momentShare.contentWindow.location = url;
+    }
 };
