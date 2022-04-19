@@ -1,0 +1,30 @@
+#contentShareArea {
+  position: absolute;
+  background: #546362;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+  top: 0;
+  z-index: 10;
+}
+
+#contentShare-main {
+  position: absolute;
+  width: 100%;
+  height: 92%;
+  border-radius: 25px;
+  border: none;
+  left: 0;
+  bottom: 0;
+}
+
+#contentSearchContainer {
+  display: flex;
+  justify-content: center;
+}
+
+#contentSearchInput {
+  margin: 5px;
+  border: 2px solid;
+  border-radius: 5px;
+}

@@ -18,7 +18,7 @@ import { options } from "../../rtcClient.js";
 export const momentShareFunc = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
-    let InputURL;
+    let clickCount = 0;
 
     const momentShareBtn = document.querySelector("#momentShare");
     const momentShareIcon = document.querySelector(".fa-brain");
@@ -34,12 +34,6 @@ export const momentShareFunc = () => {
     const momentShare = document.createElement("iframe");
     const searchForm = document.createElement("form");
 
-    const navContainer = document.createElement("section");
-    const momentTabArea = document.createElement("div");
-
-    navContainer.id = "navContainer";
-    momentTabArea.id = "momentTabArea";
-
     searchInput.placeholder = "Enter a URL";
     searchInput.style.textAlign = "center";
     momentShare.id = "momentShare-iframe";
@@ -52,22 +46,13 @@ export const momentShareFunc = () => {
 
     searchInputBtnIcon.className = "fas fa-search";
 
-    navContainer.append(searchContainer, momentTabArea);
     searchInputBtn.appendChild(searchInputBtnIcon);
     searchContainer.append(searchInput, searchInputBtn);
-
-    momentShareArea.append(navContainer, momentShare);
+    momentShareArea.append(searchContainer, momentShare);
     momentShareArea.append(momentShare);
     momentShare.frameborder = "0";
 
-    momentTabArea.style.setProperty("height", "3rem");
-    momentTabArea.style.setProperty("background", "#fff");
-    momentTabArea.style.setProperty("border", "2px solid #000");
-    momentTabArea.style.setProperty("display", "flex");
-    momentTabArea.style.setProperty("align-items", "center");
-    momentTabArea.style.setProperty("overflow-x", "auto");
-    momentTabArea.style.setProperty("position", "fixed");
-    momentTabArea.style.setProperty("z-index", "5");
+    momentShareArea.style.setProperty("overflow", "auto");
 
     momentShareBtn.addEventListener("click", (e) => {
         momentShareActive = !momentShareActive;
@@ -95,22 +80,18 @@ export const momentShareFunc = () => {
     });
 
     searchInputBtn.addEventListener("click", (e) => {
-        InputURL = searchInput.value;
-        if (InputURL.length === 0) {
+        if (searchInput.value.length === 0) {
             alert("Please enter your address.");
         } else {
-            searchUrlTransfer(InputURL);
+            searchUrlTransfer();
         }
     });
 
     searchInput.addEventListener("keypress", (e) => {
-        InputURL = searchInput.value;
         if (e.key === "Enter") {
-            if (InputURL.length === 0) {
-                alert("Please enter your address.");
-            } else {
-                searchUrlTransfer(InputURL);
-            }
+            searchUrlTransfer();
+        } else {
+            return;
         }
     });
 
@@ -118,21 +99,23 @@ export const momentShareFunc = () => {
         console.log("searchUrlTransfer:::", address);
 
         let resultURL;
+        let config;
         if (address === null || address === undefined || address === "") {
             resultURL = resultURLprotocolCheck();
             axios.post("/urlSearch", null, { params: resultURL });
-            momentSocket.emit("submit_address", resultURL, {
-                peerID: options.uid,
-                channel: options.channel,
-            });
+            momentSocket.emit(
+                "submit_address",
+                resultURL,
+                (config = { peerID: options.uid, channel: options.channel })
+            );
         } else {
             resultURL = resultURLprotocolCheck(address);
-            console.log(resultURL);
             axios.post("/urlSearch", null, { params: resultURL });
-            momentSocket.emit("submit_address", resultURL, {
-                peerID: options.uid,
-                channel: options.channel,
-            });
+            momentSocket.emit(
+                "submit_address",
+                resultURL,
+                (config = { peerID: options.uid, channel: options.channel })
+            );
         }
 
         resultURLContentCheck(resultURL);
@@ -148,30 +131,10 @@ export const momentShareFunc = () => {
      */
 
     function resultURLContentCheck(address) {
-        console.log("resultURLContentCheck : 진입");
-        let staticURL = "/site";
-        let receiveURL = `https://${address.replace(
-            /^(https?:\/\/)?(www\.)?/,
-            ""
-        )}`;
-
-        createMomentTabFunc(receiveURL);
-
-        try {
-            if (address.includes("youtube")) {
-                momentShare.src = receiveURL;
-                momentShare.contentWindow.location = receiveURL;
-                // momentShare.contentWindow.document.open(address);
-            } else if (address.includes("google")) {
-                momentShare.src = receiveURL;
-                momentShare.contentWindow.location = receiveURL;
-            } else {
-                momentShare.src = staticURL;
-                momentShare.contentWindow.location = staticURL;
-                // momentShare.contentWindow.document.open(staticURL);
-            }
-        } catch (e) {
-            console.log("resultURLContentCheck Error : ", e);
+        if (address.includes("youtube")) {
+            return (momentShare.src = address);
+        } else {
+            return (momentShare.src = "/site");
         }
     }
 
@@ -197,11 +160,7 @@ export const momentShareFunc = () => {
         }
 
         if (url.includes("youtube") || url.includes("youtu.be")) {
-            returnUrl = youtubeUrlReplarce(url);
-            searchInput.value = "";
-            return returnUrl;
-        } else if (url.includes("google")) {
-            returnUrl = url + "/search?igu=1";
+            returnUrl = "https://" + youtubeUrlReplarce(url);
             searchInput.value = "";
             return returnUrl;
         } else {
@@ -219,104 +178,146 @@ export const momentShareFunc = () => {
         if (match && match[2].length == 11) {
             console.log(match[2]);
             let sepratedID = match[2];
-            let embedUrl =
-                "www.youtube.com/embed/" + sepratedID + "?autoplay=1&mute=1";
+            let embedUrl = "www.youtube.com/embed/" + sepratedID;
             let result = search.replace(str, embedUrl);
             console.log(result);
             return result;
         }
     };
 
+    let clickIframe = window.setInterval(checkFocus, 100);
+
     function mouseEventFunc() {
-        let scroll = false;
+        let mouseEventObj = {
+            iframeMouseOver: false,
+        };
+        let mouseEventConfig = {
+            peer: null,
+            channel: null,
+            clientX: null,
+            clientY: null,
+            offsetX: null,
+            offsetY: null,
+            screenX: null,
+            screenY: null,
+            pageX: null,
+            pageY: null,
+            scrollX: null,
+            scrollY: null,
+            link: null,
+            wheel: null,
+        };
+
+        // mouseEventConfig.peer = options.uid;
+        // mouseEventConfig.channel = options.channel;
+        // mouseEventConfig.clientX = e.clientX;
+        // mouseEventConfig.clientY = e.clientY;
+        // mouseEventConfig.offsetX = e.offsetX;
+        // mouseEventConfig.offsetY = e.offsetY;
+        // mouseEventConfig.screenX = e.screenX;
+        // mouseEventConfig.screenY = e.screenY;
+        // mouseEventConfig.pageX = e.pageX;
+        // mouseEventConfig.pageY = e.pageY;
+        // mouseEventConfig.scrollX = e.scrollX;
+        // mouseEventConfig.scrollY = e.scrollY;
+
+        window.addEventListener("blur", async (e) => {
+            if (mouseEventObj.iframeMouseOver) {
+                console.log("Wow! Iframe Click!", clickIframe);
+                console.log(e);
+            }
+        });
+
+        momentShare.contentWindow.addEventListener("mouseover", async (e) => {
+            console.log(e);
+        });
 
         momentShare.contentWindow.addEventListener(
             "mousedown",
-            handleClickSendData,
-            false
-        );
+            async (e) => {
+                mouseEventObj.iframeMouseOver = true;
 
-        momentShare.contentWindow.addEventListener(
-            "touchend",
-            handleClickSendData,
+                console.log(e);
+                console.log(e.target);
+                console.log(e.target.href);
+
+                mouseEventConfig.peer = options.uid;
+                mouseEventConfig.channel = options.channel;
+                mouseEventConfig.link = e.target.href;
+
+                momentSocket.emit("active_mousedown", mouseEventConfig);
+            },
             false
         );
 
         momentShare.contentWindow.addEventListener(
             "scroll",
             async (e) => {
-                e.preventDefault();
-                scroll = true;
-                if (scroll) {
-                    momentSocket.emit("active_scroll", {
-                        peer: options.uid,
-                        channel: options.channel,
-                        scrollY: e.currentTarget.scrollY,
-                    });
-                }
+                mouseEventObj.iframeMouseOver = false;
+                momentSocket.emit("active_scroll", mouseEventConfig);
+            },
+            false
+        );
+
+        momentShare.contentWindow.addEventListener(
+            "wheel",
+            async (e) => {
+                const delta = Math.sign(e.deltaY);
+
+                mouseEventConfig.peer = options.uid;
+                mouseEventConfig.channel = options.channel;
+                mouseEventConfig.wheel = delta;
+
+                momentSocket.emit("active_wheel", mouseEventConfig);
+                console.info(delta);
             },
             false
         );
     }
 
-    function handleClickSendData(e) {
-        let sendURL = e.target.href;
-        console.log(sendURL);
-
-        if (sendURL === "" || sendURL === undefined || sendURL === null) {
-            return;
-        }
-
-        createMomentTabFunc(sendURL);
-
-        if (sendURL.includes("https") || sendURL.includes("http")) {
-            momentShare.contentWindow.location = sendURL;
-            // searchUrlTransfer(sendURL);
-        }
-
-        momentSocket.emit("active_mousedown", {
-            peer: options.uid,
-            channel: options.channel,
-            link: sendURL,
-        });
-
-        // Touch Screen Sensing
-        if (window.matchMedia("(pointer: coarse)").matches) {
-            // touchscreen
-            momentSocket.emit("active_touchend", {
-                peer: options.uid,
-                channel: options.channel,
-                link: sendURL,
-            });
-        }
-    }
-
     function receiveMouseEventFunc() {
-        let scroll = false;
-        let scrollY = 0;
-        let scrollX = 0;
+        let mouseEventObj;
         let rect = currentFrameAbsolutePosition();
         // let rect = momentShare.getBoundingClientRect();
 
-        momentSocket.on("receive_mousedown", (mouseEvent) => {
-            let receiveURL = resultURLprotocolCheck(mouseEvent.link);
-            momentShare.contentWindow.location = receiveURL;
-            createMomentTabFunc(receiveURL);
+        const pointer = document.createElement("div");
+        pointer.className = "pointer";
+        pointer.style.setProperty("width", "15px");
+        pointer.style.setProperty("height", "15px");
+        pointer.style.setProperty("background", "#2585");
+        pointer.style.setProperty("border-radius", "20px");
+        pointer.style.setProperty("z-index", "9999");
+        pointer.style.setProperty("position", "absolute");
+
+        momentSocket.on("receive_mouseover", (mouseEventObj) => {
+            // console.log(mouseEventObj);
+        });
+        momentSocket.on("receive_mouseup", (mouseEventObj) => {
+            // console.log(mouseEventObj);
         });
 
-        momentSocket.on("receive_touchend", (mouseEvent) => {
-            let receiveURL = resultURLprotocolCheck(mouseEvent.link);
-            momentShare.contentWindow.location = receiveURL;
-            createMomentTabFunc(receiveURL);
+        momentSocket.on("receive_mousedown", (mouseEventObj) => {
+            console.log(mouseEventObj);
+            let receiveURL = resultURLprotocolCheck(mouseEventObj.link);
+            momentShare.src = receiveURL;
         });
 
-        momentSocket.on("receive_scroll", (mouseEvent) => {
-            scroll = true;
-            scrollY = mouseEvent.scrollY + rect.y;
+        momentSocket.on("receive_mouseout", (mouseEventObj) => {
+            // console.log(mouseEventObj);
+        });
+        momentSocket.on("receive_mousemove", (mouseEventObj) => {
+            // console.log(mouseEventObj);
+        });
 
-            if (scroll) {
-                momentShare.contentWindow.scrollTo(0, scrollY);
-            }
+        momentSocket.on("receive_scroll", (mouseEventObj) => {
+            momentShare.contentWindow.scrollTo(
+                0,
+                mouseEventObj.scrollY + rect.y
+            );
+        });
+
+        momentSocket.on("receive_wheel", (mouseEventObj) => {
+            // console.log(mouseEventObj);
         });
     }
 
@@ -353,35 +354,10 @@ export const momentShareFunc = () => {
         );
     }
 
-    function createMomentTabFunc(url) {
-        const momentTab = document.createElement("span");
-
-        momentTab.id = "momentTab";
-        momentTab.style.setProperty("margin", "0.4rem");
-        momentTab.style.setProperty("padding", "0.2rem");
-        momentTab.style.setProperty("background", "#182843");
-        momentTab.style.setProperty("color", "#fff");
-        momentTab.style.setProperty("cursor", "pointer");
-        momentTab.style.setProperty("white-space", "nowrap");
-        momentTab.style.setProperty("overflow", "hidden");
-        momentTab.style.setProperty("text-overflow", "ellipsis");
-        momentTab.style.setProperty("width", "10rem");
-        momentTab.style.setProperty("text-align", "center");
-
-        if (url !== null || url !== "" || url !== undefined) {
-            momentTab.textContent = url;
-            momentTabArea.append(momentTab);
+    function checkFocus() {
+        if (document.activeElement == momentShare) {
+            console.log("clicked " + clickCount++);
+            window.focus();
         }
     }
-
-    $(document).on("keydown", ".gLFyf", (e) => {
-        console.log(e);
-        alert("google alert");
-    });
-
-    $(document).on("click", "#momentTab", (e) => {
-        let tabURL = e.target.innerText;
-        momentShare.contentWindow.location = tabURL;
-        // searchUrlTransfer(tabURL);
-    });
 };
