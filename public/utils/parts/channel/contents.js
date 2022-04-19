@@ -4,7 +4,6 @@ export const contentsFunc = () => {
     contentsSocket.emit("join-contents", window.sessionStorage.getItem("channel"));
 
     const contentsFile = document.getElementById("contentsFile");
-    //const middleContainer = document.getElementById("content_middle_container");
     const mainContainer = document.getElementById("content_main_container");
     const closeModal = document.getElementById("closeModal");
 
@@ -30,10 +29,10 @@ export const contentsFunc = () => {
         const formData = new FormData();
         const fileData = contentsFile.files[0];
 
-        formData.append("content", fileData);
         formData.append("userName", userName);
-
-        axios.post("/channel/contentUpload", formData).then((res) => {
+        formData.append("content", fileData);
+        
+        axios.post("/channel/contentsUpload", formData).then((res) => {
             if(res.data.success){
                 makeBtnTemplate(userName, fileData.type, fileData.name);
                 contentsSocket.emit("content-info", channelName, userName, fileData.name, fileData.type);
@@ -42,7 +41,6 @@ export const contentsFunc = () => {
     });
 
     contentsSocket.on("input-content", (data) => {
-        originUser = data.userName;
         makeBtnTemplate(data.userName, data.fileType, data.fileName);
     });
 
@@ -68,14 +66,11 @@ export const contentsFunc = () => {
     });
 
     $(document).on("click", ".middleContainerBtn", (e) => {
-        //const fileName = e.currentTarget.children[2].innerText;
-        const fileName = e.currentTarget.children[1].value;
-        choiceFile = fileName;
+        let fileName = e.currentTarget.children[1].value;
+        originUser = e.currentTarget.children[2].innerHTML.split('-')[0];
+        choiceFile = fileName = originUser + "_" + fileName;
 
         mainContainer.innerHTML = 
-        //`
-        //    <img src="${fileName}" />
-        //`
         `
             <video class="mediaFile" controls style="width: 100%; height: 100%">
                 <source src="${fileName}">
