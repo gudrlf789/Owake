@@ -150,17 +150,21 @@ export const momentShareFunc = () => {
     function resultURLContentCheck(address) {
         console.log("resultURLContentCheck : 진입");
         let staticURL = "/site";
+        let receiveURL = `https://${address.replace(
+            /^(https?:\/\/)?(www\.)?/,
+            ""
+        )}`;
 
-        createMomentTabFunc(address);
+        createMomentTabFunc(receiveURL);
 
         try {
             if (address.includes("youtube")) {
-                momentShare.src = address;
-                momentShare.contentWindow.location = address;
+                momentShare.src = receiveURL;
+                momentShare.contentWindow.location = receiveURL;
                 // momentShare.contentWindow.document.open(address);
             } else if (address.includes("google")) {
-                momentShare.src = address;
-                momentShare.contentWindow.location = address;
+                momentShare.src = receiveURL;
+                momentShare.contentWindow.location = receiveURL;
             } else {
                 momentShare.src = staticURL;
                 momentShare.contentWindow.location = staticURL;
@@ -228,32 +232,13 @@ export const momentShareFunc = () => {
 
         momentShare.contentWindow.addEventListener(
             "mousedown",
-            async (e) => {
-                let sendURL = e.target.href;
+            handleClickSendData,
+            false
+        );
 
-                console.log(sendURL);
-
-                if (
-                    sendURL === "" ||
-                    sendURL === undefined ||
-                    sendURL === null
-                ) {
-                    return;
-                }
-
-                createMomentTabFunc(sendURL);
-
-                if (sendURL.includes("https") || sendURL.includes("http")) {
-                    momentShare.contentWindow.location = sendURL;
-                    // searchUrlTransfer(sendURL);
-                }
-
-                momentSocket.emit("active_mousedown", {
-                    peer: options.uid,
-                    channel: options.channel,
-                    link: sendURL,
-                });
-            },
+        momentShare.contentWindow.addEventListener(
+            "touchend",
+            handleClickSendData,
             false
         );
 
@@ -274,6 +259,38 @@ export const momentShareFunc = () => {
         );
     }
 
+    function handleClickSendData(e) {
+        let sendURL = e.target.href;
+        console.log(sendURL);
+
+        if (sendURL === "" || sendURL === undefined || sendURL === null) {
+            return;
+        }
+
+        createMomentTabFunc(sendURL);
+
+        if (sendURL.includes("https") || sendURL.includes("http")) {
+            momentShare.contentWindow.location = sendURL;
+            // searchUrlTransfer(sendURL);
+        }
+
+        momentSocket.emit("active_mousedown", {
+            peer: options.uid,
+            channel: options.channel,
+            link: sendURL,
+        });
+
+        // Touch Screen Sensing
+        if (window.matchMedia("(pointer: coarse)").matches) {
+            // touchscreen
+            momentSocket.emit("active_touchend", {
+                peer: options.uid,
+                channel: options.channel,
+                link: sendURL,
+            });
+        }
+    }
+
     function receiveMouseEventFunc() {
         let scroll = false;
         let scrollY = 0;
@@ -282,9 +299,15 @@ export const momentShareFunc = () => {
         // let rect = momentShare.getBoundingClientRect();
 
         momentSocket.on("receive_mousedown", (mouseEvent) => {
-            console.log("receive_mousedown : ", mouseEvent);
             let receiveURL = resultURLprotocolCheck(mouseEvent.link);
             momentShare.contentWindow.location = receiveURL;
+            createMomentTabFunc(receiveURL);
+        });
+
+        momentSocket.on("receive_touchend", (mouseEvent) => {
+            let receiveURL = resultURLprotocolCheck(mouseEvent.link);
+            momentShare.contentWindow.location = receiveURL;
+            createMomentTabFunc(receiveURL);
         });
 
         momentSocket.on("receive_scroll", (mouseEvent) => {
