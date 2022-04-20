@@ -18,7 +18,7 @@ import { options } from "../../rtcClient.js";
 export const momentShareFunc = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
-    let clickCount = 0;
+    let InputURL;
 
     const momentShareBtn = document.querySelector("#momentShare");
     const momentShareIcon = document.querySelector(".fa-brain");
@@ -65,8 +65,8 @@ export const momentShareFunc = () => {
         momentShareBtn.style.color = "rgb(165, 199, 236)";
         momentSocket.emit("join-web", options.channel);
 
-        momentShare.addEventListener("load", mouseEventFunc, false);
-        momentShare.addEventListener("load", receiveMouseEventFunc, false);
+        // momentShare.addEventListener("load", mouseEventFunc, false);
+        // momentShare.addEventListener("load", receiveMouseEventFunc, false);
     }
 
     function momentShareDisable() {
@@ -80,18 +80,22 @@ export const momentShareFunc = () => {
     });
 
     searchInputBtn.addEventListener("click", (e) => {
-        if (searchInput.value.length === 0) {
+        InputURL = searchInput.value;
+        if (InputURL.length === 0) {
             alert("Please enter your address.");
         } else {
-            searchUrlTransfer();
+            searchUrlTransfer(InputURL);
         }
     });
 
     searchInput.addEventListener("keypress", (e) => {
+        InputURL = searchInput.value;
         if (e.key === "Enter") {
-            searchUrlTransfer();
-        } else {
-            return;
+            if (InputURL.length === 0) {
+                alert("Please enter your address.");
+            } else {
+                searchUrlTransfer(InputURL);
+            }
         }
     });
 
@@ -128,14 +132,7 @@ export const momentShareFunc = () => {
      */
 
     function resultURLContentCheck(address) {
-        let staticURL = "/site";
-        if (address.includes("youtube")) {
-            $("#momentShare-span").load(address);
-            $("#momentShare-span").html(address).trigger("create");
-        } else {
-            $("#momentShare-span").load(staticURL);
-            $("#momentShare-span").html(staticURL).trigger("create");
-        }
+        $("#momentShare-span").load(`${address}`);
     }
 
     /**
@@ -184,6 +181,4 @@ export const momentShareFunc = () => {
             return result;
         }
     };
-
-    function mouseEventFunc() {}
 };

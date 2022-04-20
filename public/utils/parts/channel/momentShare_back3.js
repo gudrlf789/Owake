@@ -60,8 +60,9 @@ export const momentShareFunc = () => {
     momentShareArea.append(navContainer, momentShare);
     momentShareArea.append(momentShare);
     momentShare.frameborder = "0";
-    // momentShare.sandbox =
-    //     "allow-same-origin allow-scripts allow-popups allow-forms";
+    momentShare.sandbox =
+        "allow-same-origin allow-scripts allow-popups allow-forms";
+    momentShare.application = "yes";
 
     momentTabArea.style.setProperty("height", "3rem");
     momentTabArea.style.setProperty("width", "100%");
@@ -124,12 +125,14 @@ export const momentShareFunc = () => {
         let resultURL;
         if (address === null || address === undefined || address === "") {
             resultURL = resultURLprotocolCheck();
-            urlSearchAxios(resultURL);
+            // urlSearchAxios(resultURL);
+            defaultMomentShare(resultURL);
             socketSubmitAddressEmit(resultURL);
         } else {
             resultURL = resultURLprotocolCheck(address);
             console.log(resultURL);
-            urlSearchAxios(resultURL);
+            // urlSearchAxios(resultURL);
+            defaultMomentShare(resultURL);
             socketSubmitAddressEmit(resultURL);
         }
 
@@ -197,7 +200,7 @@ export const momentShareFunc = () => {
             } else if (receiveURL.includes("tv.naver")) {
                 naverTVPlayer(receiveURL);
             } else {
-                defaultMomentShare(staticURL);
+                defaultMomentShare(receiveURL);
             }
         } catch (e) {
             console.log("resultURLContentCheck Error : ", e);
@@ -443,8 +446,9 @@ export const momentShareFunc = () => {
             } else if (tabURL.includes("tv.naver")) {
                 naverTVPlayer(tabURL);
             } else {
-                urlSearchAxios(tabURL);
-                defaultMomentShare(staticURL);
+                // urlSearchAxios(tabURL);
+                // defaultMomentShare(staticURL);
+                defaultMomentShare(tabURL);
             }
         } catch (e) {
             console.log("resultURLContentCheck Error : ", e);
@@ -468,7 +472,7 @@ export const momentShareFunc = () => {
             createURL = `${originalURL}/embed/${channel}?autoPlay=true`;
             defaultMomentShare(createURL);
         } else {
-            urlSearchAxios(url);
+            // urlSearchAxios(url);
             defaultMomentShare(staticURL);
         }
     }
