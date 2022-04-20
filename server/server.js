@@ -66,7 +66,12 @@ function redirectSec(req, res, next) {
 
 app.set("view engine", "ejs");
 
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+        credential: true,
+    })
+);
 app.use(redirectSec);
 
 app.use(
@@ -376,10 +381,12 @@ io.sockets.on("connection", (socket) => {
     // });
 
     socket.on("active_mousedown", (config) => {
+        console.log(":::::::::Link ::::::::::::", config);
         socket.in(config.channel).emit("receive_mousedown", config);
     });
 
     socket.on("active_touchend", (config) => {
+        console.log(":::::::::Link ::::::::::::", config);
         socket.in(config.channel).emit("receive_touchend", config);
     });
 
