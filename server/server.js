@@ -396,6 +396,10 @@ io.sockets.on("connection", (socket) => {
             .emit("currentTime-remote", currentTime, fileName);
     });
 
+    socket.on("scroll-origin", (channelName, originTop, originLeft, fileName) => {
+        socket.to(channelName).emit("scroll-remote", originTop, originLeft, fileName);
+    });
+
     socket.on("leave-contents", (channelName) => {
         socket.leave(channelName);
     });

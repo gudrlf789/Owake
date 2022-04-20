@@ -1,3 +1,4 @@
+import { socketInitFunc } from "./socket.js";
 /**
  * @Author 박형길
  * @Date 2022 04 13
@@ -6,7 +7,7 @@
  */
 
 export const fileHash = () => {
-    let hashSocket = io();
+    let hashSocket = socketInitFunc();
     let formData = new FormData();
     let jwt;
 

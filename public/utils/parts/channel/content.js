@@ -59,31 +59,12 @@ export const contentFunc = () => {
     });
 
     function createContentTab(userName, fileType, fileName) {
-        debugger;
-        /*const contentTab = document.createElement("span");
-
-        contentTab.id = "contentTab";
-        contentTab.style.setProperty("margin", "0.4rem");
-        contentTab.style.setProperty("padding", "0.2rem");
-        contentTab.style.setProperty("background", "#182843");
-        contentTab.style.setProperty("color", "#fff");
-        contentTab.style.setProperty("cursor", "pointer");
-        contentTab.style.setProperty("white-space", "nowrap");
-        contentTab.style.setProperty("overflow", "hidden");
-        contentTab.style.setProperty("text-overflow", "ellipsis");
-        contentTab.style.setProperty("width", "10rem");
-        contentTab.style.setProperty("text-align", "center");
-
-        if (url !== null || url !== "" || url !== undefined) {
-            contentTab.textContent = url;
-            contentTabArea.append(contentTab);
-        }*/
         const html = 
         `
             <div class="middleContainerBtn" style="margin: 0.4rem; padding: 0.2rem; background: #182843; color: #fff; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">
                 <input type="hidden" value=${fileType}>
                 <input type="hidden" value="${fileName}">
-                <button>${userName}-${fileName}</button>
+                <span style="background: #182843; color: white;">${userName}-${fileName}</span>
             </div>
         `;
 
@@ -101,6 +82,7 @@ export const contentFunc = () => {
             if(res.data.success){
                 createContentTab(userName, fileData.type, fileData.name);
                 contentSocket.emit("content-info", channelName, userName, fileData.name, fileData.type);
+                contentSearchInput.value = "";
             }
         });
     });
@@ -111,9 +93,6 @@ export const contentFunc = () => {
         contentShareArea.hidden = false;
         contentShareBtn.style.color = "rgb(165, 199, 236)";
         contentSocket.emit("join-contents", channelName);
-
-        //phgShare.addEventListener("load", mouseEventFunc, false);
-        //phgShare.addEventListener("load", receiveMouseEventFunc, false);
     }
 
     function contentShareDisable() {
@@ -131,7 +110,7 @@ export const contentFunc = () => {
         if(imageType.test(fileType)){
             contentShare.innerHTML =
             `
-                <div class="imageFile style="overflow: scroll, width: 100%, height:100%">
+                <div class="imageFile" style="overflow: auto; height:100%">
                     <img src="${fileName}" style="width: 100%" />
                 </div>
             `;
@@ -173,7 +152,6 @@ export const contentFunc = () => {
     }, true);
 
     document.addEventListener('seeked', function (e) {
-        debugger;
         if(originUser === userName) {
             const currentTime = document.getElementsByClassName("mediaFile")[0].currentTime;
             contentSocket.emit("currentTime-origin", channelName, currentTime, choiceFile);
@@ -190,8 +168,9 @@ export const contentFunc = () => {
 
      document.addEventListener('scroll', function (e) {
         if(originUser === userName) {
-            //const currentTime = document.getElementsByClassName("imageFile");
-            //contentSocket.emit("currentTime-origin", channelName, currentTime, choiceFile);
+            const originTop = document.getElementsByClassName("imageFile")[0].scrollTop;
+            const originLeft = document.getElementsByClassName("imageFile")[0].scrollLeft;
+            contentSocket.emit("scroll-origin", channelName, originTop, originLeft, choiceFile);
         }
     }, true);
 
@@ -231,6 +210,14 @@ export const contentFunc = () => {
         const mediaFile = document.getElementsByClassName("mediaFile");
         if(mediaFile.length !== 0 && choiceFile === playingFile){
             mediaFile[0].currentTime = currentTime;
+        }
+    });
+
+    contentSocket.on("scroll-remote", (originTop, originLeft, playingFile) => {
+        const imageFile = document.getElementsByClassName("imageFile");
+        if(imageFile.length !== 0 && choiceFile === playingFile){
+            imageFile[0].scrollTop = originTop;
+            imageFile[0].scrollLeft = originLeft;
         }
     });
 
