@@ -21,15 +21,23 @@ let site = [];
 let siteSet;
 let siteArr = [];
 
+let channelName;
+let channelType;
+
 let peerWebURLArr = [];
 
 let io, server;
 
 const CORS_fn = (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Methods", "*");
-    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.setHeader("Access-Control-Max-Age", "3600");
+
     if (req.method === "OPTIONS") {
         res.writeHead(200);
         res.end();
@@ -37,7 +45,7 @@ const CORS_fn = (req, res) => {
     }
 };
 
-server = require("http").createServer(app, CORS_fn);
+server = require("http").Server(app, CORS_fn);
 
 io = new Server({
     pingInterval: 100000,
@@ -72,7 +80,16 @@ app.use(
         credential: true,
     })
 );
+
 app.use(redirectSec);
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
 
 app.use(
     express.urlencoded({
@@ -107,6 +124,10 @@ app.get("/", (req, res, next) => {
 
 app.get("/:channelName/:channelType", (req, res) => {
     let appID = "4343e4c08654493cb8997de783a9aaeb";
+
+    channelName = req.params.channelName;
+    channelType = req.params.channelType;
+
     res.render("channel", {
         channelName: req.params.channelName,
         channelType: req.params.channelType,
@@ -144,24 +165,38 @@ app.get("/newsfeed", (req, res, next) => {
  */
 
 app.post("/urlSearch", async (req, res) => {
-    fs.writeFileSync("views/site.ejs", "", () =>
-        console.log("Created site.ejs")
-    );
-    fs.createReadStream("views/site.ejs").pipe(res);
+    // fs.writeFileSync("views/site.ejs", "", () =>
+    //     console.log("Created site.ejs")
+    // );
+    // fs.createReadStream("views/site.ejs").pipe(res);
 
     urlParams = req.query[0];
     site.push(urlParams);
     siteSet = new Set(site);
     siteArr = Array.from(siteSet);
+
+    console.log("Response Site URL ", siteArr);
 });
 
-app.get("/site", async (req, res) => {
+// app.get("/site", async (req, res) => {
+//     for (let i = 0; i < siteArr.length; i++) {
+//         if (urlParams === siteArr[i]) {
+//             fetchWebsite(urlParams);
+//         }
+//     }
+//     res.render("site");
+// });
+
+app.get("/webShare", async (req, res) => {
     for (let i = 0; i < siteArr.length; i++) {
         if (urlParams === siteArr[i]) {
-            fetchWebsite(urlParams);
+            res.render("webShare", {
+                url: urlParams,
+                channelName: channelName,
+                channelType: channelType,
+            });
         }
     }
-    res.render("site");
 });
 
 /**
@@ -173,25 +208,25 @@ app.get("/site", async (req, res) => {
  * 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
  */
 
-const fetchWebsite = (url) => {
-    try {
-        if (url.includes("undefined")) {
-            // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
-            return log.debug("The entered URL is invalid.");
-        } else {
-            execSync(
-                `wget -q -O - ${url} > views/site.ejs`,
-                (error, stdout, stderr) => {
-                    if (error !== null) {
-                        return false;
-                    }
-                }
-            );
-        }
-    } catch (error) {
-        return log.debug("Moment Share -- URL Input Error ", error);
-    }
-};
+// const fetchWebsite = (url) => {
+//     try {
+//         if (url.includes("undefined")) {
+//             // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
+//             return log.debug("The entered URL is invalid.");
+//         } else {
+//             execSync(
+//                 `wget -q -O - ${url} > views/site.ejs`,
+//                 (error, stdout, stderr) => {
+//                     if (error !== null) {
+//                         return false;
+//                     }
+//                 }
+//             );
+//         }
+//     } catch (error) {
+//         return log.debug("Moment Share -- URL Input Error ", error);
+//     }
+// };
 
 /**
  * @anthor 전형동
@@ -338,7 +373,7 @@ io.sockets.on("connection", (socket) => {
         let data = {
             userName: userName,
             fileName: fileName,
-            fileType: fileType
+            fileType: fileType,
         };
         socket.to(channelName).emit("input-content", data);
     });
@@ -356,7 +391,9 @@ io.sockets.on("connection", (socket) => {
     });
 
     socket.on("currentTime-origin", (channelName, currentTime, fileName) => {
-        socket.to(channelName).emit("currentTime-remote", currentTime, fileName);
+        socket
+            .to(channelName)
+            .emit("currentTime-remote", currentTime, fileName);
     });
 
     socket.on("leave-contents", (channelName) => {
@@ -441,6 +478,6 @@ io.sockets.on("connection", (socket) => {
     }
 });
 
-server.listen(port, '0.0.0.0', () => {
+server.listen(port, "0.0.0.0", () => {
     log.debug(`Server Listen... ${port}`);
 });

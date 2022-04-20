@@ -1,0 +1,46 @@
+<div class="iframe-container"></div>
+
+<!-- Jquery -->
+<script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+<script>
+    const url = '<%= url %>';
+    const channel = '<%= channelName %>';
+    const channelType = '<%= channelType %>';
+
+    console.log(":::::::::URL::::::::::", url);
+
+    $(document).ready((e) => {
+        $(".iframe-container").load(`https://owakeproxy.herokuapp.com/${url}`);
+
+        // $(document).on("mousedown", (e) => {
+        //     console.log(e.target.link)
+        //     console.log(":::::::::::Event Target::::::::", e.target)
+        //     sendMsgToParent(e.target.link);
+        // });
+
+        // window.addEventListener("mousedown", (e) => {
+        $(document).on("click", (e) => {
+            let sendURL;
+
+            console.log("Node Name :::: ", e.target.nodeName);
+            console.log("Node Childs :::: ", $(`${e.target.localName}`).find());
+            console.log(":::::::::::Event Target::::::::", e.target);
+
+            if (e.target.nodeName === "A") {
+                sendURL = e.target.href;
+            }
+            else if (e.target.nodeName === ("IMG" || "VIDEO" || "AUDIO")) {
+                sendURL = e.target.src;
+            }
+            else if (e.target.nodeName === "VIDEO") {
+                sendURL = e.target.src;
+            }
+
+            sendMsgToParent(sendURL);
+        })
+    });
+
+    function sendMsgToParent(msg) {
+        window.parent.postMessage(msg, "*");
+    }
+</script>
