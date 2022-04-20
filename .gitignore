@@ -1,4 +1,5 @@
 /server/uploads/
+/server/contents/
 yarn.lock
 /views/site.ejs
 

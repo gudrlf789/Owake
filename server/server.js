@@ -93,6 +93,7 @@ app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../public/img/channel")));
 app.use(express.static(path.join(__dirname, "../public/img/nav-icon")));
 app.use(express.static(path.join(__dirname, "./uploads/")));
+app.use(express.static(path.join(__dirname, "./contents/")));
 app.use(express.static(path.join(__dirname, "../views")));
 
 app.use(express.json());
@@ -329,6 +330,39 @@ io.sockets.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
+    socket.on("join-contents", (channelName) => {
+        socket.join(channelName);
+    });
+
+    socket.on("content-info", (channelName, userName, fileName, fileType) => {
+        let data = {
+            userName: userName,
+            fileName: fileName,
+            fileType: fileType
+        };
+        socket.to(channelName).emit("input-content", data);
+    });
+
+    socket.on("play-origin", (channelName, fileName) => {
+        socket.to(channelName).emit("play-remote", fileName);
+    });
+
+    socket.on("pause-origin", (channelName, fileName) => {
+        socket.to(channelName).emit("pause-remote", fileName);
+    });
+
+    socket.on("volume-origin", (channelName, originVolume, fileName) => {
+        socket.to(channelName).emit("volume-remote", originVolume, fileName);
+    });
+
+    socket.on("currentTime-origin", (channelName, currentTime, fileName) => {
+        socket.to(channelName).emit("currentTime-remote", currentTime, fileName);
+    });
+
+    socket.on("leave-contents", (channelName) => {
+        socket.leave(channelName);
+    });
+
     /**
      * @Author 전형동
      * @param {*} mouseEvent
@@ -407,6 +441,6 @@ io.sockets.on("connection", (socket) => {
     }
 });
 
-server.listen(port, () => {
+server.listen(port, '0.0.0.0', () => {
     log.debug(`Server Listen... ${port}`);
 });
