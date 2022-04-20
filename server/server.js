@@ -164,19 +164,19 @@ app.get("/newsfeed", (req, res, next) => {
  * 클라이언트 페이지 호출
  */
 
-app.post("/urlSearch", async (req, res) => {
-    // fs.writeFileSync("views/site.ejs", "", () =>
-    //     console.log("Created site.ejs")
-    // );
-    // fs.createReadStream("views/site.ejs").pipe(res);
+// app.post("/urlSearch", async (req, res) => {
+//     // fs.writeFileSync("views/site.ejs", "", () =>
+//     //     console.log("Created site.ejs")
+//     // );
+//     // fs.createReadStream("views/site.ejs").pipe(res);
 
-    urlParams = req.query[0];
-    site.push(urlParams);
-    siteSet = new Set(site);
-    siteArr = Array.from(siteSet);
+//     urlParams = req.query[0];
+//     site.push(urlParams);
+//     siteSet = new Set(site);
+//     siteArr = Array.from(siteSet);
 
-    console.log("Response Site URL ", siteArr);
-});
+//     console.log("Response Site URL ", siteArr);
+// });
 
 // app.get("/site", async (req, res) => {
 //     for (let i = 0; i < siteArr.length; i++) {
@@ -187,17 +187,17 @@ app.post("/urlSearch", async (req, res) => {
 //     res.render("site");
 // });
 
-app.get("/webShare", async (req, res) => {
-    for (let i = 0; i < siteArr.length; i++) {
-        if (urlParams === siteArr[i]) {
-            res.render("webShare", {
-                url: urlParams,
-                channelName: channelName,
-                channelType: channelType,
-            });
-        }
-    }
-});
+// app.get("/webShare", async (req, res) => {
+//     for (let i = 0; i < siteArr.length; i++) {
+//         if (urlParams === siteArr[i]) {
+//             res.render("webShare", {
+//                 url: urlParams,
+//                 channelName: channelName,
+//                 channelType: channelType,
+//             });
+//         }
+//     }
+// });
 
 /**
  * @anthor 전형동
@@ -297,15 +297,15 @@ io.sockets.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("submit_address", (address, config) => {
+    socket.on("submit_address", (config) => {
         // 이 코드 리펙토링 필수!  - 참조 : /urlSearch
-        peerWebURLArr.push(address);
+        peerWebURLArr.push(config.url);
         let peerWebURLArrSet = new Set(peerWebURLArr);
         let resultURLArr = Array.from(peerWebURLArrSet);
 
-        log.debug("connected peers grp by Peer Address ", peers);
+        log.debug("connected peers grp by Peer Address ", peers, peerWebURLArr);
 
-        socket.in(config.channel).emit("input_address", address);
+        socket.in(config.channel).emit("input_address", config.url);
     });
 
     socket.on("join-whiteboard", (channelName) => {
@@ -396,9 +396,14 @@ io.sockets.on("connection", (socket) => {
             .emit("currentTime-remote", currentTime, fileName);
     });
 
-    socket.on("scroll-origin", (channelName, originTop, originLeft, fileName) => {
-        socket.to(channelName).emit("scroll-remote", originTop, originLeft, fileName);
-    });
+    socket.on(
+        "scroll-origin",
+        (channelName, originTop, originLeft, fileName) => {
+            socket
+                .to(channelName)
+                .emit("scroll-remote", originTop, originLeft, fileName);
+        }
+    );
 
     socket.on("leave-contents", (channelName) => {
         socket.leave(channelName);
@@ -421,15 +426,15 @@ io.sockets.on("connection", (socket) => {
     //     socket.in(config.channel).emit("receive_mouseup", config);
     // });
 
-    socket.on("active_mousedown", (config) => {
-        console.log(":::::::::Link ::::::::::::", config);
-        socket.in(config.channel).emit("receive_mousedown", config);
-    });
+    // socket.on("active_mousedown", (config) => {
+    //     console.log(":::::::::Link ::::::::::::", config);
+    //     socket.in(config.channel).emit("receive_mousedown", config);
+    // });
 
-    socket.on("active_touchend", (config) => {
-        console.log(":::::::::Link ::::::::::::", config);
-        socket.in(config.channel).emit("receive_touchend", config);
-    });
+    // socket.on("active_touchend", (config) => {
+    //     console.log(":::::::::Link ::::::::::::", config);
+    //     socket.in(config.channel).emit("receive_touchend", config);
+    // });
 
     // socket.on("active_mouseout", (config) => {
     //     socket.in(config.channel).emit("receive_mouseout", config);
@@ -439,9 +444,9 @@ io.sockets.on("connection", (socket) => {
     //     socket.in(config.channel).emit("receive_mousemove", config);
     // });
 
-    socket.on("active_scroll", (config) => {
-        socket.in(config.channel).emit("receive_scroll", config);
-    });
+    // socket.on("active_scroll", (config) => {
+    //     socket.in(config.channel).emit("receive_scroll", config);
+    // });
 
     // socket.on("active_wheel", (config) => {
     //     socket.in(config.channel).emit("receive_wheel", config);

@@ -1,25 +1,11 @@
-/**
- * @author 전형동
- * @version 1.0
- * @data 2022.04.10
- * @description
- * resultURLprotocolCheck,
- * searchUrlTransfer
- * resultURLContentCheck
- * 함수 추가
- *
- * searchContainer에 있는 Form 태그 삭제 (필요없음)
- *
- */
-
 import { socketInitFunc } from "./socket.js";
 import { options } from "../../rtcClient.js";
 
 export const momentShareFunc = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
-    let InputURL;
-    let staticURL = "/webShare";
+    let searchResult;
+    let inputURL;
 
     const momentShareBtn = document.querySelector("#momentShare");
     const momentShareIcon = document.querySelector(".fa-brain");
@@ -35,16 +21,12 @@ export const momentShareFunc = () => {
     const momentShare = document.createElement("iframe");
     const searchForm = document.createElement("form");
 
-    const navContainer = document.createElement("section");
-    const momentTabArea = document.createElement("div");
-
-    navContainer.id = "navContainer";
-    momentTabArea.id = "momentTabArea";
-
     searchInput.placeholder = "Enter a URL";
     searchInput.style.textAlign = "center";
     momentShare.id = "momentShare-iframe";
     momentShare.name = "momentShare";
+    searchForm.target = "momentShare";
+    searchForm.method = "get";
     momentShareArea.id = "momentShareArea";
     searchContainer.id = "searchContainer";
     searchInput.id = "searchInput";
@@ -53,25 +35,12 @@ export const momentShareFunc = () => {
 
     searchInputBtnIcon.className = "fas fa-search";
 
-    navContainer.append(searchContainer, momentTabArea);
+    searchForm.append(searchInput);
     searchInputBtn.appendChild(searchInputBtnIcon);
-    searchContainer.append(searchInput, searchInputBtn);
-
-    momentShareArea.append(navContainer, momentShare);
+    searchContainer.append(searchForm, searchInputBtn);
+    momentShareArea.append(searchContainer, momentShare);
     momentShareArea.append(momentShare);
     momentShare.frameborder = "0";
-    // momentShare.sandbox =
-    //     "allow-same-origin allow-scripts allow-popups allow-forms";
-
-    momentTabArea.style.setProperty("height", "3rem");
-    momentTabArea.style.setProperty("width", "100%");
-    momentTabArea.style.setProperty("background", "#fff");
-    momentTabArea.style.setProperty("border", "2px solid #000");
-    momentTabArea.style.setProperty("display", "flex");
-    momentTabArea.style.setProperty("align-items", "center");
-    momentTabArea.style.setProperty("overflow-x", "auto");
-    momentTabArea.style.setProperty("position", "absolute");
-    momentTabArea.style.setProperty("z-index", "5");
 
     momentShareBtn.addEventListener("click", (e) => {
         momentShareActive = !momentShareActive;
@@ -82,47 +51,87 @@ export const momentShareFunc = () => {
         localVideoContainer.append(momentShareArea);
         momentShareArea.hidden = false;
         momentShareBtn.style.color = "rgb(165, 199, 236)";
+
+        // momentSocket.emit("join-web", window.sessionStorage.getItem("channel"));
         momentSocket.emit("join-web", options.channel);
-
-        momentShare.src = staticURL;
-
-        // momentShare.addEventListener("load", mouseEventFunc, false);
-        // momentShare.addEventListener("load", receiveMouseEventFunc, false);
     }
 
     function momentShareDisable() {
         momentShareArea.hidden = true;
         momentShareBtn.style.color = "#fff";
+        // momentSocket.emit(
+        //     "leave-web",
+        //     window.sessionStorage.getItem("channel")
+        // );
         momentSocket.emit("leave-web", options.channel);
     }
 
+    momentSocket.on("input_address", (address) => {
+        // const momentShare = document.getElementById("momentShare-iframe");
+        console.log("address::::::::::::::", address);
+        momentShare.src = address;
+    });
+
     searchInputBtn.addEventListener("click", (e) => {
-        InputURL = searchInput.value;
-        if (InputURL.length === 0) {
+        inputURL = searchInput.value;
+        if (inputURL.length === 0) {
             alert("Please enter your address.");
         } else {
-            urlSearchAxios(InputURL);
+            searchResult = searchUrlStringCheck();
+            searchForm.action = searchResult;
+            momentSocket.emit("submit_address", {
+                url: searchResult,
+                channel: options.channel,
+            });
         }
     });
 
     searchInput.addEventListener("keypress", (e) => {
-        InputURL = searchInput.value;
+        inputURL = searchInput.value;
         if (e.key === "Enter") {
-            if (InputURL.length === 0) {
+            if (inputURL.length === 0) {
                 alert("Please enter your address.");
             } else {
-                urlSearchAxios(InputURL);
+                searchResult = searchUrlStringCheck();
+                searchForm.action = searchResult;
+                momentSocket.emit("submit_address", {
+                    url: searchResult,
+                    channel: options.channel,
+                });
             }
         }
     });
 
-    function urlSearchAxios(url) {
-        axios.post("/urlSearch", null, { params: url });
+    function searchUrlStringCheck() {
+        let returnUrl;
+        let url = `https://${searchInput.value.replace(
+            /^(https?:\/\/)?(www\.)?/,
+            ""
+        )}`;
+
+        if (url.includes("youtube") || url.includes("youtu.be")) {
+            returnUrl = "https://" + youtubeUrlReplarce(url);
+            searchInput.value = "";
+            return returnUrl;
+        } else {
+            returnUrl = url;
+            searchInput.value = "";
+            return returnUrl;
+        }
     }
 
-    window.addEventListener("message", receiveMessage, false);
-
-    function receiveMessage(event) {
-        console.log("event data", event.data);
-    }
+    const youtubeUrlReplarce = (search) => {
+        let str = search;
+        const regExp =
+            /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let match = str.match(regExp);
+        if (match && match[2].length == 11) {
+            console.log(match[2]);
+            let sepratedID = match[2];
+            let embedUrl = "www.youtube.com/embed/" + sepratedID;
+            let result = search.replace(str, embedUrl);
+            console.log(result);
+            return result;
+        }
+    };
 };
