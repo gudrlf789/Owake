@@ -7,6 +7,7 @@ const Logger = require("./Logger");
 const { execSync } = require("child_process");
 const fs = require("fs");
 const log = new Logger("server");
+require("dotenv").config();
 const port = process.env.PORT || 1227;
 
 let channels = {}; // collect channels
