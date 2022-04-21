@@ -12,36 +12,38 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-label">File Identifier Verification</h5>
+                <h5 class="modal-title" id="modal-label">File Indentity Verification</h5>
             </div>
             <div class="modal-body">
                 <section class="form-signin">
 
                     <div id="top_container" style="margin :0.7rem;">
-                        <span>Step 1. <p>Please click <button id="syncBtn">Sync</button> to connect with other users</p></span>
+                        <span>Step 1. <p>Please click 'Sync' to connect with other users</p></span>
+                        <button id="syncBtn" class="btn btn-primary">Sync</button>
                     </div>
 
                     <div id="middle_container" style="display: flex; margin: 0.5rem; flex-direction: column;">
 
-                        <span>Step 2. <p>Please <label for="selectFile_1">'Check'</label>
-                                the identify code of an
-                                original file</p></span>
+                        <span>Step 2. <p>Please check the indentity code of an original file</p></span>
 
-                        <input type="file" id="selectFile_1" style="display: none">
-                        <input class="input-group input-group-sm mb-3" id="selectOriginalInput" type=" text"
-                            placeholder="Hash Code" readonly="readonly">
+                        <input type="file" class="form-control" id="selectFile_1">
+                        <div style="display: flex;">
+                            <input class="input-group input-group-sm mb-3" id="selectOriginalInput" type=" text"
+                                placeholder="Hash Code" readonly="readonly" style="width: 70%;">
+                            <button id="originCopy" style="width: 30%; height: 50%;">Copy</button>
+                        </div>
+                        
+                        <span>Step 3. <p>Please check the indentity code of a comparison file</p></span>
 
+                        <input type="file" class="form-control" id="selectFile_2">
+                        <div style="display: flex;">
+                            <input class="input-group input-group-sm mb-3" id="selectComparisonInput" type=" text"
+                                placeholder="Hash Code" readonly="readonly" style="width: 70%;">
+                            <button id="comparisonCopy" style="width: 30%; height: 50%;">Copy</button>
+                        </div>
 
-                        <span>Step 3. <p>Please <label for="selectFile_2">'Check'</label> the identify code of a
-                                comparison file</p></span>
-
-                        <input type="file" id="selectFile_2" style="display: none">
-                        <input class="input-group input-group-sm mb-3" id="selectComparisonInput" type=" text"
-                            placeholder="Hash Code" readonly="readonly">
-
-                        <span>Step 4. <p>Please click <button id="clickVerifyFile">Verify</button> to verify the
-                                identity of the
-                                file(s)</p></span>
+                        <span>Step 4. <p>Please click “Verify” to verify the indentity of the file(s)</p></span>
+                        <button class="btn btn-primary" id="clickVerifyFile" style="width: 15%;">Verify</button>
                         <input class="input-group input-group-sm mb-3" type="text" id="compareResult"
                             placeholder="Result" readonly>
                     </div>
@@ -54,23 +56,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    const selectFile_1 = document.querySelector("#selectFile_1");
-    const selectFile_2 = document.querySelector("#selectFile_2");
-    const selectOriginalInput = document.querySelector("#selectOriginalInput");
-    const selectComparisonInput = document.querySelector("#selectComparisonInput");
-
-    let selectFile;
-
-    selectFile_1.addEventListener("change", (e) => {
-        selectFile = e.target.files[0];
-        selectOriginalInput.value = selectFile.name;
-    });
-
-    selectFile_2.addEventListener("change", (e) => {
-        selectFile = e.target.files[0];
-        selectComparisonInput.value = selectFile.name;
-    });
-
-</script>

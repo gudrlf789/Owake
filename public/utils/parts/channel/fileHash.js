@@ -11,22 +11,25 @@ export const fileHash = () => {
     let formData = new FormData();
     let jwt;
 
-    const file1 = document.getElementById("file1");
-    const file2 = document.getElementById("file2");
-    const hashText1 = document.getElementById("hashText1");
-    const hashText2 = document.getElementById("hashText2");
+    const selectFile1 = document.getElementById("selectFile_1");
+    const selectFile2 = document.getElementById("selectFile_2");
+    const selectOriginalInput = document.getElementById("selectOriginalInput");
+    const selectComparisonInput = document.getElementById("selectComparisonInput");
     const compareResult = document.getElementById("compareResult");
-
-    $(() => {
-        $("#btn1").attr("disabled", true);
-        $("#btn2").attr("disabled", true);
-        compareResult.value = "";
-    });
-
+    const clickVerifyFile = document.getElementById("clickVerifyFile");
+    const originCopy = document.getElementById("originCopy");
+    const comparisonCopy = document.getElementById("comparisonCopy");
+    const channelName = window.sessionStorage.getItem("channel");
     const loginData = {
         id: "",
         password: "",
     };
+
+    $(() => {
+        $("#selectFile_1").attr("disabled", true);
+        $("#selectFile_2").attr("disabled", true);
+        compareResult.value = "";
+    });
 
     function makeFileToHash(data, textHtml) {
         if (formData.has("fileInput")) {
@@ -50,56 +53,78 @@ export const fileHash = () => {
                     "submit_hash",
                     res.data.output.file_hash,
                     textHtml.id,
-                    window.sessionStorage.getItem("channel")
+                    channelName
                 );
                 textHtml.value = res.data.output.file_hash;
             })
             .catch((err) => {
                 console.log(err);
             });
-    }
+    };
 
-    hashSocket.on("input_hash", (data) => {
-        $(`#${data.textHtmlId}`).val(`${data.hash}`);
+    selectFile1.addEventListener("change", (e) => {
+        makeFileToHash(selectFile1.files[0], selectOriginalInput);
+    });
+
+    selectFile2.addEventListener("change", (e) => {
+        makeFileToHash(selectFile2.files[0], selectComparisonInput);
+    });
+
+    clickVerifyFile.addEventListener("click", (e) => {
+        compareResult.style.fontWeight = "bold";
+
+        if (selectOriginalInput.value === selectComparisonInput.value) {
+            compareResult.style.color = "green";
+            compareResult.value = "Same File";
+        } else {
+            compareResult.style.color = "red";
+            compareResult.value = "Different File";
+        }
+    });
+
+    originCopy.addEventListener("click", (e) => {
+        navigator.clipboard.writeText(selectOriginalInput.value);
+        alert("Copied the text: " + selectOriginalInput.value);
+    });
+
+    comparisonCopy.addEventListener("click", (e) => {
+        navigator.clipboard.writeText(selectComparisonInput.value);
+        alert("Copied the text: " + selectComparisonInput.value);
     });
 
     $("#syncBtn").click((e) => {
-        hashSocket.emit("join-hash", window.sessionStorage.getItem("channel"));
+        hashSocket.emit("join-hash", channelName);
         axios
             .post("/channel/jwt", loginData)
             .then((res) => {
-                jwt = res.data.jwt;
-                //$("#btn1").attr("disabled", false);
-                //$("#btn2").attr("disabled", false);
+                if(res.data.jwt !== undefined){
+                    alert("Sync is completed");
+                    jwt = res.data.jwt;
+                    $("#syncBtn").attr("disabled", true);
+                    $("#selectFile_1").attr("disabled", false);
+                    $("#selectFile_2").attr("disabled", false);
+                }else{
+                    alert("Fail to connect with other users");
+                }
+                
             })
             .catch((err) => {
                 alert(err);
             });
     });
 
-    $("#btn1").click((e) => {
-        makeFileToHash(file1.files[0], hashText1);
+    $("#closeBtn").click((e) => {
+        hashSocket.emit("leave-hash", channelName);
+        selectFile1.value = "";
+        selectFile2.value = "";
+        selectOriginalInput.value = "";
+        selectComparisonInput.value = "";
+        $("#syncBtn").attr("disabled", false);
+        $("#selectFile_1").attr("disabled", true);
+        $("#selectFile_2").attr("disabled", true);
     });
 
-    $("#btn2").click((e) => {
-        makeFileToHash(file2.files[0], hashText2);
-    });
-
-    $("#compare").click((e) => {
-        if (hashText1.value === hashText2.value) {
-            compareResult.value = "Same File";
-        } else {
-            compareResult.value = "Different File";
-        }
-    });
-
-    $("#finish").click((e) => {
-        hashSocket.emit("leave-hash", window.sessionStorage.getItem("channel"));
-        file1.value = "";
-        file2.value = "";
-        hashText1.value = "";
-        hashText2.value = "";
-        $("#btn1").attr("disabled", true);
-        $("#btn2").attr("disabled", true);
+    hashSocket.on("input_hash", (data) => {
+        $(`#${data.textHtmlId}`).val(`${data.hash}`);
     });
 };
