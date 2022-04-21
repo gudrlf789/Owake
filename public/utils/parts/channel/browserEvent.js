@@ -26,4 +26,18 @@ function browserClose() {
         }
         sessionStorage.clear();
     });
+
+    window.addEventListener("unload", (e) => {
+        if (window.sessionStorage.length > 0) {
+            const reqData = {
+                channelType: window.sessionStorage.getItem("channelType"),
+                channelName: window.sessionStorage.getItem("channel"),
+                userId: window.sessionStorage.getItem("uid"),
+            };
+            axios
+                .post("/channel/removeUserNameOnChannel", reqData)
+                .then((res) => {});
+        }
+        sessionStorage.clear();
+    });
 }

@@ -19,6 +19,9 @@ import { SwiperFunc } from "./parts/channel/swiper.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 
+// XFrameByPass
+import { xFrameByPass } from "../lib/x-frame-bypass.js";
+
 mobileDisplayCtr();
 f12defense();
 fileDelivery();
@@ -40,6 +43,8 @@ SwiperFunc();
 fileHash();
 contentFunc();
 
+xFrameByPass();
+
 // const momentShareBtn = document.querySelector("#momentShare");
 // const fileShareBtn = document.querySelector("#fileShareBtn");
 // const whiteBoardBtn = document.querySelector("#whiteBoard");
@@ -53,4 +58,3 @@ contentFunc();
 // fileDeliveryBtn.addEventListener("click", fileDelivery, false);
 // deviceSettingBtn.addEventListener("click", recodingDeviceCtrl, false);
 // fileHashBtn.addEventListener("click", fileHash, false);
-

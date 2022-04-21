@@ -4,8 +4,7 @@ const app = express();
 const cors = require("cors");
 const path = require("path");
 const Logger = require("./Logger");
-const { execSync } = require("child_process");
-const fs = require("fs");
+const bodyParser = require("body-parser");
 const log = new Logger("server");
 const port = process.env.PORT || 1227;
 
@@ -17,35 +16,28 @@ let peerId;
 let peerName;
 let urlParams;
 
-let site = [];
-let siteSet;
-let siteArr = [];
-
-let channelName;
-let channelType;
-
 let peerWebURLArr = [];
 
 let io, server;
 
-const CORS_fn = (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Methods", "*");
-    res.setHeader("Access-Control-Max-Age", "3600");
+// const CORS_fn = (req, res) => {
+//     res.setHeader("Access-Control-Allow-Origin", "*");
+//     res.setHeader(
+//         "Access-Control-Allow-Headers",
+//         "Origin, X-Requested-With, Content-Type, Accept"
+//     );
+//     res.setHeader("Access-Control-Allow-Credentials", "true");
+//     res.setHeader("Access-Control-Allow-Methods", "*");
+//     res.setHeader("Access-Control-Max-Age", "3600");
 
-    if (req.method === "OPTIONS") {
-        res.writeHead(200);
-        res.end();
-        return;
-    }
-};
+//     if (req.method === "OPTIONS") {
+//         res.writeHead(200);
+//         res.end();
+//         return;
+//     }
+// };
 
-server = require("http").Server(app, CORS_fn);
+server = require("http").createServer(app);
 
 io = new Server({
     pingInterval: 100000,
@@ -82,20 +74,8 @@ app.use(
 );
 
 app.use(redirectSec);
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-});
-
-app.use(
-    express.urlencoded({
-        extended: true,
-    })
-);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
@@ -124,9 +104,6 @@ app.get("/", (req, res, next) => {
 
 app.get("/:channelName/:channelType", (req, res) => {
     let appID = "4343e4c08654493cb8997de783a9aaeb";
-
-    channelName = req.params.channelName;
-    channelType = req.params.channelType;
 
     res.render("channel", {
         channelName: req.params.channelName,
@@ -164,69 +141,19 @@ app.get("/newsfeed", (req, res, next) => {
  * 클라이언트 페이지 호출
  */
 
-app.post("/urlSearch", async (req, res) => {
-    // fs.writeFileSync("views/site.ejs", "", () =>
-    //     console.log("Created site.ejs")
-    // );
-    // fs.createReadStream("views/site.ejs").pipe(res);
-
+app.post("/requestURL", async (req, res) => {
+    console.log(req);
+    console.log(req.body);
     urlParams = req.query[0];
-    site.push(urlParams);
-    siteSet = new Set(site);
-    siteArr = Array.from(siteSet);
-
-    console.log("Response Site URL ", siteArr);
+    console.log("Response Site URL ", urlParams);
 });
 
-// app.get("/site", async (req, res) => {
-//     for (let i = 0; i < siteArr.length; i++) {
-//         if (urlParams === siteArr[i]) {
-//             fetchWebsite(urlParams);
-//         }
-//     }
-//     res.render("site");
-// });
-
-app.get("/webShare", async (req, res) => {
-    for (let i = 0; i < siteArr.length; i++) {
-        if (urlParams === siteArr[i]) {
-            res.render("webShare", {
-                url: urlParams,
-                channelName: channelName,
-                channelType: channelType,
-            });
-        }
-    }
+app.get("/receiveURL", async (req, res) => {
+    return res.status(200).json({
+        success: true,
+        url: urlParams,
+    });
 });
-
-/**
- * @anthor 전형동
- * @date 2022.04.05
- * @version 1.1
- * @descrption
- * 웹사이트 내용 긁어오는 소스
- * 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
- */
-
-// const fetchWebsite = (url) => {
-//     try {
-//         if (url.includes("undefined")) {
-//             // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
-//             return log.debug("The entered URL is invalid.");
-//         } else {
-//             execSync(
-//                 `wget -q -O - ${url} > views/site.ejs`,
-//                 (error, stdout, stderr) => {
-//                     if (error !== null) {
-//                         return false;
-//                     }
-//                 }
-//             );
-//         }
-//     } catch (error) {
-//         return log.debug("Moment Share -- URL Input Error ", error);
-//     }
-// };
 
 /**
  * @anthor 전형동
@@ -297,15 +224,15 @@ io.sockets.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("submit_address", (address, config) => {
+    socket.on("submit_address", (config) => {
         // 이 코드 리펙토링 필수!  - 참조 : /urlSearch
-        peerWebURLArr.push(address);
+        peerWebURLArr.push(config.link);
         let peerWebURLArrSet = new Set(peerWebURLArr);
         let resultURLArr = Array.from(peerWebURLArrSet);
 
         log.debug("connected peers grp by Peer Address ", peers);
 
-        socket.in(config.channel).emit("input_address", address);
+        socket.in(config.channel).emit("input_address", config.link);
     });
 
     socket.on("join-whiteboard", (channelName) => {
@@ -396,9 +323,14 @@ io.sockets.on("connection", (socket) => {
             .emit("currentTime-remote", currentTime, fileName);
     });
 
-    socket.on("scroll-origin", (channelName, originTop, originLeft, fileName) => {
-        socket.to(channelName).emit("scroll-remote", originTop, originLeft, fileName);
-    });
+    socket.on(
+        "scroll-origin",
+        (channelName, originTop, originLeft, fileName) => {
+            socket
+                .to(channelName)
+                .emit("scroll-remote", originTop, originLeft, fileName);
+        }
+    );
 
     socket.on("leave-contents", (channelName) => {
         socket.leave(channelName);
@@ -426,11 +358,6 @@ io.sockets.on("connection", (socket) => {
         socket.in(config.channel).emit("receive_mousedown", config);
     });
 
-    socket.on("active_touchend", (config) => {
-        console.log(":::::::::Link ::::::::::::", config);
-        socket.in(config.channel).emit("receive_touchend", config);
-    });
-
     // socket.on("active_mouseout", (config) => {
     //     socket.in(config.channel).emit("receive_mouseout", config);
     // });
@@ -440,6 +367,7 @@ io.sockets.on("connection", (socket) => {
     // });
 
     socket.on("active_scroll", (config) => {
+        console.log(config);
         socket.in(config.channel).emit("receive_scroll", config);
     });
 
@@ -482,6 +410,6 @@ io.sockets.on("connection", (socket) => {
     }
 });
 
-server.listen(port, "0.0.0.0", () => {
+server.listen(port, () => {
     log.debug(`Server Listen... ${port}`);
 });

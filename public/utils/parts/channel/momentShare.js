@@ -1,15 +1,20 @@
 /**
  * @author 전형동
  * @version 1.0
- * @data 2022.04.10
+ * @data 2022.04.20
  * @description
- * resultURLprotocolCheck,
- * searchUrlTransfer
- * resultURLContentCheck
- * 함수 추가
+ * 전부 지우고 새로 개발 중
+ * 이동될 URL은 고정 staticURL = webShare.ejs로 이동됨.
+ * urlSearchAxios에서 입력된 URL을 서버로 보내고 서버에서 스캔 및 URL을 저장 후
+ * webShare.ejs로 보냄.
+ * 따라서 socket에 전달될 URL은 고정 URL만 전달하면 됨.
  *
- * searchContainer에 있는 Form 태그 삭제 (필요없음)
- *
+ * 남아있는 과제
+ * 1. jquery.load로 불러온 웹사이트에서는 마우스 이벤트 및 자바스크립트 이벤트가 유효함.
+ * 단, iframe 내부에서 페이지가 이동이 되었을 경우 이벤트는 유효하지 못함.
+ * 이벤트가 유효한 첫 페이지에서 클릭 후 링크를 탭에 저장하고 화면에 호출
+ * 이때 화면에 호출된 사이트는 이벤트가 막혀있는 상태이기 때문에 리모트에 화면이 동기화가 되지 않는다.
+ * 동기화를 하려면 탭을 눌러 새로운 페이지를 띄운다.
  */
 
 import { socketInitFunc } from "./socket.js";
@@ -19,7 +24,9 @@ export const momentShareFunc = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
     let InputURL;
-    let staticURL = "/webShare";
+    let convertURL;
+    let receiveURL;
+    let momentShare;
 
     const momentShareBtn = document.querySelector("#momentShare");
     const momentShareIcon = document.querySelector(".fa-brain");
@@ -27,13 +34,14 @@ export const momentShareFunc = () => {
         "#local__video__container"
     );
 
-    const momentShareArea = document.createElement("div");
+    const momentShareArea = document.createElement("section");
+    const iframeContainer = document.createElement("section");
     const searchContainer = document.createElement("div");
     const searchInput = document.createElement("input");
     const searchInputBtn = document.createElement("div");
     const searchInputBtnIcon = document.createElement("i");
-    const momentShare = document.createElement("iframe");
-    const searchForm = document.createElement("form");
+
+    const momentContainer = document.createElement("span");
 
     const navContainer = document.createElement("section");
     const momentTabArea = document.createElement("div");
@@ -43,9 +51,11 @@ export const momentShareFunc = () => {
 
     searchInput.placeholder = "Enter a URL";
     searchInput.style.textAlign = "center";
-    momentShare.id = "momentShare-iframe";
-    momentShare.name = "momentShare";
+    // momentShare.id = "momentShare-iframe";
+    // momentShare.name = "momentShare";
     momentShareArea.id = "momentShareArea";
+    momentContainer.id = "momentContainer";
+
     searchContainer.id = "searchContainer";
     searchInput.id = "searchInput";
     searchInputBtn.id = "searchInputBtn";
@@ -57,11 +67,7 @@ export const momentShareFunc = () => {
     searchInputBtn.appendChild(searchInputBtnIcon);
     searchContainer.append(searchInput, searchInputBtn);
 
-    momentShareArea.append(navContainer, momentShare);
-    momentShareArea.append(momentShare);
-    momentShare.frameborder = "0";
-    // momentShare.sandbox =
-    //     "allow-same-origin allow-scripts allow-popups allow-forms";
+    momentShareArea.append(navContainer, momentContainer);
 
     momentTabArea.style.setProperty("height", "3rem");
     momentTabArea.style.setProperty("width", "100%");
@@ -84,10 +90,15 @@ export const momentShareFunc = () => {
         momentShareBtn.style.color = "rgb(165, 199, 236)";
         momentSocket.emit("join-web", options.channel);
 
-        momentShare.src = staticURL;
+        iframeContainer.innerHTML =
+            "<iframe id='momentShare-iframe'" +
+            "name='momentShare' is='x-frame-bypass' frameborder='0'" +
+            "</iframe>";
+        momentContainer.appendChild(iframeContainer);
 
-        // momentShare.addEventListener("load", mouseEventFunc, false);
-        // momentShare.addEventListener("load", receiveMouseEventFunc, false);
+        momentShare = document.querySelector("#momentShare-iframe");
+        momentShare.addEventListener("load", mouseEventFunc, false);
+        momentShare.addEventListener("load", receiveMouseEventFunc, false);
     }
 
     function momentShareDisable() {
@@ -101,7 +112,13 @@ export const momentShareFunc = () => {
         if (InputURL.length === 0) {
             alert("Please enter your address.");
         } else {
-            urlSearchAxios(InputURL);
+            // urlSearchAxios(InputURL);
+            convertURL = `https://${InputURL.replace(
+                /^(https?:\/\/)?(www\.)?/,
+                ""
+            )}`;
+            webShareLoad(convertURL);
+            searchInput.value = "";
         }
     });
 
@@ -111,18 +128,204 @@ export const momentShareFunc = () => {
             if (InputURL.length === 0) {
                 alert("Please enter your address.");
             } else {
-                urlSearchAxios(InputURL);
+                // urlSearchAxios(InputURL);
+                convertURL = `https://${InputURL.replace(
+                    /^(https?:\/\/)?(www\.)?/,
+                    ""
+                )}`;
+                webShareLoad(convertURL);
+                searchInput.value = "";
             }
         }
     });
 
-    function urlSearchAxios(url) {
-        axios.post("/urlSearch", null, { params: url });
+    function webShareLoad(url) {
+        // Iframe 생성 후 URL 삽입
+        webShareContainerLoad(url);
+        // URL 탭 생성 후 삽입
+        createMomentTabFunc(url);
+        // URL을 소켓에 전달
+        socketSubmitAddressEmit(url);
     }
 
-    window.addEventListener("message", receiveMessage, false);
-
-    function receiveMessage(event) {
-        console.log("event data", event.data);
+    function socketSubmitAddressEmit(url) {
+        momentSocket.emit("submit_address", {
+            peerID: options.uid,
+            channel: options.channel,
+            link: url,
+        });
     }
+
+    function webShareContainerLoad(url) {
+        momentShare = document.querySelector("#momentShare-iframe");
+        momentShare.setAttribute("src", url);
+    }
+
+    function createMomentTabFunc(url) {
+        const momentTab = document.createElement("span");
+
+        momentTab.id = "momentTab";
+        momentTab.style.setProperty("margin", "0.4rem");
+        momentTab.style.setProperty("padding", "0.2rem");
+        momentTab.style.setProperty("background", "#182843");
+        momentTab.style.setProperty("color", "#fff");
+        momentTab.style.setProperty("cursor", "pointer");
+        momentTab.style.setProperty("white-space", "nowrap");
+        momentTab.style.setProperty("overflow", "hidden");
+        momentTab.style.setProperty("text-overflow", "ellipsis");
+        momentTab.style.setProperty("width", "10rem");
+        momentTab.style.setProperty("text-align", "center");
+
+        if (url !== null || url !== "" || url !== undefined) {
+            momentTab.textContent = url;
+            momentTabArea.append(momentTab);
+        }
+    }
+
+    $(document).on("click", "#momentTab", (e) => {
+        let tabURL = e.target.innerText;
+        let replaceURL;
+        try {
+            if (tabURL.includes("youtube")) {
+                youtubeTVPlayer(tabURL);
+            } else if (tabURL.includes("google")) {
+                defaultMomentShare(tabURL);
+            } else if (tabURL.includes("twitch")) {
+                alert("Twitch is Developing..");
+            } else if (tabURL.includes("tv.naver")) {
+                naverTVPlayer(tabURL);
+            } else {
+                replaceURL = `https://${tabURL.replace(
+                    /^(https?:\/\/)?(www\.)?/,
+                    ""
+                )}`;
+
+                webShareContainerLoad(replaceURL);
+            }
+        } catch (e) {
+            console.log("resultURLContentCheck Error : ", e);
+        }
+    });
+
+    // async function getURL() {
+    //     receiveURL = await axios.get("/receiveURL");
+    //     console.log("response::::::::::::", receiveURL.data.url);
+    //     return receiveURL.data.url;
+    // }
+
+    // let sendURL = getURL();
+    // console.log("::::::::sendURL:::::::::::", sendURL);
+
+    function mouseEventFunc() {
+        let scroll = false;
+        let mouse = false;
+        try {
+            momentShare = document.querySelector("#momentShare-iframe");
+            momentShare.contentWindow.addEventListener(
+                "mousedown",
+                async (e) => {
+                    mouse = true;
+                    let tagName = e.target.nodeName;
+                    let sendURL;
+                    let mediaType =
+                        "IMG" ||
+                        "VIDEO" ||
+                        "AUDIO" ||
+                        "IFRAME" ||
+                        "OBJECT" ||
+                        "SOURCE" ||
+                        "EMBED";
+
+                    if (tagName === mediaType) {
+                        sendURL = e.target.src;
+                    } else {
+                        sendURL = e.target.href;
+                    }
+                    momentSocket.emit("active_mousedown", {
+                        peer: options.uid,
+                        channel: options.channel,
+                        link: sendURL,
+                    });
+                }
+            );
+
+            momentShare.contentWindow.addEventListener(
+                "scroll",
+                async (e) => {
+                    scroll = true;
+                    if (scroll) {
+                        momentSocket.emit("active_scroll", {
+                            peer: options.uid,
+                            channel: options.channel,
+                            scrollY: e.currentTarget.scrollY,
+                        });
+                    }
+                },
+                false
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function receiveMouseEventFunc() {
+        let scroll = false;
+        let scrollY = 0;
+        let scrollX = 0;
+        let rect = currentFrameAbsolutePosition();
+        // let rect = momentShare.getBoundingClientRect();
+
+        momentSocket.on("receive_mousedown", (mouseEvent) => {
+            console.log("receive mousedown :::: ", mouseEvent.link);
+            webShareContainerLoad(mouseEvent.link);
+        });
+
+        momentSocket.on("receive_scroll", (mouseEvent) => {
+            scroll = true;
+            scrollY = mouseEvent.scrollY + rect.y;
+
+            if (scroll) {
+                momentShare.contentWindow.scrollTo(0, scrollY);
+            }
+        });
+    }
+
+    // 스크롤 좌표값 구하는 함수
+    function currentFrameAbsolutePosition() {
+        let currentWindow = window;
+        let currentParentWindow;
+        let positions = [];
+        let rect;
+
+        while (currentWindow !== window.top) {
+            currentParentWindow = currentWindow.parent;
+            for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
+                if (currentParentWindow.frames[idx] === currentWindow) {
+                    for (let frameElement of currentParentWindow.document.getElementsByTagName(
+                        "iframe"
+                    )) {
+                        if (frameElement.contentWindow === currentWindow) {
+                            rect = frameElement.getBoundingClientRect();
+                            positions.push({ x: rect.x, y: rect.y });
+                        }
+                    }
+                    currentWindow = currentParentWindow;
+                    break;
+                }
+        }
+        return positions.reduce(
+            (accumulator, currentValue) => {
+                return {
+                    x: accumulator.x + currentValue.x,
+                    y: accumulator.y + currentValue.y,
+                };
+            },
+            { x: 0, y: 0 }
+        );
+    }
+
+    momentSocket.on("input_address", (url) => {
+        createMomentTabFunc(url);
+        webShareContainerLoad(url);
+    });
 };
