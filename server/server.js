@@ -22,15 +22,23 @@ let site = [];
 let siteSet;
 let siteArr = [];
 
+let channelName;
+let channelType;
+
 let peerWebURLArr = [];
 
 let io, server;
 
 const CORS_fn = (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Methods", "*");
-    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.setHeader("Access-Control-Max-Age", "3600");
+
     if (req.method === "OPTIONS") {
         res.writeHead(200);
         res.end();
@@ -38,7 +46,7 @@ const CORS_fn = (req, res) => {
     }
 };
 
-server = require("http").createServer(app, CORS_fn);
+server = require("http").Server(app, CORS_fn);
 
 io = new Server({
     pingInterval: 100000,
@@ -73,7 +81,16 @@ app.use(
         credential: true,
     })
 );
+
 app.use(redirectSec);
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
 
 app.use(
     express.urlencoded({
@@ -108,6 +125,10 @@ app.get("/", (req, res, next) => {
 
 app.get("/:channelName/:channelType", (req, res) => {
     let appID = "4343e4c08654493cb8997de783a9aaeb";
+
+    channelName = req.params.channelName;
+    channelType = req.params.channelType;
+
     res.render("channel", {
         channelName: req.params.channelName,
         channelType: req.params.channelType,
@@ -144,26 +165,40 @@ app.get("/newsfeed", (req, res, next) => {
  * 클라이언트 페이지 호출
  */
 
-app.post("/urlSearch", async (req, res) => {
-    fs.writeFileSync("views/site.ejs", "", () =>
-        console.log("Created site.ejs")
-    );
-    fs.createReadStream("views/site.ejs").pipe(res);
+// app.post("/urlSearch", async (req, res) => {
+//     // fs.writeFileSync("views/site.ejs", "", () =>
+//     //     console.log("Created site.ejs")
+//     // );
+//     // fs.createReadStream("views/site.ejs").pipe(res);
 
-    urlParams = req.query[0];
-    site.push(urlParams);
-    siteSet = new Set(site);
-    siteArr = Array.from(siteSet);
-});
+//     urlParams = req.query[0];
+//     site.push(urlParams);
+//     siteSet = new Set(site);
+//     siteArr = Array.from(siteSet);
 
-app.get("/site", async (req, res) => {
-    for (let i = 0; i < siteArr.length; i++) {
-        if (urlParams === siteArr[i]) {
-            fetchWebsite(urlParams);
-        }
-    }
-    res.render("site");
-});
+//     console.log("Response Site URL ", siteArr);
+// });
+
+// app.get("/site", async (req, res) => {
+//     for (let i = 0; i < siteArr.length; i++) {
+//         if (urlParams === siteArr[i]) {
+//             fetchWebsite(urlParams);
+//         }
+//     }
+//     res.render("site");
+// });
+
+// app.get("/webShare", async (req, res) => {
+//     for (let i = 0; i < siteArr.length; i++) {
+//         if (urlParams === siteArr[i]) {
+//             res.render("webShare", {
+//                 url: urlParams,
+//                 channelName: channelName,
+//                 channelType: channelType,
+//             });
+//         }
+//     }
+// });
 
 /**
  * @anthor 전형동
@@ -174,25 +209,25 @@ app.get("/site", async (req, res) => {
  * 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
  */
 
-const fetchWebsite = (url) => {
-    try {
-        if (url.includes("undefined")) {
-            // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
-            return log.debug("The entered URL is invalid.");
-        } else {
-            execSync(
-                `wget -q -O - ${url} > views/site.ejs`,
-                (error, stdout, stderr) => {
-                    if (error !== null) {
-                        return false;
-                    }
-                }
-            );
-        }
-    } catch (error) {
-        return log.debug("Moment Share -- URL Input Error ", error);
-    }
-};
+// const fetchWebsite = (url) => {
+//     try {
+//         if (url.includes("undefined")) {
+//             // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
+//             return log.debug("The entered URL is invalid.");
+//         } else {
+//             execSync(
+//                 `wget -q -O - ${url} > views/site.ejs`,
+//                 (error, stdout, stderr) => {
+//                     if (error !== null) {
+//                         return false;
+//                     }
+//                 }
+//             );
+//         }
+//     } catch (error) {
+//         return log.debug("Moment Share -- URL Input Error ", error);
+//     }
+// };
 
 /**
  * @anthor 전형동
@@ -263,15 +298,15 @@ io.sockets.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("submit_address", (address, config) => {
+    socket.on("submit_address", (config) => {
         // 이 코드 리펙토링 필수!  - 참조 : /urlSearch
-        peerWebURLArr.push(address);
+        peerWebURLArr.push(config.url);
         let peerWebURLArrSet = new Set(peerWebURLArr);
         let resultURLArr = Array.from(peerWebURLArrSet);
 
-        log.debug("connected peers grp by Peer Address ", peers);
+        log.debug("connected peers grp by Peer Address ", peers, peerWebURLArr);
 
-        socket.in(config.channel).emit("input_address", address);
+        socket.in(config.channel).emit("input_address", config.url);
     });
 
     socket.on("join-whiteboard", (channelName) => {
@@ -339,7 +374,7 @@ io.sockets.on("connection", (socket) => {
         let data = {
             userName: userName,
             fileName: fileName,
-            fileType: fileType
+            fileType: fileType,
         };
         socket.to(channelName).emit("input-content", data);
     });
@@ -357,12 +392,19 @@ io.sockets.on("connection", (socket) => {
     });
 
     socket.on("currentTime-origin", (channelName, currentTime, fileName) => {
-        socket.to(channelName).emit("currentTime-remote", currentTime, fileName);
+        socket
+            .to(channelName)
+            .emit("currentTime-remote", currentTime, fileName);
     });
 
-    socket.on("scroll-origin", (channelName, originTop, originLeft, fileName) => {
-        socket.to(channelName).emit("scroll-remote", originTop, originLeft, fileName);
-    });
+    socket.on(
+        "scroll-origin",
+        (channelName, originTop, originLeft, fileName) => {
+            socket
+                .to(channelName)
+                .emit("scroll-remote", originTop, originLeft, fileName);
+        }
+    );
 
     socket.on("leave-contents", (channelName) => {
         socket.leave(channelName);
@@ -385,15 +427,15 @@ io.sockets.on("connection", (socket) => {
     //     socket.in(config.channel).emit("receive_mouseup", config);
     // });
 
-    socket.on("active_mousedown", (config) => {
-        console.log(":::::::::Link ::::::::::::", config);
-        socket.in(config.channel).emit("receive_mousedown", config);
-    });
+    // socket.on("active_mousedown", (config) => {
+    //     console.log(":::::::::Link ::::::::::::", config);
+    //     socket.in(config.channel).emit("receive_mousedown", config);
+    // });
 
-    socket.on("active_touchend", (config) => {
-        console.log(":::::::::Link ::::::::::::", config);
-        socket.in(config.channel).emit("receive_touchend", config);
-    });
+    // socket.on("active_touchend", (config) => {
+    //     console.log(":::::::::Link ::::::::::::", config);
+    //     socket.in(config.channel).emit("receive_touchend", config);
+    // });
 
     // socket.on("active_mouseout", (config) => {
     //     socket.in(config.channel).emit("receive_mouseout", config);
@@ -403,9 +445,9 @@ io.sockets.on("connection", (socket) => {
     //     socket.in(config.channel).emit("receive_mousemove", config);
     // });
 
-    socket.on("active_scroll", (config) => {
-        socket.in(config.channel).emit("receive_scroll", config);
-    });
+    // socket.on("active_scroll", (config) => {
+    //     socket.in(config.channel).emit("receive_scroll", config);
+    // });
 
     // socket.on("active_wheel", (config) => {
     //     socket.in(config.channel).emit("receive_wheel", config);
@@ -446,6 +488,6 @@ io.sockets.on("connection", (socket) => {
     }
 });
 
-server.listen(port, '0.0.0.0', () => {
+server.listen(port, "0.0.0.0", () => {
     log.debug(`Server Listen... ${port}`);
 });

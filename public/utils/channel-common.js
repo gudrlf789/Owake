@@ -53,4 +53,3 @@ contentFunc();
 // fileDeliveryBtn.addEventListener("click", fileDelivery, false);
 // deviceSettingBtn.addEventListener("click", recodingDeviceCtrl, false);
 // fileHashBtn.addEventListener("click", fileHash, false);
-
