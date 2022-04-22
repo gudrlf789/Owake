@@ -23,6 +23,7 @@ import { options } from "../../rtcClient.js";
 export const momentShareFunc = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
+
     let InputURL;
     let convertURL;
     let receiveURL;
@@ -30,6 +31,8 @@ export const momentShareFunc = () => {
     let scroll = false;
     let mouse = false;
     let scrollY = 0;
+    let searchResult;
+    let inputURL;
 
     const momentShareBtn = document.querySelector("#momentShare");
     const momentShareIcon = document.querySelector(".fa-brain");
@@ -46,16 +49,11 @@ export const momentShareFunc = () => {
 
     const momentContainer = document.createElement("span");
 
-    const navContainer = document.createElement("section");
-    const momentTabArea = document.createElement("div");
-
-    navContainer.id = "navContainer";
-    momentTabArea.id = "momentTabArea";
-
     searchInput.placeholder = "Enter a URL";
     searchInput.style.textAlign = "center";
     // momentShare.id = "momentShare-iframe";
     // momentShare.name = "momentShare";
+
     momentShareArea.id = "momentShareArea";
     momentContainer.id = "momentContainer";
 
@@ -66,7 +64,7 @@ export const momentShareFunc = () => {
 
     searchInputBtnIcon.className = "fas fa-search";
 
-    navContainer.append(searchContainer, momentTabArea);
+    searchForm.append(searchInput);
     searchInputBtn.appendChild(searchInputBtnIcon);
     searchContainer.append(searchInput, searchInputBtn);
 
@@ -111,8 +109,8 @@ export const momentShareFunc = () => {
     }
 
     searchInputBtn.addEventListener("click", (e) => {
-        InputURL = searchInput.value;
-        if (InputURL.length === 0) {
+        inputURL = searchInput.value;
+        if (inputURL.length === 0) {
             alert("Please enter your address.");
         } else {
             // urlSearchAxios(InputURL);
@@ -126,9 +124,9 @@ export const momentShareFunc = () => {
     });
 
     searchInput.addEventListener("keypress", (e) => {
-        InputURL = searchInput.value;
+        inputURL = searchInput.value;
         if (e.key === "Enter") {
-            if (InputURL.length === 0) {
+            if (inputURL.length === 0) {
                 alert("Please enter your address.");
             } else {
                 // urlSearchAxios(InputURL);
@@ -141,7 +139,6 @@ export const momentShareFunc = () => {
             }
         }
     });
-
     function webShareLoad(url) {
         // Iframe 생성 후 URL 삽입
         webShareContainerLoad(url);
