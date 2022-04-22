@@ -64,7 +64,6 @@ export const momentShareFunc = () => {
 
     searchInputBtnIcon.className = "fas fa-search";
 
-    searchForm.append(searchInput);
     searchInputBtn.appendChild(searchInputBtnIcon);
     searchContainer.append(searchInput, searchInputBtn);
 
