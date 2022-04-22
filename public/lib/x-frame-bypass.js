@@ -22,9 +22,9 @@ export const xFrameByPass = () => {
                         `X-Frame-Bypass src ${url} does not start with http(s)://`
                     );
 
-                axios.post("/requestURL", null, {
-                    params: url,
-                });
+                // axios.post("/requestURL", null, {
+                //     params: url,
+                // });
                 console.log("X-Frame-Bypass loading:", url);
                 this.srcdoc = `<html>
     <head>

@@ -141,19 +141,17 @@ app.get("/newsfeed", (req, res, next) => {
  * 클라이언트 페이지 호출
  */
 
-app.post("/requestURL", async (req, res) => {
-    console.log(req);
-    console.log(req.body);
-    urlParams = req.query[0];
-    console.log("Response Site URL ", urlParams);
-});
+// app.post("/requestURL", async (req, res) => {
+//     urlParams = req.query[0];
+//     console.log("Response Site URL ", urlParams);
+// });
 
-app.get("/receiveURL", async (req, res) => {
-    return res.status(200).json({
-        success: true,
-        url: urlParams,
-    });
-});
+// app.get("/receiveURL", async (req, res) => {
+//     return res.status(200).json({
+//         success: true,
+//         url: urlParams,
+//     });
+// });
 
 /**
  * @anthor 전형동

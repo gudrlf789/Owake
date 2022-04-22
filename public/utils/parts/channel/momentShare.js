@@ -27,6 +27,9 @@ export const momentShareFunc = () => {
     let convertURL;
     let receiveURL;
     let momentShare;
+    let scroll = false;
+    let mouse = false;
+    let scrollY = 0;
 
     const momentShareBtn = document.querySelector("#momentShare");
     const momentShareIcon = document.querySelector(".fa-brain");
@@ -96,9 +99,9 @@ export const momentShareFunc = () => {
             "</iframe>";
         momentContainer.appendChild(iframeContainer);
 
+        // Iframe 내부 이벤트 로드
         momentShare = document.querySelector("#momentShare-iframe");
-        momentShare.addEventListener("load", mouseEventFunc, false);
-        momentShare.addEventListener("load", receiveMouseEventFunc, false);
+        momentShare.addEventListener("load", handlerMouseEventFunc, false);
     }
 
     function momentShareDisable() {
@@ -161,6 +164,89 @@ export const momentShareFunc = () => {
         momentShare.setAttribute("src", url);
     }
 
+    function handlerMouseEventFunc() {
+        momentShare.contentWindow.addEventListener(
+            "mousedown",
+            (e) => {
+                mouse = true;
+                console.log(e.target);
+                let tagName = e.target.nodeName;
+                let sendURL;
+                let mediaType =
+                    "IMG" ||
+                    "VIDEO" ||
+                    "AUDIO" ||
+                    "IFRAME" ||
+                    "OBJECT" ||
+                    "SOURCE" ||
+                    "EMBED";
+
+                if (tagName === mediaType) {
+                    sendURL = window.URL.createObjectURL(e.target.src);
+                } else {
+                    sendURL = e.target.href;
+                }
+                momentSocket.emit("active_mousedown", {
+                    peer: options.uid,
+                    channel: options.channel,
+                    link: sendURL,
+                });
+            },
+            false
+        );
+        momentShare.contentWindow.addEventListener(
+            "scroll",
+            (e) => {
+                scroll = true;
+                if (scroll) {
+                    momentSocket.emit("active_scroll", {
+                        peer: options.uid,
+                        channel: options.channel,
+                        scrollY: e.currentTarget.scrollY,
+                    });
+                }
+            },
+            false
+        );
+    }
+
+    // async function handlerSendMouseDown(e) {
+    //     console.log("handlerSendMouseDown ::::", e);
+    //     mouse = true;
+    //     let tagName = e.target.nodeName;
+    //     let sendURL;
+    //     let mediaType =
+    //         "IMG" ||
+    //         "VIDEO" ||
+    //         "AUDIO" ||
+    //         "IFRAME" ||
+    //         "OBJECT" ||
+    //         "SOURCE" ||
+    //         "EMBED";
+
+    //     if (tagName === mediaType) {
+    //         sendURL = window.URL.createObjectURL(e.target.src);
+    //     } else {
+    //         sendURL = e.target.href;
+    //     }
+    //     await momentSocket.emit("active_mousedown", {
+    //         peer: options.uid,
+    //         channel: options.channel,
+    //         link: sendURL,
+    //     });
+    // }
+
+    // async function handlerSendScroll(e) {
+    //     scroll = true;
+    //     if (scroll) {
+    //         await momentSocket.emit("active_scroll", {
+    //             peer: options.uid,
+    //             channel: options.channel,
+    //             scrollY: e.currentTarget.scrollY,
+    //         });
+    //     }
+    // }
+
     function createMomentTabFunc(url) {
         const momentTab = document.createElement("span");
 
@@ -207,88 +293,7 @@ export const momentShareFunc = () => {
         }
     });
 
-    // async function getURL() {
-    //     receiveURL = await axios.get("/receiveURL");
-    //     console.log("response::::::::::::", receiveURL.data.url);
-    //     return receiveURL.data.url;
-    // }
-
-    // let sendURL = getURL();
-    // console.log("::::::::sendURL:::::::::::", sendURL);
-
-    function mouseEventFunc() {
-        let scroll = false;
-        let mouse = false;
-        try {
-            momentShare = document.querySelector("#momentShare-iframe");
-            momentShare.contentWindow.addEventListener(
-                "mousedown",
-                async (e) => {
-                    mouse = true;
-                    let tagName = e.target.nodeName;
-                    let sendURL;
-                    let mediaType =
-                        "IMG" ||
-                        "VIDEO" ||
-                        "AUDIO" ||
-                        "IFRAME" ||
-                        "OBJECT" ||
-                        "SOURCE" ||
-                        "EMBED";
-
-                    if (tagName === mediaType) {
-                        sendURL = e.target.src;
-                    } else {
-                        sendURL = e.target.href;
-                    }
-                    momentSocket.emit("active_mousedown", {
-                        peer: options.uid,
-                        channel: options.channel,
-                        link: sendURL,
-                    });
-                }
-            );
-
-            momentShare.contentWindow.addEventListener(
-                "scroll",
-                async (e) => {
-                    scroll = true;
-                    if (scroll) {
-                        momentSocket.emit("active_scroll", {
-                            peer: options.uid,
-                            channel: options.channel,
-                            scrollY: e.currentTarget.scrollY,
-                        });
-                    }
-                },
-                false
-            );
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    function receiveMouseEventFunc() {
-        let scroll = false;
-        let scrollY = 0;
-        let scrollX = 0;
-        let rect = currentFrameAbsolutePosition();
-        // let rect = momentShare.getBoundingClientRect();
-
-        momentSocket.on("receive_mousedown", (mouseEvent) => {
-            console.log("receive mousedown :::: ", mouseEvent.link);
-            webShareContainerLoad(mouseEvent.link);
-        });
-
-        momentSocket.on("receive_scroll", (mouseEvent) => {
-            scroll = true;
-            scrollY = mouseEvent.scrollY + rect.y;
-
-            if (scroll) {
-                momentShare.contentWindow.scrollTo(0, scrollY);
-            }
-        });
-    }
+    // let rect = momentShare.getBoundingClientRect();
 
     // 스크롤 좌표값 구하는 함수
     function currentFrameAbsolutePosition() {
@@ -323,6 +328,23 @@ export const momentShareFunc = () => {
             { x: 0, y: 0 }
         );
     }
+
+    let rect = currentFrameAbsolutePosition();
+
+    // Receive Socket
+    momentSocket.on("receive_mousedown", (mouseEvent) => {
+        console.log("receive mousedown :::: ", mouseEvent.link);
+        webShareContainerLoad(mouseEvent.link);
+    });
+
+    momentSocket.on("receive_scroll", (mouseEvent) => {
+        scroll = true;
+        scrollY = mouseEvent.scrollY + rect.y;
+
+        if (scroll) {
+            momentShare.contentWindow.scrollTo(0, scrollY);
+        }
+    });
 
     momentSocket.on("input_address", (url) => {
         createMomentTabFunc(url);
