@@ -379,8 +379,8 @@ io.sockets.on("connection", (socket) => {
         socket.to(channelName).emit("input-content", data);
     });
 
-    socket.on("play-origin", (channelName, fileName) => {
-        socket.to(channelName).emit("play-remote", fileName);
+    socket.on("play-origin", (channelName, fileName, currentTime) => {
+        socket.to(channelName).emit("play-remote", fileName, currentTime);
     });
 
     socket.on("pause-origin", (channelName, fileName) => {
@@ -405,6 +405,10 @@ io.sockets.on("connection", (socket) => {
                 .emit("scroll-remote", originTop, originLeft, fileName);
         }
     );
+
+    socket.on("delete-origin-tag", (channelName, deleteTagName) => {
+        socket.to(channelName).emit("delete-remote-tag", deleteTagName);
+    });
 
     socket.on("leave-contents", (channelName) => {
         socket.leave(channelName);

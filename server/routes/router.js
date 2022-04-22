@@ -395,4 +395,27 @@ router.post("/contentsUpload", contentsUpload.single("content"), (req, res) => {
     });
 });
 
+router.post("/contentsDelete", async (req, res) => {
+    const bodyData = req.body;
+
+    if(fs.existsSync("./server/contents/" + bodyData.fileName)){
+        try {
+            fs.unlinkSync("./server/contents/" + bodyData.fileName);
+            return res.status(200).json({
+                success: true
+            });
+        }catch (err) {
+            return res.status(500).json({
+                success: fail,
+                deleteResult: err
+            });
+        }
+    }else{
+        return res.status(200).json({
+            success: fail,
+            deleteResult: "File to delete does not exist"
+        });
+    }
+});
+
 module.exports = router;

@@ -11,6 +11,7 @@ export const contentFunc = () => {
     const channelName = window.sessionStorage.getItem("channel");
     let originUser = userName;
     let choiceFile = "";
+    let deleteContentTab = [];
 
     const contentShareBtn = document.querySelector("#contentShare");
     const localVideoContainer = document.querySelector(
@@ -62,11 +63,14 @@ export const contentFunc = () => {
 
     function createContentTab(userName, fileType, fileName) {
         const html = `
-            <span class="middleContainerBtn" style="margin: 0.4rem; padding: 0.2rem; background: #182843; color: #fff; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">
+            <span class="middleContainerBtn" name="${userName}_${fileName}"
+            style="margin: 0.4rem; padding: 0.2rem; background: #182843; color: #fff; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">
                 <input type="hidden" value=${fileType}>
-                <input type="hidden" value="${fileName}">
                 <span style="background: #182843; color: white;">${userName}-${fileName}</span>
             </span>
+            <div class="closeContent" name="${userName}_${fileName}">
+                <i class="fas fa-times"></i>
+            </div>
         `;
 
         $("#contentTabArea").append(html);
@@ -109,24 +113,49 @@ export const contentFunc = () => {
 
     $(document).on("click", ".middleContainerBtn", (e) => {
         const fileType = e.currentTarget.children[0].value;
-        let fileName = e.currentTarget.children[1].value;
-        originUser = e.currentTarget.children[2].innerHTML.split("-")[0];
-        choiceFile = fileName = originUser + "_" + fileName;
+        originUser = e.currentTarget.getAttribute("name").split("_")[0];
+        choiceFile = e.currentTarget.getAttribute("name");
 
         if (imageType.test(fileType)) {
             contentShare.innerHTML = `
-                <div class="imageFile" style="overflow: auto; height:100%">
-                    <img src="${fileName}" style="width: 100%" />
+                <div class="imageFile" name="${choiceFile}" style="overflow: auto; height:100%">
+                    <img src="${choiceFile}" style="width: 100%" />
                 </div>
             `;
         }
         if (mediaType.test(fileType)) {
             contentShare.innerHTML = `
-                <video class="mediaFile" controls style="width: 100%; height: 100%">
-                    <source src="${fileName}">
+                <video class="mediaFile" name="${choiceFile}" controls style="width: 100%; height: 100%">
+                    <source src="${choiceFile}">
                 </video>
             `;
         }
+    });
+
+    $(document).on("click", ".closeContent", (e) => {
+        const deleteTagName = e.currentTarget.getAttribute("name");
+        deleteContentTab = document.getElementsByName(deleteTagName);
+        originUser = deleteTagName.split('_')[0];
+
+        if(userName === originUser){
+            const data = {
+                fileName: deleteTagName
+            };
+
+            axios.post("/channel/contentsDelete", data).then((res) => {
+                if(res.data.success && res.status === 200){
+                    contentSocket.emit("delete-origin-tag", channelName, deleteTagName);
+                    for(let i = 0 ; i < 3 ; i++){
+                        deleteContentTab[0].remove();
+                    }
+                }else {
+                    alert(res.data.deleteResult);
+                }
+            });
+        }else {
+            alert("You can delete only the files you post");
+        }
+        
     });
 
     /**
@@ -140,7 +169,8 @@ export const contentFunc = () => {
         "play",
         function (e) {
             if (originUser === userName) {
-                contentSocket.emit("play-origin", channelName, choiceFile);
+                const currentTime = document.getElementsByClassName("mediaFile")[0].currentTime;
+                contentSocket.emit("play-origin", channelName, choiceFile, currentTime);
             }
         },
         true
@@ -229,9 +259,10 @@ export const contentFunc = () => {
         createContentTab(data.userName, data.fileType, data.fileName);
     });
 
-    contentSocket.on("play-remote", (playingFile) => {
+    contentSocket.on("play-remote", (playingFile, currentTime) => {
         const mediaFile = document.getElementsByClassName("mediaFile");
         if (mediaFile.length !== 0 && choiceFile === playingFile) {
+            mediaFile[0].currentTime = currentTime;
             mediaFile[0].play();
         }
     });
@@ -262,6 +293,13 @@ export const contentFunc = () => {
         if (imageFile.length !== 0 && choiceFile === playingFile) {
             imageFile[0].scrollTop = originTop;
             imageFile[0].scrollLeft = originLeft;
+        }
+    });
+
+    contentSocket.on("delete-remote-tag", (deleteTagName) => {
+        deleteContentTab = document.getElementsByName(deleteTagName);
+        for(let i = 0 ; i < 3 ; i++){
+            deleteContentTab[0].remove();
         }
     });
 };
