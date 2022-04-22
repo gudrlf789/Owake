@@ -135,93 +135,6 @@ app.get("/newsfeed", (req, res, next) => {
 
 /**
  * @anthor 전형동
- * @date 2022.04.05
- * @version 1.1
- * @descrption
- * 모멘트 쉐어링 개발중
- * 클라이언트 페이지 호출
- */
-
-<<<<<<< HEAD
-// app.post("/requestURL", async (req, res) => {
-//     urlParams = req.query[0];
-//     console.log("Response Site URL ", urlParams);
-// });
-
-// app.get("/receiveURL", async (req, res) => {
-//     return res.status(200).json({
-//         success: true,
-//         url: urlParams,
-//     });
-// });
-=======
-// app.post("/urlSearch", async (req, res) => {
-//     // fs.writeFileSync("views/site.ejs", "", () =>
-//     //     console.log("Created site.ejs")
-//     // );
-//     // fs.createReadStream("views/site.ejs").pipe(res);
-
-//     urlParams = req.query[0];
-//     site.push(urlParams);
-//     siteSet = new Set(site);
-//     siteArr = Array.from(siteSet);
-
-//     console.log("Response Site URL ", siteArr);
-// });
-
-// app.get("/site", async (req, res) => {
-//     for (let i = 0; i < siteArr.length; i++) {
-//         if (urlParams === siteArr[i]) {
-//             fetchWebsite(urlParams);
-//         }
-//     }
-//     res.render("site");
-// });
-
-// app.get("/webShare", async (req, res) => {
-//     for (let i = 0; i < siteArr.length; i++) {
-//         if (urlParams === siteArr[i]) {
-//             res.render("webShare", {
-//                 url: urlParams,
-//                 channelName: channelName,
-//                 channelType: channelType,
-//             });
-//         }
-//     }
-// });
-
-/**
- * @anthor 전형동
- * @date 2022.04.05
- * @version 1.1
- * @descrption
- * 웹사이트 내용 긁어오는 소스
- * 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
- */
-
-// const fetchWebsite = (url) => {
-//     try {
-//         if (url.includes("undefined")) {
-//             // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
-//             return log.debug("The entered URL is invalid.");
-//         } else {
-//             execSync(
-//                 `wget -q -O - ${url} > views/site.ejs`,
-//                 (error, stdout, stderr) => {
-//                     if (error !== null) {
-//                         return false;
-//                     }
-//                 }
-//             );
-//         }
-//     } catch (error) {
-//         return log.debug("Moment Share -- URL Input Error ", error);
-//     }
-// };
->>>>>>> Owake
-
-/**
- * @anthor 전형동
  * @date 2022.02.21
  * @version 1.1
  * @descrption
@@ -291,21 +204,13 @@ io.sockets.on("connection", (socket) => {
 
     socket.on("submit_address", (config) => {
         // 이 코드 리펙토링 필수!  - 참조 : /urlSearch
-<<<<<<< HEAD
         peerWebURLArr.push(config.link);
-=======
-        peerWebURLArr.push(config.url);
->>>>>>> Owake
+
         let peerWebURLArrSet = new Set(peerWebURLArr);
         let resultURLArr = Array.from(peerWebURLArrSet);
 
         log.debug("connected peers grp by Peer Address ", peers, peerWebURLArr);
-
-<<<<<<< HEAD
         socket.in(config.channel).emit("input_address", config.link);
-=======
-        socket.in(config.channel).emit("input_address", config.url);
->>>>>>> Owake
     });
 
     socket.on("join-whiteboard", (channelName) => {
@@ -404,13 +309,10 @@ io.sockets.on("connection", (socket) => {
                 .emit("scroll-remote", originTop, originLeft, fileName);
         }
     );
-<<<<<<< HEAD
-=======
 
     socket.on("delete-origin-tag", (channelName, deleteTagName) => {
         socket.to(channelName).emit("delete-remote-tag", deleteTagName);
     });
->>>>>>> Owake
 
     socket.on("leave-contents", (channelName) => {
         socket.leave(channelName);
@@ -438,14 +340,11 @@ io.sockets.on("connection", (socket) => {
     //     socket.in(config.channel).emit("receive_mousedown", config);
     // });
 
-<<<<<<< HEAD
-=======
     // socket.on("active_touchend", (config) => {
     //     console.log(":::::::::Link ::::::::::::", config);
     //     socket.in(config.channel).emit("receive_touchend", config);
     // });
 
->>>>>>> Owake
     // socket.on("active_mouseout", (config) => {
     //     socket.in(config.channel).emit("receive_mouseout", config);
     // });
@@ -454,16 +353,13 @@ io.sockets.on("connection", (socket) => {
     //     socket.in(config.channel).emit("receive_mousemove", config);
     // });
 
-<<<<<<< HEAD
     socket.on("active_scroll", (config) => {
         console.log(config);
         socket.in(config.channel).emit("receive_scroll", config);
     });
-=======
     // socket.on("active_scroll", (config) => {
     //     socket.in(config.channel).emit("receive_scroll", config);
     // });
->>>>>>> Owake
 
     // socket.on("active_wheel", (config) => {
     //     socket.in(config.channel).emit("receive_wheel", config);
