@@ -47,6 +47,12 @@ export const momentShareFunc = () => {
     const searchInputBtn = document.createElement("div");
     const searchInputBtnIcon = document.createElement("i");
 
+    const navContainer = document.createElement("section");
+    const momentTabArea = document.createElement("div");
+
+    navContainer.id = "navContainer";
+    momentTabArea.id = "momentTabArea";
+
     const momentContainer = document.createElement("span");
 
     searchInput.placeholder = "Enter a URL";
@@ -64,6 +70,7 @@ export const momentShareFunc = () => {
 
     searchInputBtnIcon.className = "fas fa-search";
 
+    navContainer.append(searchContainer, momentTabArea);
     searchInputBtn.appendChild(searchInputBtnIcon);
     searchContainer.append(searchInput, searchInputBtn);
 
@@ -113,7 +120,7 @@ export const momentShareFunc = () => {
             alert("Please enter your address.");
         } else {
             // urlSearchAxios(InputURL);
-            convertURL = `https://${InputURL.replace(
+            convertURL = `https://${inputURL.replace(
                 /^(https?:\/\/)?(www\.)?/,
                 ""
             )}`;
@@ -129,7 +136,7 @@ export const momentShareFunc = () => {
                 alert("Please enter your address.");
             } else {
                 // urlSearchAxios(InputURL);
-                convertURL = `https://${InputURL.replace(
+                convertURL = `https://${inputURL.replace(
                     /^(https?:\/\/)?(www\.)?/,
                     ""
                 )}`;
