@@ -241,7 +241,7 @@ async function fileInputControlChangeEventHandler(e) {
             pdf: 4,
         };
 
-        let reader = new FileReaderSync();
+        let reader = new FileReader();
 
         reader.onload = (e) => {
             let content = e.target.result;
@@ -654,5 +654,3 @@ function uuidv4() {
         ).toString(16)
     );
 }
-
-
