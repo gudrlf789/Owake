@@ -19,9 +19,6 @@ import { SwiperFunc } from "./parts/channel/swiper.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 
-// XFrameByPass
-import { xFrameByPass } from "../lib/x-frame-bypass.js";
-
 mobileDisplayCtr();
 f12defense();
 fileDelivery();
@@ -42,8 +39,6 @@ muteUtilsFunc();
 SwiperFunc();
 fileHash();
 contentFunc();
-
-xFrameByPass();
 
 // const momentShareBtn = document.querySelector("#momentShare");
 // const fileShareBtn = document.querySelector("#fileShareBtn");

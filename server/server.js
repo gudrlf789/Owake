@@ -15,7 +15,6 @@ let peers = {}; // collect peers info grp by channels
 let channel;
 let peerId;
 let peerName;
-let urlParams;
 
 let peerWebURLArr = [];
 
@@ -327,39 +326,20 @@ io.sockets.on("connection", (socket) => {
      * @returns pageX, pageY, clientX, clientY, offsetX, offsetY, screenX, screenY
      */
 
-    // socket.on("active_mouseover", (config) => {
-    //     socket.in(config.channel).emit("receive_mouseover", config);
-    // });
+    socket.on("active_mousedown", (config) => {
+        console.log(":::::::::Link ::::::::::::", config);
+        socket.in(config.channel).emit("receive_mousedown", config);
+    });
 
-    // socket.on("active_mouseup", (config) => {
-    //     socket.in(config.channel).emit("receive_mouseup", config);
-    // });
-
-    // socket.on("active_mousedown", (config) => {
-    //     console.log(":::::::::Link ::::::::::::", config);
-    //     socket.in(config.channel).emit("receive_mousedown", config);
-    // });
-
-    // socket.on("active_touchend", (config) => {
-    //     console.log(":::::::::Link ::::::::::::", config);
-    //     socket.in(config.channel).emit("receive_touchend", config);
-    // });
-
-    // socket.on("active_mouseout", (config) => {
-    //     socket.in(config.channel).emit("receive_mouseout", config);
-    // });
-
-    // socket.on("active_mousemove", (config) => {
-    //     socket.in(config.channel).emit("receive_mousemove", config);
-    // });
+    socket.on("active_touchend", (config) => {
+        console.log(":::::::::Link ::::::::::::", config);
+        socket.in(config.channel).emit("receive_touchend", config);
+    });
 
     socket.on("active_scroll", (config) => {
         console.log(config);
         socket.in(config.channel).emit("receive_scroll", config);
     });
-    // socket.on("active_scroll", (config) => {
-    //     socket.in(config.channel).emit("receive_scroll", config);
-    // });
 
     // socket.on("active_wheel", (config) => {
     //     socket.in(config.channel).emit("receive_wheel", config);
