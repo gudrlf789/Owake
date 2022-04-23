@@ -49,7 +49,7 @@ const fileShareSocket = socketInitFunc();
 let bufferSize = 64 * 1024;
 let fileShareBtnActive = false;
 let fileListBtnActive = false;
-let channel = options.channel;
+let channel = sessionStorage.getItem("channel");
 let spanEl;
 let uid;
 let fileData;
@@ -121,7 +121,7 @@ fileEmpty.style.setProperty("width", "100px");
 fileListActivator.textContent = "File Tab";
 fileEmpty.textContent = "Empty";
 
-async function fileShareActivate() {
+function fileShareActivate() {
     if (fileShareBtn) {
         fileShareBtn.addEventListener("click", (e) => {
             fileShareBtnActive = !fileShareBtnActive;
@@ -134,7 +134,7 @@ async function fileShareActivate() {
     }
 }
 
-async function fileShareActionEnable(e) {
+function fileShareActionEnable(e) {
     bodyEl.append(thumbnailBodyEl);
 
     navEl.append(
@@ -162,17 +162,17 @@ async function fileShareActionEnable(e) {
     });
 }
 
-async function fileShareActionDisable(e) {
+function fileShareActionDisable(e) {
     localContainer.removeChild(el);
     fileShareBtn.style.color = "#fff";
     fileShareSocket.emit("leave-fileShare", channel);
 }
 
-async function fileReadAction() {
+function fileReadAction() {
     fileInputEl.addEventListener("change", fileInputControlChangeEventHandler);
 }
 
-async function fileInputControlChangeEventHandler(e) {
+function fileInputControlChangeEventHandler(e) {
     let fileInputControl = e.target;
     let files = fileInputControl.files;
     let start = 0;
@@ -338,9 +338,10 @@ async function fileInputControlChangeEventHandler(e) {
         };
 
         // 개발중
-
         for (let data = 0; data < file.size; data += bufferSize) {
             blob = file.slice(start, start + data);
+            console.log("::::::::::::Blob Data :::::::::::::", blob);
+            fileShareSocket.emit("file-blob", { channel: channel, blob: blob });
         }
 
         if (textTypeCheck) {
@@ -349,18 +350,12 @@ async function fileInputControlChangeEventHandler(e) {
             reader.readAsArrayBuffer(blob);
         }
 
-        // if (textTypeCheck) {
-        //     reader.readAsText(file);
-        // } else {
-        //     reader.readAsArrayBuffer(file);
-        // }
-
         readFileProgress(reader);
     }
 }
 
 // File Progress
-async function readFileProgress(reader) {
+function readFileProgress(reader) {
     reader.onprogress = (e) => {
         let num = 0;
         if (e.loaded && e.total) {
@@ -372,12 +367,13 @@ async function readFileProgress(reader) {
     };
 }
 
-async function shareFile(metadata) {
+function shareFile(metadata) {
     fileShareSocket.emit("file-meta", metadata);
 }
 
-async function shareReceiveFile() {
+function shareReceiveFile() {
     fileShareSocket.on("fs-meta", (data) => {
+        console.log(JSON.stringify(data));
         if (data.buffer) {
             receiveDataElement(data.element, data.buffer, data.uid, data.peer);
         } else if (data.content) {
@@ -395,7 +391,7 @@ async function shareReceiveFile() {
  * 데이터 전송받아 Element에 담아 호출하는 함수
  */
 
-async function receiveDataElement(element, content, uid, peer) {
+function receiveDataElement(element, content, uid, peer) {
     let blobData = new Blob([content]);
     let url = window.URL.createObjectURL(blobData);
 
@@ -440,7 +436,7 @@ async function receiveDataElement(element, content, uid, peer) {
  * @description
  * FileTab Click Event
  */
-async function selectFileAction(uid) {
+function selectFileAction(uid) {
     let receiverState = false;
 
     const thumbnail = document.querySelector(".thumbnail");
@@ -474,7 +470,7 @@ async function selectFileAction(uid) {
         });
     }
 }
-fileShareSocket.on("file-send", async (state, uid, peer, receiver) => {
+fileShareSocket.on("file-send", (state, uid, peer, receiver) => {
     let stateActivate = false;
     // 클릭한 유저와 컨텐츠 주인이 같지 않을 때만 State가 보인다.
     console.log(peer, receiver);
@@ -492,7 +488,7 @@ fileShareSocket.on("file-send", async (state, uid, peer, receiver) => {
     }
 });
 
-async function fileTabStateFunc(fileTab, state, peer) {
+function fileTabStateFunc(fileTab, state, peer) {
     fileTab.addEventListener("click", (e) => {
         state = !state;
         const fileStateWindow = document.createElement("div");
@@ -511,16 +507,16 @@ async function fileTabStateFunc(fileTab, state, peer) {
     });
 }
 
-async function fileTabStateEnable(body, state) {
+function fileTabStateEnable(body, state) {
     body.append(state);
 }
 
-async function fileTabStateDisable() {
+function fileTabStateDisable() {
     const fileStateWindow = document.querySelector("#fileStateWindow");
     fileStateWindow.remove();
 }
 
-async function handlerFileRemove() {
+function handlerFileRemove() {
     fileEmpty.addEventListener("click", () => {
         if (swiperWrapper.childNodes.length > 0) {
             for (let i = 0; i < swiperWrapper.children.length; i++) {
@@ -532,7 +528,7 @@ async function handlerFileRemove() {
     });
 }
 
-async function handlerFileTabRemove() {
+function handlerFileTabRemove() {
     const fileTab = document.querySelector(".fileTab");
     const fileList = document.querySelector("#fileList");
 
@@ -569,7 +565,7 @@ async function handlerFileTabRemove() {
  * @description
  * FileTab Click Event가 실행되면 화면에 클릭된 콘텐츠를 뿌려줌.
  */
-async function thumbnailBodyContainer(element, content) {
+function thumbnailBodyContainer(element, content) {
     element.src = content;
     element.autoplay = true;
     element.controls = true;
@@ -603,7 +599,7 @@ async function thumbnailBodyContainer(element, content) {
  * FileList Ctrl 함수
  */
 
-async function handlerFileListCtrl() {
+function handlerFileListCtrl() {
     fileListActivator.addEventListener("click", (e) => {
         fileListBtnActive = !fileListBtnActive;
         fileListBtnActive
@@ -612,11 +608,11 @@ async function handlerFileListCtrl() {
     });
 }
 
-async function handlerFileListCtrlEnable() {
+function handlerFileListCtrlEnable() {
     fileTabList.hidden = true;
 }
 
-async function handlerFileListCtrlDisable() {
+function handlerFileListCtrlDisable() {
     fileTabList.hidden = false;
 }
 

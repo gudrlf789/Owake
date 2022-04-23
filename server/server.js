@@ -232,16 +232,27 @@ io.sockets.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("file-meta", (data) => {
+    socket.on("file-meta", (metadata) => {
         // console.log(data);
+        log.debug(metadata);
         //broadcast 동일하게 가능 자신 제외 룸안의 유저
-        socket.in(data.channel).emit("fs-meta", data);
+        socket.in(metadata.channel).emit("fs-meta", metadata);
     });
+
+    socket.on("file-blob", (data) => {
+        // console.log(data);
+        log.debug(JSON.stringify(data));
+        //broadcast 동일하게 가능 자신 제외 룸안의 유저
+        socket.in(data.channel).emit("fs-meta", data.blob);
+    });
+
     socket.on("file-progress", (progress, channel) => {
+        log.debug(progress);
         socket.in(channel).emit("fs-progress", progress);
     });
 
     socket.on("file-receiver", (data) => {
+        log.debug(data);
         socket
             .in(data.channel)
             .emit(
