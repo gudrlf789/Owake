@@ -90,12 +90,10 @@ export const momentShareFunc = () => {
         momentShareBtn.style.color = "rgb(165, 199, 236)";
         momentSocket.emit("join-web", options.channel);
 
-        // Iframe Init
-        iFrameInit(iframeInit);
-
-        // Iframe 내부 이벤트 로드
-        momentShare = document.querySelector("#momentShare-iframe");
-        momentShare.addEventListener("load", handlerMouseEventFunc, false);
+        iframeContainer.innerHTML = `<iframe id='momentShare-iframe'
+            name='momentShare' is='${bypass}' frameborder='0'
+            </iframe>`;
+        momentContainer.appendChild(iframeContainer);
     }
 
     function momentShareDisable() {
@@ -433,7 +431,7 @@ export const momentShareFunc = () => {
     // Receive Socket
     momentSocket.on("receive_mousedown", (mouseEvent) => {
         console.log("receive mousedown :::: ", mouseEvent.link);
-        webShareContainerLoad(mouseEvent.link);
+        webShareContainerLoad(mouseEvent.link, iframeInit);
     });
 
     let rect = currentFrameAbsolutePosition();
@@ -443,13 +441,13 @@ export const momentShareFunc = () => {
         let scrollY = 0;
         scrollY = mouseEvent.scrollY + rect.y;
         if (scroll) {
-            momentShare.contentWindow.scrollTop = scrollY;
+            momentShare.contentWindow.scrollTo(0, scrollY);
         }
     });
 
     momentSocket.on("input_address", (url) => {
         createMomentTabFunc(url);
-        webShareContainerLoad(url);
+        webShareContainerLoad(url, iframeInit);
     });
 
     /**
@@ -535,5 +533,9 @@ export const momentShareFunc = () => {
             </iframe>`;
             momentContainer.appendChild(iframeContainer);
         }
+
+        // Iframe 내부 이벤트 로드
+        momentShare = document.querySelector("#momentShare-iframe");
+        momentShare.addEventListener("load", handlerMouseEventFunc, false);
     }
 };
