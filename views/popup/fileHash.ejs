@@ -26,7 +26,11 @@
 
                         <span>Step 2. <p>Please check the indentity code of an original file</p></span>
 
-                        <input type="file" class="form-control" id="selectFile_1">
+                        <div style="display: flex;">
+                            <input type="file" class="form-control" id="selectFile_1" style="width: 70%;">
+                            <button id="originHash" class="btn btn-primary" style="width: 30%; height: 50%;">indentify</button>
+                        </div>
+
                         <div style="display: flex;">
                             <input class="input-group input-group-sm mb-3" id="selectOriginalInput" type=" text"
                                 placeholder="Hash Code" readonly="readonly" style="width: 70%;">
@@ -35,7 +39,11 @@
                         
                         <span>Step 3. <p>Please check the indentity code of a comparison file</p></span>
 
-                        <input type="file" class="form-control" id="selectFile_2">
+                        <div style="display: flex;">
+                            <input type="file" class="form-control" id="selectFile_2" style="width: 70%;">
+                            <button id="remoteHash" class="btn btn-primary" style="width: 30%; height: 50%;">indentify</button>
+                        </div>
+                        
                         <div style="display: flex;">
                             <input class="input-group input-group-sm mb-3" id="selectComparisonInput" type=" text"
                                 placeholder="Hash Code" readonly="readonly" style="width: 70%;">
