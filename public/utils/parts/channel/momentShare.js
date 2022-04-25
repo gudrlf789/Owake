@@ -293,10 +293,19 @@ export const momentShareFunc = () => {
                     "SOURCE" ||
                     "EMBED";
 
-                if (tagName === mediaType) {
-                    sendURL = window.URL.createObjectURL(e.target.src);
-                } else {
-                    sendURL = e.target.href;
+                let last_char = e.target.href.substr(
+                    e.target.href.length - 1,
+                    1
+                );
+                console.log(last_char);
+
+                // URL의 마지막 문자열이 #이 아닐 경우에만 URL을 전달
+                if (last_char !== "#") {
+                    if (tagName === mediaType) {
+                        sendURL = window.URL.createObjectURL(e.target.src);
+                    } else {
+                        sendURL = e.target.href;
+                    }
                 }
 
                 // 주소값이 있거나, undefined가 아닐 경우 서버로 넘김

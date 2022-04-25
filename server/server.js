@@ -233,17 +233,9 @@ io.sockets.on("connection", (socket) => {
     });
 
     socket.on("file-meta", (metadata) => {
-        // console.log(data);
-        log.debug(metadata);
+        let file = metadata;
         //broadcast 동일하게 가능 자신 제외 룸안의 유저
-        socket.in(metadata.channel).emit("fs-meta", metadata);
-    });
-
-    socket.on("file-blob", (data) => {
-        // console.log(data);
-        log.debug(JSON.stringify(data));
-        //broadcast 동일하게 가능 자신 제외 룸안의 유저
-        socket.in(data.channel).emit("fs-meta", data.blob);
+        socket.in(file.channel).emit("fs-meta", file);
     });
 
     socket.on("file-progress", (progress, channel) => {
@@ -252,7 +244,6 @@ io.sockets.on("connection", (socket) => {
     });
 
     socket.on("file-receiver", (data) => {
-        log.debug(data);
         socket
             .in(data.channel)
             .emit(
