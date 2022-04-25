@@ -9,10 +9,11 @@ import { socketInitFunc } from "./socket.js";
 export const fileHash = () => {
     let hashSocket = socketInitFunc();
     let formData = new FormData();
-    let jwt;
 
     const selectFile1 = document.getElementById("selectFile_1");
     const selectFile2 = document.getElementById("selectFile_2");
+    const originHash = document.getElementById("originHash");
+    const remoteHash = document.getElementById("remoteHash");
     const selectOriginalInput = document.getElementById("selectOriginalInput");
     const selectComparisonInput = document.getElementById("selectComparisonInput");
     const compareResult = document.getElementById("compareResult");
@@ -28,6 +29,8 @@ export const fileHash = () => {
     $(() => {
         $("#selectFile_1").attr("disabled", true);
         $("#selectFile_2").attr("disabled", true);
+        $("#originHash").attr("disabled", true);
+        $("#remoteHash").attr("disabled", true);
         compareResult.value = "";
     });
 
@@ -37,36 +40,28 @@ export const fileHash = () => {
         }
         formData.append("fileInput", data);
 
-        axios
-            .post(
-                "https://pro.virtualtrust.io/cert/certificate/file/hash",
-                formData,
-                {
-                    headers: {
-                        Authorization: "Bearer " + jwt,
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            )
-            .then((res) => {
-                hashSocket.emit(
-                    "submit_hash",
-                    res.data.output.file_hash,
-                    textHtml.id,
-                    channelName
-                );
-                textHtml.value = res.data.output.file_hash;
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        axios.post("/channel/hashFile", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        }).then((res) => {
+            hashSocket.emit(
+                "submit_hash",
+                res.data.hashCode,
+                textHtml.id,
+                channelName
+            );
+            textHtml.value = res.data.hashCode;
+        }).catch((err) => {
+
+        });
     };
 
-    selectFile1.addEventListener("change", (e) => {
+    originHash.addEventListener("click", (e) => {
         makeFileToHash(selectFile1.files[0], selectOriginalInput);
     });
 
-    selectFile2.addEventListener("change", (e) => {
+    remoteHash.addEventListener("click", (e) => {
         makeFileToHash(selectFile2.files[0], selectComparisonInput);
     });
 
@@ -97,12 +92,13 @@ export const fileHash = () => {
         axios
             .post("/channel/jwt", loginData)
             .then((res) => {
-                if(res.data.jwt !== undefined){
+                if(res.data.success){
                     alert("Sync is completed");
-                    jwt = res.data.jwt;
                     $("#syncBtn").attr("disabled", true);
                     $("#selectFile_1").attr("disabled", false);
                     $("#selectFile_2").attr("disabled", false);
+                    $("#originHash").attr("disabled", false);
+                    $("#remoteHash").attr("disabled", false);
                 }else{
                     alert("Fail to connect with other users");
                 }
@@ -122,6 +118,8 @@ export const fileHash = () => {
         $("#syncBtn").attr("disabled", false);
         $("#selectFile_1").attr("disabled", true);
         $("#selectFile_2").attr("disabled", true);
+        $("#originHash").attr("disabled", true);
+        $("#remoteHash").attr("disabled", true);
     });
 
     hashSocket.on("input_hash", (data) => {
