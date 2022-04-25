@@ -103,6 +103,7 @@ customElements.define(
 );
 
 function requestURL(url) {
+    console.log("x-frame-bypass : RequestURL ", url);
     axios
         .get("/requestURL", { params: url })
         .then((res) => {

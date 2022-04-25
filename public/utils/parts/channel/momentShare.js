@@ -321,6 +321,7 @@ export const momentShareFunc = () => {
         momentShare.contentWindow.addEventListener(
             "click",
             (e) => {
+                e.preventDefault();
                 mouse = true;
                 momentSocket.emit("active_click", {
                     peer: options.uid,
