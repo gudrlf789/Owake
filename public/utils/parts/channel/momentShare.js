@@ -278,47 +278,14 @@ export const momentShareFunc = () => {
 
     function handlerMouseEventFunc() {
         momentShare.contentWindow.addEventListener(
-            "mousedown",
+            "click",
             (e) => {
                 mouse = true;
-                console.log(e.target);
-                let tagName = e.target.nodeName;
-                let sendURL;
-                let mediaType =
-                    "IMG" ||
-                    "VIDEO" ||
-                    "AUDIO" ||
-                    "IFRAME" ||
-                    "OBJECT" ||
-                    "SOURCE" ||
-                    "EMBED";
-
-                let last_char = e.target.href.substr(
-                    e.target.href.length - 1,
-                    1
-                );
-                console.log(last_char);
-
-                // URL의 마지막 문자열이 #이 아닐 경우에만 URL을 전달
-                if (last_char !== "#") {
-                    if (tagName === mediaType) {
-                        sendURL = window.URL.createObjectURL(e.target.src);
-                    } else {
-                        sendURL = e.target.href;
-                    }
-                }
-
-                // 주소값이 있거나, undefined가 아닐 경우 서버로 넘김
-                if (
-                    sendURL.includes("https") &&
-                    !sendURL.includes("undefined")
-                ) {
-                    momentSocket.emit("active_mousedown", {
-                        peer: options.uid,
-                        channel: options.channel,
-                        link: sendURL,
-                    });
-                }
+                momentSocket.emit("active_click", {
+                    peer: options.uid,
+                    channel: options.channel,
+                    link: null,
+                });
             },
             false
         );
@@ -438,8 +405,8 @@ export const momentShareFunc = () => {
      * Socket 전달 받는 함수
      */
     // Receive Socket
-    momentSocket.on("receive_mousedown", (mouseEvent) => {
-        console.log("receive mousedown :::: ", mouseEvent.link);
+    momentSocket.on("receive_click", (mouseEvent) => {
+        console.log("receive click :::: ", mouseEvent.link);
         webShareContainerLoad(mouseEvent.link, iframeInit);
     });
 
@@ -448,7 +415,7 @@ export const momentShareFunc = () => {
         momentShare = document.querySelector("#momentShare-iframe");
         scroll = true;
         let scrollY = 0;
-        scrollY = mouseEvent.scrollY + rect.y;
+        scrollY = mouseEvent.scrollY;
         if (scroll) {
             momentShare.contentWindow.scrollTo(0, scrollY);
         }

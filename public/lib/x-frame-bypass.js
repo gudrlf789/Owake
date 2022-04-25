@@ -21,9 +21,7 @@ customElements.define(
                     `X-Frame-Bypass src ${url} does not start with http(s)://`
                 );
 
-            // axios.post("/requestURL", null, {
-            //     params: url,
-            // });
+            requestURL(url);
             console.log("X-Frame-Bypass loading:", url);
             this.srcdoc = `<html>
 <head>
@@ -103,3 +101,14 @@ customElements.define(
     },
     { extends: "iframe" }
 );
+
+function requestURL(url) {
+    axios
+        .get("/requestURL", { params: url })
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}

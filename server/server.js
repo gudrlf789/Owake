@@ -15,8 +15,9 @@ let peers = {}; // collect peers info grp by channels
 let channel;
 let peerId;
 let peerName;
-
 let peerWebURLArr = [];
+
+let urlObj = {};
 
 let io, server;
 
@@ -130,6 +131,11 @@ app.get("/channelList", (req, res, next) => {
 
 app.get("/newsfeed", (req, res, next) => {
     res.render("newsfeed");
+});
+
+app.get("/requestURL", (req, res, next) => {
+    console.log({ url: req.query[0] });
+    urlObj.link = req.query[0];
 });
 
 /**
@@ -328,9 +334,19 @@ io.sockets.on("connection", (socket) => {
      * @returns pageX, pageY, clientX, clientY, offsetX, offsetY, screenX, screenY
      */
 
-    socket.on("active_mousedown", (config) => {
+    // socket.on("active_mousedown", (config) => {
+    //     console.log(":::::::::Link ::::::::::::", config);
+    //         socket.in(config.channel).emit("receive_mousedown", config);
+    // });
+
+    socket.on("active_click", (config) => {
         console.log(":::::::::Link ::::::::::::", config);
-        socket.in(config.channel).emit("receive_mousedown", config);
+        setTimeout(() => {
+            log.debug("Socket 전달할 Link ::", urlObj.link);
+            config.link = urlObj.link;
+            socket.in(config.channel).emit("receive_click", config);
+        }, 100);
+        config.link = "";
     });
 
     socket.on("active_touchend", (config) => {
