@@ -5,6 +5,10 @@ const fs = require("fs");
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+
+const memoryStorage = multer.memoryStorage();
+const memoryUpload = multer({ storage: memoryStorage });
+
 const storage = multer.diskStorage({
     destination: function (req, res, cb) {
         cb(null, `./server/uploads`);
@@ -18,7 +22,12 @@ const contentsStorage = multer.diskStorage({
         cb(null, `./server/contents`);
     },
     filename: function (req, file, cb) {
-        cb(null, req.body.userName + "_"  + file.originalname);
+        console.log("확인1: " + util.inspect(file, {showHidden: false, depth: null}))
+        if(req.body.userName){
+            cb(null, req.body.userName + "_"  + file.originalname);
+        }else{
+            cb(null, file.originalname);
+        }
     },
 });
 
@@ -39,6 +48,7 @@ require("firebase/firestore");
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const firebaseCollection = db.collection("ChannelList");
+const FormData = require("form-data");
 
 // 파일 사이즈 오류 핸들러
 // const fileSizeLimitErrorHandler = (err, req, res, next) => {
@@ -73,6 +83,7 @@ fs.readdir("./server/contents", (err) => {
 });*/
 
 let fileName;
+let jwt;
 
 router.get("/list", (req, res, next) => {
     const roomArray = [];
@@ -370,6 +381,7 @@ router.post("/removeUserNameOnChannel", async (req, res) => {
  * @version 1.0
  * @descrption
  * trustOS api 사용하여 파일 해쉬화
+ * 
  */
 router.post("/jwt", async (req, res) => {
     const bodyData = req.body;
@@ -378,18 +390,46 @@ router.post("/jwt", async (req, res) => {
 
     axios.post('https://pro.virtualtrust.io/cert/login', bodyData)
       .then(result => {
-        res.json({
-            jwt: result.data.message
+        jwt = result.data.message;
+        return res.json({
+            success: true,
         });
       })
       .catch(err => {
-        res.json({
+        return res.json({
+            success: false,
             error: err
         });
       });
 });
 
-router.post("/contentsUpload", contentsUpload.single("content"), (req, res) => {
+router.post("/hashFile", memoryUpload.single("fileInput"), async (req, res) => {
+    const formData = new FormData();
+    formData.append("fileInput", req.file.buffer, {
+        filename: req.file.originalname,
+    });
+
+    axios.post("https://pro.virtualtrust.io/cert/certificate/file/hash", formData,
+        {
+            headers: {
+                ...formData.getHeaders(),
+                Authorization: "Bearer " + jwt,
+            },
+        }
+    )
+    .then((result) => {
+        return res.json({
+            hashCode: result.data.output.file_hash
+        });
+    })
+    .catch((err) => {
+        return res.json({
+            error: err
+        });
+    });
+});
+
+router.post("/contentsUpload", contentsUpload.single("content"), async (req, res) => {
     return res.status(200).json({
         success: true
     });
@@ -406,14 +446,14 @@ router.post("/contentsDelete", async (req, res) => {
             });
         }catch (err) {
             return res.status(500).json({
-                success: fail,
-                deleteResult: err
+                success: false,
+                result: err
             });
         }
-    }else{
+    }else {
         return res.status(200).json({
-            success: fail,
-            deleteResult: "File to delete does not exist"
+            success: false,
+            result: "No files exist"
         });
     }
 });
