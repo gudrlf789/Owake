@@ -43,7 +43,13 @@ function browserClose() {
         deleteAllCookies();
     });
 
-    // Browser를 나가면 현 도메인의 모든 쿠키를 삭제함.
+    /**
+     * @author 전형동
+     * @version 1.1
+     * @data 2022.04.25
+     * @description
+     * Browser를 나가면 현 도메인의 모든 쿠키를 삭제함.
+     */
     function deleteAllCookies() {
         let c = document.cookie.split("; ");
         for (i in c)
