@@ -341,12 +341,15 @@ io.sockets.on("connection", (socket) => {
 
     socket.on("active_click", (config) => {
         console.log(":::::::::Link ::::::::::::", config);
-        setTimeout(() => {
-            log.debug("Socket 전달할 Link ::", urlObj.link);
-            config.link = urlObj.link;
-            socket.in(config.channel).emit("receive_click", config);
-        }, 100);
-        config.link = "";
+        if (config.link === null) {
+            setTimeout(() => {
+                log.debug("Socket 전달할 Link ::", urlObj.link);
+                config.link = urlObj.link;
+                socket.in(config.channel).emit("receive_click", config);
+            }, 100);
+        }
+
+        config.link = null;
     });
 
     // socket.on("active_touchend", (config) => {
@@ -354,10 +357,10 @@ io.sockets.on("connection", (socket) => {
     //     socket.in(config.channel).emit("receive_touchend", config);
     // });
 
-    // socket.on("active_scroll", (config) => {
-    //     console.log(config);
-    //     socket.in(config.channel).emit("receive_scroll", config);
-    // });
+    socket.on("active_scroll", (config) => {
+        console.log(config);
+        socket.in(config.channel).emit("receive_scroll", config);
+    });
 
     // socket.on("active_wheel", (config) => {
     //     socket.in(config.channel).emit("receive_wheel", config);

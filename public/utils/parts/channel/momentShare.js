@@ -26,6 +26,8 @@ export const momentShareFunc = () => {
     let searchResult;
     let inputURL;
     let bypass = "x-frame-bypass";
+    let scrollY = 0;
+    let rect;
 
     const momentShareBtn = document.querySelector("#momentShare");
     const momentShareIcon = document.querySelector(".fa-brain");
@@ -50,8 +52,6 @@ export const momentShareFunc = () => {
 
     searchInput.placeholder = "Enter a URL";
     searchInput.style.textAlign = "center";
-    // momentShare.id = "momentShare-iframe";
-    // momentShare.name = "momentShare";
 
     momentShareArea.id = "momentShareArea";
     momentContainer.id = "momentContainer";
@@ -276,6 +276,47 @@ export const momentShareFunc = () => {
         }
     };
 
+    /**
+     * @author 전형동
+     * @version 1.0
+     * @data 2022.04.23
+     * @description
+     * 스크롤 좌표값 구하는 함수
+     */
+
+    function currentFrameAbsolutePosition() {
+        let currentWindow = window;
+        let currentParentWindow;
+        let positions = [];
+        let rect;
+
+        while (currentWindow !== window.top) {
+            currentParentWindow = currentWindow.parent;
+            for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
+                if (currentParentWindow.frames[idx] === currentWindow) {
+                    for (let frameElement of currentParentWindow.document.getElementsByTagName(
+                        "iframe"
+                    )) {
+                        if (frameElement.contentWindow === currentWindow) {
+                            rect = frameElement.getBoundingClientRect();
+                            positions.push({ x: rect.x, y: rect.y });
+                        }
+                    }
+                    currentWindow = currentParentWindow;
+                    break;
+                }
+        }
+        return positions.reduce(
+            (accumulator, currentValue) => {
+                return {
+                    x: accumulator.x + currentValue.x,
+                    y: accumulator.y + currentValue.y,
+                };
+            },
+            { x: 0, y: 0 }
+        );
+    }
+
     function handlerMouseEventFunc() {
         momentShare.contentWindow.addEventListener(
             "click",
@@ -294,21 +335,23 @@ export const momentShareFunc = () => {
          * Scroll 시에 심하게 흔들려서 일단 주석처리
          */
 
-        // momentShare.contentWindow.addEventListener(
-        //     "scroll",
-        //     (e) => {
-        //         e.preventDefault();
-        //         scroll = true;
-        //         if (scroll) {
-        //             momentSocket.emit("active_scroll", {
-        //                 peer: options.uid,
-        //                 channel: options.channel,
-        //                 scrollY: e.currentTarget.scrollY,
-        //             });
-        //         }
-        //     },
-        //     false
-        // );
+        momentShare.contentWindow.addEventListener(
+            "scroll",
+            (e) => {
+                e.preventDefault();
+                scroll = true;
+                if (scroll) {
+                    rect = currentFrameAbsolutePosition();
+                    scrollY = e.currentTarget.scrollY + rect.y;
+                    momentSocket.emit("active_scroll", {
+                        peer: options.uid,
+                        channel: options.channel,
+                        scrollY: scrollY,
+                    });
+                }
+            },
+            false
+        );
     }
 
     /**
@@ -366,47 +409,6 @@ export const momentShareFunc = () => {
      * @version 1.0
      * @data 2022.04.23
      * @description
-     * 스크롤 좌표값 구하는 함수
-     */
-
-    function currentFrameAbsolutePosition() {
-        let currentWindow = window;
-        let currentParentWindow;
-        let positions = [];
-        let rect;
-
-        while (currentWindow !== window.top) {
-            currentParentWindow = currentWindow.parent;
-            for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
-                if (currentParentWindow.frames[idx] === currentWindow) {
-                    for (let frameElement of currentParentWindow.document.getElementsByTagName(
-                        "iframe"
-                    )) {
-                        if (frameElement.contentWindow === currentWindow) {
-                            rect = frameElement.getBoundingClientRect();
-                            positions.push({ x: rect.x, y: rect.y });
-                        }
-                    }
-                    currentWindow = currentParentWindow;
-                    break;
-                }
-        }
-        return positions.reduce(
-            (accumulator, currentValue) => {
-                return {
-                    x: accumulator.x + currentValue.x,
-                    y: accumulator.y + currentValue.y,
-                };
-            },
-            { x: 0, y: 0 }
-        );
-    }
-
-    /**
-     * @author 전형동
-     * @version 1.0
-     * @data 2022.04.23
-     * @description
      * Socket 전달 받는 함수
      */
     // Receive Socket
@@ -415,12 +417,12 @@ export const momentShareFunc = () => {
         webShareContainerLoad(mouseEvent.link, iframeInit);
     });
 
-    let rect = currentFrameAbsolutePosition();
     momentSocket.on("receive_scroll", (mouseEvent) => {
         momentShare = document.querySelector("#momentShare-iframe");
         scroll = true;
         let scrollY = 0;
-        scrollY = mouseEvent.scrollY;
+        rect = currentFrameAbsolutePosition();
+        scrollY = mouseEvent.scrollY + rect.y;
         if (scroll) {
             momentShare.contentWindow.scrollTo(0, scrollY);
         }
