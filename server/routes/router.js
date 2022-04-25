@@ -22,7 +22,6 @@ const contentsStorage = multer.diskStorage({
         cb(null, `./server/contents`);
     },
     filename: function (req, file, cb) {
-        console.log("확인1: " + util.inspect(file, {showHidden: false, depth: null}))
         if(req.body.userName){
             cb(null, req.body.userName + "_"  + file.originalname);
         }else{
