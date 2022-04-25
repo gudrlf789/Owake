@@ -41,7 +41,7 @@ if (!isSafari) {
     fileDeliveryBtn.addEventListener("click", fileDeliverySafari, false);
 }
 
-fileShare();
+// fileShare();
 momentShareFunc();
 optionsBtn();
 recodingDeviceCtrl();
