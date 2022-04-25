@@ -25,6 +25,7 @@ function browserClose() {
                 .then((res) => {});
         }
         sessionStorage.clear();
+        deleteAllCookies();
     });
 
     window.addEventListener("unload", (e) => {
@@ -39,5 +40,15 @@ function browserClose() {
                 .then((res) => {});
         }
         sessionStorage.clear();
+        deleteAllCookies();
     });
+
+    // Browser를 나가면 현 도메인의 모든 쿠키를 삭제함.
+    function deleteAllCookies() {
+        let c = document.cookie.split("; ");
+        for (i in c)
+            document.cookie =
+                /^[^=]+/.exec(c[i])[0] +
+                "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
 }
