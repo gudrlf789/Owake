@@ -289,21 +289,26 @@ export const momentShareFunc = () => {
             },
             false
         );
-        momentShare.contentWindow.addEventListener(
-            "scroll",
-            (e) => {
-                e.preventDefault();
-                scroll = true;
-                if (scroll) {
-                    momentSocket.emit("active_scroll", {
-                        peer: options.uid,
-                        channel: options.channel,
-                        scrollY: e.currentTarget.scrollY,
-                    });
-                }
-            },
-            false
-        );
+
+        /**
+         * Scroll 시에 심하게 흔들려서 일단 주석처리
+         */
+
+        // momentShare.contentWindow.addEventListener(
+        //     "scroll",
+        //     (e) => {
+        //         e.preventDefault();
+        //         scroll = true;
+        //         if (scroll) {
+        //             momentSocket.emit("active_scroll", {
+        //                 peer: options.uid,
+        //                 channel: options.channel,
+        //                 scrollY: e.currentTarget.scrollY,
+        //             });
+        //         }
+        //     },
+        //     false
+        // );
     }
 
     /**

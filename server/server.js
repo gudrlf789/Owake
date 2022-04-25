@@ -349,15 +349,15 @@ io.sockets.on("connection", (socket) => {
         config.link = "";
     });
 
-    socket.on("active_touchend", (config) => {
-        console.log(":::::::::Link ::::::::::::", config);
-        socket.in(config.channel).emit("receive_touchend", config);
-    });
+    // socket.on("active_touchend", (config) => {
+    //     console.log(":::::::::Link ::::::::::::", config);
+    //     socket.in(config.channel).emit("receive_touchend", config);
+    // });
 
-    socket.on("active_scroll", (config) => {
-        console.log(config);
-        socket.in(config.channel).emit("receive_scroll", config);
-    });
+    // socket.on("active_scroll", (config) => {
+    //     console.log(config);
+    //     socket.in(config.channel).emit("receive_scroll", config);
+    // });
 
     // socket.on("active_wheel", (config) => {
     //     socket.in(config.channel).emit("receive_wheel", config);
