@@ -1,27 +1,42 @@
-export const fileDelivery = () => {
+export const fileDeliverySafari = () => {
     $(document).ready(() => {
         updateDevice();
         clickEvent();
     });
 };
 
+let device_key = "";
+let device_id = "";
+
 function updateDevice() {
+    let params = {
+        api_key: "503d6430f3c124e0f239092e9c916b932a869dfe",
+        profile_name: "owake",
+    };
+    if (localStorage.device_key) {
+        params.device_key = localStorage.device_key;
+    }
+
     $.ajax({
         url: "https://send-anywhere.com/web/v1/device",
         type: "GET",
         dataType: "jsonp",
-        data: {
-            api_key: "503d6430f3c124e0f239092e9c916b932a869dfe",
-            profile_name: "owake",
-        },
+        data: params,
         cache: false,
-    }).done(function (data) {});
+    }).done(function (data) {
+        if (data.device_key) {
+            localStorage.device_key = data.device_key;
+        }
+    });
 }
 function createKey(files) {
-    var params = { file: [] };
-    var formData = new FormData();
-    for (var i = 0; i < files.length; i++) {
-        var file = files[i];
+    let params = {
+        file: [],
+        device_key: localStorage.device_key,
+    };
+    let formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+        let file = files[i];
         params.file.push({ name: file.name, size: file.size });
         formData.append("file" + i, file, file.name);
     }
@@ -50,16 +65,23 @@ function sendFile(url, data) {
 }
 
 function receiveKey(key) {
+    var params = {
+        device_key: localStorage.device_key,
+    };
+
     $("#status").text("waiting");
     $.ajax({
         url: "https://send-anywhere.com/web/v1/key/" + key,
         type: "GET",
         dataType: "jsonp",
+        data: params,
         timeout: 3000,
         cache: false,
     })
         .done(function (data) {
-            receiveFile(data.weblink);
+            let weblink = data.weblink.split("?")[0];
+            weblink = weblink + "?device_key=" + localStorage.device_key;
+            receiveFile(weblink);
             $("#status").text("done");
         })
         .fail(function (xhr, textStatus, error) {
@@ -77,7 +99,7 @@ function receiveFile(url) {
 
 function clickEvent() {
     $("#sendBtn").click(() => {
-        var files = $("#fileInput").prop("files");
+        let files = $("#fileInput").prop("files");
         if (files.length > 0) {
             createKey(files);
         }

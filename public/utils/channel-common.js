@@ -1,7 +1,9 @@
 import { mobileDisplayCtr } from "./parts/channel/chat.js";
 import { f12defense } from "./parts/channel/f12defense.js";
 import { fileDelivery } from "./parts/channel/fileDelivery.js";
-import { fileShare } from "./parts/channel/fileShare.js";
+import { fileDeliverySafari } from "./parts/channel/fileDelivery-safari.js";
+// P2P 개발할 때까지 중단
+// import { fileShare } from "./parts/channel/fileShare.js";
 import { momentShareFunc } from "./parts/channel/momentShare.js";
 import { muteUtilsFunc } from "./parts/channel/muteUtils.js";
 import { optionsBtn } from "./parts/channel/options-btn.js";
@@ -19,10 +21,27 @@ import { SwiperFunc } from "./parts/channel/swiper.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 
+const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
+
 mobileDisplayCtr();
 f12defense();
-fileDelivery();
-fileShare();
+
+let isSafari =
+    /constructor/i.test(window.HTMLElement) ||
+    (function (p) {
+        return p.toString() === "[object SafariRemoteNotification]";
+    })(
+        !window["safari"] ||
+            (typeof safari !== "undefined" && safari.pushNotification)
+    );
+
+if (!isSafari) {
+    fileDeliveryBtn.addEventListener("click", fileDelivery, false);
+} else {
+    fileDeliveryBtn.addEventListener("click", fileDeliverySafari, false);
+}
+
+// fileShare();
 momentShareFunc();
 optionsBtn();
 recodingDeviceCtrl();
@@ -39,17 +58,3 @@ muteUtilsFunc();
 SwiperFunc();
 fileHash();
 contentFunc();
-
-// const momentShareBtn = document.querySelector("#momentShare");
-// const fileShareBtn = document.querySelector("#fileShareBtn");
-// const whiteBoardBtn = document.querySelector("#whiteBoard");
-// const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
-// const deviceSettingBtn = document.querySelector("#deviceSettingBtn");
-// const fileHashBtn = document.querySelector("#fileHashBtn");
-
-// momentShareBtn.addEventListener("click", momentShareFunc, false);
-// fileShareBtn.addEventListener("click", fileShare, false);
-// whiteBoardBtn.addEventListener("click", whiteBoardFunc, false);
-// fileDeliveryBtn.addEventListener("click", fileDelivery, false);
-// deviceSettingBtn.addEventListener("click", recodingDeviceCtrl, false);
-// fileHashBtn.addEventListener("click", fileHash, false);

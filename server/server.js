@@ -4,8 +4,7 @@ const app = express();
 const cors = require("cors");
 const path = require("path");
 const Logger = require("./Logger");
-const { execSync } = require("child_process");
-const fs = require("fs");
+const bodyParser = require("body-parser");
 const log = new Logger("server");
 require("dotenv").config();
 const port = process.env.PORT || 1227;
@@ -16,37 +15,30 @@ let peers = {}; // collect peers info grp by channels
 let channel;
 let peerId;
 let peerName;
-let urlParams;
-
-let site = [];
-let siteSet;
-let siteArr = [];
-
-let channelName;
-let channelType;
-
 let peerWebURLArr = [];
+
+let urlObj = {};
 
 let io, server;
 
-const CORS_fn = (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Methods", "*");
-    res.setHeader("Access-Control-Max-Age", "3600");
+// const CORS_fn = (req, res) => {
+//     res.setHeader("Access-Control-Allow-Origin", "*");
+//     res.setHeader(
+//         "Access-Control-Allow-Headers",
+//         "Origin, X-Requested-With, Content-Type, Accept"
+//     );
+//     res.setHeader("Access-Control-Allow-Credentials", "true");
+//     res.setHeader("Access-Control-Allow-Methods", "*");
+//     res.setHeader("Access-Control-Max-Age", "3600");
 
-    if (req.method === "OPTIONS") {
-        res.writeHead(200);
-        res.end();
-        return;
-    }
-};
+//     if (req.method === "OPTIONS") {
+//         res.writeHead(200);
+//         res.end();
+//         return;
+//     }
+// };
 
-server = require("http").Server(app, CORS_fn);
+server = require("http").createServer(app);
 
 io = new Server({
     pingInterval: 100000,
@@ -83,20 +75,8 @@ app.use(
 );
 
 app.use(redirectSec);
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-});
-
-app.use(
-    express.urlencoded({
-        extended: true,
-    })
-);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
@@ -126,9 +106,6 @@ app.get("/", (req, res, next) => {
 app.get("/:channelName/:channelType", (req, res) => {
     let appID = "4343e4c08654493cb8997de783a9aaeb";
 
-    channelName = req.params.channelName;
-    channelType = req.params.channelType;
-
     res.render("channel", {
         channelName: req.params.channelName,
         channelType: req.params.channelType,
@@ -156,78 +133,10 @@ app.get("/newsfeed", (req, res, next) => {
     res.render("newsfeed");
 });
 
-/**
- * @anthor 전형동
- * @date 2022.04.05
- * @version 1.1
- * @descrption
- * 모멘트 쉐어링 개발중
- * 클라이언트 페이지 호출
- */
-
-// app.post("/urlSearch", async (req, res) => {
-//     // fs.writeFileSync("views/site.ejs", "", () =>
-//     //     console.log("Created site.ejs")
-//     // );
-//     // fs.createReadStream("views/site.ejs").pipe(res);
-
-//     urlParams = req.query[0];
-//     site.push(urlParams);
-//     siteSet = new Set(site);
-//     siteArr = Array.from(siteSet);
-
-//     console.log("Response Site URL ", siteArr);
-// });
-
-// app.get("/site", async (req, res) => {
-//     for (let i = 0; i < siteArr.length; i++) {
-//         if (urlParams === siteArr[i]) {
-//             fetchWebsite(urlParams);
-//         }
-//     }
-//     res.render("site");
-// });
-
-// app.get("/webShare", async (req, res) => {
-//     for (let i = 0; i < siteArr.length; i++) {
-//         if (urlParams === siteArr[i]) {
-//             res.render("webShare", {
-//                 url: urlParams,
-//                 channelName: channelName,
-//                 channelType: channelType,
-//             });
-//         }
-//     }
-// });
-
-/**
- * @anthor 전형동
- * @date 2022.04.05
- * @version 1.1
- * @descrption
- * 웹사이트 내용 긁어오는 소스
- * 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
- */
-
-// const fetchWebsite = (url) => {
-//     try {
-//         if (url.includes("undefined")) {
-//             // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
-//             return log.debug("The entered URL is invalid.");
-//         } else {
-//             execSync(
-//                 `wget -q -O - ${url} > views/site.ejs`,
-//                 (error, stdout, stderr) => {
-//                     if (error !== null) {
-//                         return false;
-//                     }
-//                 }
-//             );
-//         }
-//     } catch (error) {
-//         return log.debug("Moment Share -- URL Input Error ", error);
-//     }
-// };
+app.get("/requestURL", (req, res, next) => {
+    console.log({ url: req.query[0] });
+    urlObj.link = req.query[0];
+});
 
 /**
  * @anthor 전형동
@@ -300,13 +209,13 @@ io.sockets.on("connection", (socket) => {
 
     socket.on("submit_address", (config) => {
         // 이 코드 리펙토링 필수!  - 참조 : /urlSearch
-        peerWebURLArr.push(config.url);
+        peerWebURLArr.push(config.link);
+
         let peerWebURLArrSet = new Set(peerWebURLArr);
         let resultURLArr = Array.from(peerWebURLArrSet);
 
         log.debug("connected peers grp by Peer Address ", peers, peerWebURLArr);
-
-        socket.in(config.channel).emit("input_address", config.url);
+        socket.in(config.channel).emit("input_address", config.link);
     });
 
     socket.on("join-whiteboard", (channelName) => {
@@ -329,12 +238,14 @@ io.sockets.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("file-meta", (data) => {
-        // console.log(data);
+    socket.on("file-meta", (metadata) => {
+        let file = metadata;
         //broadcast 동일하게 가능 자신 제외 룸안의 유저
-        socket.in(data.channel).emit("fs-meta", data);
+        socket.in(file.channel).emit("fs-meta", file);
     });
+
     socket.on("file-progress", (progress, channel) => {
+        log.debug(progress);
         socket.in(channel).emit("fs-progress", progress);
     });
 
@@ -423,35 +334,33 @@ io.sockets.on("connection", (socket) => {
      * @returns pageX, pageY, clientX, clientY, offsetX, offsetY, screenX, screenY
      */
 
-    // socket.on("active_mouseover", (config) => {
-    //     socket.in(config.channel).emit("receive_mouseover", config);
-    // });
-
-    // socket.on("active_mouseup", (config) => {
-    //     socket.in(config.channel).emit("receive_mouseup", config);
-    // });
-
     // socket.on("active_mousedown", (config) => {
     //     console.log(":::::::::Link ::::::::::::", config);
-    //     socket.in(config.channel).emit("receive_mousedown", config);
+    //         socket.in(config.channel).emit("receive_mousedown", config);
     // });
+
+    socket.on("active_click", (config) => {
+        console.log(":::::::::Link ::::::::::::", config);
+        if (config.link === null) {
+            setTimeout(() => {
+                log.debug("Socket 전달할 Link ::", urlObj.link);
+                config.link = urlObj.link;
+                socket.in(config.channel).emit("receive_click", config);
+            }, 100);
+        }
+
+        config.link = null;
+    });
 
     // socket.on("active_touchend", (config) => {
     //     console.log(":::::::::Link ::::::::::::", config);
     //     socket.in(config.channel).emit("receive_touchend", config);
     // });
 
-    // socket.on("active_mouseout", (config) => {
-    //     socket.in(config.channel).emit("receive_mouseout", config);
-    // });
-
-    // socket.on("active_mousemove", (config) => {
-    //     socket.in(config.channel).emit("receive_mousemove", config);
-    // });
-
-    // socket.on("active_scroll", (config) => {
-    //     socket.in(config.channel).emit("receive_scroll", config);
-    // });
+    socket.on("active_scroll", (config) => {
+        console.log(config);
+        socket.in(config.channel).emit("receive_scroll", config);
+    });
 
     // socket.on("active_wheel", (config) => {
     //     socket.in(config.channel).emit("receive_wheel", config);
@@ -492,6 +401,6 @@ io.sockets.on("connection", (socket) => {
     }
 });
 
-server.listen(port, "0.0.0.0", () => {
+server.listen(port, () => {
     log.debug(`Server Listen... ${port}`);
 });

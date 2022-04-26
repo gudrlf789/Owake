@@ -16,6 +16,7 @@
     "license": "ISC",
     "dependencies": {
         "axios": "^0.26.1",
+        "body-parser": "^1.20.0",
         "cors": "^2.8.5",
         "dotenv": "^16.0.0",
         "ejs": "^3.1.6",
@@ -28,8 +29,5 @@
         "nodemon": "^2.0.15",
         "path": "^0.12.7",
         "socket.io": "^4.3.2"
-    },
-    "devDependencies": {
-        "child_process": "^1.0.2"
     }
 }

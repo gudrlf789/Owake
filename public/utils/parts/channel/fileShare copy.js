@@ -156,13 +156,11 @@ function fileShareActionEnable(e) {
     handlerFileListCtrl();
     handlerFileRemove();
     shareReceiveFile();
-    receiveProgress();
-    receiveSendFilePeer();
 
-    thumbnailBodyEl.addEventListener("scroll", handlerMouseScroll, false);
-
-    thumbnailBodyEl.addEventListener("load", handlerReceiveMouseDown, false);
-    thumbnailBodyEl.addEventListener("load", handlerReceiveScroll, false);
+    // Recevie Progress
+    fileShareSocket.on("fs-progress", (progress) => {
+        progressEl.value = progress;
+    });
 }
 
 function fileShareActionDisable(e) {
@@ -189,10 +187,10 @@ function fileInputControlChangeEventHandler(e) {
     for (let i = 0; i < files.length; i++) {
         file = files[i];
 
-        if (file.size > 100 * 1024 * 1024) {
-            alert("Please upload the file that can be shared less than 100MB.");
-            return;
-        }
+        // if (file.size > 25 * 1024 * 1024) {
+        //     alert("Please upload the file that can be shared less than 25MB.");
+        //     return;
+        // }
 
         uid = uuidv4();
         fileData = fileDataInit(file.name, file.size, file.type, uid);
@@ -327,13 +325,15 @@ function fileInputControlChangeEventHandler(e) {
                     peer: fileArr[i].peerID,
                 });
             }
+
+            return content;
         };
 
         let chunk = 0;
         while (chunk < file.size) {
             chunk += bufferSize;
             blob = file.slice(start, start + chunk);
-            // console.log("::::::::::::Blob Data :::::::::::::", blob);
+            console.log("::::::::::::Blob Data :::::::::::::", blob);
         }
 
         if (textTypeCheck) {
@@ -345,10 +345,18 @@ function fileInputControlChangeEventHandler(e) {
         readFileProgress(reader);
 
         reader.onloadend = (e) => {
-            console.log("File load completed successfully loaded.");
+            fileShareSocket.emit(
+                "file-blob",
+                JSON.stringify({
+                    channel: channel,
+                    fileName: file.name,
+                    fileType: file.type,
+                    fileChunk: e.target.result,
+                })
+            );
         };
 
-        reader.onerror = (e) => {
+        reader.onerror = () => {
             let errorCode = reader.error.code;
             if (errorCode === reader.error.NOT_READABLE_ERR) {
                 alert("You do not have permission to read files.");
@@ -381,7 +389,7 @@ function shareFile(metadata) {
 
 function shareReceiveFile() {
     fileShareSocket.on("fs-meta", (data) => {
-        console.log(data);
+        console.log(JSON.stringify(data));
         if (data.buffer) {
             receiveDataElement(data.element, data.buffer, data.uid, data.peer);
         } else if (data.content) {
@@ -423,7 +431,7 @@ function receiveDataElement(element, content, uid, peer) {
         ].join("");
         fileTabList.insertBefore(spanEl, null);
     } else if (element === "audio") {
-        spanEl.classList.add("fas", "fa-file-audio", `${uid}`);
+        spanEl.classList.add("fas", "fa-file-audio");
         spanEl.style.setProperty("font-size", "6vw");
         spanEl.style.setProperty("text-align", "center");
         spanEl.innerHTML = [
@@ -451,6 +459,7 @@ function selectFileAction(uid) {
     if (thumbnail) {
         $(document).on("click", `.${uid}`, (e) => {
             let clickPeer = e.target.classList[2].substr(5);
+
             let element;
             let url;
 
@@ -459,10 +468,9 @@ function selectFileAction(uid) {
             if (e.target.tagName !== "SPAN") {
                 element = e.target;
                 url = element.src;
-            } else {
-                element = e.target.firstChild;
-                url = element.src;
             }
+
+            const copyElement = element.cloneNode();
 
             receiverState = true;
 
@@ -478,6 +486,23 @@ function selectFileAction(uid) {
         });
     }
 }
+fileShareSocket.on("file-send", (state, uid, peer, receiver) => {
+    let stateActivate = false;
+    // 클릭한 유저와 컨텐츠 주인이 같지 않을 때만 State가 보인다.
+    console.log(peer, receiver);
+    if (state === true && peer !== receiver) {
+        const fileTabState = document.createElement("span");
+        //  자바스크립트 selectr로는 클래스 uid를 잡을 수 없음 다른 방안을 생각해봐야 될듯...
+        const selectFile = $(`.${uid}`);
+
+        fileTabState.className = "fileTabState";
+        fileTabState.classList.add("fas", "fa-user-check");
+
+        selectFile.parent().append(fileTabState);
+
+        fileTabStateFunc(fileTabState, stateActivate, peer);
+    }
+});
 
 function fileTabStateFunc(fileTab, state, peer) {
     fileTab.addEventListener("click", (e) => {
@@ -581,11 +606,6 @@ function thumbnailBodyContainer(element, content) {
     swiperWrapper.append(swiperSlide);
 
     handlerFileTabRemove();
-
-    const thumbnail = document.querySelector(".thumbnail");
-    if (thumbnail.nodeName === ("VIDEO" || "AUDIO")) {
-        thumbnail.addEventListener("seeked", handlerMediaSeekid, false);
-    }
 }
 
 /**
@@ -645,61 +665,4 @@ function uuidv4() {
             (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
         ).toString(16)
     );
-}
-
-function handlerMediaSeekid(e) {
-    if (!e) return;
-    let time = e.target.currentTime;
-    console.log(time);
-}
-
-function handlerMouseScroll(e) {
-    console.log(e);
-}
-
-/**
- * @author 전형동
- * @version 1.0
- * @data 2022.04.23
- * @description
- * Socket 전달 받는 함수
- */
-// Receive Socket
-function handlerReceiveMouseDown() {
-    fileShareSocket.on("receive_mousedown", (mouseEvent) => {
-        console.log("receive mousedown :::: ", mouseEvent);
-    });
-}
-
-function handlerReceiveScroll() {
-    fileShareSocket.on("receive_scroll", (mouseEvent) => {
-        console.log("receive mousedown :::: ", mouseEvent);
-    });
-}
-
-// Recevie Progress
-function receiveProgress() {
-    fileShareSocket.on("fs-progress", (progress) => {
-        progressEl.value = progress;
-    });
-}
-
-function receiveSendFilePeer() {
-    fileShareSocket.on("file-send", (state, uid, peer, receiver) => {
-        let stateActivate = false;
-        // 클릭한 유저와 컨텐츠 주인이 같지 않을 때만 State가 보인다.
-        console.log(peer, receiver);
-        if (state === true && peer !== receiver) {
-            const fileTabState = document.createElement("span");
-            //  자바스크립트 selectr로는 클래스 uid를 잡을 수 없음 다른 방안을 생각해봐야 될듯...
-            const selectFile = $(`.${uid}`);
-
-            fileTabState.className = "fileTabState";
-            fileTabState.classList.add("fas", "fa-user-check");
-
-            selectFile.parent().append(fileTabState);
-
-            fileTabStateFunc(fileTabState, stateActivate, peer);
-        }
-    });
 }
