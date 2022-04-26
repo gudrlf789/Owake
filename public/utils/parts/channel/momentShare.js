@@ -342,8 +342,7 @@ export const momentShareFunc = () => {
                 e.preventDefault();
                 scroll = true;
                 if (scroll) {
-                    rect = currentFrameAbsolutePosition();
-                    scrollY = e.currentTarget.scrollY + rect.y;
+                    scrollY = e.currentTarget.scrollY;
                     momentSocket.emit("active_scroll", {
                         peer: options.uid,
                         channel: options.channel,
@@ -422,8 +421,8 @@ export const momentShareFunc = () => {
         momentShare = document.querySelector("#momentShare-iframe");
         scroll = true;
         let scrollY = 0;
-        rect = currentFrameAbsolutePosition();
-        scrollY = mouseEvent.scrollY + rect.y;
+        scrollY = mouseEvent.scrollY;
+
         if (scroll) {
             momentShare.contentWindow.scrollTo(0, scrollY);
         }
