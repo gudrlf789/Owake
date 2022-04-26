@@ -19,7 +19,7 @@ let urlParams;
 
 let site = [];
 let siteSet;
-let siteArr;
+let siteArr = [];
 
 let peerWebURLArr = [];
 
@@ -168,18 +168,22 @@ app.get("/site", async (req, res) => {
  */
 
 const fetchWebsite = (url) => {
-    if (url.includes("undefined")) {
-        // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
-        return log.debug("The entered URL is invalid.");
-    } else {
-        execSync(
-            `wget -q -O - ${url} > views/site.ejs`,
-            (error, stdout, stderr) => {
-                if (error !== null) {
-                    return false;
+    try {
+        if (url.includes("undefined")) {
+            // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
+            return log.debug("The entered URL is invalid.");
+        } else {
+            execSync(
+                `wget -q -O - ${url} > views/site.ejs`,
+                (error, stdout, stderr) => {
+                    if (error !== null) {
+                        return false;
+                    }
                 }
-            }
-        );
+            );
+        }
+    } catch (error) {
+        console.debug(error);
     }
 };
 
@@ -258,11 +262,11 @@ io.sockets.on("connect", (socket) => {
         let peerWebURLArrSet = new Set(peerWebURLArr);
         let resultURLArr = Array.from(peerWebURLArrSet);
 
-        resultURLArr.forEach((url) => {
-            peers[config.channel][config.peerID] = {
-                web: url,
-            };
-        });
+        // resultURLArr.forEach((url) => {
+        //     peers[config.channel][config.peerID] = {
+        //         web: url,
+        //     };
+        // });
 
         log.debug("connected peers grp by Peer Address ", peers);
 
