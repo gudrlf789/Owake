@@ -336,22 +336,21 @@ export const momentShareFunc = () => {
          * Scroll 시에 심하게 흔들려서 일단 주석처리
          */
 
-        momentShare.contentWindow.addEventListener(
-            "scroll",
-            (e) => {
-                e.preventDefault();
-                scroll = true;
-                if (scroll) {
-                    scrollY = e.currentTarget.scrollY;
-                    momentSocket.emit("active_scroll", {
-                        peer: options.uid,
-                        channel: options.channel,
-                        scrollY: scrollY,
-                    });
-                }
-            },
-            false
-        );
+        // momentShare.contentWindow.addEventListener(
+        //     "scroll",
+        //     (e) => {
+        //         e.preventDefault();
+        //         rect = currentFrameAbsolutePosition();
+        //         scrollY = e.currentTarget.scrollY + rect.y;
+        //         momentSocket.emit("active_scroll", {
+        //             peer: options.uid,
+        //             channel: options.channel,
+        //             scrollY: scrollY,
+        //         });
+        //         scroll = true;
+        //     },
+        //     false
+        // );
     }
 
     /**
@@ -417,16 +416,16 @@ export const momentShareFunc = () => {
         webShareContainerLoad(mouseEvent.link, iframeInit);
     });
 
-    momentSocket.on("receive_scroll", (mouseEvent) => {
-        momentShare = document.querySelector("#momentShare-iframe");
-        scroll = true;
-        let scrollY = 0;
-        scrollY = mouseEvent.scrollY;
-
-        if (scroll) {
-            momentShare.contentWindow.scrollTo(0, scrollY);
-        }
-    });
+    // momentSocket.on("receive_scroll", (mouseEvent) => {
+    //     momentShare = document.querySelector("#momentShare-iframe");
+    //     scroll = true;
+    //     let scrollY = 0;
+    //     rect = currentFrameAbsolutePosition();
+    //     scrollY = mouseEvent.scrollY + rect.y;
+    //     if (scroll) {
+    //         momentShare.contentWindow.scrollTo(0, scrollY);
+    //     }
+    // });
 
     momentSocket.on("input_address", (url) => {
         createMomentTabFunc(url);
