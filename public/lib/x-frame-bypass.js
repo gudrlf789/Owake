@@ -83,7 +83,7 @@ customElements.define(
         }
         fetchProxy(url, options, i) {
             const proxies = (options || {}).proxies || [
-                "https://owakeproxy.herokuapp.com/",
+                "https://owakeproxy.ga/",
                 "https://yacdn.org/proxy/",
                 "https://api.codetabs.com/v1/proxy/?quest=",
             ];
