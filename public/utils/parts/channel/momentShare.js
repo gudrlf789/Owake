@@ -317,7 +317,8 @@ export const momentShareFunc = () => {
         );
     }
 
-    function handlerMouseEventFunc() {
+    function handlerMouseEventFunc(e) {
+        e.preventDefault();
         momentShare.contentWindow.addEventListener(
             "click",
             (e) => {
@@ -418,13 +419,12 @@ export const momentShareFunc = () => {
 
     // momentSocket.on("receive_scroll", (mouseEvent) => {
     //     momentShare = document.querySelector("#momentShare-iframe");
-    //     scroll = true;
+
     //     let scrollY = 0;
     //     rect = currentFrameAbsolutePosition();
     //     scrollY = mouseEvent.scrollY + rect.y;
-    //     if (scroll) {
-    //         momentShare.contentWindow.scrollTo(0, scrollY);
-    //     }
+    //     momentShare.contentWindow.scrollTo(0, scrollY);
+    //     scroll = true;
     // });
 
     momentSocket.on("input_address", (url) => {
