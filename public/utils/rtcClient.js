@@ -221,6 +221,7 @@ async function subscribe(user, mediaType) {
             $("#remote-playerlist").append(iconPlayer);
         }
     }
+    cameraWasteRemove();
 }
 
 function revertLocalTrackToMain(leftUid) {
@@ -406,4 +407,23 @@ function cameraSwitchEnableFunc(e) {
 function cameraSwitchDisableFunc(e) {
     e.preventDefault();
     e.stopPropagation();
+}
+
+/**
+ * @author 전형동
+ * @version 1.0
+ * @data 2022 04.27
+ * @description
+ * Camera Track 중복 제거
+ */
+
+function cameraWasteRemove() {
+    const remotePlayerChild =
+        document.querySelector("#remote-playerlist").children;
+
+    for (let i = 0; i < remotePlayerChild.length; i++) {
+        if (remotePlayerChild[i].children[1].children.length === 0) {
+            remotePlayerChild[i].remove();
+        }
+    }
 }

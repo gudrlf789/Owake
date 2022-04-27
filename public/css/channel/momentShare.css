@@ -23,6 +23,15 @@
     bottom: 0;
 }
 
+#momentTabArea {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+#momentTabArea::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+
 #searchContainer {
     display: flex;
     justify-content: center;
