@@ -17,110 +17,102 @@ export const momentShareFunc1 = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
 
-    let convertURL;
-    let receiveURL;
     let momentShare;
-    let scroll = false;
-    let mouse = false;
     let iframeInit = false;
-    let searchResult;
     let inputURL;
     let bypass = "x-frame-bypass";
-    let scrollY = 0;
-    let rect;
 
-    const momentShareBtn = document.querySelector("#momentShare1");
-    const momentShareIcon = document.querySelector(".fa-brain");
+    const momentShareBtn1 = document.querySelector("#momentShare1");
     const localVideoContainer = document.querySelector(
         "#local__video__container"
     );
 
-    const momentShareArea = document.createElement("section");
-    const iframeContainer = document.createElement("section");
-    const searchContainer = document.createElement("div");
-    const searchInput = document.createElement("input");
-    const searchInputBtn = document.createElement("div");
-    const searchInputBtnIcon = document.createElement("i");
+    const momentShareArea1 = document.createElement("section");
+    const iframeContainer1 = document.createElement("section");
+    const searchContainer1 = document.createElement("div");
+    const searchInput1 = document.createElement("input");
+    const searchInput1Btn = document.createElement("div");
+    const searchInput1BtnIcon = document.createElement("i");
 
-    const navContainer = document.createElement("section");
-    const momentTabArea = document.createElement("div");
+    const navContainer1 = document.createElement("section");
+    const momentTabArea1 = document.createElement("div");
 
-    navContainer.id = "navContainer";
-    momentTabArea.id = "momentTabArea";
+    navContainer1.id = "navContainer1";
+    momentTabArea1.id = "momentTabArea1";
 
-    const momentContainer = document.createElement("span");
+    const momentContainer1 = document.createElement("span");
 
-    searchInput.placeholder = "Enter a URL";
-    searchInput.style.textAlign = "center";
+    searchInput1.placeholder = "Enter a URL";
+    searchInput1.style.textAlign = "center";
 
-    momentShareArea.id = "momentShareArea";
-    momentContainer.id = "momentContainer";
+    momentShareArea1.id = "momentShareArea1";
+    momentContainer1.id = "momentContainer1";
 
-    searchContainer.id = "searchContainer";
-    searchInput.id = "searchInput";
-    searchInputBtn.id = "searchInputBtn";
-    searchInputBtnIcon.id = "searchInputBtnIcon";
+    searchContainer1.id = "searchContainer1";
+    searchInput1.id = "searchInput1";
+    searchInput1Btn.id = "searchInput1Btn";
+    searchInput1BtnIcon.id = "searchInput1BtnIcon";
 
-    searchInputBtnIcon.className = "fas fa-search";
+    searchInput1BtnIcon.className = "fas fa-search";
 
-    navContainer.append(searchContainer, momentTabArea);
-    searchInputBtn.appendChild(searchInputBtnIcon);
-    searchContainer.append(searchInput, searchInputBtn);
+    navContainer1.append(searchContainer1, momentTabArea1);
+    searchInput1Btn.appendChild(searchInput1BtnIcon);
+    searchContainer1.append(searchInput1, searchInput1Btn);
 
-    momentShareArea.append(navContainer, momentContainer);
+    momentShareArea1.append(navContainer1, momentContainer1);
 
-    momentTabArea.style.setProperty("height", "auto");
-    momentTabArea.style.setProperty("width", "100%");
-    momentTabArea.style.setProperty("background", "#fff");
-    momentTabArea.style.setProperty("padding", "5px");
-    momentTabArea.style.setProperty("border", "2px solid #000");
-    momentTabArea.style.setProperty("display", "-webkit-box");
-    momentTabArea.style.setProperty("align-items", "center");
-    momentTabArea.style.setProperty("overflow-x", "auto");
-    momentTabArea.style.setProperty("position", "absolute");
-    momentTabArea.style.setProperty("z-index", "5");
+    momentTabArea1.style.setProperty("height", "auto");
+    momentTabArea1.style.setProperty("width", "100%");
+    momentTabArea1.style.setProperty("background", "#fff");
+    momentTabArea1.style.setProperty("padding", "5px");
+    momentTabArea1.style.setProperty("border", "2px solid #000");
+    momentTabArea1.style.setProperty("display", "-webkit-box");
+    momentTabArea1.style.setProperty("align-items", "center");
+    momentTabArea1.style.setProperty("overflow-x", "auto");
+    momentTabArea1.style.setProperty("position", "absolute");
+    momentTabArea1.style.setProperty("z-index", "5");
 
-    momentShareBtn.addEventListener("click", (e) => {
+    momentShareBtn1.addEventListener("click", (e) => {
         momentShareActive = !momentShareActive;
         momentShareActive ? momentShareEnable() : momentShareDisable();
     });
 
     function momentShareEnable() {
-        localVideoContainer.append(momentShareArea);
-        momentShareArea.hidden = false;
-        momentShareBtn.style.color = "rgb(165, 199, 236)";
+        localVideoContainer.append(momentShareArea1);
+        momentShareArea1.hidden = false;
+        momentShareBtn1.style.color = "rgb(165, 199, 236)";
         momentSocket.emit("join-web", options.channel);
 
-        iframeContainer.innerHTML = `<iframe id='momentShare-iframe'
+        iframeContainer1.innerHTML = `<iframe id='momentShare-iframe1'
             name='momentShare' is='${bypass}' frameborder='0'
             </iframe>`;
-        momentContainer.appendChild(iframeContainer);
+        momentContainer1.appendChild(iframeContainer1);
     }
 
     function momentShareDisable() {
-        momentShareArea.hidden = true;
-        momentShareBtn.style.color = "#fff";
+        momentShareArea1.hidden = true;
+        momentShareBtn1.style.color = "#fff";
         momentSocket.emit("leave-web", options.channel);
     }
 
-    searchInputBtn.addEventListener("click", (e) => {
-        inputURL = searchInput.value;
+    searchInput1Btn.addEventListener("click", (e) => {
+        inputURL = searchInput1.value;
         if (inputURL.length === 0) {
             alert("Please enter your address.");
         } else {
             webShareLoad(inputURL);
-            searchInput.value = "";
+            searchInput1.value = "";
         }
     });
 
-    searchInput.addEventListener("keypress", (e) => {
-        inputURL = searchInput.value;
+    searchInput1.addEventListener("keypress", (e) => {
+        inputURL = searchInput1.value;
         if (e.key === "Enter") {
             if (inputURL.length === 0) {
                 alert("Please enter your address.");
             } else {
                 webShareLoad(inputURL);
-                searchInput.value = "";
+                searchInput1.value = "";
             }
         }
     });
@@ -184,7 +176,7 @@ export const momentShareFunc1 = () => {
         iFrameInit();
 
         let convertURL;
-        momentShare = document.querySelector("#momentShare-iframe");
+        momentShare = document.querySelector("#momentShare-iframe1");
         convertURL = resultURLprotocolCheck(url);
         let resultURL = `https://${convertURL.replace(
             /^(https?:\/\/)?(www\.)?/,
@@ -207,20 +199,20 @@ export const momentShareFunc1 = () => {
 
         if (url.includes("youtube") || url.includes("youtu.be")) {
             returnUrl = youtubeUrlReplarce(url);
-            searchInput.value = "";
+            searchInput1.value = "";
             return returnUrl;
         } else if (url.includes("google")) {
             returnUrl = googleUrlReplace(url);
-            searchInput.value = "";
+            searchInput1.value = "";
             return returnUrl;
         } else if (url.includes("tv.naver")) {
             returnUrl = naverUrlReplace(url);
-            searchInput.value = "";
+            searchInput1.value = "";
             console.log(returnUrl);
             return returnUrl;
         } else {
             returnUrl = url;
-            searchInput.value = "";
+            searchInput1.value = "";
             return returnUrl;
         }
     }
@@ -298,7 +290,7 @@ export const momentShareFunc1 = () => {
 
         if (url !== null || url !== "" || url !== undefined) {
             momentTab.textContent = url;
-            momentTabArea.append(momentTab);
+            momentTabArea1.append(momentTab);
         }
     }
 
@@ -350,13 +342,13 @@ export const momentShareFunc1 = () => {
      * IFrame 초기화 함수
      */
     function iFrameInit() {
-        if (momentContainer.childNodes.length > 0) {
-            momentContainer.removeChild(iframeContainer);
+        if (momentContainer1.childNodes.length > 0) {
+            momentContainer1.removeChild(iframeContainer1);
         }
 
-        iframeContainer.innerHTML = `<iframe id='momentShare-iframe'
+        iframeContainer1.innerHTML = `<iframe id='momentShare-iframe1'
         name='momentShare' frameborder='0'
         </iframe>`;
-        momentContainer.appendChild(iframeContainer);
+        momentContainer1.appendChild(iframeContainer1);
     }
 };
