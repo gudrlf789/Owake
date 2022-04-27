@@ -20,7 +20,8 @@ if (argv._[0]) {
     let server = net.createServer(function (socket) {
         if (!source) source = fs.createReadStream(argv._[0]);
         source.pipe(socket);
-        socket.on("error", function () {
+        socket.on("error", function (e) {
+            console.log(e);
             socket.destroy();
         });
     });
