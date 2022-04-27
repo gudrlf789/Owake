@@ -193,6 +193,9 @@ async function subscribe(user, mediaType) {
     await client.subscribe(user, mediaType);
     console.log("subscribe success");
 
+    let mics = await AgoraRTC.getMicrophones();
+    console.log(mics);
+
     if (mediaType === "video") {
         const player = $(`
           <div id="player-wrapper-${uid}">
@@ -204,11 +207,10 @@ async function subscribe(user, mediaType) {
         user.videoTrack.play(`player-${uid}`);
     }
 
-    if (mediaType === "audio") {
+    // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에
+    // 아이콘 화면이 나타나게 수정
+    if (mediaType === "audio" || mics.length > 0) {
         user.audioTrack.play();
-        // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에
-        // 아이콘 화면이 나타나게 수정
-
         // if (!user.hasVideo && user.hasAudio) {
         if (!user.hasVideo) {
             const iconPlayer = $(`
@@ -221,6 +223,7 @@ async function subscribe(user, mediaType) {
             $("#remote-playerlist").append(iconPlayer);
         }
     }
+
     cameraWasteRemove();
 }
 
@@ -415,6 +418,7 @@ function cameraSwitchDisableFunc(e) {
  * @data 2022 04.27
  * @description
  * Camera Track 중복 제거
+ * 데스크탑 접속될 경우 이미지 삭제
  */
 
 function cameraWasteRemove() {
