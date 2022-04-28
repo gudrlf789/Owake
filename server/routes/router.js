@@ -13,8 +13,24 @@ const storage = multer.diskStorage({
         cb(null, req.body.adminId + "_" + nowDate + "_" + file.originalname);
     },
 });
+const contentsStorage = multer.diskStorage({
+    destination: function (req, res, cb) {
+        cb(null, `./server/contents`);
+    },
+    filename: function (req, file, cb) {
+        if(req.body.userName){
+            cb(null, req.body.userName + "_"  + file.originalname);
+        }else{
+            cb(null, file.originalname);
+        }
+    },
+});
+
 const upload = multer({
     storage: storage,
+});
+const contentsUpload = multer({
+    storage: contentsStorage,
 });
 const path = require("path");
 const axios = require("axios");
@@ -27,6 +43,7 @@ require("firebase/firestore");
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const firebaseCollection = db.collection("ChannelList");
+const FormData = require("form-data");
 
 // 파일 사이즈 오류 핸들러
 // const fileSizeLimitErrorHandler = (err, req, res, next) => {
@@ -46,6 +63,13 @@ fs.readdir("./server/uploads", (err) => {
     }
 });
 
+//contents 폴더 없을시 생성
+fs.readdir("./server/contents", (err) => {
+    if (err) {
+        fs.mkdirSync("./server/contents");
+    }
+});
+
 //날짜마다 이미지 파일들 관리할수 있게 날짜 폴더 생성
 /*fs.readdir(`./server/uploads/${nowDate}`, (err) => {
     if (err) {
@@ -54,6 +78,7 @@ fs.readdir("./server/uploads", (err) => {
 });*/
 
 let fileName;
+let jwt;
 
 router.get("/list", (req, res, next) => {
     const roomArray = [];
@@ -351,6 +376,7 @@ router.post("/removeUserNameOnChannel", async (req, res) => {
  * @version 1.0
  * @descrption
  * trustOS api 사용하여 파일 해쉬화
+ * 
  */
 router.post("/jwt", async (req, res) => {
     const bodyData = req.body;
@@ -359,15 +385,76 @@ router.post("/jwt", async (req, res) => {
 
     axios.post('https://pro.virtualtrust.io/cert/login', bodyData)
       .then(result => {
-        res.json({
-            jwt: result.data.message
+        jwt = result.data.message;
+        return res.json({
+            success: true,
         });
       })
       .catch(err => {
-        res.json({
+        return res.json({
+            success: false,
             error: err
         });
       });
+});
+
+router.post("/hashFile", contentsUpload.single("fileInput"), async (req, res) => {
+    const formData = new FormData();
+
+    fs.readFile("./server/contents/" + req.file.filename, (err, data) => {
+        formData.append("fileInput", data, {
+            filename: req.file.originalname,
+        });
+
+        axios.post("https://pro.virtualtrust.io/cert/certificate/file/hash", formData,
+            {
+                headers: {
+                    ...formData.getHeaders(),
+                    Authorization: "Bearer " + jwt,
+                },
+            }
+        )
+        .then((result) => {
+            fs.unlinkSync("./server/contents/" + req.file.originalname);
+            return res.json({
+                hashCode: result.data.output.file_hash
+            });
+        })
+        .catch((err) => {
+            return res.json({
+                error: err
+            });
+        });
+    });
+});
+
+router.post("/contentsUpload", contentsUpload.single("content"), async (req, res) => {
+    return res.status(200).json({
+        success: true
+    });
+});
+
+router.post("/contentsDelete", async (req, res) => {
+    const bodyData = req.body;
+
+    if(fs.existsSync("./server/contents/" + bodyData.fileName)){
+        try {
+            fs.unlinkSync("./server/contents/" + bodyData.fileName);
+            return res.status(200).json({
+                success: true
+            });
+        }catch (err) {
+            return res.status(500).json({
+                success: false,
+                result: err
+            });
+        }
+    }else {
+        return res.status(200).json({
+            success: false,
+            result: "No files exist"
+        });
+    }
 });
 
 module.exports = router;

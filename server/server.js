@@ -4,9 +4,9 @@ const app = express();
 const cors = require("cors");
 const path = require("path");
 const Logger = require("./Logger");
-const { execSync } = require("child_process");
-const fs = require("fs");
+const bodyParser = require("body-parser");
 const log = new Logger("server");
+require("dotenv").config();
 const port = process.env.PORT || 1227;
 
 let channels = {}; // collect channels
@@ -15,29 +15,30 @@ let peers = {}; // collect peers info grp by channels
 let channel;
 let peerId;
 let peerName;
-let urlParams;
-
-let site = [];
-let siteSet;
-let siteArr = [];
-
 let peerWebURLArr = [];
+
+let urlObj = {};
 
 let io, server;
 
-const CORS_fn = (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Methods", "*");
-    res.setHeader("Access-Control-Allow-Headers", "*");
-    if (req.method === "OPTIONS") {
-        res.writeHead(200);
-        res.end();
-        return;
-    }
-};
+// const CORS_fn = (req, res) => {
+//     res.setHeader("Access-Control-Allow-Origin", "*");
+//     res.setHeader(
+//         "Access-Control-Allow-Headers",
+//         "Origin, X-Requested-With, Content-Type, Accept"
+//     );
+//     res.setHeader("Access-Control-Allow-Credentials", "true");
+//     res.setHeader("Access-Control-Allow-Methods", "*");
+//     res.setHeader("Access-Control-Max-Age", "3600");
 
-server = require("http").createServer(app, CORS_fn);
+//     if (req.method === "OPTIONS") {
+//         res.writeHead(200);
+//         res.end();
+//         return;
+//     }
+// };
+
+server = require("http").createServer(app);
 
 io = new Server({
     pingInterval: 100000,
@@ -66,14 +67,16 @@ function redirectSec(req, res, next) {
 
 app.set("view engine", "ejs");
 
-app.use(cors());
-app.use(redirectSec);
-
 app.use(
-    express.urlencoded({
-        extended: true,
+    cors({
+        origin: "*",
+        credential: true,
     })
 );
+
+app.use(redirectSec);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
@@ -88,6 +91,7 @@ app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../public/img/channel")));
 app.use(express.static(path.join(__dirname, "../public/img/nav-icon")));
 app.use(express.static(path.join(__dirname, "./uploads/")));
+app.use(express.static(path.join(__dirname, "./contents/")));
 app.use(express.static(path.join(__dirname, "../views")));
 
 app.use(express.json());
@@ -101,6 +105,7 @@ app.get("/", (req, res, next) => {
 
 app.get("/:channelName/:channelType", (req, res) => {
     let appID = "4343e4c08654493cb8997de783a9aaeb";
+
     res.render("channel", {
         channelName: req.params.channelName,
         channelType: req.params.channelType,
@@ -128,64 +133,10 @@ app.get("/newsfeed", (req, res, next) => {
     res.render("newsfeed");
 });
 
-/**
- * @anthor 전형동
- * @date 2022.04.05
- * @version 1.1
- * @descrption
- * 모멘트 쉐어링 개발중
- * 클라이언트 페이지 호출
- */
-
-app.post("/urlSearch", async (req, res) => {
-    fs.writeFileSync("views/site.ejs", "", () =>
-        console.log("Created site.ejs")
-    );
-    fs.createReadStream("views/site.ejs").pipe(res);
-
-    urlParams = req.query[0];
-    site.push(urlParams);
-    siteSet = new Set(site);
-    siteArr = Array.from(siteSet);
+app.get("/requestURL", (req, res, next) => {
+    console.log({ url: req.query[0] });
+    urlObj.link = req.query[0];
 });
-
-app.get("/site", async (req, res) => {
-    for (let i = 0; i < siteArr.length; i++) {
-        if (urlParams === siteArr[i]) {
-            fetchWebsite(urlParams);
-        }
-    }
-    res.render("site");
-});
-
-/**
- * @anthor 전형동
- * @date 2022.04.05
- * @version 1.1
- * @descrption
- * 웹사이트 내용 긁어오는 소스
- * 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
- */
-
-const fetchWebsite = (url) => {
-    try {
-        if (url.includes("undefined")) {
-            // 클라이언트에도 Error를 뿌려줘야 됨. 아직 수정 못함.
-            return log.debug("The entered URL is invalid.");
-        } else {
-            execSync(
-                `wget -q -O - ${url} > views/site.ejs`,
-                (error, stdout, stderr) => {
-                    if (error !== null) {
-                        return false;
-                    }
-                }
-            );
-        }
-    } catch (error) {
-        console.debug(error);
-    }
-};
 
 /**
  * @anthor 전형동
@@ -197,7 +148,7 @@ const fetchWebsite = (url) => {
  * FileShare Socket 추가
  */
 
-io.sockets.on("connect", (socket) => {
+io.sockets.on("connection", (socket) => {
     // io.on("connection", (socket) => {
     socket.channels = {};
     sockets[socket.id] = socket;
@@ -256,9 +207,10 @@ io.sockets.on("connect", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("submit_address", (address, config) => {
+    socket.on("submit_address", (config) => {
         // 이 코드 리펙토링 필수!  - 참조 : /urlSearch
-        peerWebURLArr.push(address);
+        peerWebURLArr.push(config.link);
+
         let peerWebURLArrSet = new Set(peerWebURLArr);
         let resultURLArr = Array.from(peerWebURLArrSet);
 
@@ -270,7 +222,7 @@ io.sockets.on("connect", (socket) => {
 
         log.debug("connected peers grp by Peer Address ", peers);
 
-        socket.in(config.channel).emit("input_address", address);
+        socket.in(config.channel).emit("input_address", config.link);
     });
 
     socket.on("join-whiteboard", (channelName) => {
@@ -293,12 +245,14 @@ io.sockets.on("connect", (socket) => {
         socket.leave(channelName);
     });
 
-    socket.on("file-meta", (data) => {
-        // console.log(data);
+    socket.on("file-meta", (metadata) => {
+        let file = metadata;
         //broadcast 동일하게 가능 자신 제외 룸안의 유저
-        socket.in(data.channel).emit("fs-meta", data);
+        socket.in(file.channel).emit("fs-meta", file);
     });
+
     socket.on("file-progress", (progress, channel) => {
+        log.debug(progress);
         socket.in(channel).emit("fs-progress", progress);
     });
 
@@ -329,6 +283,95 @@ io.sockets.on("connect", (socket) => {
     socket.on("leave-hash", (channelName) => {
         socket.leave(channelName);
     });
+
+    socket.on("join-contents", (channelName) => {
+        socket.join(channelName);
+    });
+
+    socket.on("content-info", (channelName, userName, fileName, fileType) => {
+        let data = {
+            userName: userName,
+            fileName: fileName,
+            fileType: fileType,
+        };
+        socket.to(channelName).emit("input-content", data);
+    });
+
+    socket.on("play-origin", (channelName, fileName, currentTime) => {
+        socket.to(channelName).emit("play-remote", fileName, currentTime);
+    });
+
+    socket.on("pause-origin", (channelName, fileName) => {
+        socket.to(channelName).emit("pause-remote", fileName);
+    });
+
+    socket.on("volume-origin", (channelName, originVolume, fileName) => {
+        socket.to(channelName).emit("volume-remote", originVolume, fileName);
+    });
+
+    socket.on("currentTime-origin", (channelName, currentTime, fileName) => {
+        socket
+            .to(channelName)
+            .emit("currentTime-remote", currentTime, fileName);
+    });
+
+    socket.on(
+        "scroll-origin",
+        (channelName, originTop, originLeft, fileName) => {
+            socket
+                .to(channelName)
+                .emit("scroll-remote", originTop, originLeft, fileName);
+        }
+    );
+
+    socket.on("delete-origin-tag", (channelName, deleteTagName) => {
+        socket.to(channelName).emit("delete-remote-tag", deleteTagName);
+    });
+
+    socket.on("leave-contents", (channelName) => {
+        socket.leave(channelName);
+    });
+
+    /**
+     * @Author 전형동
+     * @param {*} mouseEvent
+     * @Date 2022 04 12
+     * @Description
+     * Socket Mouse Event
+     * @returns pageX, pageY, clientX, clientY, offsetX, offsetY, screenX, screenY
+     */
+
+    // socket.on("active_mousedown", (config) => {
+    //     console.log(":::::::::Link ::::::::::::", config);
+    //         socket.in(config.channel).emit("receive_mousedown", config);
+    // });
+
+    socket.on("active_click", (config) => {
+        console.log(":::::::::Link ::::::::::::", config);
+        if (config.link === null) {
+            setTimeout(() => {
+                log.debug("Socket 전달할 Link ::", urlObj.link);
+                config.link = urlObj.link;
+                socket.in(config.channel).emit("receive_click", config);
+            }, 100);
+        }
+
+        config.link = null;
+    });
+
+    // socket.on("active_touchend", (config) => {
+    //     console.log(":::::::::Link ::::::::::::", config);
+    //     socket.in(config.channel).emit("receive_touchend", config);
+    // });
+
+    // socket.on("active_scroll", (config) => {
+    //     console.log(config);
+    //     socket.in(config.channel).emit("receive_scroll", config);
+    // });
+
+    // socket.on("active_wheel", (config) => {
+    //     socket.in(config.channel).emit("receive_wheel", config);
+    // });
 
     /**
      * Remove peers from channel aka room

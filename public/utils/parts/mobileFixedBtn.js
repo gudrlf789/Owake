@@ -30,7 +30,11 @@ channelBtnPrivateText.textContent = "Private";
 channelPublicBtn.append(channelPublicBtnImg, channelBtnPublicText);
 channelPrivateBtn.append(channelPrivateBtnImg, channelBtnPrivateText);
 
-mobileMenu.append(channelPublicBtn, channelPrivateBtn);
+// 2022 04 26
+// author 전형동
+// 헷갈리니 일단 주석처리
+// mobileMenu.append(channelPublicBtn, channelPrivateBtn);
+mobileMenu.append(channelPublicBtn);
 
 const mobileBodyContainer = document.querySelector(".body-container");
 
@@ -49,9 +53,9 @@ $(document).on("click", "#mobileChannelPublicBtn", (e) => {
     $("#channelPublicCreate").modal("show");
 });
 
-$(document).on("click", "#mobileChannelPrivateBtn", (e) => {
-    $("#channelPrivateCreate").modal("show");
-});
+// $(document).on("click", "#mobileChannelPrivateBtn", (e) => {
+//     $("#channelPrivateCreate").modal("show");
+// });
 
 window.addEventListener("resize", () => {
     if (window.innerWidth > 768) {

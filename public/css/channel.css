@@ -7,6 +7,7 @@
 @import "./channel/gridView.css";
 @import "./channel/shareEditer.css";
 @import "./channel/swiper.css";
+@import "./channel/content.css";
 
 @font-face {
     font-family: "NEXON Lv2 Gothic";

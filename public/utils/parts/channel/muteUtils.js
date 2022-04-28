@@ -20,11 +20,21 @@ let localTrackState = {
 
 export const muteUtilsFunc = () => {
     $(async () => {
+        if (document.readyState == "loading") {
+            // 아직 로딩 중이므로 이벤트를 기다립니다.
+            document.addEventListener("DOMContentLoaded", muteStart);
+        } else {
+            // DOM이 완성되었습니다!
+            muteStart();
+        }
+    });
+
+    function muteStart() {
         setTimeout(() => {
             muteVideo();
             muteAudio();
         }, 3000);
-    });
+    }
 
     $("#muteAudio").click(function (e) {
         if (!localTrackState.audioTrackMuted) {

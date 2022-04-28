@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <base href="/">
     <!-- meta tag -->
     <%- include("./headparts/meta-parts") %>
         <!-- meta tag end -->
@@ -10,7 +9,6 @@
         <!-- favicon package -->
         <%- include('./headparts/favicon-parts') %>
             <!-- favicon End -->
-            <base href="/">
             <link rel="stylesheet" href="channel.css" media="all">
 
             <script type="text/javascript" src="owake_rtc.js"></script>
@@ -100,9 +98,9 @@
                 }
             </script>
 
-            <%- include("./popup/fileshare") %>
+            <%- include("./popup/fileDelivery") %>
                 <%- include("./popup/deviceSettings") %>
-                <%- include("./popup/fileHash") %>
+                    <%- include("./popup/fileHash") %>
 </head>
 
 <body>
@@ -111,11 +109,10 @@
             <img class="img__logo" src="logo.svg" alt="">
         </div>
         <div class="nav__container">
-
-            <div id="video-grid-button" class="options__button">
+            <!-- <div id="video-grid-button" class="options__button">
                 <i class="fas fa-th"></i>
                 <span>Grid</span>
-            </div>
+            </div> -->
             <div id="copyUrl" class="options__button">
                 <i class="far fa-clipboard"></i>
                 <span>Invite</span>
@@ -158,13 +155,13 @@
                         <span>Screen</span>
                     </div>
                     <div id="momentShare" class="options__button">
-                        <i class="fas fa-brain"></i>
+                        <i class="fab fa-connectdevelop"></i>
                         <span>Web</span>
                     </div>
-                    <div id="fileShareBtn" class="options__button">
+                    <!-- <div id="fileShareBtn" class="options__button">
                         <i class="fab fa-creative-commons-share"></i>
                         <span>FShare</span>
-                    </div>
+                    </div> -->
                     <!-- 
                     <div id="textShare" class="options__button">
                         <i class="fas fa-file-alt"></i>
@@ -184,11 +181,13 @@
                         <i class="fas fa-cog"></i>
                         <span>Device</span>
                     </div>
-                    
-                    <div class="options__button" id="fileHashBtn" data-toggle="modal"
-                        data-target="#fileHashModal">
-                        <i class="fa fa-key" aria-hidden="true"></i>
-                        <span>Hash</span>
+                    <div class="options__button" id="fileHashBtn" data-toggle="modal" data-target="#fileHashModal">
+                        <i class="fas fa-file-invoice" aria-hidden="true"></i>
+                        <span>Identifier</span>
+                    </div>
+                    <div id="contentShare" class="options__button">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>contents</span>
                     </div>
                 </div>
             </div>

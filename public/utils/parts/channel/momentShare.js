@@ -1,15 +1,13 @@
 /**
  * @author 전형동
  * @version 1.0
- * @data 2022.04.10
+ * @data 2022.04.23
  * @description
- * resultURLprotocolCheck,
- * searchUrlTransfer
- * resultURLContentCheck
- * 함수 추가
- *
- * searchContainer에 있는 Form 태그 삭제 (필요없음)
- *
+
+ * XFrameByPass 적용
+ * Youtube, KaKao, Naver Tv  적용
+ * 일반 웹사이트는 XFrameByPass를 사용하고,
+ * Youtube 영상을 Embed 할 때는 XFrameByPass를 사용하지 않게 구현
  */
 
 import { socketInitFunc } from "./socket.js";
@@ -18,7 +16,18 @@ import { options } from "../../rtcClient.js";
 export const momentShareFunc = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
-    let clickCount = 0;
+
+    let convertURL;
+    let receiveURL;
+    let momentShare;
+    let scroll = false;
+    let mouse = false;
+    let iframeInit = false;
+    let searchResult;
+    let inputURL;
+    let bypass = "x-frame-bypass";
+    let scrollY = 0;
+    let rect;
 
     const momentShareBtn = document.querySelector("#momentShare");
     const momentShareIcon = document.querySelector(".fa-brain");
@@ -26,19 +35,27 @@ export const momentShareFunc = () => {
         "#local__video__container"
     );
 
-    const momentShareArea = document.createElement("div");
+    const momentShareArea = document.createElement("section");
+    const iframeContainer = document.createElement("section");
     const searchContainer = document.createElement("div");
     const searchInput = document.createElement("input");
     const searchInputBtn = document.createElement("div");
     const searchInputBtnIcon = document.createElement("i");
-    const momentShare = document.createElement("iframe");
-    const searchForm = document.createElement("form");
+
+    const navContainer = document.createElement("section");
+    const momentTabArea = document.createElement("div");
+
+    navContainer.id = "navContainer";
+    momentTabArea.id = "momentTabArea";
+
+    const momentContainer = document.createElement("span");
 
     searchInput.placeholder = "Enter a URL";
     searchInput.style.textAlign = "center";
-    momentShare.id = "momentShare-iframe";
-    momentShare.name = "momentShare";
+
     momentShareArea.id = "momentShareArea";
+    momentContainer.id = "momentContainer";
+
     searchContainer.id = "searchContainer";
     searchInput.id = "searchInput";
     searchInputBtn.id = "searchInputBtn";
@@ -46,11 +63,21 @@ export const momentShareFunc = () => {
 
     searchInputBtnIcon.className = "fas fa-search";
 
+    navContainer.append(searchContainer, momentTabArea);
     searchInputBtn.appendChild(searchInputBtnIcon);
     searchContainer.append(searchInput, searchInputBtn);
-    momentShareArea.append(searchContainer, momentShare);
-    momentShareArea.append(momentShare);
-    momentShare.frameborder = "0";
+
+    momentShareArea.append(navContainer, momentContainer);
+
+    momentTabArea.style.setProperty("height", "3rem");
+    momentTabArea.style.setProperty("width", "100%");
+    momentTabArea.style.setProperty("background", "#fff");
+    momentTabArea.style.setProperty("border", "2px solid #000");
+    momentTabArea.style.setProperty("display", "flex");
+    momentTabArea.style.setProperty("align-items", "center");
+    momentTabArea.style.setProperty("overflow-x", "auto");
+    momentTabArea.style.setProperty("position", "absolute");
+    momentTabArea.style.setProperty("z-index", "5");
 
     momentShareBtn.addEventListener("click", (e) => {
         momentShareActive = !momentShareActive;
@@ -63,7 +90,10 @@ export const momentShareFunc = () => {
         momentShareBtn.style.color = "rgb(165, 199, 236)";
         momentSocket.emit("join-web", options.channel);
 
-        mouseEventFunc();
+        iframeContainer.innerHTML = `<iframe id='momentShare-iframe'
+            name='momentShare' is='${bypass}' frameborder='0'
+            </iframe>`;
+        momentContainer.appendChild(iframeContainer);
     }
 
     function momentShareDisable() {
@@ -72,67 +102,98 @@ export const momentShareFunc = () => {
         momentSocket.emit("leave-web", options.channel);
     }
 
-    momentSocket.on("input_address", (address) => {
-        resultURLContentCheck(address);
-    });
-
     searchInputBtn.addEventListener("click", (e) => {
-        if (searchInput.value.length === 0) {
+        inputURL = searchInput.value;
+        if (inputURL.length === 0) {
             alert("Please enter your address.");
         } else {
-            searchUrlTransfer();
+            webShareLoad(inputURL);
+            searchInput.value = "";
         }
     });
 
     searchInput.addEventListener("keypress", (e) => {
+        inputURL = searchInput.value;
         if (e.key === "Enter") {
-            searchUrlTransfer();
-        } else {
-            return;
+            if (inputURL.length === 0) {
+                alert("Please enter your address.");
+            } else {
+                webShareLoad(inputURL);
+                searchInput.value = "";
+            }
         }
     });
 
-    function searchUrlTransfer(address) {
-        let resultURL;
-        let config;
-        if (address === null || address === undefined || address === "") {
-            resultURL = resultURLprotocolCheck();
-            axios.post("/urlSearch", null, { params: resultURL });
-            momentSocket.emit(
-                "submit_address",
-                resultURL,
-                (config = { peerID: options.uid, channel: options.channel })
-            );
+    /**
+     * @author 전형동
+     * @version 1.0
+     * @data 2022.04.23
+     * @description
+     * 처음 클라이언트에서 Iframe 로드하는 함수
+     */
+    function webShareLoad(url) {
+        // Youtube 와 같은 Iframe Embed 서비스인 경우 그냥 호출
+        if (
+            url.includes("/v/") ||
+            url.includes("embed") ||
+            url.includes("youtu.be") ||
+            url.includes("youtube") ||
+            url.includes("channel")
+        ) {
+            // IFrame 초기화
+            iframeInit = true;
+            // Iframe 생성 후 URL 삽입
+            webShareContainerLoad(url, iframeInit);
+            // URL 탭 생성 후 삽입
+            createMomentTabFunc(url);
+            // URL을 소켓에 전달
+            socketSubmitAddressEmit(url);
         } else {
-            resultURL = resultURLprotocolCheck(address);
-            axios.post("/urlSearch", null, { params: resultURL });
-            momentSocket.emit(
-                "submit_address",
-                resultURL,
-                (config = { peerID: options.uid, channel: options.channel })
-            );
+            iframeInit = false;
+            // Iframe 생성 후 URL 삽입
+            webShareContainerLoad(url, iframeInit);
+            // URL 탭 생성 후 삽입
+            createMomentTabFunc(url);
+            // URL을 소켓에 전달
+            socketSubmitAddressEmit(url);
         }
-
-        resultURLContentCheck(resultURL);
     }
 
     /**
      * @author 전형동
      * @version 1.0
-     * @data 2022.04.10
+     * @data 2022.04.23
      * @description
-     * resultURLContentCheck
-     * 리턴되는 URL의 컨텐츠 체크하는 함수
+     * Socket에 전달하는 함수
      */
+    function socketSubmitAddressEmit(url) {
+        momentSocket.emit("submit_address", {
+            peerID: options.uid,
+            channel: options.channel,
+            link: url,
+        });
+    }
 
-    function resultURLContentCheck(address) {
-        if (address.includes("youtube")) {
-            return (momentShare.src = address);
-        } else {
-            return (momentShare.src = "/site");
-        }
+    /**
+     * @author 전형동
+     * @version 1.0
+     * @data 2022.04.23
+     * @description
+     * URL 컨버트 후 Iframe에 삽입하는 함수
+     * Iframe Load 함수
+     */
+    function webShareContainerLoad(url, initState) {
+        iFrameInit(initState);
 
-        pageInnerAtagSelect();
+        let convertURL;
+        momentShare = document.querySelector("#momentShare-iframe");
+        convertURL = resultURLprotocolCheck(url);
+        let resultURL = `https://${convertURL.replace(
+            /^(https?:\/\/)?(www\.)?/,
+            ""
+        )}`;
+        console.log(resultURL);
+        momentShare.setAttribute("src", resultURL);
     }
 
     /**
@@ -143,22 +204,21 @@ export const momentShareFunc = () => {
      * resultURLprotocolCheck
      * 입력된 URL의 프로토콜 체크 함수
      */
-    function resultURLprotocolCheck(address) {
+    function resultURLprotocolCheck(url) {
         let returnUrl;
-        let url;
-
-        if (address) {
-            url = `https://${address.replace(/^(https?:\/\/)?(www\.)?/, "")}`;
-        } else {
-            url = `https://${searchInput.value.replace(
-                /^(https?:\/\/)?(www\.)?/,
-                ""
-            )}`;
-        }
 
         if (url.includes("youtube") || url.includes("youtu.be")) {
-            returnUrl = "https://" + youtubeUrlReplarce(url);
+            returnUrl = youtubeUrlReplarce(url);
             searchInput.value = "";
+            return returnUrl;
+        } else if (url.includes("google")) {
+            returnUrl = googleUrlReplace(url);
+            searchInput.value = "";
+            return returnUrl;
+        } else if (url.includes("tv.naver")) {
+            returnUrl = naverUrlReplace(url);
+            searchInput.value = "";
+            console.log(returnUrl);
             return returnUrl;
         } else {
             returnUrl = url;
@@ -166,6 +226,39 @@ export const momentShareFunc = () => {
             return returnUrl;
         }
     }
+
+    const naverUrlReplace = (url) => {
+        let channel;
+        let originalURL;
+        let createURL;
+        let vSearch = url.indexOf("/v/");
+        let listSearch = url.indexOf("/list/");
+        let urlLength = url.length;
+
+        try {
+            if (vSearch) {
+                channel = url.substring(vSearch + 3, urlLength);
+                originalURL = url.substring(0, vSearch);
+                createURL = `${originalURL}/embed/${channel}?autoPlay=true`;
+
+                return createURL;
+            } else if (vSearch && listSearch) {
+                channel = url.substring(vSearch + 3, listSearch);
+                originalURL = url.substring(0, vSearch);
+                createURL = `${originalURL}/embed/${channel}?autoPlay=true`;
+
+                return createURL;
+            } else {
+                return;
+            }
+        } catch (err) {
+            console.log("Naver TV Error::", err);
+        }
+    };
+
+    const googleUrlReplace = (url) => {
+        return url + "/search?igu=1";
+    };
 
     const youtubeUrlReplarce = (search) => {
         let str = search;
@@ -175,80 +268,256 @@ export const momentShareFunc = () => {
         if (match && match[2].length == 11) {
             console.log(match[2]);
             let sepratedID = match[2];
-            let embedUrl = "www.youtube.com/embed/" + sepratedID;
+            let embedUrl =
+                "www.youtube.com/embed/" + sepratedID + "?autoplay=1&mute=1";
             let result = search.replace(str, embedUrl);
             console.log(result);
             return result;
         }
     };
 
-    let clickIframe = window.setInterval(checkFocus, 100);
+    /**
+     * @author 전형동
+     * @version 1.0
+     * @data 2022.04.23
+     * @description
+     * 스크롤 좌표값 구하는 함수
+     */
 
-    function mouseEventFunc() {
-        let mouseEventObj = {
-            iframeMouseOver: false,
-        };
+    function currentFrameAbsolutePosition() {
+        let currentWindow = window;
+        let currentParentWindow;
+        let positions = [];
+        let rect;
 
-        window.addEventListener("blur", async () => {
-            if (mouseEventObj.iframeMouseOver) {
-                console.log("Wow! Iframe Click!", clickIframe);
-            }
-        });
-
-        momentShare.contentWindow.addEventListener(
-            "mouseover",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = true;
-                console.log("mouseover", e.clientX);
-                console.log("mouseover", e.clientY);
+        while (currentWindow !== window.top) {
+            currentParentWindow = currentWindow.parent;
+            for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
+                if (currentParentWindow.frames[idx] === currentWindow) {
+                    for (let frameElement of currentParentWindow.document.getElementsByTagName(
+                        "iframe"
+                    )) {
+                        if (frameElement.contentWindow === currentWindow) {
+                            rect = frameElement.getBoundingClientRect();
+                            positions.push({ x: rect.x, y: rect.y });
+                        }
+                    }
+                    currentWindow = currentParentWindow;
+                    break;
+                }
+        }
+        return positions.reduce(
+            (accumulator, currentValue) => {
+                return {
+                    x: accumulator.x + currentValue.x,
+                    y: accumulator.y + currentValue.y,
+                };
             },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
-            "mouseup",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = false;
-                console.log("mouseup", e.clientX);
-                console.log("mouseup", e.clientY);
-            },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
-            "mousemove",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = true;
-                console.log("mousemove", e.clientX);
-                console.log("mousemove", e.clientY);
-            },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
-            "mouseout",
-            async (e) => {
-                mouseEventObj.iframeMouseOver = false;
-            },
-            false
-        );
-
-        momentShare.contentWindow.addEventListener(
-            "wheel",
-            async (e) => {
-                const delta = Math.sign(e.deltaY);
-                console.info(delta);
-            },
-            false
+            { x: 0, y: 0 }
         );
     }
 
-    function checkFocus() {
-        if (document.activeElement == momentShare) {
-            console.log("clicked " + clickCount++);
-            window.focus();
+    function handlerMouseEventFunc(e) {
+        e.preventDefault();
+        momentShare.contentWindow.addEventListener(
+            "click",
+            (e) => {
+                e.preventDefault();
+                mouse = true;
+                momentSocket.emit("active_click", {
+                    peer: options.uid,
+                    channel: options.channel,
+                    link: null,
+                });
+            },
+            false
+        );
+
+        /**
+         * Scroll 시에 심하게 흔들려서 일단 주석처리
+         */
+
+        // momentShare.contentWindow.addEventListener(
+        //     "scroll",
+        //     (e) => {
+        //         e.preventDefault();
+        //         rect = currentFrameAbsolutePosition();
+        //         scrollY = e.currentTarget.scrollY + rect.y;
+        //         momentSocket.emit("active_scroll", {
+        //             peer: options.uid,
+        //             channel: options.channel,
+        //             scrollY: scrollY,
+        //         });
+        //         scroll = true;
+        //     },
+        //     false
+        // );
+    }
+
+    /**
+     * @author 전형동
+     * @version 1.0
+     * @data 2022.04.23
+     * @description
+     * Tab 생성 함수
+     */
+    function createMomentTabFunc(url) {
+        const momentTab = document.createElement("span");
+
+        momentTab.id = "momentTab";
+        momentTab.style.setProperty("margin", "0.4rem");
+        momentTab.style.setProperty("padding", "0.2rem");
+        momentTab.style.setProperty("background", "#182843");
+        momentTab.style.setProperty("color", "#fff");
+        momentTab.style.setProperty("cursor", "pointer");
+        momentTab.style.setProperty("white-space", "nowrap");
+        momentTab.style.setProperty("overflow", "hidden");
+        momentTab.style.setProperty("text-overflow", "ellipsis");
+        momentTab.style.setProperty("width", "10rem");
+        momentTab.style.setProperty("text-align", "center");
+
+        if (url !== null || url !== "" || url !== undefined) {
+            momentTab.textContent = url;
+            momentTabArea.append(momentTab);
         }
     }
 
-    function mousePointerFocus() {}
+    // Tab Click Event 함수
+    $(document).on("click", "#momentTab", (e) => {
+        let tabURL = e.target.innerText;
+        try {
+            if (
+                tabURL.includes("/v/") ||
+                tabURL.includes("embed") ||
+                tabURL.includes("youtu.be") ||
+                tabURL.includes("youtube") ||
+                tabURL.includes("channel")
+            ) {
+                iframeInit = true;
+                webShareContainerLoad(tabURL, iframeInit);
+            } else {
+                iframeInit = false;
+                webShareContainerLoad(tabURL, iframeInit);
+            }
+        } catch (e) {
+            console.log("resultURLContentCheck Error : ", e);
+        }
+    });
+
+    /**
+     * @author 전형동
+     * @version 1.0
+     * @data 2022.04.23
+     * @description
+     * Socket 전달 받는 함수
+     */
+    // Receive Socket
+    momentSocket.on("receive_click", (mouseEvent) => {
+        console.log("receive click :::: ", mouseEvent.link);
+        webShareContainerLoad(mouseEvent.link, iframeInit);
+    });
+
+    // momentSocket.on("receive_scroll", (mouseEvent) => {
+    //     momentShare = document.querySelector("#momentShare-iframe");
+
+    //     let scrollY = 0;
+    //     rect = currentFrameAbsolutePosition();
+    //     scrollY = mouseEvent.scrollY + rect.y;
+    //     momentShare.contentWindow.scrollTo(0, scrollY);
+    //     scroll = true;
+    // });
+
+    momentSocket.on("input_address", (url) => {
+        createMomentTabFunc(url);
+        webShareContainerLoad(url, iframeInit);
+    });
+
+    /**
+     * @author 전형동
+     * @version 1.0
+     * @data 2022.04.23
+     * @description
+     * ByPass 스크립트 로드 함수
+     */
+    // Dynamic Scripts Load
+    function xFrameScriptFirstLoad() {
+        const script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute(
+            "src",
+            "https://unpkg.com/@ungap/custom-elements-builtin"
+        );
+        const body = document.body;
+
+        body.appendChild(script);
+    }
+
+    function xFrameScriptSecondLoad() {
+        const script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", "../../../lib/x-frame-bypass.js");
+        const body = document.body;
+
+        body.appendChild(script);
+    }
+
+    /**
+     * @author 전형동
+     * @version 1.0
+     * @data 2022.04.23
+     * @description
+     *  XFrame 스크립트 제거 함수
+     */
+
+    function xFrameScriptRemove() {
+        let selectScript = document.querySelectorAll("script");
+        momentShare = document.querySelector("#momentShare-iframe");
+        let searchXframe;
+        let searchElementsBuiltin;
+        for (let i = 0; i < selectScript.length; i++) {
+            searchXframe = selectScript[i].src.includes("bypass");
+            searchElementsBuiltin = selectScript[i].src.includes("builtin");
+
+            if (searchXframe === true || searchElementsBuiltin === true) {
+                console.log(selectScript[i]);
+                selectScript[i].remove();
+
+                console.log("bypass remove");
+            }
+        }
+    }
+
+    /**
+     * @author 전형동
+     * @version 1.0
+     * @data 2022.04.23
+     * @description
+     * IFrame 초기화 함수
+     */
+    function iFrameInit(init) {
+        if (momentContainer.childNodes.length > 0) {
+            momentContainer.removeChild(iframeContainer);
+        }
+
+        if (init === false) {
+            xFrameScriptFirstLoad();
+            xFrameScriptSecondLoad();
+            iframeContainer.innerHTML = `<iframe id='momentShare-iframe'
+            name='momentShare' is='${bypass}' frameborder='0'
+            </iframe>`;
+            momentContainer.appendChild(iframeContainer);
+        }
+
+        if (init === true) {
+            xFrameScriptRemove();
+            iframeContainer.innerHTML = `<iframe id='momentShare-iframe'
+            name='momentShare' frameborder='0'
+            </iframe>`;
+            momentContainer.appendChild(iframeContainer);
+        }
+
+        // Iframe 내부 이벤트 로드
+        momentShare = document.querySelector("#momentShare-iframe");
+        momentShare.addEventListener("load", handlerMouseEventFunc, false);
+    }
 };

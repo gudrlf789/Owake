@@ -1,87 +1,128 @@
+import { socketInitFunc } from "./socket.js";
+/**
+ * @Author 박형길
+ * @Date 2022 04 13
+ * @Description
+ * File Indentifier TrustOS API 적용
+ */
+
 export const fileHash = () => {
-  let hashSocket = io();
-  let formData = new FormData();
-  let jwt;
+    let hashSocket = socketInitFunc();
+    let formData = new FormData();
 
-  const file1 = document.getElementById("file1");
-  const file2 = document.getElementById("file2");
-  const hashText1 = document.getElementById("hashText1");
-  const hashText2 = document.getElementById("hashText2");
-  const compareResult = document.getElementById("compareResult");
+    const selectFile1 = document.getElementById("selectFile_1");
+    const selectFile2 = document.getElementById("selectFile_2");
+    const originHash = document.getElementById("originHash");
+    const remoteHash = document.getElementById("remoteHash");
+    const selectOriginalInput = document.getElementById("selectOriginalInput");
+    const selectComparisonInput = document.getElementById("selectComparisonInput");
+    const compareResult = document.getElementById("compareResult");
+    const clickVerifyFile = document.getElementById("clickVerifyFile");
+    const originCopy = document.getElementById("originCopy");
+    const comparisonCopy = document.getElementById("comparisonCopy");
+    const channelName = window.sessionStorage.getItem("channel");
+    const loginData = {
+        id: "",
+        password: "",
+    };
 
-  $(() => {
-    $("#btn1").attr("disabled", true);
-    $("#btn2").attr("disabled", true);
-    compareResult.value = "";
-  });
+    $(() => {
+        $("#selectFile_1").attr("disabled", true);
+        $("#selectFile_2").attr("disabled", true);
+        $("#originHash").attr("disabled", true);
+        $("#remoteHash").attr("disabled", true);
+        compareResult.value = "";
+    });
 
-  const loginData = {
-    id: "",
-    password: "",
-  };
-
-  function makeFileToHash(data, textHtml) {
-    if(formData.has("fileInput")){
-      formData.delete("fileInput");
-    }
-    formData.append("fileInput", data);
-
-    axios.post('https://pro.virtualtrust.io/cert/certificate/file/hash', formData, {
-        headers: {
-          "Authorization": 'Bearer ' + jwt,
-          "Content-Type": 'multipart/form-data'
+    function makeFileToHash(data, textHtml) {
+        if (formData.has("fileInput")) {
+            formData.delete("fileInput");
         }
-      })
-      .then(res => {
-        hashSocket.emit("submit_hash", res.data.output.file_hash, textHtml.id, window.sessionStorage.getItem("channel"));
-        textHtml.value = res.data.output.file_hash;
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+        formData.append("fileInput", data);
 
-  hashSocket.on("input_hash", (data) => {
-    $(`#${data.textHtmlId}`).val(`${data.hash}`);
-  });
+        axios.post("/channel/hashFile", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        }).then((res) => {
+            hashSocket.emit(
+                "submit_hash",
+                res.data.hashCode,
+                textHtml.id,
+                channelName
+            );
+            textHtml.value = res.data.hashCode;
+        }).catch((err) => {
 
-  $("#login").click((e) => {
-    hashSocket.emit("join-hash", window.sessionStorage.getItem("channel"));
+        });
+    };
 
-    axios.post('/channel/jwt', loginData)
-      .then(res => {
-        jwt = res.data.jwt;
-        $("#btn1").attr("disabled", false);
-        $("#btn2").attr("disabled", false);
-      })
-      .catch(err => {
-        alert(err);
-      });
-  });
+    originHash.addEventListener("click", (e) => {
+        makeFileToHash(selectFile1.files[0], selectOriginalInput);
+    });
 
-  $("#btn1").click((e) => {
-    makeFileToHash(file1.files[0], hashText1)
-  });
+    remoteHash.addEventListener("click", (e) => {
+        makeFileToHash(selectFile2.files[0], selectComparisonInput);
+    });
 
-  $("#btn2").click((e) => {
-    makeFileToHash(file2.files[0], hashText2)
-  });
+    clickVerifyFile.addEventListener("click", (e) => {
+        compareResult.style.fontWeight = "bold";
 
-  $("#compare").click((e) => {
-    if(hashText1.value === hashText2.value) {
-      compareResult.value = "Same File";
-    }else {
-      compareResult.value = "Different File";
-    }
-  });
+        if (selectOriginalInput.value === selectComparisonInput.value) {
+            compareResult.style.color = "green";
+            compareResult.value = "Same File";
+        } else {
+            compareResult.style.color = "red";
+            compareResult.value = "Different File";
+        }
+    });
 
-  $("#finish").click((e) => {
-    hashSocket.emit("leave-hash", window.sessionStorage.getItem("channel"));
-    file1.value = "";
-    file2.value = "";
-    hashText1.value = "";
-    hashText2.value = "";
-    $("#btn1").attr("disabled", true);
-    $("#btn2").attr("disabled", true);
-  });
+    originCopy.addEventListener("click", (e) => {
+        navigator.clipboard.writeText(selectOriginalInput.value);
+        alert("Copied the text: " + selectOriginalInput.value);
+    });
+
+    comparisonCopy.addEventListener("click", (e) => {
+        navigator.clipboard.writeText(selectComparisonInput.value);
+        alert("Copied the text: " + selectComparisonInput.value);
+    });
+
+    $("#syncBtn").click((e) => {
+        hashSocket.emit("join-hash", channelName);
+        axios
+            .post("/channel/jwt", loginData)
+            .then((res) => {
+                if(res.data.success){
+                    alert("Sync is completed");
+                    $("#syncBtn").attr("disabled", true);
+                    $("#selectFile_1").attr("disabled", false);
+                    $("#selectFile_2").attr("disabled", false);
+                    $("#originHash").attr("disabled", false);
+                    $("#remoteHash").attr("disabled", false);
+                }else{
+                    alert("Fail to connect with other users");
+                }
+                
+            })
+            .catch((err) => {
+                alert(err);
+            });
+    });
+
+    $("#closeBtn").click((e) => {
+        hashSocket.emit("leave-hash", channelName);
+        selectFile1.value = "";
+        selectFile2.value = "";
+        selectOriginalInput.value = "";
+        selectComparisonInput.value = "";
+        $("#syncBtn").attr("disabled", false);
+        $("#selectFile_1").attr("disabled", true);
+        $("#selectFile_2").attr("disabled", true);
+        $("#originHash").attr("disabled", true);
+        $("#remoteHash").attr("disabled", true);
+    });
+
+    hashSocket.on("input_hash", (data) => {
+        $(`#${data.textHtmlId}`).val(`${data.hash}`);
+    });
 };
