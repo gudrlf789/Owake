@@ -13,7 +13,7 @@
 import { socketInitFunc } from "./socket.js";
 import { options } from "../../rtcClient.js";
 
-export const momentShareFunc = () => {
+export const momentShareFunc2 = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
 
@@ -29,7 +29,7 @@ export const momentShareFunc = () => {
     let scrollY = 0;
     let rect;
 
-    const momentShareBtn = document.querySelector("#momentShare");
+    const momentShareBtn = document.querySelector("#momentShare2");
     const momentShareIcon = document.querySelector(".fa-brain");
     const localVideoContainer = document.querySelector(
         "#local__video__container"
@@ -69,11 +69,12 @@ export const momentShareFunc = () => {
 
     momentShareArea.append(navContainer, momentContainer);
 
-    momentTabArea.style.setProperty("height", "3rem");
+    momentTabArea.style.setProperty("height", "auto");
     momentTabArea.style.setProperty("width", "100%");
     momentTabArea.style.setProperty("background", "#fff");
+    momentTabArea.style.setProperty("padding", "5px");
     momentTabArea.style.setProperty("border", "2px solid #000");
-    momentTabArea.style.setProperty("display", "flex");
+    momentTabArea.style.setProperty("display", "-webkit-box");
     momentTabArea.style.setProperty("align-items", "center");
     momentTabArea.style.setProperty("overflow-x", "auto");
     momentTabArea.style.setProperty("position", "absolute");
@@ -284,38 +285,38 @@ export const momentShareFunc = () => {
      * 스크롤 좌표값 구하는 함수
      */
 
-    function currentFrameAbsolutePosition() {
-        let currentWindow = window;
-        let currentParentWindow;
-        let positions = [];
-        let rect;
+    // function currentFrameAbsolutePosition() {
+    //     let currentWindow = window;
+    //     let currentParentWindow;
+    //     let positions = [];
+    //     let rect;
 
-        while (currentWindow !== window.top) {
-            currentParentWindow = currentWindow.parent;
-            for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
-                if (currentParentWindow.frames[idx] === currentWindow) {
-                    for (let frameElement of currentParentWindow.document.getElementsByTagName(
-                        "iframe"
-                    )) {
-                        if (frameElement.contentWindow === currentWindow) {
-                            rect = frameElement.getBoundingClientRect();
-                            positions.push({ x: rect.x, y: rect.y });
-                        }
-                    }
-                    currentWindow = currentParentWindow;
-                    break;
-                }
-        }
-        return positions.reduce(
-            (accumulator, currentValue) => {
-                return {
-                    x: accumulator.x + currentValue.x,
-                    y: accumulator.y + currentValue.y,
-                };
-            },
-            { x: 0, y: 0 }
-        );
-    }
+    //     while (currentWindow !== window.top) {
+    //         currentParentWindow = currentWindow.parent;
+    //         for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
+    //             if (currentParentWindow.frames[idx] === currentWindow) {
+    //                 for (let frameElement of currentParentWindow.document.getElementsByTagName(
+    //                     "iframe"
+    //                 )) {
+    //                     if (frameElement.contentWindow === currentWindow) {
+    //                         rect = frameElement.getBoundingClientRect();
+    //                         positions.push({ x: rect.x, y: rect.y });
+    //                     }
+    //                 }
+    //                 currentWindow = currentParentWindow;
+    //                 break;
+    //             }
+    //     }
+    //     return positions.reduce(
+    //         (accumulator, currentValue) => {
+    //             return {
+    //                 x: accumulator.x + currentValue.x,
+    //                 y: accumulator.y + currentValue.y,
+    //             };
+    //         },
+    //         { x: 0, y: 0 }
+    //     );
+    // }
 
     function handlerMouseEventFunc(e) {
         e.preventDefault();

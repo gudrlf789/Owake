@@ -4,7 +4,8 @@ import { fileDelivery } from "./parts/channel/fileDelivery.js";
 import { fileDeliverySafari } from "./parts/channel/fileDelivery-safari.js";
 // P2P 개발할 때까지 중단
 // import { fileShare } from "./parts/channel/fileShare.js";
-import { momentShareFunc } from "./parts/channel/momentShare.js";
+import { momentShareFunc1 } from "./parts/channel/momentShare1.js";
+import { momentShareFunc2 } from "./parts/channel/momentShare2.js";
 import { muteUtilsFunc } from "./parts/channel/muteUtils.js";
 import { optionsBtn } from "./parts/channel/options-btn.js";
 import { recodingDeviceCtrl } from "./parts/channel/devviceSettings.js";
@@ -42,7 +43,8 @@ if (!isSafari) {
 }
 
 // fileShare();
-momentShareFunc();
+momentShareFunc1();
+momentShareFunc2();
 optionsBtn();
 recodingDeviceCtrl();
 remoteDisplay();
