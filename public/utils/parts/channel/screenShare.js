@@ -10,12 +10,18 @@
 
 import { options } from "../../rtcClient.js";
 
+let openYN = "N";
+
 export const screenShareFunc = () => {
     const screenShareBtn = document.querySelector("#shareScreen");
     screenShareBtn.addEventListener("click", screenShareJoin);
 };
 
 async function screenShareJoin() {
+    if (openYN !== "N") {
+        return alert("Please close screen share which is opened");
+    }
+
     const screenClient = AgoraRTC.createClient({
         mode: "rtc",
         codec: "vp8",
@@ -43,7 +49,7 @@ async function screenShareJoin() {
         },
         "auto"
     );
-
+    openYN = "Y";
     if (screenTrack[1]) {
         await screenClient.publish([screenTrack[0], screenTrack[1]]);
         screenTrack[0].on("track-ended", () => {
@@ -70,4 +76,5 @@ function LeaveShareScreen(screenClient, screenTrack) {
     }
 
     screenClient.leave();
+    openYN = "N";
 }
