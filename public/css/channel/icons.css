@@ -43,13 +43,11 @@
 }
 
 .logo {
-    background-image: url("../../../32h/navbtn.png");
-}
-
-.logo > h3 {
-    color: var(--main-light);
-}
-
-.img__logo {
-    width: 80%;
+    display: block;
+    background-image: url("../../../32h/logo.png");
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    background-position: left;
+    margin-left: 2rem;
 }

@@ -145,52 +145,6 @@ html {
     overflow: auto;
 }
 
-.options {
-    padding: 1rem;
-    display: flex;
-    background-color: var(--main-darklg);
-    height: calc(var(--vh, 1vh) * 8);
-    justify-content: center;
-}
-
-.options__left {
-    display: flex;
-}
-
-.options__right {
-    margin-left: auto;
-}
-
-.options__button {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* background-color: var(--button-color-Cobalt-Blue); */
-    height: 50px;
-    border-radius: 5px;
-    color: var(--main-light);
-    font-size: 1.2rem;
-    width: 50px;
-    margin: 0 0.5rem;
-    cursor: pointer;
-}
-
-.options__button > i {
-    color: lightblue;
-}
-
-.options__button span {
-    font-size: small;
-    color: #fff;
-    text-shadow: 1px 1px 2px #325967;
-}
-
-.options__button:hover {
-    /* color: rgb(165, 199, 236); */
-    box-shadow: 5px 3px 3px black;
-}
-
 .background__red {
     background-color: #f6484a;
 }
@@ -346,25 +300,6 @@ video:hover {
 @media (max-width: 768px) {
     .main__left {
         width: 100%;
-    }
-
-    .options {
-        position: absolute;
-        right: 0;
-        bottom: 50px;
-        background-color: transparent !important;
-        flex-direction: column;
-        z-index: 20;
-    }
-
-    .options__left {
-        display: block !important;
-        margin-bottom: 5px;
-    }
-
-    .options__button {
-        margin-bottom: 4px !important;
-        background-color: transparent !important;
     }
 
     #local__video__container {
