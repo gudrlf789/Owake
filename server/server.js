@@ -86,6 +86,7 @@ app.use(express.static(path.join(__dirname, "../public/lib/p5")));
 app.use(express.static(path.join(__dirname, "../public/lib/p5/addons")));
 app.use(express.static(path.join(__dirname, "../public/utils")));
 app.use(express.static(path.join(__dirname, "../public/utils/parts")));
+app.use(express.static(path.join(__dirname, "../public/icons")));
 app.use(express.static(path.join(__dirname, "../public/img/favicon")));
 app.use(express.static(path.join(__dirname, "../public/img/button")));
 app.use(express.static(path.join(__dirname, "../public/img/channel")));

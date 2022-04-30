@@ -1,0 +1,9 @@
+#delivery_container {
+    position: absolute;
+    display: none;
+    z-index: 5;
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    cursor: move;
+}

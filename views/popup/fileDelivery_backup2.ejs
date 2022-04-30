@@ -1,0 +1,30 @@
+<div class="modal fade" id="fileshareModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">File Delivery</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body fileShare__container">
+                <form id="sendForm" class="col-sm-6">
+                    <div class="form-group filebox">
+                        <input id="fileInput" name="file[]" type="file" class="form-control" multiple /><br />
+                        <input type="button" id="sendBtn" class="btn btn-default form-control fileDeliveryBtn"
+                            value="Send"></input><br /><br />
+                        <label for="">Key: </label> <span id="key" class="text-success"></span>
+                    </div>
+                </form>
+                <form id="receiveForm" class="col-sm-6">
+                    <div class="form-group">
+                        <input id="keyInput" class="form-control" /><br />
+                        <input type="button" id="receiveBtn" class="btn btn-default form-control fileDeliveryBtn"
+                            value="Recevie"></input><br /><br />
+                        <label for="">Status: </label> <span id="status" class="text-success"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
