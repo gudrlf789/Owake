@@ -2,6 +2,7 @@ const { Server } = require("socket.io");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const morgan = require("morgan");
 const path = require("path");
 const Logger = require("./Logger");
 const bodyParser = require("body-parser");
@@ -75,6 +76,7 @@ app.use(
 );
 
 app.use(redirectSec);
+app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

@@ -9,6 +9,8 @@
 @import "./channel/swiper.css"; */
 @import "./channel/content.css";
 @import "./channel/fileDelivery.css";
+@import "./channel/navigation.css";
+@import "./channel/icons.css";
 
 @font-face {
     font-family: "NEXON Lv2 Gothic";
@@ -60,13 +62,6 @@ html {
     position: relative;
     width: 100%;
     background-color: var(--main-darklg);
-}
-.logo {
-    width: 150px;
-    margin: 10px;
-    margin-left: 20px;
-    align-items: center;
-    display: flex;
 }
 
 .nav__container {
@@ -126,14 +121,6 @@ html {
     color: skyblue;
 }
 
-.logo > h3 {
-    color: var(--main-light);
-}
-
-.img__logo {
-    width: 80%;
-}
-
 .main {
     position: relative;
     overflow: hidden;
@@ -162,6 +149,7 @@ html {
     padding: 1rem;
     display: flex;
     background-color: var(--main-darklg);
+    height: calc(var(--vh, 1vh) * 8);
     justify-content: center;
 }
 
