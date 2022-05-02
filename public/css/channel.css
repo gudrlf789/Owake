@@ -356,10 +356,10 @@ video:hover {
     #shareScreen {
         display: none;
     }
-    #speechRecognition {
+    /* #speechRecognition {
         display: none;
-    }
-    .owake-btn {
+    } */
+    /* .owake-btn {
         display: block;
         padding: 1rem;
         width: 67px;
@@ -371,7 +371,7 @@ video:hover {
         cursor: pointer;
         filter: invert(28%) sepia(11%) saturate(2582%) hue-rotate(147deg)
             brightness(94%) contrast(85%);
-    }
+    } */
 }
 
 /* Animation */

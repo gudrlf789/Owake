@@ -86,22 +86,26 @@
 }
 
 @media (max-width: 768px) {
-    .options {
+    /* .options {
         position: absolute;
         right: 0;
         bottom: 50px;
         background-color: transparent !important;
         flex-direction: column;
         z-index: 20;
+    } */
+
+    .options {
+        display: flex;
     }
 
     .options__left {
         display: block !important;
-        margin-bottom: 5px;
+        /* margin-bottom: 5px; */
     }
 
     .options__button {
-        margin-bottom: 4px !important;
-        background-color: transparent !important;
+        /* margin-bottom: 4px !important;
+        background-color: transparent !important; */
     }
 }
