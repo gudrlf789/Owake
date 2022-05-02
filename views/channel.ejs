@@ -124,83 +124,82 @@
         </div>
     </div> -->
 
-    <div class="options">
+    <div class="top__nav__container">
+        <div class="btn__container">
+            <div id="nav__btn"></div>
+        </div>
+        <div id="leave" class="options__button">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Leave</span>
+        </div>
+    </div>
 
+    <div class="options">
         <div class="logo-container">
             <span class="logo"></span>
         </div>
 
-        <div class="btn__container">
-            <div id="nav__btn"></div>
-        </div>
-
-        <div class="options__left swiper navSwiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div id="muteVideo" class="options__button">
-                        <i id="videoIcon" class="fas fa-video"></i>
-                        <!-- <span>Cam</span> -->
-                    </div>
-                    <div id="muteAudio" class="options__button">
-                        <i id="audioIcon" class="fa fa-microphone"></i>
-                        <!-- <span>Mic</span> -->
-                    </div>
-                    <div id="showChat" class="options__button">
-                        <i class="fa fa-comment"></i>
-                        <!-- <span>Chat</span> -->
-                    </div>
-                    <div id="shareScreen" class="options__button">
-                        <i class="fas fa-retweet"></i>
-                        <!-- <span>Screen</span> -->
-                    </div>
-                    <div id="users" class="options__button">
-                        <i class="fas fa-users"></i>
-                        <!-- <span>Users</span> -->
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div id="momentShare1" class="options__button">
-                        <i class="fab fa-connectdevelop"></i>
-                        <!-- <span>Web</span> -->
-                    </div>
-                    <!-- <div id="momentShare2" class="options__button">
+        <section class="sub__options options__left" hidden=true>
+            <div id="momentShare1" class="options__button">
+                <i class="fab fa-connectdevelop"></i>
+                <!-- <span>Web</span> -->
+            </div>
+            <!-- <div id="momentShare2" class="options__button">
                 <i class="fab fa-connectdevelop"></i>
                 <span>Web2</span>
             </div> -->
-                    <!-- <div id="fileShareBtn" class="options__button">
+            <!-- <div id="fileShareBtn" class="options__button">
                 <i class="fab fa-creative-commons-share"></i>
                 <span>FShare</span>
             </div> -->
-                    <!-- 
+            <!-- 
             <div id="textShare" class="options__button">
                 <i class="fas fa-file-alt"></i>
                 <span>TShare</span>
             </div> 
             -->
-                    <div id="whiteBoard" class="options__button">
-                        <i class="fas fa-palette"></i>
-                        <!-- <span>WhiteBoard</span> -->
-                    </div>
-                    <div class="options__button" id="fileDeliveryBtn">
-                        <i class="far fa-folder-open"></i>
-                        <!-- <span>File</span> -->
-                    </div>
-                    <div class="options__button" id="deviceSettingBtn" data-toggle="modal"
-                        data-target="#deviceSettingModal">
-                        <i class="fas fa-cog"></i>
-                        <!-- <span>Device</span> -->
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="options__button" id="fileHashBtn" data-toggle="modal" data-target="#fileHashModal">
-                        <i class="fas fa-file-invoice" aria-hidden="true"></i>
-                        <!-- <span>Identifier</span> -->
-                    </div>
-                    <div id="contentShare" class="options__button">
-                        <i class="fas fa-exchange-alt"></i>
-                        <!-- <span>contents</span> -->
-                    </div>
-                </div>
+            <div id="whiteBoard" class="options__button">
+                <i class="fas fa-palette"></i>
+                <!-- <span>WhiteBoard</span> -->
+            </div>
+            <div class="options__button" id="fileDeliveryBtn">
+                <i class="far fa-folder-open"></i>
+                <!-- <span>File</span> -->
+            </div>
+            <div class="options__button" id="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal">
+                <i class="fas fa-cog"></i>
+                <!-- <span>Device</span> -->
+            </div>
+            <div class="options__button" id="fileHashBtn" data-toggle="modal" data-target="#fileHashModal">
+                <i class="fas fa-file-invoice" aria-hidden="true"></i>
+                <!-- <span>Identifier</span> -->
+            </div>
+            <div id="contentShare" class="options__button">
+                <i class="fas fa-exchange-alt"></i>
+                <!-- <span>contents</span> -->
+            </div>
+        </section>
+
+        <div class="main__options options__left">
+            <div id="muteVideo" class="options__button">
+                <i id="videoIcon" class="fas fa-video"></i>
+                <!-- <span>Cam</span> -->
+            </div>
+            <div id="muteAudio" class="options__button">
+                <i id="audioIcon" class="fa fa-microphone"></i>
+                <!-- <span>Mic</span> -->
+            </div>
+            <div id="showChat" class="options__button">
+                <i class="fa fa-comment"></i>
+                <!-- <span>Chat</span> -->
+            </div>
+            <div id="shareScreen" class="options__button">
+                <i class="fas fa-retweet"></i>
+                <!-- <span>Screen</span> -->
+            </div>
+            <div id="users" class="options__button">
+                <i class="fas fa-users"></i>
+                <!-- <span>Users</span> -->
             </div>
         </div>
 
@@ -241,14 +240,6 @@
 
     <!-- Scripts -->
     <%- include("./jsparts/channel-parts") %>
-        <script>
-            let swiper = new Swiper(".navSwiper", {
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            });
-        </script>
 </body>
 
 </html>

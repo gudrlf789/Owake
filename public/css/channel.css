@@ -36,11 +36,13 @@
 }
 
 :root {
-    --main-darklg: #1d2635;
+    /* --main-darklg: #1d2635; */
+    --main-darklg: #282833;
     --main-dark: #161d29;
     --primary-color: #2f80ec;
     --main-light: #eeeeee;
     --button-color-Cobalt-Blue: #3b5682;
+    /* --main-color: #282833; */
     font-family: "Poppins", sans-serif;
 }
 

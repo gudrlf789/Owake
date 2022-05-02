@@ -22,12 +22,11 @@ import { SwiperFunc } from "./parts/channel/swiper.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 
-const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
-const fileDeliveryContainer = document.querySelector("#delivery_container");
-
 mobileDisplayCtr();
 f12defense();
 
+const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
+const fileDeliveryContainer = document.querySelector("#delivery_container");
 let deliveryActive = false;
 
 let isSafari =
@@ -147,14 +146,14 @@ momentShareFunc1();
 // momentShareFunc2();
 optionsBtn();
 recodingDeviceCtrl();
-remoteDisplay();
+// remoteDisplay();
 screenShareFunc();
 whiteBoardFunc();
 mobileReflashClose();
 responsiveFunc();
-copyInfo();
+// copyInfo();
 browserEvent();
-gridView();
+// gridView();
 muteUtilsFunc();
 // shareEditerFunc();--------------------- 서버에 올리면 Lisence 문제로 사용 불가능 구매해야 됨.
 SwiperFunc();

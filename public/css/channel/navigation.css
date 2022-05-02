@@ -1,5 +1,16 @@
 @import url("https://unpkg.com/swiper/swiper-bundle.min.css");
 
+:root {
+    /* --main-darklg: #1d2635; */
+    --main-darklg: #282833;
+    --main-dark: #161d29;
+    --primary-color: #2f80ec;
+    --main-light: #eeeeee;
+    --button-color-Cobalt-Blue: #3b5682;
+    /* --main-color: #282833; */
+    font-family: "Poppins", sans-serif;
+}
+
 .options {
     position: relative;
     /* padding: 1rem; */
@@ -7,12 +18,13 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     background-color: var(--main-darklg);
-    height: calc(var(--vh, 1vh) * 8);
+    height: calc(var(--vh, 1vh) * 5);
     justify-content: center;
 }
 
 .options__left {
     display: flex;
+    align-items: center;
 }
 
 .options__right {
@@ -35,7 +47,7 @@
 }
 
 .options__button > i {
-    color: lightblue;
+    color: #fff;
 }
 
 .options__button span {
@@ -95,13 +107,21 @@
         z-index: 20;
     } */
 
-    .options {
+    .top__nav__container {
+        position: relative;
         display: flex;
+        background-color: var(--main-darklg);
+        height: calc(var(--vh, 1vh) * 3);
+        justify-content: right;
     }
 
-    .options__left {
-        display: block !important;
-        /* margin-bottom: 5px; */
+    .sub__options {
+        position: absolute;
+        z-index: 50;
+    }
+
+    .options {
+        display: flex;
     }
 
     .options__button {

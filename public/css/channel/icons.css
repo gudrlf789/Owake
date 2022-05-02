@@ -75,7 +75,7 @@
         background-image: url("../../32h/navbtn.png");
         background-repeat: no-repeat;
         background-position: center;
-        top: 3rem;
+        top: 0;
         z-index: 100;
     }
 }

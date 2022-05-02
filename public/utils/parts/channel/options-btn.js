@@ -1,13 +1,24 @@
 export const optionsBtn = () => {
-    const owakeBtn = document.createElement("img");
+    const navBtn = document.querySelector("#nav__btn");
+    const subOptions = document.querySelector(".sub__options");
+    const mainOptions = document.querySelector(".main__options");
 
-    $("#video-grid").append(owakeBtn);
+    let subOptionsActivator = false;
 
-    owakeBtn.className = "options-toggle owake-btn";
-    owakeBtn.id = "options-toggle";
-    owakeBtn.src = "../../img/button/owake_logo.svg";
-
-    $(document).on("click", "#options-toggle", (e) => {
-        $(".options").slideToggle("slow");
+    navBtn.addEventListener("click", (e) => {
+        subOptionsActivator = !subOptionsActivator;
+        subOptionsActivator ? selectOptionsEnable() : selectOptionsDisable();
     });
+
+    function selectOptionsEnable() {
+        subOptions.hidden = false;
+        mainOptions.style.setProperty("opacity", "0.2");
+        subOptions.style.setProperty("opacity", "1");
+    }
+
+    function selectOptionsDisable() {
+        subOptions.hidden = true;
+        mainOptions.style.setProperty("opacity", "1");
+        subOptions.style.setProperty("opacity", "0");
+    }
 };
