@@ -22,7 +22,7 @@ export const muteUtilsFunc = () => {
     $(async () => {
         if (document.readyState == "loading") {
             // 아직 로딩 중이므로 이벤트를 기다립니다.
-            document.addEventListener("DOMContentLoaded", muteStart);
+            document.addEventListener("DOMContentLoaded", muteStart, false);
         } else {
             // DOM이 완성되었습니다!
             muteStart();
@@ -36,13 +36,18 @@ export const muteUtilsFunc = () => {
         }, 3000);
     }
 
+    const remotePlayerList =
+        document.querySelector(`#remote-playerlist`).children[1];
+
     $("#muteAudio").click(function (e) {
         if (!localTrackState.audioTrackMuted) {
             muteAudio();
             alert("audio mute activation");
+            mutedBorder(remotePlayerList);
         } else {
             unmuteAudio();
             alert("audio unmute activation");
+            unMutedBorder(remotePlayerList);
         }
     });
 
@@ -50,9 +55,11 @@ export const muteUtilsFunc = () => {
         if (!localTrackState.videoTrackMuted) {
             muteVideo();
             alert("video mute activation");
+            mutedBorder(remotePlayerList);
         } else {
             unmuteVideo();
             alert("video unmute activation");
+            unMutedBorder(remotePlayerList);
         }
     });
 };
@@ -91,4 +98,12 @@ async function unmuteVideo() {
     // totalUsers[options.uid].videoTrack.setMuted(false);
     // totalUsers[options.uid].videoTrack.setEnabled(true);
     videoIcon.className = "fas fa-video";
+}
+
+async function mutedBorder(playerBox) {
+    console.log(playerBox);
+}
+
+async function unMutedBorder(playerBox) {
+    console.log(playerBox);
 }

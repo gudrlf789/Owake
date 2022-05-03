@@ -12,13 +12,11 @@ export const optionsBtn = () => {
 
     function selectOptionsEnable() {
         subOptions.hidden = false;
-        mainOptions.style.setProperty("opacity", "0.2");
-        subOptions.style.setProperty("opacity", "1");
+        mainOptions.hidden = true;
     }
 
     function selectOptionsDisable() {
         subOptions.hidden = true;
-        mainOptions.style.setProperty("opacity", "1");
-        subOptions.style.setProperty("opacity", "0");
+        mainOptions.hidden = false;
     }
 };

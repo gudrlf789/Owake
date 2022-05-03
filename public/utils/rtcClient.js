@@ -17,6 +17,9 @@ let socket = socketInitFunc();
 export const localVideoBox = document.createElement("div");
 const localVideoContainer = document.querySelector("#local__video__container");
 const selectVideo = document.querySelector("video");
+
+const width = document.body.offsetWidth;
+
 localVideoBox.id = "local__videoBox";
 localVideoBox.className = "player";
 
@@ -242,7 +245,11 @@ async function subscribe(user, mediaType) {
             }
         }
 
-        cameraWasteRemove();
+        // cameraWasteRemove();
+
+        if (width < 768) {
+            handlerRemoteDisplaySize(width);
+        }
     } catch (error) {
         console.log("Permission Error!! ", error);
     }
@@ -452,3 +459,22 @@ function cameraSwitchDisableFunc(e) {
 //         }
 //     }
 // }
+
+/**
+ * @author 전형동
+ * @version 1.0
+ * @data 2022 04.27
+ * @description
+ * Remote Display Size
+ */
+function handlerRemoteDisplaySize(width) {
+    // Remote Display Size Controller
+    const remotePlayer =
+        document.querySelector("#remote-playerlist").childNodes[0];
+
+    let remotePlayerWidth = width / 5 - 8;
+    let remotePlayerHeight = remotePlayerWidth;
+
+    remotePlayer.style.setProperty("width", `${remotePlayerWidth}px`);
+    remotePlayer.style.setProperty("height", `${remotePlayerHeight}px`);
+}

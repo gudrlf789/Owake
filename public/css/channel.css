@@ -304,6 +304,10 @@ video:hover {
         width: 100%;
     }
 
+    .videos__group {
+        padding: 0.1rem;
+    }
+
     #local__video__container {
         position: absolute;
         width: 100%;
@@ -319,6 +323,10 @@ video:hover {
         margin: auto;
     }
 
+    #local__videoBox > div {
+        border-radius: 0;
+    }
+
     #remote__video__container {
         position: relative;
         display: flex;
@@ -330,6 +338,8 @@ video:hover {
 
     #remote-playerlist {
         display: flex;
+        margin-left: 0;
+        margin-bottom: 0;
     }
 
     #remote-playerlist > div {
@@ -337,6 +347,7 @@ video:hover {
         height: 130px;
         margin-bottom: 6px;
         margin-right: 7px;
+        border-radius: 0;
     }
 
     .player-name {
@@ -350,9 +361,14 @@ video:hover {
         margin: 8px;
     }
 
+    .player > div {
+        border-radius: 50%;
+    }
+
     #remote__videoBox > div {
-        border: 2px solid #fff;
-        border-radius: 20px;
+        /* border: 2px solid #fff;
+        border-radius: 20px; */
+        border-radius: 50%;
     }
 
     #shareScreen {
