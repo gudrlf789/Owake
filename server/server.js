@@ -326,6 +326,28 @@ io.sockets.on("connection", (socket) => {
         socket.leave(channelName);
     });
 
+    socket.on("join-pdf", (channelName) => {
+        socket.join(channelName);
+    });
+
+    socket.on("pdf-origin-next", (channelName, nextPage) => {
+        socket.to(channelName).emit("pdf-remote-next", nextPage);
+    });
+
+    socket.on("pdf-origin-previous", (channelName, previousPage) => {
+        socket.to(channelName).emit("pdf-remote-previous", previousPage);
+    });
+
+    socket.on("scroll-origin-pdf",
+        (channelName, originTop, originLeft, fileName) => {
+            socket.to(channelName).emit("scroll-remote-pdf", originTop, originLeft, fileName);
+        }
+    );
+
+    socket.on("leave-pdf", (channelName) => {
+        socket.leave(channelName);
+    });
+
     /**
      * @Author 전형동
      * @param {*} mouseEvent

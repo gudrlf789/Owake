@@ -21,6 +21,8 @@ import { SwiperFunc } from "./parts/channel/swiper.js";
 // import { shareEditerFunc } from "./parts/channel/shareEditer.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
+import { pdfFunc } from "./parts/channel/pdfShare.js";
+
 
 const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
 const fileDeliveryContainer = document.querySelector("#delivery_container");
@@ -160,3 +162,4 @@ muteUtilsFunc();
 SwiperFunc();
 fileHash();
 contentFunc();
+pdfFunc();
