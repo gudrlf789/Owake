@@ -457,4 +457,14 @@ router.post("/contentsDelete", async (req, res) => {
     }
 });
 
+router.get("/downloadPdf", async (req,res) => {
+    /*fs.readFile("./server/contents/리눅스 명령어.pdf", (err, data) => {
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.send(data);
+    });*/
+    
+    const fileName = req.query.fileName;
+    res.download("./server/contents/" + fileName);
+});
+
 module.exports = router;
