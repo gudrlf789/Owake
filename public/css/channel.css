@@ -5,10 +5,11 @@
 @import "./channel/whiteBoard.css";
 @import "./channel/fileShare.css";
 @import "./channel/gridView.css";
-@import "./channel/shareEditer.css";
-@import "./channel/swiper.css";
+/* @import "./channel/shareEditer.css";
+@import "./channel/swiper.css"; */
 @import "./channel/content.css";
 @import "./channel/pdfShare.css";
+@import "./channel/fileDelivery.css";
 
 @font-face {
   font-family: "NEXON Lv2 Gothic";

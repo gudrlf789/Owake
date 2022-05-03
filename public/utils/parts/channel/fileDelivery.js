@@ -18,10 +18,10 @@ function updateDevice() {
     }).done(function (data) {});
 }
 function createKey(files) {
-    var params = { file: [] };
-    var formData = new FormData();
-    for (var i = 0; i < files.length; i++) {
-        var file = files[i];
+    let params = { file: [] };
+    let formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+        let file = files[i];
         params.file.push({ name: file.name, size: file.size });
         formData.append("file" + i, file, file.name);
     }
@@ -77,7 +77,7 @@ function receiveFile(url) {
 
 function clickEvent() {
     $("#sendBtn").click(() => {
-        var files = $("#fileInput").prop("files");
+        let files = $("#fileInput").prop("files");
         if (files.length > 0) {
             createKey(files);
         }
