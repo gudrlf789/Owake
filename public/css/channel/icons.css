@@ -66,10 +66,10 @@
     }
 
     #leaveBtn {
-        width : 100%;
-        height : 100%;
+        width: 100%;
+        height: 100%;
         background-repeat: no-repeat;
-        background-size : 100%;
+        background-size: cover;
         background-image: url("../../32h/leave.png");
     }
 
