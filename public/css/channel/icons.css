@@ -30,18 +30,6 @@
     background-position: center;
 } */
 
-#nav__btn {
-    display: inline-block;
-    position: absolute;
-    left: 50%;
-    margin-left: -25px;
-    width: 50px;
-    height: 50px;
-    background-image: url("../../../32h/navbtn.png");
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
 .logo {
     display: block;
     background-image: url("../../../32h/logo.png");
@@ -65,6 +53,17 @@
         display: block;
     }
 
+    #nav__btn {
+        display: block;
+        position: fixed;
+        width: 50px;
+        height: calc(var(--vh, 1vh) * 8);
+        background-image: url("../../../48h/navbtn.gif");
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 1000;
+    }
+
     #leave {
         width: 5rem;
         margin: 2px;
@@ -80,19 +79,5 @@
         background-repeat: no-repeat;
         background-size: 75%;
         background-image: url("../../32h/leave.png");
-    }
-
-    #nav__btn {
-        display: inline-block;
-        position: absolute;
-        left: 50%;
-        margin-left: -25px;
-        width: 50px;
-        height: 50px;
-        background-image: url("../../32h/navbtn.gif");
-        background-repeat: no-repeat;
-        background-position: center;
-        top: 0;
-        z-index: 100;
     }
 }

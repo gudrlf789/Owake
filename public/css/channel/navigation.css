@@ -116,13 +116,13 @@
         position: relative;
         display: flex;
         background-color: var(--main-darklg);
-        height: calc(var(--vh, 1vh) * 3);
+        height: calc(var(--vh, 1vh) * 4);
         justify-content: right;
     }
 
     .options {
         display: flex;
-        height: calc(var(--vh, 1vh) * 5);
+        height: calc(var(--vh, 1vh) * 4);
     }
 
     .options__button {

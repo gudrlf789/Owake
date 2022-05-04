@@ -126,10 +126,41 @@
         </div>
     </div> -->
 
-    <div class="top__nav__container">
-        <div class="btn__container">
-            <div id="nav__btn"></div>
+    <div class="main">
+        <div class="main__left">
+            <div class="videos__group">
+                <div id="video-grid">
+                    <div id="local__video__container">
+                        <p id="local-player-name" class="player-name"></p>
+                    </div>
+                    <div id="remote__video__container">
+                        <div id="remote-playerlist"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        <div class="main__right">
+            <div class="main__header">
+            </div>
+            <div class="main__chat_window">
+                <div class="messages" id="messages"></div>
+            </div>
+            <div class="main__message_container">
+                <input id="chat_message" type="text" autocomplete="off" placeholder="Type a message here..."
+                    maxlength="100">
+                <div id="send" class="options__button">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn__container">
+        <div id="nav__btn"></div>
+    </div>
+
+    <div class="top__nav__container">
         <div id="leave">
             <i id="leaveBtn"></i>
             <!-- <span>Leave</span> -->
@@ -205,35 +236,6 @@
             <div id="users" class="options__button">
                 <i class="fas fa-users"></i>
                 <!-- <span>Users</span> -->
-            </div>
-        </div>
-    </div>
-    <div class="main">
-        <div class="main__left">
-            <div class="videos__group">
-                <div id="video-grid">
-                    <div id="local__video__container">
-                        <p id="local-player-name" class="player-name"></p>
-                    </div>
-                    <div id="remote__video__container">
-                        <div id="remote-playerlist"></div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="main__right">
-            <div class="main__header">
-            </div>
-            <div class="main__chat_window">
-                <div class="messages" id="messages"></div>
-            </div>
-            <div class="main__message_container">
-                <input id="chat_message" type="text" autocomplete="off" placeholder="Type a message here..."
-                    maxlength="100">
-                <div id="send" class="options__button">
-                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
-                </div>
             </div>
         </div>
     </div>
