@@ -350,6 +350,13 @@ video:hover {
   display: none;
 }
 
+#spinnerModal {
+  position: absolute;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+}
+
 @media (min-width: 768px) {
   #remote__video__container {
     height: min-content;
