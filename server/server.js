@@ -105,7 +105,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/:channelName/:channelType", (req, res) => {
-    let appID = "4343e4c08654493cb8997de783a9aaeb";
+    let appID = "50b9cd9de2d54849a139e3db52e7928a";
 
     res.render("channel", {
         channelName: req.params.channelName,
@@ -335,12 +335,17 @@ io.sockets.on("connection", (socket) => {
     });
 
     socket.on("pdf-origin-previous", (channelName, previousPage, fileName) => {
-        socket.to(channelName).emit("pdf-remote-previous", previousPage, fileName);
+        socket
+            .to(channelName)
+            .emit("pdf-remote-previous", previousPage, fileName);
     });
 
-    socket.on("scroll-origin-pdf",
+    socket.on(
+        "scroll-origin-pdf",
         (channelName, originTop, originLeft, fileName) => {
-            socket.to(channelName).emit("scroll-remote-pdf", originTop, originLeft, fileName);
+            socket
+                .to(channelName)
+                .emit("scroll-remote-pdf", originTop, originLeft, fileName);
         }
     );
 
