@@ -216,7 +216,7 @@ export const pdfFunc = () => {
         myState.currentPage += 1;
         render();
         if(originUser === userName){
-            pdfSocket.emit("pdf-origin-next", channelName, myState.currentPage);
+            pdfSocket.emit("pdf-origin-next", channelName, myState.currentPage, choiceFile);
         }
     });
 
@@ -228,7 +228,7 @@ export const pdfFunc = () => {
         myState.currentPage -= 1;
         render();
         if(originUser === userName){
-            pdfSocket.emit("pdf-origin-previous", channelName, myState.currentPage);
+            pdfSocket.emit("pdf-origin-previous", channelName, myState.currentPage, choiceFile);
         }
     });
 
@@ -270,14 +270,18 @@ export const pdfFunc = () => {
         createContentTab(data.userName, data.fileType, data.fileName);
     });
 
-    pdfSocket.on("pdf-remote-next", (nextPage) => {
-        myState.currentPage = nextPage;
-        render();
+    pdfSocket.on("pdf-remote-next", (nextPage, playingFile) => {
+        if(choiceFile === playingFile){
+            myState.currentPage = nextPage;
+            render();
+        }
     });
 
-    pdfSocket.on("pdf-remote-previous", (previousPage) => {
-        myState.currentPage = previousPage;
-        render();
+    pdfSocket.on("pdf-remote-previous", (previousPage, playingFile) => {
+        if(choiceFile === playingFile){
+            myState.currentPage = previousPage;
+            render();
+        }
     });
 
     pdfSocket.on("scroll-remote-pdf", (originTop, originLeft, playingFile) => {
