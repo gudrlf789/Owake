@@ -330,12 +330,12 @@ io.sockets.on("connection", (socket) => {
         socket.join(channelName);
     });
 
-    socket.on("pdf-origin-next", (channelName, nextPage) => {
-        socket.to(channelName).emit("pdf-remote-next", nextPage);
+    socket.on("pdf-origin-next", (channelName, nextPage, fileName) => {
+        socket.to(channelName).emit("pdf-remote-next", nextPage, fileName);
     });
 
-    socket.on("pdf-origin-previous", (channelName, previousPage) => {
-        socket.to(channelName).emit("pdf-remote-previous", previousPage);
+    socket.on("pdf-origin-previous", (channelName, previousPage, fileName) => {
+        socket.to(channelName).emit("pdf-remote-previous", previousPage, fileName);
     });
 
     socket.on("scroll-origin-pdf",
