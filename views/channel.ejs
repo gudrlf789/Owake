@@ -23,6 +23,8 @@
             <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <!-- Swiper -->
             <script type="text/javascript" src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+            <!-- Pdf.js -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.min.js"></script>
 
             <title>Owake</title>
 
@@ -154,10 +156,14 @@
                         <i class="fas fa-retweet"></i>
                         <span>Screen</span>
                     </div>
-                    <div id="momentShare" class="options__button">
+                    <div id="momentShare1" class="options__button">
                         <i class="fab fa-connectdevelop"></i>
                         <span>Web</span>
                     </div>
+                    <!-- <div id="momentShare2" class="options__button">
+                        <i class="fab fa-connectdevelop"></i>
+                        <span>Web2</span>
+                    </div> -->
                     <!-- <div id="fileShareBtn" class="options__button">
                         <i class="fab fa-creative-commons-share"></i>
                         <span>FShare</span>
@@ -172,7 +178,7 @@
                         <i class="fas fa-palette"></i>
                         <span>WhiteBoard</span>
                     </div>
-                    <div class="options__button" id="fileDeliveryBtn" data-toggle="modal" data-target="#fileshareModal">
+                    <div class="options__button" id="fileDeliveryBtn">
                         <i class="far fa-folder-open"></i>
                         <span>File</span>
                     </div>
@@ -185,13 +191,13 @@
                         <i class="fas fa-file-invoice" aria-hidden="true"></i>
                         <span>Identifier</span>
                     </div>
-                    <!-- <div class="options__button" id="contentsBtn" data-toggle="modal" data-target="#contentsModal">
-                        <i class="fas fa-file-invoice" aria-hidden="true"></i>
-                        <span>contents</span>
-                    </div> -->
                     <div id="contentShare" class="options__button">
                         <i class="fas fa-exchange-alt"></i>
                         <span>contents</span>
+                    </div>
+                    <div id="pdfShare" class="options__button">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>pdf</span>
                     </div>
                 </div>
             </div>

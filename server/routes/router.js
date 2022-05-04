@@ -5,10 +5,6 @@ const fs = require("fs");
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-
-const memoryStorage = multer.memoryStorage();
-const memoryUpload = multer({ storage: memoryStorage });
-
 const storage = multer.diskStorage({
     destination: function (req, res, cb) {
         cb(null, `./server/uploads`);
@@ -402,28 +398,32 @@ router.post("/jwt", async (req, res) => {
       });
 });
 
-router.post("/hashFile", memoryUpload.single("fileInput"), async (req, res) => {
+router.post("/hashFile", contentsUpload.single("fileInput"), async (req, res) => {
     const formData = new FormData();
-    formData.append("fileInput", req.file.buffer, {
-        filename: req.file.originalname,
-    });
 
-    axios.post("https://pro.virtualtrust.io/cert/certificate/file/hash", formData,
-        {
-            headers: {
-                ...formData.getHeaders(),
-                Authorization: "Bearer " + jwt,
-            },
-        }
-    )
-    .then((result) => {
-        return res.json({
-            hashCode: result.data.output.file_hash
+    fs.readFile("./server/contents/" + req.file.filename, (err, data) => {
+        formData.append("fileInput", data, {
+            filename: req.file.originalname,
         });
-    })
-    .catch((err) => {
-        return res.json({
-            error: err
+
+        axios.post("https://pro.virtualtrust.io/cert/certificate/file/hash", formData,
+            {
+                headers: {
+                    ...formData.getHeaders(),
+                    Authorization: "Bearer " + jwt,
+                },
+            }
+        )
+        .then((result) => {
+            fs.unlinkSync("./server/contents/" + req.file.originalname);
+            return res.json({
+                hashCode: result.data.output.file_hash
+            });
+        })
+        .catch((err) => {
+            return res.json({
+                error: err
+            });
         });
     });
 });
@@ -455,6 +455,16 @@ router.post("/contentsDelete", async (req, res) => {
             result: "No files exist"
         });
     }
+});
+
+router.get("/downloadPdf", async (req,res) => {
+    /*fs.readFile("./server/contents/리눅스 명령어.pdf", (err, data) => {
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.send(data);
+    });*/
+    
+    const fileName = req.query.fileName;
+    res.download("./server/contents/" + fileName);
 });
 
 module.exports = router;

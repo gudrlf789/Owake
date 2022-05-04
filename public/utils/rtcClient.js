@@ -193,33 +193,58 @@ async function subscribe(user, mediaType) {
     await client.subscribe(user, mediaType);
     console.log("subscribe success");
 
-    if (mediaType === "video") {
-        const player = $(`
-          <div id="player-wrapper-${uid}">
-            <p class="player-name">${uid}</p>
-            <div id="player-${uid}" class="player" uid="${uid}"></div>
-          </div>
-        `);
-        $("#remote-playerlist").append(player);
-        user.videoTrack.play(`player-${uid}`);
-    }
+    try {
+        // let mics = await AgoraRTC.getMicrophones();
+        // let cams = await AgoraRTC.getCameras();
 
-    if (mediaType === "audio") {
-        user.audioTrack.play();
+        // console.log(cam);
+
+        // if (cams.length === 0 || cams === undefined || cams === null) {
+        //     const iconPlayer = $(`
+        //             <div id="player-wrapper-${uid}">
+        //             <p class="player-name" style="color: white">${uid}</p>
+        //             <div id="player-${uid}" class="player" uid="${uid}"
+        //                 style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
+        //             </div>
+        //         `);
+        //     $("#remote-playerlist").append(iconPlayer);
+
+        //     if (mediaType === "audio" || mics.length > 0) {
+        //         user.audioTrack.play();
+        //     }
+        // }
+
+        if (mediaType === "video") {
+            const player = $(`
+              <div id="player-wrapper-${uid}">
+                <p class="player-name">${uid}</p>
+                <div id="player-${uid}" class="player" uid="${uid}"></div>
+              </div>
+            `);
+            $("#remote-playerlist").append(player);
+            user.videoTrack.play(`player-${uid}`);
+        }
+
         // 카메라 장치가 없는 경우 오디오 트랙만 publish 하기 때문에
         // 아이콘 화면이 나타나게 수정
-
-        // if (!user.hasVideo && user.hasAudio) {
-        if (!user.hasVideo) {
-            const iconPlayer = $(`
-                <div id="player-wrapper-${uid}">
-                <p class="player-name" style="color: white">${uid}</p>
-                <div id="player-${uid}" class="player" uid="${uid}"
-                    style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
-                </div>
-            `);
-            $("#remote-playerlist").append(iconPlayer);
+        if (mediaType === "audio") {
+            user.audioTrack.play();
+            // if (!user.hasVideo && user.hasAudio) {
+            if (!user.hasVideo) {
+                const iconPlayer = $(`
+                    <div id="player-wrapper-${uid}">
+                    <p class="player-name" style="color: white">${uid}</p>
+                    <div id="player-${uid}" class="player" uid="${uid}"
+                        style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
+                    </div>
+                `);
+                $("#remote-playerlist").append(iconPlayer);
+            }
         }
+
+        cameraWasteRemove();
+    } catch (error) {
+        console.log("Permission Error!! ", error);
     }
 }
 
@@ -407,3 +432,23 @@ function cameraSwitchDisableFunc(e) {
     e.preventDefault();
     e.stopPropagation();
 }
+
+/**
+ * @author 전형동
+ * @version 1.0
+ * @data 2022 04.27
+ * @description
+ * Camera Track 중복 제거
+ * 데스크탑 접속될 경우 이미지 삭제
+ */
+
+// function cameraWasteRemove() {
+//     const remotePlayerChild =
+//         document.querySelector("#remote-playerlist").children;
+
+//     for (let i = 0; i < remotePlayerChild.length; i++) {
+//         if (remotePlayerChild[i].children[1].children.length === 0) {
+//             remotePlayerChild[i].remove();
+//         }
+//     }
+// }

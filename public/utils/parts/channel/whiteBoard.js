@@ -64,7 +64,7 @@ export const whiteBoardFunc = () => {
     function whiteBoardDisable() {
         whiteBoardContainer.hidden = true;
         whiteBoardBtn.style.color = "#fff";
-        whiteBoardContainer.remove();
+        // whiteBoardContainer.remove();
 
         whiteboardSocket.emit(
             "leave-whiteboard",

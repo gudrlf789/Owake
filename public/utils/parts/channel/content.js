@@ -77,9 +77,14 @@ export const contentFunc = () => {
     }
 
     contentSearchInput.addEventListener("change", (e) => {
-        const formData = new FormData();
         const fileData = contentSearchInput.files[0];
 
+        if(!imageType.test(fileData.type) && !mediaType.test(fileData.type)){
+            alert("Only image, video type file");
+            return;
+        }
+        
+        const formData = new FormData();
         formData.append("userName", userName);
         formData.append("content", fileData);
 
@@ -231,18 +236,20 @@ export const contentFunc = () => {
     document.addEventListener(
         "scroll",
         function (e) {
-            if (originUser === userName) {
-                const originTop =
-                    document.getElementsByClassName("imageFile")[0].scrollTop;
-                const originLeft =
-                    document.getElementsByClassName("imageFile")[0].scrollLeft;
-                contentSocket.emit(
-                    "scroll-origin",
-                    channelName,
-                    originTop,
-                    originLeft,
-                    choiceFile
-                );
+            if(e.target.id === ''){
+                if (originUser === userName) {
+                    const originTop =
+                        document.getElementsByClassName("imageFile")[0].scrollTop;
+                    const originLeft =
+                        document.getElementsByClassName("imageFile")[0].scrollLeft;
+                    contentSocket.emit(
+                        "scroll-origin",
+                        channelName,
+                        originTop,
+                        originLeft,
+                        choiceFile
+                    );
+                }
             }
         },
         true
