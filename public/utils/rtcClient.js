@@ -241,8 +241,6 @@ async function subscribe(user, mediaType) {
                 $("#remote-playerlist").append(iconPlayer);
             }
         }
-
-        cameraWasteRemove();
     } catch (error) {
         console.log("Permission Error!! ", error);
     }
