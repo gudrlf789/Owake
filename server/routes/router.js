@@ -467,4 +467,10 @@ router.get("/downloadPdf", async (req,res) => {
     res.download("./server/contents/" + fileName);
 });
 
+router.post("/channelFirstSpinnerDelete", (req, res) => {
+    return res.status(200).json({
+        success: true
+    });
+});
+
 module.exports = router;
