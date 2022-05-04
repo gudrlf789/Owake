@@ -469,12 +469,19 @@ function cameraSwitchDisableFunc(e) {
  */
 function handlerRemoteDisplaySize(width) {
     // Remote Display Size Controller
-    const remotePlayer =
-        document.querySelector("#remote-playerlist").childNodes[0];
+    let remotePlayer = document.querySelector("#remote-playerlist").childNodes;
+    let remotePlayerChild;
 
     let remotePlayerWidth = width / 5 - 8;
     let remotePlayerHeight = remotePlayerWidth;
 
-    remotePlayer.style.setProperty("width", `${remotePlayerWidth}px`);
-    remotePlayer.style.setProperty("height", `${remotePlayerHeight}px`);
+    for (let i = 0; i < remotePlayer.length; i++) {
+        remotePlayerChild = remotePlayer[i];
+
+        remotePlayerChild.style.setProperty("width", `${remotePlayerWidth}px`);
+        remotePlayerChild.style.setProperty(
+            "height",
+            `${remotePlayerHeight}px`
+        );
+    }
 }

@@ -21,6 +21,7 @@ import { SwiperFunc } from "./parts/channel/swiper.js";
 // import { shareEditerFunc } from "./parts/channel/shareEditer.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
+import { pdfFunc } from "./parts/channel/pdfShare.js";
 
 mobileDisplayCtr();
 f12defense();
@@ -141,6 +142,7 @@ function deliveryContainerDraggable() {
     });
 }
 
+remoteDisplay();
 // fileShare();
 momentShareFunc1();
 // momentShareFunc2();
@@ -158,4 +160,4 @@ muteUtilsFunc();
 SwiperFunc();
 fileHash();
 contentFunc();
-remoteDisplay();
+pdfFunc();
