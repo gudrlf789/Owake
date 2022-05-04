@@ -23,7 +23,6 @@ import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 import { pdfFunc } from "./parts/channel/pdfShare.js";
 
-
 const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
 const fileDeliveryContainer = document.querySelector("#delivery_container");
 
@@ -145,7 +144,7 @@ function deliveryContainerDraggable() {
 }
 
 // fileShare();
-momentShareFunc();
+momentShareFunc1();
 optionsBtn();
 recodingDeviceCtrl();
 remoteDisplay();
