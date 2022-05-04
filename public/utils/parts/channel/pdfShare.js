@@ -171,13 +171,13 @@ export const pdfFunc = () => {
         pdfSocket.emit("leave-pdf", channelName);
     }
 
-    $(document).on("click", ".pdfMiddleContainerBtn", (e) => {
+    $(document).on("click", ".pdfMiddleContainerBtn", async (e) => {
         originUser = e.currentTarget.getAttribute("name").split("_")[0];
         choiceFile = e.currentTarget.getAttribute("name");
 
         pdfPageNext.name = originUser;
         pdfPagePrevious.name = originUser;
-        pdfInit(choiceFile);
+        await pdfInit(choiceFile);
     });
 
     $(document).on("click", ".pdfCloseContent", (e) => {
