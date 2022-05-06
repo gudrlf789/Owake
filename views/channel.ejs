@@ -46,6 +46,12 @@
                     };
 
                     let userNameSession = window.prompt("Enter the name");
+                    
+                    if(userNameSession === ""){
+                        alert("You must to enter id");
+                        window.location.href = "/";
+                    }
+                    
                     window.sessionStorage.setItem("uid", userNameSession);
 
                     axios.post("/channel/info", reqData).then((res) => {
