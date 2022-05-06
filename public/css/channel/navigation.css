@@ -30,6 +30,10 @@
 
 .options__right {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
 }
 
 .options__button {
@@ -123,6 +127,10 @@
     .options {
         display: flex;
         height: calc(var(--vh, 1vh) * 4);
+    }
+
+    .options__left {
+        align-items: flex-start;
     }
 
     .options__button {

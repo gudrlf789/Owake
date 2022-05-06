@@ -56,7 +56,7 @@
     #nav__btn {
         display: block;
         position: fixed;
-        width: 50px;
+        width: 75px;
         height: calc(var(--vh, 1vh) * 8);
         background-image: url("../../../48h/navbtn.gif");
         background-repeat: no-repeat;
@@ -78,6 +78,7 @@
         height: 100%;
         background-repeat: no-repeat;
         background-size: 75%;
+        background-position: bottom;
         background-image: url("../../32h/leave.png");
     }
 }

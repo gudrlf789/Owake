@@ -17,14 +17,11 @@ import { responsiveFunc } from "./parts/channel/responsive.js";
 import { copyInfo } from "./parts/channel/copyUrl.js";
 import { browserEvent } from "./parts/channel/browserEvent.js";
 import { gridView } from "./parts/channel/videoViewGridMode.js";
-import { SwiperFunc } from "./parts/channel/swiper.js";
+// import { SwiperFunc } from "./parts/channel/swiper.js";
 // import { shareEditerFunc } from "./parts/channel/shareEditer.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 import { pdfFunc } from "./parts/channel/pdfShare.js";
-
-mobileDisplayCtr();
-f12defense();
 
 const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
 const fileDeliveryContainer = document.querySelector("#delivery_container");
@@ -113,24 +110,21 @@ function jqueryUIScriptRemove() {
     let selectLinkUI;
 
     for (let k = 0; k < selectLink.length; k++) {
-        selectLinkUI = selectLink[k].href.includes("jquery-ui.min");
+        selectLinkUI = selectLink[k].href.includes("jquery-ui.min.css");
         if (selectLinkUI === true) {
-            console.log(selectLink[k]);
             selectLink[k].remove();
         }
     }
 
     for (let i = 0; i < selectScript.length; i++) {
-        selectJqueryUI = selectScript[i].src.includes("jquery-ui.min");
+        selectJqueryUI = selectScript[i].src.includes("jquery-ui.min.js");
         selectJqueryTouchPunch = selectScript[i].src.includes(
             "jquery.ui.touch-punch.js"
         );
         if (selectJqueryUI === true) {
-            console.log(selectScript[i]);
             selectScript[i].remove();
         }
         if (selectJqueryTouchPunch === true) {
-            console.log(selectScript[i]);
             selectScript[i].remove();
         }
     }
@@ -142,22 +136,27 @@ function deliveryContainerDraggable() {
     });
 }
 
-remoteDisplay();
-// fileShare();
-momentShareFunc1();
-// momentShareFunc2();
-optionsBtn();
-recodingDeviceCtrl();
-screenShareFunc();
-whiteBoardFunc();
-mobileReflashClose();
-responsiveFunc();
-// copyInfo();
-browserEvent();
-// gridView();
-muteUtilsFunc();
-// shareEditerFunc();--------------------- 서버에 올리면 Lisence 문제로 사용 불가능 구매해야 됨.
-SwiperFunc();
-fileHash();
-contentFunc();
-pdfFunc();
+$(async () => {
+    window.addEventListener("load", mobileDisplayCtr, false);
+    window.addEventListener("load", f12defense, false);
+    window.addEventListener("load", remoteDisplay, false);
+    window.addEventListener("load", optionsBtn, false);
+    window.addEventListener("load", responsiveFunc, false);
+    window.addEventListener("load", mobileReflashClose, false);
+
+    // fileShare();
+    momentShareFunc1();
+    // momentShareFunc2();
+    recodingDeviceCtrl();
+    screenShareFunc();
+    whiteBoardFunc();
+    // copyInfo();
+    browserEvent();
+    // gridView();
+    muteUtilsFunc();
+    // shareEditerFunc();--------------------- 서버에 올리면 Lisence 문제로 사용 불가능 구매해야 됨.
+    // SwiperFunc();
+    fileHash();
+    contentFunc();
+    pdfFunc();
+});

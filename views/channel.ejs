@@ -22,7 +22,7 @@
             <!-- axios -->
             <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <!-- Swiper -->
-            <script type="text/javascript" src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+            <!-- <script type="text/javascript" src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> -->
             <!-- Pdf.js -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.min.js"></script>
 
@@ -168,11 +168,16 @@
     </div>
 
     <div class="options">
-        <div class="logo-container">
+        <section class="logo-container">
             <span class="logo"></span>
-        </div>
+        </section>
 
-        <section class="sub__options options__left" hidden=true>
+        <section class="sub__options options__left" hidden="true">
+
+            <div id="nav__left" class="options__button" hidden="true">
+                <i class="fas fa-angle-left"></i>
+            </div>
+
             <div id="momentShare1" class="options__button">
                 <i class="fab fa-connectdevelop"></i>
                 <!-- <span>Web</span> -->
@@ -192,16 +197,12 @@
             </div> 
             -->
             <div id="whiteBoard" class="options__button">
-                <i class="fas fa-palette"></i>
+                <i class="fas fa-chalkboard-teacher"></i>
                 <!-- <span>WhiteBoard</span> -->
             </div>
             <div class="options__button" id="fileDeliveryBtn">
                 <i class="far fa-folder-open"></i>
                 <!-- <span>File</span> -->
-            </div>
-            <div class="options__button" id="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal">
-                <i class="fas fa-cog"></i>
-                <!-- <span>Device</span> -->
             </div>
             <div class="options__button" id="fileHashBtn" data-toggle="modal" data-target="#fileHashModal">
                 <i class="fas fa-file-invoice" aria-hidden="true"></i>
@@ -214,9 +215,15 @@
             <div id="pdfShare" class="options__button">
                 <i class="fas fa-file-pdf"></i>
             </div>
+
+            <div class="options__button" id="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal">
+                <i class="fas fa-cog"></i>
+                <!-- <span>Device</span> -->
+            </div>
         </section>
 
-        <div class="main__options options__left">
+        <section class="main__options options__left">
+
             <div id="muteVideo" class="options__button">
                 <i id="videoIcon" class="fas fa-video"></i>
                 <!-- <span>Cam</span> -->
@@ -237,7 +244,18 @@
                 <i class="fas fa-users"></i>
                 <!-- <span>Users</span> -->
             </div>
-        </div>
+
+            <div id="nav__right" class="options__button">
+                <i class="fas fa-angle-right"></i>
+            </div>
+
+        </section>
+
+        <section class="options__right">
+            <div class="main__leave options__button">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+        </section>
     </div>
 
     <!-- Scripts -->

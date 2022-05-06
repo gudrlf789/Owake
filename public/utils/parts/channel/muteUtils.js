@@ -12,6 +12,7 @@ import { localTracks, totalUsers, options } from "../../rtcClient.js";
 
 const videoIcon = document.getElementById("videoIcon");
 const audioIcon = document.getElementById("audioIcon");
+let playerWrapper;
 
 let localTrackState = {
     videoTrackMuted: false,
@@ -36,18 +37,13 @@ export const muteUtilsFunc = () => {
         }, 3000);
     }
 
-    const remotePlayerList =
-        document.querySelector(`#remote-playerlist`).children[1];
-
     $("#muteAudio").click(function (e) {
         if (!localTrackState.audioTrackMuted) {
             muteAudio();
             alert("audio mute activation");
-            mutedBorder(remotePlayerList);
         } else {
             unmuteAudio();
             alert("audio unmute activation");
-            unMutedBorder(remotePlayerList);
         }
     });
 
@@ -55,11 +51,9 @@ export const muteUtilsFunc = () => {
         if (!localTrackState.videoTrackMuted) {
             muteVideo();
             alert("video mute activation");
-            mutedBorder(remotePlayerList);
         } else {
             unmuteVideo();
             alert("video unmute activation");
-            unMutedBorder(remotePlayerList);
         }
     });
 };
@@ -89,6 +83,8 @@ async function muteVideo() {
     // totalUsers[options.uid].videoTrack.setMuted(true);
     // totalUsers[options.uid].videoTrack.setEnabled(false);
     videoIcon.className = "fas fa-video-slash";
+
+    console.log(totalUsers[options.uid]);
 }
 
 async function unmuteVideo() {
@@ -98,12 +94,4 @@ async function unmuteVideo() {
     // totalUsers[options.uid].videoTrack.setMuted(false);
     // totalUsers[options.uid].videoTrack.setEnabled(true);
     videoIcon.className = "fas fa-video";
-}
-
-async function mutedBorder(playerBox) {
-    console.log(playerBox);
-}
-
-async function unMutedBorder(playerBox) {
-    console.log(playerBox);
 }
