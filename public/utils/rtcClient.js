@@ -14,6 +14,7 @@
 import { socketInitFunc } from "./parts/channel/socket.js";
 
 let socket = socketInitFunc();
+
 export const localVideoBox = document.createElement("div");
 const localVideoContainer = document.querySelector("#local__video__container");
 const selectVideo = document.querySelector("video");
@@ -244,8 +245,6 @@ async function subscribe(user, mediaType) {
                 $("#remote-playerlist").append(iconPlayer);
             }
         }
-
-        // cameraWasteRemove();
 
         if (width < 768) {
             handlerRemoteDisplaySize(width);
