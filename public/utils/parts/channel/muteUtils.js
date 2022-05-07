@@ -12,6 +12,7 @@ import { localTracks, totalUsers, options } from "../../rtcClient.js";
 
 const videoIcon = document.getElementById("videoIcon");
 const audioIcon = document.getElementById("audioIcon");
+let playerWrapper;
 
 let localTrackState = {
     videoTrackMuted: false,
@@ -22,7 +23,7 @@ export const muteUtilsFunc = () => {
     $(async () => {
         if (document.readyState == "loading") {
             // 아직 로딩 중이므로 이벤트를 기다립니다.
-            document.addEventListener("DOMContentLoaded", muteStart);
+            document.addEventListener("DOMContentLoaded", muteStart, false);
         } else {
             // DOM이 완성되었습니다!
             muteStart();
@@ -82,6 +83,8 @@ async function muteVideo() {
     // totalUsers[options.uid].videoTrack.setMuted(true);
     // totalUsers[options.uid].videoTrack.setEnabled(false);
     videoIcon.className = "fas fa-video-slash";
+
+    console.log(totalUsers[options.uid]);
 }
 
 async function unmuteVideo() {

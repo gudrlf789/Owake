@@ -1,0 +1,84 @@
+/* #videoIcon {
+    width: inherit;
+    height: inherit;
+    background-image: url("../../../16h/cam.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#audioIcon {
+    width: inherit;
+    height: inherit;
+    background-image: url("../../../16h/mic.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#chatIcon {
+    width: inherit;
+    height: inherit;
+    background-image: url("../../../16h/chat.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#usersIcon {
+    width: inherit;
+    height: inherit;
+    background-image: url("../../../16h/users.png");
+    background-repeat: no-repeat;
+    background-position: center;
+} */
+
+.logo {
+    display: block;
+    background-image: url("../../../32h/logo.png");
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    background-position: left;
+    margin-left: 2rem;
+}
+
+.btn__container {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .logo {
+        display: none;
+    }
+
+    .btn__container {
+        display: block;
+    }
+
+    #nav__btn {
+        display: block;
+        position: fixed;
+        width: 75px;
+        height: calc(var(--vh, 1vh) * 8);
+        background-image: url("../../../48h/navbtn.gif");
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 1000;
+    }
+
+    #leave {
+        width: 5rem;
+        margin: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #leaveBtn {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-size: 75%;
+        background-position: bottom;
+        background-image: url("../../32h/leave.png");
+    }
+}

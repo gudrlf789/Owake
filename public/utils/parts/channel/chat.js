@@ -12,11 +12,11 @@ export const mobileDisplayCtr = () => {
     function messageEnable() {
         mainRight.hidden = false;
         mainRight.style.display = "flex";
-        showChat.style.color = "rgb(165, 199, 236)";
+        showChat.children[0].style.color = "#ec6f73";
     }
     function messageDisable() {
         mainRight.hidden = true;
-        showChat.style.color = "#fff";
+        showChat.children[0].style.color = "#fff";
     }
 
     document.activeElement.blur();
