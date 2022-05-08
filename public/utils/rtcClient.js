@@ -193,9 +193,16 @@ async function leave() {
 }
 
 async function subscribe(user, mediaType) {
+    let remoteActive = false;
     const uid = user.uid;
-    await client.subscribe(user, mediaType);
-    console.log("subscribe success");
+
+    if (uid !== undefined || uid !== null || uid !== "") {
+        remoteActive = true;
+        await client.subscribe(user, mediaType);
+        console.log("subscribe success");
+    } else {
+        alert("The name registered by the accessed user is invalid.");
+    }
 
     try {
         // let mics = await AgoraRTC.getMicrophones();
@@ -248,6 +255,8 @@ async function subscribe(user, mediaType) {
 
         handlerRemoteDisplaySize();
         window.addEventListener("resize", handlerRemoteDisplaySize, false);
+
+        usersActive(remoteActive);
     } catch (error) {
         console.log("Permission Error!! ", error);
     }
@@ -497,5 +506,14 @@ function handlerRemoteDisplaySize() {
             remotePlayerChild.style.setProperty("width", "230px");
             remotePlayerChild.style.setProperty("height", "230px");
         }
+    }
+}
+
+function usersActive(state) {
+    const usersBtn = document.querySelector(".fa-users");
+    if (state === true) {
+        usersBtn.style.color = "#e07478";
+    } else {
+        usersBtn.style.color = "#fff";
     }
 }

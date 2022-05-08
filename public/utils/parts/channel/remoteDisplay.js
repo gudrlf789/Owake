@@ -13,6 +13,13 @@ function clickRemoteDisplayAction(e) {
     let element = e.target;
     if (remotePlayerList.childElementCount > 0) {
         usersBtnActive = !usersBtnActive;
+
+        if (element.style.color !== "rgb(255, 255, 255)") {
+            usersBtnActive = false;
+        } else {
+            usersBtnActive = true;
+        }
+
         usersBtnActive
             ? usersDisplayEnable(element)
             : usersDisplayDisable(element);
