@@ -43,9 +43,7 @@ function selectOptionsDisable() {
 }
 
 function resizeOptionsActive() {
-    console.log("resizeOptionsActive:::::::::::::::");
-
-    width = window.document.body.offsetWidth;
+    width = window.innerWidth;
     if (width < 768) {
         navRight.hidden = true;
         navLeft.hidden = true;

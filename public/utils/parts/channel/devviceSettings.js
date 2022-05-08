@@ -79,22 +79,20 @@ export const recodingDeviceCtrl = () => {
 };
 
 function getDeviceFunc() {
-    $(async () => {
-        // get mics
-        mics = await AgoraRTC.getMicrophones();
-        currentMic = mics[0];
-        $(".mic-input").val(currentMic.label);
-        mics.forEach((mic) => {
-            $(".mic-list").append(`<a class="dropdown-item">${mic.label}</a>`);
-        });
+    // get mics
+    mics = await AgoraRTC.getMicrophones();
+    currentMic = mics[0];
+    $(".mic-input").val(currentMic.label);
+    mics.forEach((mic) => {
+        $(".mic-list").append(`<a class="dropdown-item">${mic.label}</a>`);
+    });
 
-        // get cameras
-        cams = await AgoraRTC.getCameras();
-        currentCam = cams[0];
-        $(".cam-input").val(currentCam.label);
-        cams.forEach((cam) => {
-            $(".cam-list").append(`<a class="dropdown-item">${cam.label}</a>`);
-        });
+    // get cameras
+    cams = await AgoraRTC.getCameras();
+    currentCam = cams[0];
+    $(".cam-input").val(currentCam.label);
+    cams.forEach((cam) => {
+        $(".cam-list").append(`<a class="dropdown-item">${cam.label}</a>`);
     });
 }
 
@@ -103,8 +101,7 @@ async function handlerDeviceSetting() {
     $(".cam-list").delegate("a", "click", (e) => {
         e.preventDefault();
         if (
-            e.target.innerText.includes("back") ||
-            e.target.innerText.includes("camera2 0")
+            e.target.innerText.includes("back")
         ) {
             switchCamera(e.target.innerText);
             setTimeout(() => {
