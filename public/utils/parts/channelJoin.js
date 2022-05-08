@@ -14,6 +14,9 @@ function checkUserId(userId) {
  * 유저 이름 등록
  */
 function enrollUserNameOnChannel(userId, channelName, channelType) {
+    //문자 공백 제거
+    userId = userId.replace(/\s/gi, "");
+    debugger;
     const reqData = {
         channelType: channelType,
         channelName: channelName,
