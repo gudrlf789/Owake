@@ -2,6 +2,7 @@ const { Server } = require("socket.io");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const morgan = require("morgan");
 const path = require("path");
 const Logger = require("./Logger");
 const bodyParser = require("body-parser");
@@ -75,6 +76,7 @@ app.use(
 );
 
 app.use(redirectSec);
+app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -215,7 +217,14 @@ io.sockets.on("connection", (socket) => {
         let peerWebURLArrSet = new Set(peerWebURLArr);
         let resultURLArr = Array.from(peerWebURLArrSet);
 
-        log.debug("connected peers grp by Peer Address ", peers, peerWebURLArr);
+        // resultURLArr.forEach((url) => {
+        //     peers[config.channel][config.peerID] = {
+        //         web: url,
+        //     };
+        // });
+
+        log.debug("connected peers grp by Peer Address ", peers);
+
         socket.in(config.channel).emit("input_address", config.link);
     });
 

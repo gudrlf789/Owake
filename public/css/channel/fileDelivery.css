@@ -1,5 +1,6 @@
 #delivery_container {
     position: absolute;
+    top: 25%;
     display: none;
     z-index: 5;
     background: #fff;
