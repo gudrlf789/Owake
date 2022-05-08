@@ -18,6 +18,7 @@ export const optionsBtn = () => {
         subOptionsActivator ? selectOptionsEnable() : selectOptionsDisable();
     });
     navRight.addEventListener("click", (e) => {
+        console.log(e.target);
         mainOptions.hidden = true;
         subOptions.hidden = false;
     });

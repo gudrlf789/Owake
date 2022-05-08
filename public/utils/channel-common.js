@@ -137,12 +137,19 @@ function deliveryContainerDraggable() {
 }
 
 $(async () => {
-    window.addEventListener("load", mobileDisplayCtr, false);
-    window.addEventListener("load", f12defense, false);
-    window.addEventListener("load", remoteDisplay, false);
-    window.addEventListener("load", optionsBtn, false);
-    window.addEventListener("load", responsiveFunc, false);
-    window.addEventListener("load", mobileReflashClose, false);
+    // window.addEventListener("load", mobileDisplayCtr, false);
+    // window.addEventListener("load", f12defense, false);
+    // window.addEventListener("load", remoteDisplay, false);
+    // window.addEventListener("load", optionsBtn, false);
+    // window.addEventListener("load", responsiveFunc, false);
+    // window.addEventListener("load", mobileReflashClose, false);
+
+    mobileDisplayCtr();
+    f12defense();
+    remoteDisplay();
+    optionsBtn();
+    responsiveFunc();
+    mobileReflashClose();
 
     // fileShare();
     momentShareFunc1();
