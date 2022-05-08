@@ -78,7 +78,7 @@ export const recodingDeviceCtrl = () => {
     deviceSettingBtn.addEventListener("click", handlerDeviceSetting);
 };
 
-function getDeviceFunc() {
+async function getDeviceFunc() {
     // get mics
     mics = await AgoraRTC.getMicrophones();
     currentMic = mics[0];
@@ -100,9 +100,7 @@ async function handlerDeviceSetting() {
     videoBox = document.querySelector("#local__videoBox");
     $(".cam-list").delegate("a", "click", (e) => {
         e.preventDefault();
-        if (
-            e.target.innerText.includes("back")
-        ) {
+        if (e.target.innerText.includes("back")) {
             switchCamera(e.target.innerText);
             setTimeout(() => {
                 videoBox.childNodes[0].childNodes[0].style.setProperty(
