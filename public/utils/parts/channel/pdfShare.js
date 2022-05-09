@@ -106,9 +106,12 @@ export const pdfFunc = () => {
     }
 
     function pdfInit(fileName) {
+        $("#spinnerModal").modal();
+
         pdfjsLib.getDocument("/channel/downloadPdf?fileName=" + fileName).promise.then((pdf) => {
             myState.pdf = pdf;
             render();
+            $("#spinnerModal").modal("hide");
         }, (err) => {
             alert("Error: " + err);
         });
