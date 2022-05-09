@@ -35,11 +35,15 @@ export const optionsBtn = () => {
 function selectOptionsEnable() {
     subOptions.hidden = false;
     mainOptions.hidden = true;
+
+    subOptions.style.setProperty("margin-left", "40px");
 }
 
 function selectOptionsDisable() {
     subOptions.hidden = true;
     mainOptions.hidden = false;
+
+    subOptions.style.setProperty("margin-left", "none");
 }
 
 function resizeOptionsActive() {

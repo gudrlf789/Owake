@@ -58,14 +58,14 @@ html {
     -webkit-overflow-scrolling: touch;
 }
 
-.header {
+/* .header {
     display: flex;
     height: 8vh;
     height: calc(var(--vh, 1vh) * 8);
     position: relative;
     width: 100%;
     background-color: var(--main-darklg);
-}
+} */
 
 .nav__container {
     color: #fff;
@@ -127,8 +127,8 @@ html {
 .main {
     position: relative;
     overflow: hidden;
-    height: 92vh;
-    height: calc(var(--vh, 1vh) * 92);
+    /* height: 92vh; */
+    height: calc(var(--vh, 1vh) * 90);
     display: flex;
 }
 
@@ -295,10 +295,10 @@ video:hover {
 }
 
 #spinnerModal {
-  position: absolute;
-  z-index: 9999;
-  top: 50%;
-  left: 50%;
+    position: absolute;
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
 }
 
 @media (min-width: 768px) {
@@ -308,6 +308,9 @@ video:hover {
 }
 
 @media (max-width: 768px) {
+    .main {
+        height: calc(var(--vh, 1vh) * 89);
+    }
     .main__left {
         width: 100%;
     }
