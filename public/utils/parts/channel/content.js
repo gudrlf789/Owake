@@ -130,7 +130,7 @@ export const contentFunc = () => {
         }
         if (mediaType.test(fileType)) {
             contentShare.innerHTML = `
-                <video class="mediaFile" name="${choiceFile}" controls style="width: 100%; height: 100%">
+                <video class="mediaFile" name="${choiceFile}" controls controlsList="nodownload" style="width: 100%; height: 100%">
                     <source src="${choiceFile}">
                 </video>
             `;
