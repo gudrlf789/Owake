@@ -1,58 +1,60 @@
+/**
+ * @author 전형동
+ * @date 2022 05 08
+ * @version 1.0
+ * @description
+ * remoteDisplay 설정
+ *
+ * ---------------- 수정사항 ---------------
+ * 1. 리모트 유저가 접속했을 때 버튼 색상 변경
+ * 2. 유저가 접속한 상태라면 분홍색 아니면 흰색
+ */
+
+const usersBtn = document.querySelector("#users");
+const remotePlayerList = document.querySelector("#remote-playerlist");
+
+let usersBtnActive = false;
+let width;
+
 export const remoteDisplay = () => {
-    const downBtn = document.createElement("i");
-    const upBtn = document.createElement("i");
-    const btnSpan = document.createElement("span");
-    const btnSpan2 = document.createElement("span");
-    const navContainer = document.querySelector(".nav__container");
+    window.addEventListener("resize", resizeRemoteContainerAction, false);
+    usersBtn.addEventListener("click", clickRemoteDisplayAction, false);
+};
 
-    const upBtnCtr = document.createElement("div");
-    const downBtnCtr = document.createElement("div");
+function clickRemoteDisplayAction(e) {
+    let element = e.target;
+    if (remotePlayerList.childElementCount > 0) {
+        usersBtnActive = !usersBtnActive;
 
-    downBtn.className = "fas fa-chevron-circle-down";
-    upBtn.className = "fas fa-chevron-circle-up";
-    downBtn.id = "downBtn";
-    upBtn.id = "upBtn";
+        if (element.style.color !== "rgb(255, 255, 255)") {
+            usersBtnActive = false;
+        } else {
+            usersBtnActive = true;
+        }
 
-    btnSpan.id = "btnSpan";
-    btnSpan.className = "span-button";
+        usersBtnActive
+            ? usersDisplayEnable(element)
+            : usersDisplayDisable(element);
+    } else {
+        return alert("No users are connected to the room.");
+    }
+}
 
-    btnSpan.innerHTML = "Users";
-    btnSpan2.innerHTML = "On";
+function usersDisplayEnable(element) {
+    remotePlayerList.hidden = false;
+    element.style.color = "#e07478";
+}
 
-    upBtnCtr.id = "upBtnContainer";
-    downBtnCtr.id = "downBtnContainer";
-    upBtnCtr.className = "options__button";
-    downBtnCtr.className = "options__button";
+function usersDisplayDisable(element) {
+    remotePlayerList.hidden = true;
+    element.style.color = "#fff";
+}
 
-    let upBtnActive = true;
-    let downBtnActive = true;
-
-    downBtnCtr.append(downBtn, btnSpan2);
-    upBtnCtr.append(upBtn, btnSpan);
-    navContainer.append(upBtnCtr);
-
-    let width = window.document.body.offsetWidth;
-
+function resizeRemoteContainerAction() {
+    width = window.document.body.offsetWidth;
     if (width > 768) {
         $("#remote__video__container").attr("style", "height:100%");
     } else {
         $("#remote__video__container").attr("style", "height:min-content");
     }
-
-    $(document).on("click", "#upBtnContainer", (e) => {
-        if (upBtnActive) {
-            $("#remote-playerlist").slideUp("fast");
-            navContainer.append(downBtnCtr);
-            upBtnCtr.remove();
-        }
-    });
-
-    $(document).on("click", "#downBtnContainer", (e) => {
-        if (downBtnActive) {
-            $("#remote-playerlist").slideDown("fast");
-            btnSpan.innerHTML = "Off";
-            navContainer.append(upBtnCtr);
-            downBtnCtr.remove();
-        }
-    });
-};
+}

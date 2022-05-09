@@ -2,6 +2,7 @@ const { Server } = require("socket.io");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const morgan = require("morgan");
 const path = require("path");
 const Logger = require("./Logger");
 const bodyParser = require("body-parser");
@@ -74,7 +75,24 @@ app.use(
     })
 );
 
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", true);
+    res.setHeader("Access-Control-Max-Age", "3600");
+
+    next();
+});
+
 app.use(redirectSec);
+app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -105,7 +123,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/:channelName/:channelType", (req, res) => {
-    let appID = "4343e4c08654493cb8997de783a9aaeb";
+    let appID = "50b9cd9de2d54849a139e3db52e7928a";
 
     res.render("channel", {
         channelName: req.params.channelName,
@@ -215,7 +233,14 @@ io.sockets.on("connection", (socket) => {
         let peerWebURLArrSet = new Set(peerWebURLArr);
         let resultURLArr = Array.from(peerWebURLArrSet);
 
-        log.debug("connected peers grp by Peer Address ", peers, peerWebURLArr);
+        // resultURLArr.forEach((url) => {
+        //     peers[config.channel][config.peerID] = {
+        //         web: url,
+        //     };
+        // });
+
+        log.debug("connected peers grp by Peer Address ", peers);
+
         socket.in(config.channel).emit("input_address", config.link);
     });
 
@@ -335,12 +360,17 @@ io.sockets.on("connection", (socket) => {
     });
 
     socket.on("pdf-origin-previous", (channelName, previousPage, fileName) => {
-        socket.to(channelName).emit("pdf-remote-previous", previousPage, fileName);
+        socket
+            .to(channelName)
+            .emit("pdf-remote-previous", previousPage, fileName);
     });
 
-    socket.on("scroll-origin-pdf",
+    socket.on(
+        "scroll-origin-pdf",
         (channelName, originTop, originLeft, fileName) => {
-            socket.to(channelName).emit("scroll-remote-pdf", originTop, originLeft, fileName);
+            socket
+                .to(channelName)
+                .emit("scroll-remote-pdf", originTop, originLeft, fileName);
         }
     );
 

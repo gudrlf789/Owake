@@ -1,8 +1,8 @@
 export const responsiveFunc = () => {
-    $(document).ready(() => {
-        playerNameHidden();
-        mobileResponsive();
-    });
+    playerNameHidden();
+    mobileResponsive();
+    window.addEventListener("resize", playerNameHidden, false);
+    window.addEventListener("resize", mobileResponsive, false);
 };
 
 function playerNameHidden() {
@@ -18,9 +18,4 @@ function playerNameHidden() {
 function mobileResponsive() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--vh", `${vh}px`);
-
-    window.addEventListener("resize", () => {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty("--vh", `${vh}px`);
-    });
 }

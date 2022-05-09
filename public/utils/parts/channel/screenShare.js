@@ -10,7 +10,7 @@
 
 import { options } from "../../rtcClient.js";
 
-let openYN = "N"
+let openYN = "N";
 
 export const screenShareFunc = () => {
     const screenShareBtn = document.querySelector("#shareScreen");
@@ -18,7 +18,7 @@ export const screenShareFunc = () => {
 };
 
 async function screenShareJoin() {
-    if(openYN !== "N"){
+    if (openYN !== "N") {
         return alert("Please close screen share which is opened");
     }
 
