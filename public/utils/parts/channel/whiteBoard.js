@@ -163,7 +163,18 @@ export const whiteBoardFunc = () => {
             );
         }
 
+        function checkIphoneMobile() {
+            const checkIphone = navigator.userAgent.toLowerCase();
+
+            if(checkIphone.indexOf("iphone") > -1){
+                alert("We are sorry for that iPhone users can't draw freely on the whiteboard yet.");
+                return
+            }
+        }
+
         function onMouseDown(e) {
+            checkIphoneMobile();
+
             drawing = true;
             current.x =
                 e.clientX - rect.left || e.touches[0].clientX - rect.left;
