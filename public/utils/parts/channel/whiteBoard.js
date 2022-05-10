@@ -166,9 +166,11 @@ export const whiteBoardFunc = () => {
         function checkIphoneMobile() {
             const checkIphone = navigator.userAgent.toLowerCase();
 
-            if(checkIphone.indexOf("iphone") > -1){
-                alert("We are sorry for that iPhone users can't draw freely on the whiteboard yet.");
-                return
+            if (checkIphone.indexOf("iphone") > -1) {
+                alert(
+                    "We are sorry for that iPhone users can't draw freely on the whiteboard yet."
+                );
+                return;
             }
         }
 
