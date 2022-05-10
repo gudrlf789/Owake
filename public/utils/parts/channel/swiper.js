@@ -1,9 +1,5 @@
 export const SwiperFunc = () => {
-    let swiper = new Swiper(".mySwiper", {
-        pagination: {
-            el: ".swiper-pagination",
-        },
-    });
+    let swiper = new Swiper(".optionsSwiper", {});
 
     return swiper;
 };
