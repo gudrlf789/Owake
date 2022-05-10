@@ -7,11 +7,14 @@ export const responsiveFunc = () => {
 
 function playerNameHidden() {
     const playerName = document.querySelector("#local-player-name");
+    const optionsRightContainer = document.querySelector(".options__right");
     const bodyWidth = document.body.offsetWidth;
     if (bodyWidth < 768) {
         playerName.hidden = true;
+        optionsRightContainer.hidden = true;
     } else {
         playerName.hidden = false;
+        optionsRightContainer.hidden = false;
     }
 }
 

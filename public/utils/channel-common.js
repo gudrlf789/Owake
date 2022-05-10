@@ -19,7 +19,7 @@ import { responsiveFunc } from "./parts/channel/responsive.js";
 import { copyInfo } from "./parts/channel/copyUrl.js";
 import { browserEvent } from "./parts/channel/browserEvent.js";
 import { gridView } from "./parts/channel/videoViewGridMode.js";
-// import { SwiperFunc } from "./parts/channel/swiper.js";
+import { SwiperFunc } from "./parts/channel/swiper.js";
 // import { shareEditerFunc } from "./parts/channel/shareEditer.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
@@ -28,9 +28,9 @@ import { pdfFunc } from "./parts/channel/pdfShare.js";
 $(async () => {
     // 첫페이지 로딩시에 스피너바 삭제
     channelFirstSpinnerDeleteFunc();
-
     mobileDisplayCtr();
     f12defense();
+    SwiperFunc();
 
     mobileDisplayCtr();
     f12defense();
@@ -40,7 +40,7 @@ $(async () => {
     mobileReflashClose();
 
     momentShareFunc1();
-    recodingDeviceCtrl();
+    // recodingDeviceCtrl();
     screenShareFunc();
     whiteBoardFunc();
     browserEvent();

@@ -23,7 +23,7 @@
             <!-- axios -->
             <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <!-- Swiper -->
-            <!-- <script type="text/javascript" src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> -->
+            <script type="text/javascript" src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
             <!-- Pdf.js -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.min.js"></script>
 
@@ -109,7 +109,7 @@
 
             <%- include("./popup/fileDelivery") %>
                 <%- include("./popup/deviceSettings") %>
-                    <%- include("./popup/fileHash") %>
+                    <%- include("./popup/Identifier") %>
                         <%- include("./popup/spinnerModal") %>
 </head>
 
@@ -180,91 +180,86 @@
             <span class="logo"></span>
         </section>
 
-        <section class="sub__options options__left" hidden="true">
+        <div class="swiper optionsSwiper">
+            <div class="swiper-wrapper">
 
-            <div id="nav__left" class="options__button" hidden="true">
-                <i class="fas fa-angle-left"></i>
-            </div>
+                <section class="main__options options__left swiper-slide">
+                    <div id="muteVideo" class="options__button">
+                        <i id="videoIcon" class="fas fa-video"></i>
+                        <!-- <span>Cam</span> -->
+                    </div>
+                    <div id="muteAudio" class="options__button">
+                        <i id="audioIcon" class="fa fa-microphone"></i>
+                        <!-- <span>Mic</span> -->
+                    </div>
+                    <div id="showChat" class="options__button">
+                        <i class="fa fa-comment"></i>
+                        <!-- <img src="/svg/chat.svg" alt=""> -->
+                        <!-- <span>Chat</span> -->
+                    </div>
+                    <div id="shareScreen" class="options__button">
+                        <i class="fas fa-retweet"></i>
+                        <!-- <span>Screen</span> -->
+                    </div>
+                    <div id="users" class="options__button">
+                        <i class="fas fa-users"></i>
+                        <!-- <span>Users</span> -->
+                    </div>
 
-            <div id="momentShare1" class="options__button">
-                <!-- <i class="fab fa-connectdevelop"></i> -->
-                <img src="/svg/web_share.svg" alt="">
-                <!-- <span>Web</span> -->
-            </div>
-            <!-- <div id="momentShare2" class="options__button">
+                </section>
+
+                <section class="sub__options options__left swiper-slide">
+                    <div id="momentShare1" class="options__button">
+                        <!-- <i class="fab fa-connectdevelop"></i> -->
+                        <img class="optionsBtnImg" src="/svg/web_share.svg"></img>
+                        <!-- <span>Web</span> -->
+                    </div>
+                    <!-- <div id="momentShare2" class="options__button">
                 <i class="fab fa-connectdevelop"></i>
                 <span>Web2</span>
             </div> -->
-            <!-- <div id="fileShareBtn" class="options__button">
+                    <!-- <div id="fileShareBtn" class="options__button">
                 <i class="fab fa-creative-commons-share"></i>
                 <span>FShare</span>
             </div> -->
-            <!-- 
+                    <!-- 
             <div id="textShare" class="options__button">
                 <i class="fas fa-file-alt"></i>
                 <span>TShare</span>
             </div> 
             -->
-            <div id="whiteBoard" class="options__button">
-                <!-- <i class="fas fa-chalkboard-teacher"></i> -->
-                <img src="/svg/whiteboard.svg" alt="">
-                <!-- <span>WhiteBoard</span> -->
-            </div>
-            <div class="options__button" id="fileDeliveryBtn">
-                <!-- <i class="far fa-folder-open"></i> -->
-                <img src="/svg/file_share.svg" alt="">
-                <!-- <span>File</span> -->
-            </div>
-            <div class="options__button" id="fileHashBtn" data-toggle="modal" data-target="#fileHashModal">
-                <!-- <i class="fas fa-file-invoice" aria-hidden="true"></i> -->
-                <img src="/svg/identifire.svg" alt="">
-                <!-- <span>Identifier</span> -->
-            </div>
-            <div id="contentShare" class="options__button">
-                <!-- <i class="fas fa-exchange-alt"></i> -->
-                <img src="/svg/media_share.svg" alt="">
-                <!-- <span>contents</span> -->
-            </div>
-            <div id="pdfShare" class="options__button">
-                <!-- <i class="fas fa-file-pdf"></i> -->
-                <img src="/svg/pdf_share.svg" alt="">
-            </div>
+                    <div id="whiteBoard" class="options__button">
+                        <!-- <i class="fas fa-chalkboard-teacher"></i> -->
+                        <img class="optionsBtnImg" src="/svg/whiteboard.svg"></img>
+                        <!-- <span>WhiteBoard</span> -->
+                    </div>
+                    <div class="options__button" id="fileDeliveryBtn">
+                        <!-- <i class="far fa-folder-open"></i> -->
+                        <img class="optionsBtnImg" src="/svg/file_share.svg"></img>
+                        <!-- <span>File</span> -->
+                    </div>
+                    <div class="options__button" id="fileHashBtn" data-toggle="modal" data-target="#fileHashModal">
+                        <!-- <i class="fas fa-file-invoice" aria-hidden="true"></i> -->
+                        <img class="optionsBtnImg" src="/svg/identifire.svg"></img>
+                        <!-- <span>Identifier</span> -->
+                    </div>
+                    <div id="contentShare" class="options__button">
+                        <!-- <i class="fas fa-exchange-alt"></i> -->
+                        <img class="optionsBtnImg" src="/svg/media_share.svg"></img>
+                        <!-- <span>contents</span> -->
+                    </div>
+                    <div id="pdfShare" class="options__button">
+                        <!-- <i class="fas fa-file-pdf"></i> -->
+                        <img class="optionsBtnImg" src="/svg/pdf_share.svg"></img>
+                    </div>
 
-            <div class="options__button" id="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal">
-                <i class="fas fa-cog"></i>
-                <!-- <span>Device</span> -->
+                    <!-- <div class="options__button" id="deviceSettingBtn" data-toggle="modal"
+                        data-target="#deviceSettingModal">
+                        <i class="fas fa-cog"></i>
+                    </div> -->
+                </section>
             </div>
-        </section>
-
-        <section class="main__options options__left">
-
-            <div id="muteVideo" class="options__button">
-                <i id="videoIcon" class="fas fa-video"></i>
-                <!-- <span>Cam</span> -->
-            </div>
-            <div id="muteAudio" class="options__button">
-                <i id="audioIcon" class="fa fa-microphone"></i>
-                <!-- <span>Mic</span> -->
-            </div>
-            <div id="showChat" class="options__button">
-                <!-- <i class="fa fa-comment"></i> -->
-                <img src="/svg/chat.svg" alt="">
-                <!-- <span>Chat</span> -->
-            </div>
-            <div id="shareScreen" class="options__button">
-                <i class="fas fa-retweet"></i>
-                <!-- <span>Screen</span> -->
-            </div>
-            <div id="users" class="options__button">
-                <i class="fas fa-users"></i>
-                <!-- <span>Users</span> -->
-            </div>
-
-            <div id="nav__right" class="options__button">
-                <i class="fas fa-angle-right"></i>
-            </div>
-
-        </section>
+        </div>
 
         <section class="options__right">
             <div class="main__leave options__button">

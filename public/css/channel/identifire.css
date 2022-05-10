@@ -1,0 +1,35 @@
+#top_container {
+    margin: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#top_container button {
+    height: 50px;
+}
+
+#bottom_container {
+    margin: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#bottom_container button {
+    height: 50px;
+}
+
+#middle_container {
+    display: flex;
+    margin: 0.5rem;
+    flex-direction: column;
+}
+
+.Identifier-body {
+    overflow: auto;
+}
+
+.guide_text {
+    font-size: 0.8rem;
+}
