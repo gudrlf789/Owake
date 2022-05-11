@@ -167,12 +167,3 @@ function jqueryUIScriptRemove() {
         }
     }
 }
-
-// FileDelivery Activator Functions End
-
-// fileShare();
-// momentShareFunc2();
-// copyInfo();
-// gridView();
-// shareEditerFunc();--------------------- 서버에 올리면 Lisence 문제로 사용 불가능 구매해야 됨.
-// SwiperFunc();
