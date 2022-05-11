@@ -94,7 +94,9 @@ function fileDeliveryEnable() {
         "filter",
         "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
     );
-    fileDelivery();
+    $(document).ready(() => {
+        fileDelivery();
+    });
 }
 
 function fileDeliverySafariEnable() {
@@ -103,7 +105,9 @@ function fileDeliverySafariEnable() {
         "filter",
         "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
     );
-    fileDeliverySafari();
+    $(document).ready(() => {
+        fileDeliverySafari();
+    });
 }
 
 function fileDeliveryDisable() {
