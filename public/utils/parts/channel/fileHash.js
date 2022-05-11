@@ -44,6 +44,8 @@ export const fileHash = () => {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity
         }).then((res) => {
             hashSocket.emit(
                 "submit_hash",
@@ -53,16 +55,33 @@ export const fileHash = () => {
             );
             textHtml.value = res.data.hashCode;
         }).catch((err) => {
-
+            alert("You can upload up to 150mb");
+            $("#spinnerModal").modal("hide");
         });
     };
 
+    function checkFileSelected(file) {
+        if(file.length === 0){
+            alert("You have to select file");
+            return false;
+        }
+        if( file[0].size > 5000000){
+            alert("You can upload up to 5mb");
+            return false;
+        }
+        return true;
+    }
+
     originHash.addEventListener("click", (e) => {
-        makeFileToHash(selectFile1.files[0], selectOriginalInput);
+        if(checkFileSelected(selectFile1.files)){
+            makeFileToHash(selectFile1.files[0], selectOriginalInput);
+        }
     });
 
     remoteHash.addEventListener("click", (e) => {
-        makeFileToHash(selectFile2.files[0], selectComparisonInput);
+        if(checkFileSelected(selectFile2.files)){
+            makeFileToHash(selectFile2.files[0], selectComparisonInput);
+        }
     });
 
     clickVerifyFile.addEventListener("click", (e) => {
