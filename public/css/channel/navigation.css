@@ -18,7 +18,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     background-color: var(--main-darklg);
-    height: calc(var(--vh, 1vh) * 10);
+    height: calc(var(--vh, 1vh) * 7);
     justify-content: center;
 }
 
@@ -113,26 +113,8 @@
         /* margin-left: 20px; */
     }
 
-    .top__nav__container {
-        position: relative;
-        display: flex;
-        background-color: var(--main-darklg);
-        height: calc(var(--vh, 1vh) * 5);
-        justify-content: right;
-    }
-
     .options {
         display: flex;
-        height: calc(var(--vh, 1vh) * 6);
-    }
-
-    .options__left {
-        align-items: baseline;
-    }
-
-    .fa-chevron-left {
-        top: 0;
-        position: absolute;
     }
 
     .options__button {

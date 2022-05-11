@@ -129,7 +129,7 @@ html {
     position: relative;
     overflow: hidden;
     /* height: 92vh; */
-    height: calc(var(--vh, 1vh) * 90);
+    height: calc(var(--vh, 1vh) * 93);
     display: flex;
 }
 
@@ -309,9 +309,6 @@ video:hover {
 }
 
 @media (max-width: 768px) {
-    .main {
-        height: calc(var(--vh, 1vh) * 89);
-    }
     .main__left {
         width: 100%;
     }

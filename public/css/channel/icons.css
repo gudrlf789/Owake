@@ -91,7 +91,7 @@
         display: block;
         position: fixed;
         width: 60px;
-        height: calc(var(--vh, 1vh) * 12);
+        height: calc(var(--vh, 1vh) * 7);
         background-image: url("../../../48h/navbtn.gif");
         background-repeat: no-repeat;
         background-position: center;
