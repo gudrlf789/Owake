@@ -91,24 +91,12 @@
     align-items: center;
 }
 
-.swiper-button-next,
-.swiper-button-prev {
-    top: 50% !important;
-    display: none;
-}
-
-.swiper-button-next,
-.swiper-rtl .swiper-button-prev {
-    right: 20rem;
-}
-
-.swiper-button-prev,
-.swiper-rtl .swiper-button-next {
-    left: 20rem;
-}
-
 .top__nav__container {
     display: none;
+}
+
+.desktop-options {
+    display: flex;
 }
 
 @media (max-width: 768px) {
@@ -140,6 +128,11 @@
 
     .options__left {
         align-items: baseline;
+    }
+
+    .fa-chevron-left {
+        top: 0;
+        position: absolute;
     }
 
     .options__button {

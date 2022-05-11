@@ -1,3 +1,15 @@
+.identifier-container {
+    position: fixed;
+    background: #fff;
+    left: 0;
+    right: 0;
+    width: calc(100% / 2 - 80px);
+    top: 15%;
+    padding: 0.7rem;
+    margin: 0 auto;
+    z-index: 30;
+}
+
 #top_container {
     margin: 0.5rem;
     display: flex;
@@ -32,4 +44,10 @@
 
 .guide_text {
     font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .identifier-container {
+        width: 100%;
+    }
 }

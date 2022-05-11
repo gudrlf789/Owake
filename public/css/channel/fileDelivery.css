@@ -1,10 +1,12 @@
 #delivery_container {
-    position: absolute;
-    top: 25%;
+    position: fixed;
+    top: 15%;
+    left: 0;
+    right: 0;
     display: none;
     z-index: 5;
     background: #fff;
     border-radius: 15px;
-    padding: 30px;
+    padding: 1.2rem;
     cursor: move;
 }

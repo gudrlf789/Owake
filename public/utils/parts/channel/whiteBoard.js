@@ -1,49 +1,49 @@
 import { socketInitFunc } from "./socket.js";
 
+const whiteboardSocket = socketInitFunc();
+// Container Publising...
+const whiteBoardContainer = document.createElement("div");
+const whiteBoardOptionsContainer = document.createElement("div");
+
+const canvas = document.createElement("canvas");
+
+const clearBtn = document.createElement("input");
+const numberInput = document.createElement("input");
+const colorInput = document.createElement("input");
+
+colorInput.type = "color";
+numberInput.type = "number";
+clearBtn.type = "button";
+clearBtn.style.width = "70px";
+numberInput.style.width = "50px";
+
+colorInput.id = "colorInput";
+colorInput.value = "#f44336";
+numberInput.id = "numberInput";
+numberInput.value = "1";
+
+whiteBoardOptionsContainer.className = "options-container";
+whiteBoardOptionsContainer.id = "whiteBoardOptionsContainer";
+
+clearBtn.id = "clearBtn";
+clearBtn.value = "Clear";
+
+const selectLocalVideoContainer = document.querySelector(
+    "#local__video__container"
+);
+const whiteBoardBtn = document.querySelector("#whiteBoard");
+let whiteBoardBtnActive = false;
+
+whiteBoardContainer.className = "whiteBoard";
+whiteBoardContainer.id = "whiteBoardContainer";
+
+canvas.id = "whiteboard-canvas";
+
+whiteBoardOptionsContainer.append(colorInput, numberInput, clearBtn);
+whiteBoardContainer.appendChild(canvas);
+whiteBoardContainer.appendChild(whiteBoardOptionsContainer);
+
 export const whiteBoardFunc = () => {
-    const whiteboardSocket = socketInitFunc();
-    // Container Publising...
-    const whiteBoardContainer = document.createElement("div");
-    const whiteBoardOptionsContainer = document.createElement("div");
-
-    const canvas = document.createElement("canvas");
-
-    const clearBtn = document.createElement("input");
-    const numberInput = document.createElement("input");
-    const colorInput = document.createElement("input");
-
-    colorInput.type = "color";
-    numberInput.type = "number";
-    clearBtn.type = "button";
-    clearBtn.style.width = "70px";
-    numberInput.style.width = "50px";
-
-    colorInput.id = "colorInput";
-    numberInput.id = "numberInput";
-    numberInput.value = "1";
-
-    whiteBoardOptionsContainer.className = "options-container";
-    whiteBoardOptionsContainer.id = "whiteBoardOptionsContainer";
-    whiteBoardOptionsContainer.style.display = "flex";
-    whiteBoardOptionsContainer.style.flexDirection = "row-reverse";
-
-    clearBtn.id = "clearBtn";
-    clearBtn.value = "Clear";
-
-    const selectLocalVideoContainer = document.querySelector(
-        "#local__video__container"
-    );
-    const whiteBoardBtn = document.querySelector("#whiteBoard");
-    let whiteBoardBtnActive = false;
-
-    whiteBoardContainer.className = "whiteBoard";
-    whiteBoardContainer.id = "whiteBoardContainer";
-
-    canvas.id = "whiteboard-canvas";
-
-    whiteBoardOptionsContainer.append(colorInput, numberInput, clearBtn);
-    whiteBoardContainer.append(whiteBoardOptionsContainer, canvas);
-
     // Click Event Handler
 
     whiteBoardBtn.addEventListener("click", (e) => {
@@ -58,12 +58,10 @@ export const whiteBoardFunc = () => {
     function whiteBoardEnable() {
         selectLocalVideoContainer.append(whiteBoardContainer);
         whiteBoardContainer.hidden = false;
-        whiteBoardBtn.style.color = "rgb(165, 199, 236)";
         boardDrawStart();
     }
     function whiteBoardDisable() {
         whiteBoardContainer.hidden = true;
-        whiteBoardBtn.style.color = "#fff";
         // whiteBoardContainer.remove();
 
         whiteboardSocket.emit(
