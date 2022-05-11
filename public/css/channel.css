@@ -196,7 +196,7 @@ html {
 }
 
 #local__videoBox > div {
-    border: 2px solid #fff;
+    /* border: 2px solid #fff; */
     /* border-radius: 20px; */
 }
 
@@ -240,7 +240,7 @@ html {
 }
 
 #remote-playerlist > div {
-    border: 2px solid #fff;
+    border: 0.1px solid #fff;
     /* border-radius: 20px; */
     width: 230px;
     height: 230px;
