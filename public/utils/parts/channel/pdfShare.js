@@ -158,6 +158,9 @@ export const pdfFunc = () => {
                 );
                 pdfSearchInput.value = "";
             }
+        }).catch((err) => {
+            alert("You can upload up to 150mb");
+            $("#spinnerModal").modal("hide");
         });
     });
 

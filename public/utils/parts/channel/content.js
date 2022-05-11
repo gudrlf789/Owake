@@ -100,7 +100,10 @@ export const contentFunc = () => {
                 );
                 contentSearchInput.value = "";
             }
-        });
+        }).catch((err) => {
+            alert("You can upload up to 150mb");
+            $("#spinnerModal").modal("hide");
+        })
     });
 
     function contentShareEnable() {

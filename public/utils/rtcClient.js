@@ -14,13 +14,9 @@
 import { socketInitFunc } from "./parts/channel/socket.js";
 
 let socket = socketInitFunc();
-
 export const localVideoBox = document.createElement("div");
 const localVideoContainer = document.querySelector("#local__video__container");
 const selectVideo = document.querySelector("video");
-
-let windowWidth;
-
 localVideoBox.id = "local__videoBox";
 localVideoBox.className = "player";
 
@@ -186,23 +182,16 @@ async function leave() {
     window.sessionStorage.clear();
 
     $("#local-player-name").text("");
-    // $("#join").attr("disabled", false);
-    // $("#leave").attr("disabled", true);
+    $("#join").attr("disabled", false);
+    $("#leave").attr("disabled", true);
 
     window.location.replace("/");
 }
 
 async function subscribe(user, mediaType) {
-    let remoteActive = false;
     const uid = user.uid;
-
-    if (uid !== undefined || uid !== null || uid !== "") {
-        remoteActive = true;
-        await client.subscribe(user, mediaType);
-        console.log("subscribe success");
-    } else {
-        alert("The name registered by the accessed user is invalid.");
-    }
+    await client.subscribe(user, mediaType);
+    console.log("subscribe success");
 
     try {
         // let mics = await AgoraRTC.getMicrophones();
@@ -227,7 +216,7 @@ async function subscribe(user, mediaType) {
 
         if (mediaType === "video") {
             const player = $(`
-              <div class="player-wrapper" id="player-wrapper-${uid}">
+              <div id="player-wrapper-${uid}">
                 <p class="player-name">${uid}</p>
                 <div id="player-${uid}" class="player" uid="${uid}"></div>
               </div>
@@ -243,7 +232,7 @@ async function subscribe(user, mediaType) {
             // if (!user.hasVideo && user.hasAudio) {
             if (!user.hasVideo) {
                 const iconPlayer = $(`
-                    <div class="player-wrapper" id="player-wrapper-${uid}">
+                    <div id="player-wrapper-${uid}">
                     <p class="player-name" style="color: white">${uid}</p>
                     <div id="player-${uid}" class="player" uid="${uid}"
                         style="background-image: url('../img/person.png'); background-repeat: no-repeat; background-size: contain"></div>
@@ -253,10 +242,7 @@ async function subscribe(user, mediaType) {
             }
         }
 
-        handlerRemoteDisplaySize();
-        window.addEventListener("resize", handlerRemoteDisplaySize, false);
-
-        usersActive(remoteActive);
+        cameraWasteRemove();
     } catch (error) {
         console.log("Permission Error!! ", error);
     }
@@ -466,54 +452,3 @@ function cameraSwitchDisableFunc(e) {
 //         }
 //     }
 // }
-
-/**
- * @author 전형동
- * @version 1.0
- * @data 2022 04.27
- * @description
- * Remote Display Size
- */
-function handlerRemoteDisplaySize() {
-    windowWidth = document.body.offsetWidth;
-    // Remote Display Size Controller
-    let remotePlayer = document.querySelector("#remote-playerlist").childNodes;
-    let remotePlayerChild;
-
-    let remotePlayerWidth;
-    let remotePlayerHeight;
-
-    if (windowWidth < 768) {
-        for (let i = 0; i < remotePlayer.length; i++) {
-            remotePlayerWidth = windowWidth / 5 - 8;
-            remotePlayerHeight = remotePlayerWidth;
-
-            remotePlayerChild = remotePlayer[i];
-
-            remotePlayerChild.style.setProperty(
-                "width",
-                `${remotePlayerWidth}px`
-            );
-            remotePlayerChild.style.setProperty(
-                "height",
-                `${remotePlayerHeight}px`
-            );
-        }
-    } else {
-        for (let i = 0; i < remotePlayer.length; i++) {
-            remotePlayerChild = remotePlayer[i];
-
-            remotePlayerChild.style.setProperty("width", "230px");
-            remotePlayerChild.style.setProperty("height", "230px");
-        }
-    }
-}
-
-function usersActive(state) {
-    const usersBtn = document.querySelector(".fa-users");
-    if (state === true) {
-        usersBtn.style.color = "#e07478";
-    } else {
-        usersBtn.style.color = "#fff";
-    }
-}
