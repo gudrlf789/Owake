@@ -1,8 +1,6 @@
 export const fileDelivery = () => {
-    $(document).ready(() => {
-        updateDevice();
-        clickEvent();
-    });
+    updateDevice();
+    clickEvent();
 };
 
 function updateDevice() {

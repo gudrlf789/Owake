@@ -1,11 +1,10 @@
 /**
- * @author 전형동
+ * @author 박형길
  * @version 1.1
- * @data 2022 03.24
+ * @data 2022 05.09
  * @description
  * --------------- 수정사항 ---------------
- * 1. rtcClient.js options 객체 추가
- * 2. 함수 위치 재배치
+ * 1. ScreenShare 취소하면 세션 에러나는 현상 수정
  */
 
 import { options } from "../../rtcClient.js";
@@ -34,32 +33,36 @@ async function screenShareJoin() {
         `${options.uid}Screen` ||
             `${window.sessionStorage.getItem("uid")}Screen`
     );
-
-    const screenTrack = await AgoraRTC.createScreenVideoTrack(
-        {
-            encoderConfig: {
-                frameRate: 60,
-                bitrateMax: 4780,
-                bitrateMin: 3150,
+    try {
+        const screenTrack = await AgoraRTC.createScreenVideoTrack(
+            {
+                encoderConfig: {
+                    frameRate: 60,
+                    bitrateMax: 4780,
+                    bitrateMin: 3150,
+                },
+                // encoderConfig: "1080p_5", // frameRate : 60, bitrateMax : 4780
+                // optimizationMode: "detail",   // 영상의 품질을 우선
+                optimizationMode: "motion", // 영상의 부드러움을 우선
+                screenSourceType: "screen", // 'screen', 'application', 'window'
             },
-            // encoderConfig: "1080p_5", // frameRate : 60, bitrateMax : 4780
-            // optimizationMode: "detail",   // 영상의 품질을 우선
-            optimizationMode: "motion", // 영상의 부드러움을 우선
-            screenSourceType: "screen", // 'screen', 'application', 'window'
-        },
-        "auto"
-    );
-    openYN = "Y";
-    if (screenTrack[1]) {
-        await screenClient.publish([screenTrack[0], screenTrack[1]]);
-        screenTrack[0].on("track-ended", () => {
-            LeaveShareScreen(screenClient, screenTrack);
-        });
-    } else {
-        await screenClient.publish(screenTrack);
-        screenTrack.on("track-ended", () => {
-            LeaveShareScreen(screenClient, screenTrack);
-        });
+            "auto"
+        );
+        openYN = "Y";
+        if (screenTrack[1]) {
+            await screenClient.publish([screenTrack[0], screenTrack[1]]);
+            screenTrack[0].on("track-ended", () => {
+                LeaveShareScreen(screenClient, screenTrack);
+            });
+        } else {
+            await screenClient.publish(screenTrack);
+            screenTrack.on("track-ended", () => {
+                LeaveShareScreen(screenClient, screenTrack);
+            });
+        }
+    } catch (err) {
+        console.log("Agora error: " + err);
+        screenClient.leave();
     }
 }
 

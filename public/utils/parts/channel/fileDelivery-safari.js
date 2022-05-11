@@ -1,8 +1,6 @@
 export const fileDeliverySafari = () => {
-    $(document).ready(() => {
-        updateDevice();
-        clickEvent();
-    });
+    updateDevice();
+    clickEvent();
 };
 
 let device_key = "";
