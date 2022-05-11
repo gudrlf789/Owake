@@ -31,6 +31,9 @@ const upload = multer({
 });
 const contentsUpload = multer({
     storage: contentsStorage,
+    limits: {
+        fileSize: 1024 * 1024 * 150
+    }
 });
 const path = require("path");
 const axios = require("axios");
