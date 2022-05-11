@@ -357,7 +357,7 @@ video:hover {
         height: 130px;
         margin-bottom: 6px;
         margin-right: 7px; */
-        margin: 7px;
+        margin: 0.1rem;
         border-radius: 0;
     }
 
