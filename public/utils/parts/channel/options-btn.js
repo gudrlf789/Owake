@@ -1,18 +1,10 @@
 const navBtn = document.querySelector("#nav__btn");
 
-let subOptionsActivator = false;
+let deviceSettingActivator = false;
 
 export const optionsBtn = () => {
     navBtn.addEventListener("click", (e) => {
-        subOptionsActivator = !subOptionsActivator;
+        deviceSettingActivator = !deviceSettingActivator;
         // subOptionsActivator ? selectOptionsEnable() : selectOptionsDisable();
     });
-
-    // if (optionsRightContainer.hidden === false) {
-    //     leaveOptions();
-    // }
-
-    // $(document).on("click", ".optionsBtnImg", (e) => {
-    //     btnClickActivator = !btnClickActivator;
-    // });
 };

@@ -15,7 +15,7 @@ import { localTracks } from "../../rtcClient.js";
  */
 
 // Select DOM
-const deviceSettingBtn = document.getElementById("deviceSettingBtn");
+const deviceSettingBtn = document.querySelector(".deviceSettingBtn");
 const cameraSwitchBtn = document.querySelector("#camera-switching");
 const dropdownItem = document.querySelector(".dropdown-item");
 

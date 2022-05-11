@@ -1,0 +1,14 @@
+.logoutBtn {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .deviceSettings-footer {
+        justify-content: space-between;
+    }
+    .logoutBtn {
+        display: block !important;
+        background: #ec6f73;
+        color: #fff;
+    }
+}

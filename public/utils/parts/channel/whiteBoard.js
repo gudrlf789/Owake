@@ -31,7 +31,10 @@ clearBtn.value = "Clear";
 const selectLocalVideoContainer = document.querySelector(
     "#local__video__container"
 );
+
 const whiteBoardBtn = document.querySelector("#whiteBoard");
+const boardImg = document.querySelector("#boardImg");
+
 let whiteBoardBtnActive = false;
 
 whiteBoardContainer.className = "whiteBoard";
@@ -45,7 +48,6 @@ whiteBoardContainer.appendChild(whiteBoardOptionsContainer);
 
 export const whiteBoardFunc = () => {
     // Click Event Handler
-
     whiteBoardBtn.addEventListener("click", (e) => {
         handleWhiteboard(e);
     });
@@ -59,6 +61,11 @@ export const whiteBoardFunc = () => {
         selectLocalVideoContainer.append(whiteBoardContainer);
         whiteBoardContainer.hidden = false;
         boardDrawStart();
+
+        boardImg.style.setProperty(
+            "filter",
+            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
+        );
     }
     function whiteBoardDisable() {
         whiteBoardContainer.hidden = true;
@@ -68,6 +75,8 @@ export const whiteBoardFunc = () => {
             "leave-whiteboard",
             window.sessionStorage.getItem("channel")
         );
+
+        boardImg.style.setProperty("filter", "none");
     }
     // Container Publising End
 

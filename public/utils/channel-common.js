@@ -41,7 +41,7 @@ $(async () => {
     mobileReflashClose();
 
     momentShareFunc1();
-    // recodingDeviceCtrl();
+    recodingDeviceCtrl();
     screenShareFunc();
     whiteBoardFunc();
     browserEvent();
@@ -55,6 +55,7 @@ $(async () => {
 // FileDelivery Activator Functions
 const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
 const fileDeliveryContainer = document.querySelector("#delivery_container");
+const fileDeliveryImg = document.querySelector("#fileDeliveryImg");
 
 let deliveryActive = false;
 
@@ -89,81 +90,23 @@ if (!isSafari) {
 
 function fileDeliveryEnable() {
     fileDeliveryContainer.style.setProperty("display", "block");
-    jqueryUIScriptLoad();
-    setTimeout(() => {
-        $("#delivery_container").draggable();
-    }, 100);
+    fileDeliveryImg.style.setProperty(
+        "filter",
+        "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
+    );
     fileDelivery();
 }
 
 function fileDeliverySafariEnable() {
     fileDeliveryContainer.style.setProperty("display", "block");
-    jqueryUIScriptLoad();
-    setTimeout(() => {
-        $("#delivery_container").draggable();
-    }, 100);
+    fileDeliveryImg.style.setProperty(
+        "filter",
+        "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
+    );
     fileDeliverySafari();
 }
 
 function fileDeliveryDisable() {
-    jqueryUIScriptRemove();
     fileDeliveryContainer.style.setProperty("display", "none");
-}
-
-function jqueryUIScriptLoad() {
-    const link = document.createElement("link");
-    const script1 = document.createElement("script");
-    const script2 = document.createElement("script");
-
-    script1.async = true;
-    script2.async = true;
-
-    link.setAttribute("rel", "stylesheet");
-    link.setAttribute(
-        "href",
-        "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
-    );
-
-    script1.setAttribute("type", "text/javascript");
-    script2.setAttribute("type", "text/plain");
-
-    script1.setAttribute(
-        "src",
-        "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
-    );
-    script2.setAttribute(
-        "src",
-        "https://raw.githubusercontent.com/furf/jquery-ui-touch-punch/master/jquery.ui.touch-punch.js"
-    );
-    document.head.appendChild(link);
-    document.body.appendChild(script1);
-    document.body.appendChild(script2);
-}
-
-function jqueryUIScriptRemove() {
-    let selectLink = document.querySelectorAll("link");
-    let selectScript = document.querySelectorAll("script");
-    let selectJqueryUI;
-    let selectJqueryTouchPunch;
-    let selectLinkUI;
-
-    for (let k = 0; k < selectLink.length; k++) {
-        selectLinkUI = selectLink[k].href.includes("jquery-ui.min.css");
-        if (selectLinkUI === true) {
-            selectLink[k].remove();
-        }
-    }
-
-    for (let i = 0; i < selectScript.length; i++) {
-        selectJqueryUI = selectScript[i].src.includes("jquery-ui.min.js");
-        selectJqueryTouchPunch = selectScript[i].src.includes(
-            "jquery.ui.touch-punch.js"
-        );
-        if (selectJqueryUI === true) {
-            selectScript[i].remove();
-        }
-        if (selectJqueryTouchPunch === true) {
-            selectScript[i].remove();
-        }
-    }
+    fileDeliveryImg.style.setProperty("filter", "none");
 }

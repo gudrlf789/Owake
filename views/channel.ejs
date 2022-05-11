@@ -165,42 +165,51 @@
     </div>
 
     <div class="btn__container">
-        <div id="nav__btn"></div>
+        <div id="nav__btn" class="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal">
+        </div>
     </div>
 
     <div class="options">
         <section class="logo-container">
             <span class="logo"></span>
+            <i class="fas fa-chevron-down deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal"></i>
         </section>
 
         <div class="swiper optionsSwiper">
             <div class="swiper-wrapper">
                 <section class="main__options options__left swiper-slide">
                     <div id="muteVideo" class="options__button">
-                        <!-- <i id="videoIcon" class="fas fa-video"></i> -->
-                        <img class="optionsBtnImg" src="/png/cam.png"></img>
+                        <i id="videoIcon" class="fas fa-video"></i>
+                        <!-- <img class="optionsBtnImg" src="/png/cam.png"></img> -->
                         <!-- <span>Cam</span> -->
                     </div>
                     <div id="muteAudio" class="options__button">
-                        <!-- <i id="audioIcon" class="fa fa-microphone"></i> -->
-                        <img class="optionsBtnImg" src="/png/mic.png"></img>
+                        <i id="audioIcon" class="fa fa-microphone"></i>
+                        <!-- <img class="optionsBtnImg" src="/png/mic.png"></img> -->
                         <!-- <span>Mic</span> -->
                     </div>
-                    <div id="showChat" class="options__button">
-                        <!-- <i class="fa fa-comment"></i> -->
-                        <img class="optionsBtnImg" src="/png/chat.png"></img>
-                        <!-- <img src="/svg/chat.svg" alt=""> -->
-                        <!-- <span>Chat</span> -->
+
+                    <div id="users" class="options__button">
+                        <i class="fas fa-users"></i>
+                        <!-- <img class="optionsBtnImg" src="/png/users.png"></img> -->
+                        <!-- <span>Users</span> -->
                     </div>
+
+                    <div class="options__button" id="fileDeliveryBtn">
+                        <!-- <i class="far fa-folder-open"></i> -->
+                        <img id="fileDeliveryImg" class="optionsBtnImg" src="/svg/file_share.svg"></img>
+                        <!-- <span>File</span> -->
+                    </div>
+                    <div class="options__button" id="fileHashBtn">
+                        <!-- <i class="fas fa-file-invoice" aria-hidden="true"></i> -->
+                        <img id="fileHashImg" class="optionsBtnImg" src="/svg/identifire.svg"></img>
+                        <!-- <span>Identifier</span> -->
+                    </div>
+
                     <div id="shareScreen" class="options__button">
                         <i class="fas fa-retweet"></i>
                         <!-- <img class="optionsBtnImg" src="/png/chat.png"></img> -->
                         <!-- <span>Screen</span> -->
-                    </div>
-                    <div id="users" class="options__button">
-                        <!-- <i class="fas fa-users"></i> -->
-                        <img class="optionsBtnImg" src="/png/users.png"></img>
-                        <!-- <span>Users</span> -->
                     </div>
 
                     <div class="nav__right options__button">
@@ -215,7 +224,7 @@
 
                     <div id="momentShare1" class="options__button">
                         <!-- <i class="fab fa-connectdevelop"></i> -->
-                        <img class="optionsBtnImg" src="/png/web.png"></img>
+                        <img id="webImg" class="optionsBtnImg" src="/svg/web_share.svg"></img>
                         <!-- <span>Web</span> -->
                     </div>
                     <!-- <div id="momentShare2" class="options__button">
@@ -232,29 +241,26 @@
                 <span>TShare</span>
             </div> 
             -->
-                    <div id="whiteBoard" class="options__button">
-                        <!-- <i class="fas fa-chalkboard-teacher"></i> -->
-                        <img class="optionsBtnImg" src="/png/board.png"></img>
-                        <!-- <span>WhiteBoard</span> -->
-                    </div>
-                    <div class="options__button" id="fileDeliveryBtn">
-                        <!-- <i class="far fa-folder-open"></i> -->
-                        <img class="optionsBtnImg" src="/png/fileShare.png"></img>
-                        <!-- <span>File</span> -->
-                    </div>
-                    <div class="options__button" id="fileHashBtn">
-                        <!-- <i class="fas fa-file-invoice" aria-hidden="true"></i> -->
-                        <img class="optionsBtnImg" src="/png/hashcheck.png"></img>
-                        <!-- <span>Identifier</span> -->
-                    </div>
                     <div id="contentShare" class="options__button">
                         <!-- <i class="fas fa-exchange-alt"></i> -->
-                        <img class="optionsBtnImg" src="/png/media.png"></img>
+                        <img id="mediaImg" class="optionsBtnImg" src="/svg/media_share.svg"></img>
                         <!-- <span>contents</span> -->
                     </div>
                     <div id="pdfShare" class="options__button">
                         <!-- <i class="fas fa-file-pdf"></i> -->
-                        <img class="optionsBtnImg" src="/png/pdf.png"></img>
+                        <img id="pdfImg" class="optionsBtnImg" src="/svg/pdf_share.svg"></img>
+                    </div>
+                    <div id="whiteBoard" class="options__button">
+                        <!-- <i class="fas fa-chalkboard-teacher"></i> -->
+                        <img id="boardImg" class="optionsBtnImg" src="/svg/whiteboard.svg"></img>
+                        <!-- <span>WhiteBoard</span> -->
+                    </div>
+
+                    <div id="showChat" class="options__button">
+                        <i class="fa fa-comment"></i>
+                        <!-- <img class="optionsBtnImg" src="/png/chat.png"></img> -->
+                        <!-- <img src="/svg/chat.svg" alt=""> -->
+                        <!-- <span>Chat</span> -->
                     </div>
                     <!-- <div class="options__button" id="deviceSettingBtn" data-toggle="modal"
                         data-target="#deviceSettingModal">

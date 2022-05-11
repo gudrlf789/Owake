@@ -12,7 +12,7 @@ export const pdfFunc = () => {
     let deleteContentTab = [];
     let myState = {
         pdf: null,
-        currentPage: 1
+        currentPage: 1,
     };
     let scale = 5;
 
@@ -20,6 +20,7 @@ export const pdfFunc = () => {
     const localVideoContainer = document.querySelector(
         "#local__video__container"
     );
+    const pdfImg = document.querySelector("#pdfImg");
 
     const pdfShareArea = document.createElement("div");
     const pdfSearchContainer = document.createElement("div");
@@ -30,7 +31,7 @@ export const pdfFunc = () => {
 
     const pdfNavContainer = document.createElement("section");
     const pdfTabArea = document.createElement("div");
-    
+
     const pdfPageControls = document.createElement("div");
     const pdfPageNext = document.createElement("button");
     const pdfPagePrevious = document.createElement("button");
@@ -95,45 +96,49 @@ export const pdfFunc = () => {
         `;
 
         $("#pdfTabArea").append(html);
-    };
+    }
 
     function clearCanvas() {
         const canvas = document.getElementById("pdfRender");
-        let ctx = canvas.getContext('2d');
+        let ctx = canvas.getContext("2d");
         //convas 초기화
-        ctx.clearRect(0, 0, canvas.width, canvas.height); 
-        ctx.beginPath()
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
     }
 
     function pdfInit(fileName) {
         $("#spinnerModal").modal();
 
-        pdfjsLib.getDocument("/channel/downloadPdf?fileName=" + fileName).promise.then((pdf) => {
-            myState.pdf = pdf;
-            render();
-            $("#spinnerModal").modal("hide");
-        }, (err) => {
-            alert("Error: " + err);
-        });
-    };
+        pdfjsLib
+            .getDocument("/channel/downloadPdf?fileName=" + fileName)
+            .promise.then(
+                (pdf) => {
+                    myState.pdf = pdf;
+                    render();
+                    $("#spinnerModal").modal("hide");
+                },
+                (err) => {
+                    alert("Error: " + err);
+                }
+            );
+    }
 
     function render() {
         myState.pdf.getPage(myState.currentPage).then((page) => {
-      
             let canvas = document.getElementById("pdfRender");
-            const ctx = canvas.getContext('2d');
-            
+            const ctx = canvas.getContext("2d");
+
             const viewport = page.getViewport({ scale: scale });
 
             canvas.width = viewport.width;
             canvas.height = viewport.height;
-      
+
             page.render({
                 canvasContext: ctx,
-                viewport: viewport
+                viewport: viewport,
             });
         });
-    };
+    }
 
     pdfSearchInput.addEventListener("change", (e) => {
         const formData = new FormData();
@@ -141,27 +146,30 @@ export const pdfFunc = () => {
 
         if (!pdfType.test(fileData.type)) {
             return alert("Only PDF file");
-        };
+        }
 
         formData.append("userName", userName);
         formData.append("content", fileData);
 
-        axios.post("/channel/contentsUpload", formData).then((res) => {
-            if (res.data.success) {
-                createContentTab(userName, fileData.type, fileData.name);
-                pdfSocket.emit(
-                    "content-info",
-                    channelName,
-                    userName,
-                    fileData.name,
-                    fileData.type
-                );
-                pdfSearchInput.value = "";
-            }
-        }).catch((err) => {
-            alert("You can upload up to 150mb");
-            $("#spinnerModal").modal("hide");
-        });
+        axios
+            .post("/channel/contentsUpload", formData)
+            .then((res) => {
+                if (res.data.success) {
+                    createContentTab(userName, fileData.type, fileData.name);
+                    pdfSocket.emit(
+                        "content-info",
+                        channelName,
+                        userName,
+                        fileData.name,
+                        fileData.type
+                    );
+                    pdfSearchInput.value = "";
+                }
+            })
+            .catch((err) => {
+                alert("You can upload up to 150mb");
+                $("#spinnerModal").modal("hide");
+            });
     });
 
     function pdfShareEnable() {
@@ -169,12 +177,19 @@ export const pdfFunc = () => {
         pdfShareArea.hidden = false;
         pdfShareBtn.style.color = "rgb(165, 199, 236)";
         pdfSocket.emit("join-pdf", channelName);
+
+        pdfImg.style.setProperty(
+            "filter",
+            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
+        );
     }
 
     function pdfShareDisable() {
         pdfShareArea.hidden = true;
         pdfShareBtn.style.color = "#fff";
         pdfSocket.emit("leave-pdf", channelName);
+
+        pdfImg.style.setProperty("filter", "none");
     }
 
     $(document).on("click", ".pdfMiddleContainerBtn", async (e) => {
@@ -189,52 +204,65 @@ export const pdfFunc = () => {
     $(document).on("click", ".pdfCloseContent", (e) => {
         const deleteTagName = e.currentTarget.getAttribute("name");
         deleteContentTab = document.getElementsByName(deleteTagName);
-        originUser = deleteTagName.split('_')[0];
+        originUser = deleteTagName.split("_")[0];
 
-        if(userName === originUser){
+        if (userName === originUser) {
             const data = {
-                fileName: deleteTagName
+                fileName: deleteTagName,
             };
-            
+
             axios.post("/channel/contentsDelete", data).then((res) => {
-                if(res.data.success && res.status === 200){
-                    pdfSocket.emit("delete-origin-tag", channelName, deleteTagName);
-                    for(let i = 0 ; i < 2 ; i++){
+                if (res.data.success && res.status === 200) {
+                    pdfSocket.emit(
+                        "delete-origin-tag",
+                        channelName,
+                        deleteTagName
+                    );
+                    for (let i = 0; i < 2; i++) {
                         deleteContentTab[0].remove();
                     }
                     myState.pdf = null;
                     clearCanvas();
-                }else {
+                } else {
                     alert(res.data.deleteResult);
                 }
             });
-        }else {
+        } else {
             alert("You can delete only the files you post");
         }
-        
     });
 
     $(document).on("click", "#pdf-page-next", (e) => {
-        if(myState.pdf == null || myState.currentPage > myState.pdf.numPages) {
+        if (myState.pdf == null || myState.currentPage > myState.pdf.numPages) {
             alert("This is last page");
             return;
         }
         myState.currentPage += 1;
         render();
-        if(originUser === userName){
-            pdfSocket.emit("pdf-origin-next", channelName, myState.currentPage, choiceFile);
+        if (originUser === userName) {
+            pdfSocket.emit(
+                "pdf-origin-next",
+                channelName,
+                myState.currentPage,
+                choiceFile
+            );
         }
     });
 
     $(document).on("click", "#pdf-page-previous", (e) => {
-        if(myState.pdf == null || myState.currentPage <= 1) {
+        if (myState.pdf == null || myState.currentPage <= 1) {
             alert("This is first page");
             return;
         }
         myState.currentPage -= 1;
         render();
-        if(originUser === userName){
-            pdfSocket.emit("pdf-origin-previous", channelName, myState.currentPage, choiceFile);
+        if (originUser === userName) {
+            pdfSocket.emit(
+                "pdf-origin-previous",
+                channelName,
+                myState.currentPage,
+                choiceFile
+            );
         }
     });
 
@@ -246,12 +274,15 @@ export const pdfFunc = () => {
      * @returns
      */
 
-    document.addEventListener("scroll",
+    document.addEventListener(
+        "scroll",
         function (e) {
-            if(e.target.id === "pdfShare-main"){
+            if (e.target.id === "pdfShare-main") {
                 if (originUser === userName) {
-                    const originTop = document.getElementById("pdfShare-main").scrollTop;
-                    const originLeft = document.getElementById("pdfShare-main").scrollLeft;
+                    const originTop =
+                        document.getElementById("pdfShare-main").scrollTop;
+                    const originLeft =
+                        document.getElementById("pdfShare-main").scrollLeft;
                     pdfSocket.emit(
                         "scroll-origin-pdf",
                         channelName,
@@ -277,14 +308,14 @@ export const pdfFunc = () => {
     });
 
     pdfSocket.on("pdf-remote-next", (nextPage, playingFile) => {
-        if(choiceFile === playingFile){
+        if (choiceFile === playingFile) {
             myState.currentPage = nextPage;
             render();
         }
     });
 
     pdfSocket.on("pdf-remote-previous", (previousPage, playingFile) => {
-        if(choiceFile === playingFile){
+        if (choiceFile === playingFile) {
             myState.currentPage = previousPage;
             render();
         }
@@ -292,7 +323,7 @@ export const pdfFunc = () => {
 
     pdfSocket.on("scroll-remote-pdf", (originTop, originLeft, playingFile) => {
         const pdfShareMain = document.getElementById("pdfShare-main");
-        if(choiceFile === playingFile){
+        if (choiceFile === playingFile) {
             pdfShareMain.scrollTop = originTop;
             pdfShareMain.scrollLeft = originLeft;
         }
@@ -300,7 +331,7 @@ export const pdfFunc = () => {
 
     pdfSocket.on("delete-remote-tag", (deleteTagName) => {
         deleteContentTab = document.getElementsByName(deleteTagName);
-        for(let i = 0 ; i < 2 ; i++){
+        for (let i = 0; i < 2; i++) {
             deleteContentTab[0].remove();
         }
         clearCanvas();
