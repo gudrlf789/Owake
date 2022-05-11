@@ -4,10 +4,20 @@
     left: 0;
     right: 0;
     width: calc(100% / 2 - 80px);
-    top: 15%;
+    top: 0;
     padding: 0.7rem;
     margin: 0 auto;
+    overflow: auto;
     z-index: 6;
+}
+
+.identifire-section-close {
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 2rem;
+    color: #555;
+    cursor: pointer;
 }
 
 #top_container {
@@ -49,5 +59,6 @@
 @media (max-width: 768px) {
     .identifier-container {
         width: calc(100% - 50px);
+        height: calc(100% / 1.2);
     }
 }

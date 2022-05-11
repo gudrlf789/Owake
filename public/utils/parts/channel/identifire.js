@@ -1,6 +1,7 @@
 const identifireBtn = document.querySelector("#fileHashBtn");
 const identifireContainer = document.querySelector(".identifier-container");
 const fileHashImg = document.querySelector("#fileHashImg");
+const close = document.querySelector(".identifire-section-close");
 
 let identifireActivator = false;
 
@@ -8,6 +9,11 @@ export const identifireFunc = () => {
     identifireBtn.addEventListener("click", (e) => {
         identifireActivator = !identifireActivator;
         identifireActivator ? identifireEnable() : identifireDisable();
+    });
+
+    close.addEventListener("click", (e) => {
+        identifireContainer.hidden = true;
+        fileHashImg.style.setProperty("filter", "none");
     });
 };
 
