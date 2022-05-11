@@ -17,8 +17,6 @@ function playerNameHidden() {
     const bodyWidth = document.body.offsetWidth;
 
     let classNameSearch = {};
-    let mainClassNameResult = false;
-    let subClassNameResult = false;
 
     if (bodyWidth < 768) {
         playerName.hidden = true;
