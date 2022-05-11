@@ -1,49 +1,49 @@
 #pdfShareArea {
-  position: absolute;
-  background: #546362;
-  width: 100%;
-  height: 100%;
-  border-radius: 25px;
-  top: 0;
-  z-index: 10;
+    position: absolute;
+    background: #546362;
+    width: 100%;
+    height: 100%;
+    /* border-radius: 25px; */
+    top: 0;
+    z-index: 10;
 }
 
 #pdfShare-main {
-  position: relative;
-  width: 100%;
-  height: 85%;
-  border-radius: 25px;
-  border: none;
-  left: 0;
-  bottom: 0;
-  overflow: auto;
+    position: relative;
+    width: 100%;
+    height: 85%;
+    /* border-radius: 25px; */
+    border: none;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
 }
 
 #pdfRender {
-  width: 100%;
-  overflow: hidden;
-  position: absolute;
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
 }
 
 #pdfSearchContainer {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 #pdfSearchInput {
-  margin: 5px;
-  border: 2px solid;
-  border-radius: 5px;
+    margin: 5px;
+    border: 2px solid;
+    border-radius: 5px;
 }
 
 #pdfTabArea {
-  -ms-overflow-style: none;
+    -ms-overflow-style: none;
 }
 #pdfTabArea::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 #pdf-page-controls {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }

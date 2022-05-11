@@ -5,13 +5,14 @@
 @import "./channel/whiteBoard.css";
 @import "./channel/fileShare.css";
 @import "./channel/gridView.css";
-/* @import "./channel/shareEditer.css";
-@import "./channel/swiper.css"; */
+/* @import "./channel/shareEditer.css"; */
+@import "./channel/swiper.css";
 @import "./channel/content.css";
 @import "./channel/pdfShare.css";
 @import "./channel/fileDelivery.css";
 @import "./channel/navigation.css";
 @import "./channel/icons.css";
+@import "./channel/identifire.css";
 
 @font-face {
     font-family: "NEXON Lv2 Gothic";
@@ -128,7 +129,7 @@ html {
     position: relative;
     overflow: hidden;
     /* height: 92vh; */
-    height: calc(var(--vh, 1vh) * 90);
+    height: calc(var(--vh, 1vh) * 93);
     display: flex;
 }
 
@@ -195,7 +196,7 @@ html {
 
 #local__videoBox > div {
     border: 2px solid #fff;
-    border-radius: 20px;
+    /* border-radius: 20px; */
 }
 
 .player-name {
@@ -239,7 +240,7 @@ html {
 
 #remote-playerlist > div {
     border: 2px solid #fff;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     width: 230px;
     height: 230px;
 }
@@ -252,12 +253,12 @@ html {
 .player > div {
     width: 100%;
     height: 100%;
-    border-radius: 20px;
+    /* border-radius: 20px; */
 }
 
 #remote__videoBox > div {
     border: 2px solid #fff;
-    border-radius: 20px;
+    /* border-radius: 20px; */
 }
 
 video {
@@ -308,9 +309,6 @@ video:hover {
 }
 
 @media (max-width: 768px) {
-    .main {
-        height: calc(var(--vh, 1vh) * 89);
-    }
     .main__left {
         width: 100%;
     }

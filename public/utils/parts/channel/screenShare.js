@@ -1,11 +1,10 @@
 /**
- * @author 전형동
+ * @author 박형길
  * @version 1.1
- * @data 2022 03.24
+ * @data 2022 05.09
  * @description
  * --------------- 수정사항 ---------------
- * 1. rtcClient.js options 객체 추가
- * 2. 함수 위치 재배치
+ * 1. ScreenShare 취소하면 세션 에러나는 현상 수정
  */
 
 import { options } from "../../rtcClient.js";
@@ -61,7 +60,7 @@ async function screenShareJoin() {
                 LeaveShareScreen(screenClient, screenTrack);
             });
         }
-    }catch(err){
+    } catch (err) {
         console.log("Agora error: " + err);
         screenClient.leave();
     }

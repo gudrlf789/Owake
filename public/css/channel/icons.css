@@ -45,6 +45,39 @@
     display: none;
 }
 
+#leave {
+    width: 5rem;
+    margin: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#leaveBtn {
+    /* display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position: center;
+    background-image: url("../../32h/leave.png"); */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 1.8rem;
+    background: rgb(236, 111, 115);
+    color: #fff;
+    font-size: 0.8rem;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+#leaveBtn::before {
+    content: "Logout";
+}
+
 @media (max-width: 768px) {
     .logo {
         display: none;
@@ -58,29 +91,11 @@
         display: block;
         position: fixed;
         width: 60px;
-        height: calc(var(--vh, 1vh) * 12);
+        height: calc(var(--vh, 1vh) * 7);
         background-image: url("../../../48h/navbtn.gif");
         background-repeat: no-repeat;
         background-position: center;
         margin-left: 15px;
         z-index: 1000;
-    }
-
-    #leave {
-        width: 5rem;
-        margin: 2px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #leaveBtn {
-        display: block;
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-size: 75%;
-        background-position: center;
-        background-image: url("../../32h/leave.png");
     }
 }

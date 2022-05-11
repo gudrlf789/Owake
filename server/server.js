@@ -6,6 +6,8 @@ const morgan = require("morgan");
 const path = require("path");
 const Logger = require("./Logger");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+
 const log = new Logger("server");
 require("dotenv").config();
 const port = process.env.PORT || 1227;
@@ -90,6 +92,17 @@ app.use((req, res, next) => {
 
     next();
 });
+
+/**
+ * @author 전형동
+ * @version 1.1
+ * @data 2022.05.11
+ * @description
+ * Cross Site Error 잡기
+ */
+app.use(
+    cookieParser(process.env.COOKIE_SECRET, { sameSite: "none", secure: true })
+);
 
 app.use(redirectSec);
 app.use(morgan("dev"));

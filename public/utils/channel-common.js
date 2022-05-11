@@ -19,18 +19,19 @@ import { responsiveFunc } from "./parts/channel/responsive.js";
 import { copyInfo } from "./parts/channel/copyUrl.js";
 import { browserEvent } from "./parts/channel/browserEvent.js";
 import { gridView } from "./parts/channel/videoViewGridMode.js";
-// import { SwiperFunc } from "./parts/channel/swiper.js";
+import { SwiperFunc } from "./parts/channel/swiper.js";
 // import { shareEditerFunc } from "./parts/channel/shareEditer.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 import { pdfFunc } from "./parts/channel/pdfShare.js";
+import { identifireFunc } from "./parts/channel/identifire.js";
 
 $(async () => {
     // 첫페이지 로딩시에 스피너바 삭제
     channelFirstSpinnerDeleteFunc();
-
     mobileDisplayCtr();
     f12defense();
+    SwiperFunc();
 
     mobileDisplayCtr();
     f12defense();
@@ -40,7 +41,7 @@ $(async () => {
     mobileReflashClose();
 
     momentShareFunc1();
-    recodingDeviceCtrl();
+    // recodingDeviceCtrl();
     screenShareFunc();
     whiteBoardFunc();
     browserEvent();
@@ -48,6 +49,7 @@ $(async () => {
     fileHash();
     contentFunc();
     pdfFunc();
+    identifireFunc();
 });
 
 // FileDelivery Activator Functions
@@ -165,12 +167,3 @@ function jqueryUIScriptRemove() {
         }
     }
 }
-
-// FileDelivery Activator Functions End
-
-// fileShare();
-// momentShareFunc2();
-// copyInfo();
-// gridView();
-// shareEditerFunc();--------------------- 서버에 올리면 Lisence 문제로 사용 불가능 구매해야 됨.
-// SwiperFunc();
