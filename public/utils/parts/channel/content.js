@@ -86,7 +86,7 @@ export const contentFunc = () => {
             return;
         }
 
-        if(fileData.size > 150000000){
+        if (fileData.size > 150000000) {
             alert("You can upload up to 150MB");
             return;
         }
@@ -119,7 +119,6 @@ export const contentFunc = () => {
     function contentShareEnable() {
         localVideoContainer.append(contentShareArea);
         contentShareArea.hidden = false;
-        contentShareBtn.style.color = "rgb(165, 199, 236)";
         contentSocket.emit("join-contents", channelName);
         mediaImg.style.setProperty(
             "filter",
@@ -129,7 +128,6 @@ export const contentFunc = () => {
 
     function contentShareDisable() {
         contentShareArea.hidden = true;
-        contentShareBtn.style.color = "#fff";
         contentSocket.emit("leave-contents", channelName);
         mediaImg.style.setProperty("filter", "none");
     }

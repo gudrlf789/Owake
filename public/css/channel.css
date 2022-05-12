@@ -178,11 +178,6 @@ html {
     flex: 1;
 }
 
-#local__video__container > div {
-    overflow: none;
-    background-color: none;
-}
-
 #local__video {
     object-fit: cover;
     width: 100%;
@@ -304,12 +299,13 @@ video:hover {
 }
 
 @media (min-width: 768px) {
-    #remote__video__container {
-        height: min-content;
-    }
 }
 
 @media (max-width: 768px) {
+    #remote__video__container {
+        height: min-content;
+    }
+
     .main__left {
         width: 100%;
     }

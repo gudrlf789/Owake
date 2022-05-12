@@ -1,8 +1,8 @@
 export const responsiveFunc = () => {
     playerNameHidden();
-    mobileResponsive();
+    // mobileResponsive();
     window.addEventListener("resize", playerNameHidden, false);
-    window.addEventListener("resize", mobileResponsive, false);
+    // window.addEventListener("resize", mobileResponsive, false);
 };
 
 function playerNameHidden() {

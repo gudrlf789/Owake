@@ -23,18 +23,14 @@ import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 import { pdfFunc } from "./parts/channel/pdfShare.js";
 
-$(async () => {
+$(() => {
     mobileDisplayCtr();
     f12defense();
     SwiperFunc();
-
-    mobileDisplayCtr();
-    f12defense();
     remoteDisplay();
     optionsBtn();
     responsiveFunc();
     mobileReflashClose();
-
     momentShareFunc1();
     recodingDeviceCtrl();
     screenShareFunc();
