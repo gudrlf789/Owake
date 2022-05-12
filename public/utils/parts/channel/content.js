@@ -112,6 +112,7 @@ export const contentFunc = () => {
             })
             .catch((err) => {
                 alert("Error occur");
+                $("#spinnerModal").modal("hide");
                 console.log("에러: " + err);
             });
     });
@@ -176,6 +177,10 @@ export const contentFunc = () => {
                 } else {
                     alert(res.data.deleteResult);
                 }
+            }).catch((err) => {
+                alert("Error occur");
+                $("#spinnerModal").modal("hide");
+                console.log("에러: " + err);
             });
         } else {
             alert("You can delete only the files you post");

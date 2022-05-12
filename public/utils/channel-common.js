@@ -1,3 +1,5 @@
+import { channelFirstSpinnerDeleteFunc } from "./parts/channel/channelFirstSpinnerDelete.js";
+
 import { mobileDisplayCtr } from "./parts/channel/chat.js";
 import { f12defense } from "./parts/channel/f12defense.js";
 import { fileDelivery } from "./parts/channel/fileDelivery.js";
@@ -24,6 +26,8 @@ import { contentFunc } from "./parts/channel/content.js";
 import { pdfFunc } from "./parts/channel/pdfShare.js";
 
 $(() => {
+    channelFirstSpinnerDeleteFunc();
+
     mobileDisplayCtr();
     f12defense();
     SwiperFunc();
