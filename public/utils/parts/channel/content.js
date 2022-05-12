@@ -86,6 +86,11 @@ export const contentFunc = () => {
             return;
         }
 
+        if(fileData.size > 150000000){
+            alert("You can upload up to 150MB");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("userName", userName);
         formData.append("content", fileData);
@@ -106,8 +111,8 @@ export const contentFunc = () => {
                 }
             })
             .catch((err) => {
-                alert("You can upload up to 150mb");
-                $("#spinnerModal").modal("hide");
+                alert("Error occur");
+                console.log("에러: " + err);
             });
     });
 

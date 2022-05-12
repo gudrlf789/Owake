@@ -1,5 +1,3 @@
-import { channelFirstSpinnerDeleteFunc } from "./parts/channel/channelFirstSpinnerDelete.js";
-
 import { mobileDisplayCtr } from "./parts/channel/chat.js";
 import { f12defense } from "./parts/channel/f12defense.js";
 import { fileDelivery } from "./parts/channel/fileDelivery.js";
@@ -27,8 +25,6 @@ import { pdfFunc } from "./parts/channel/pdfShare.js";
 import { identifireFunc } from "./parts/channel/identifire.js";
 
 $(async () => {
-    // 첫페이지 로딩시에 스피너바 삭제
-    channelFirstSpinnerDeleteFunc();
     mobileDisplayCtr();
     f12defense();
     SwiperFunc();
