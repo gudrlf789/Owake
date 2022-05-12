@@ -55,8 +55,8 @@ export const fileHash = () => {
             );
             textHtml.value = res.data.hashCode;
         }).catch((err) => {
-            alert("You can upload up to 150mb");
-            $("#spinnerModal").modal("hide");
+            alert("Error occur");
+            console.log("에러: " + err);
         });
     };
 

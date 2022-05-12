@@ -107,15 +107,12 @@ export const pdfFunc = () => {
     }
 
     function pdfInit(fileName) {
-        $("#spinnerModal").modal();
-
         pdfjsLib
             .getDocument("/channel/downloadPdf?fileName=" + fileName)
             .promise.then(
                 (pdf) => {
                     myState.pdf = pdf;
                     render();
-                    $("#spinnerModal").modal("hide");
                 },
                 (err) => {
                     alert("Error: " + err);
@@ -148,6 +145,11 @@ export const pdfFunc = () => {
             return alert("Only PDF file");
         }
 
+        if(fileData.size > 150000000){
+            alert("You can upload up to 150MB");
+            return;
+        }
+
         formData.append("userName", userName);
         formData.append("content", fileData);
 
@@ -167,8 +169,8 @@ export const pdfFunc = () => {
                 }
             })
             .catch((err) => {
-                alert("You can upload up to 150mb");
-                $("#spinnerModal").modal("hide");
+                alert("Error occur");
+                console.log("에러: " + err);
             });
     });
 
