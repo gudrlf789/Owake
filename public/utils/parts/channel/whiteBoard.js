@@ -177,17 +177,18 @@ export const whiteBoardFunc = () => {
                 alert(
                     "We are sorry for that iPhone users can't draw freely on the whiteboard yet."
                 );
-                return;
+                return false;
             }
+            return true;
         }
 
         function onMouseDown(e) {
-            checkIphoneMobile();
-
-            drawing = true;
-            current.x =
-                e.clientX - rect.left || e.touches[0].clientX - rect.left;
-            current.y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
+            if(checkIphoneMobile()){
+                drawing = true;
+                current.x =
+                    e.clientX - rect.left || e.touches[0].clientX - rect.left;
+                current.y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
+            }
         }
 
         function onMouseUp(e) {
