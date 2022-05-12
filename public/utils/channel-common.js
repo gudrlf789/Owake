@@ -22,7 +22,6 @@ import { SwiperFunc } from "./parts/channel/swiper.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 import { pdfFunc } from "./parts/channel/pdfShare.js";
-import { identifireFunc } from "./parts/channel/identifire.js";
 
 $(() => {
     mobileDisplayCtr();
@@ -41,7 +40,6 @@ $(() => {
     fileHash();
     contentFunc();
     pdfFunc();
-    identifireFunc();
 });
 
 // FileDelivery Activator Functions

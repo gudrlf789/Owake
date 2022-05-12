@@ -25,14 +25,41 @@ export const fileHash = () => {
         id: "",
         password: "",
     };
+    const identifireContainer = document.querySelector(".identifier-container");
+    const fileHashImg = document.querySelector("#fileHashImg");
+    const identifireBtn = document.querySelector("#fileHashBtn");
+
+    let identifireActivator = false;
 
     $(() => {
+        identifireFunc();
         $("#selectFile_1").attr("disabled", true);
         $("#selectFile_2").attr("disabled", true);
         $("#originHash").attr("disabled", true);
         $("#remoteHash").attr("disabled", true);
         compareResult.value = "";
     });
+
+    function identifireFunc() {
+        identifireBtn.addEventListener("click", (e) => {
+            identifireActivator = !identifireActivator;
+            identifireActivator ? identifireEnable() : identifireDisable();
+        });
+    
+    };
+    
+    function identifireEnable() {
+        identifireContainer.hidden = false;
+        fileHashImg.style.setProperty(
+            "filter",
+            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
+        );
+    }
+    
+    function identifireDisable() {
+        identifireContainer.hidden = true;
+        fileHashImg.style.setProperty("filter", "none");
+    }
 
     function makeFileToHash(data, textHtml) {
         if (formData.has("fileInput")) {
@@ -126,6 +153,8 @@ export const fileHash = () => {
     });
 
     $("#closeBtn").click((e) => {
+        identifireContainer.hidden = true;
+        fileHashImg.style.setProperty("filter", "none");
         hashSocket.emit("leave-hash", channelName);
         selectFile1.value = "";
         selectFile2.value = "";
