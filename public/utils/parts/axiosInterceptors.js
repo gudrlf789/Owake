@@ -1,6 +1,8 @@
 axios.interceptors.request.use(
     function (config) {
-        $("#spinnerModal").modal();
+        $("#spinnerModal").modal({
+            backdrop: false
+        });
         return config;
     },
     function (error) {
