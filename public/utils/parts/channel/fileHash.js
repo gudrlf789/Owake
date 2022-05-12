@@ -65,10 +65,7 @@ export const fileHash = () => {
             alert("You have to select file");
             return false;
         }
-        if( file[0].size > 5000000){
-            alert("You can upload up to 5mb");
-            return false;
-        }
+       
         return true;
     }
 
