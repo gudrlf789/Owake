@@ -339,6 +339,43 @@ video:hover {
         justify-content: left;
         align-items: baseline;
         overflow-x: auto;
+        z-index: 7;
+    }
+
+    #remote-playerlist {
+        display: flex;
+        margin-left: 0;
+        margin-bottom: 0;
+    }
+
+    #remote-playerlist > div {
+        /* width: 130px;*/
+    }
+    #local__video__container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        margin: auto;
+    }
+
+    #local__video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        margin: auto;
+    }
+
+    #local__videoBox > div {
+        border-radius: 0;
+    }
+
+    #remote__video__container {
+        position: relative;
+        display: flex;
+        justify-content: left;
+        align-items: baseline;
+        overflow-x: auto;
         z-index: 4;
     }
 
