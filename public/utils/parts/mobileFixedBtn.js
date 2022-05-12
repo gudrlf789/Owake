@@ -58,11 +58,11 @@ $(document).on("click", "#mobileChannelPublicBtn", (e) => {
 // });
 
 window.addEventListener("resize", () => {
-    try{
+    try {
         if (window.innerWidth > 768) {
             mobileBodyContainer.removeChild(mobileMenu);
         }
-    }catch(err) {
-        console.log("에러: " + err);
+    } catch (err) {
+        console.log("Error: " + err);
     }
 });

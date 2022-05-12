@@ -17,7 +17,7 @@ let usersBtnActive = false;
 let width;
 
 export const remoteDisplay = () => {
-    window.addEventListener("resize", resizeRemoteContainerAction, false);
+    // window.addEventListener("resize", resizeRemoteContainerAction, false);
     usersBtn.addEventListener("click", clickRemoteDisplayAction, false);
 };
 
@@ -52,9 +52,7 @@ function usersDisplayDisable(element) {
 
 function resizeRemoteContainerAction() {
     width = window.document.body.offsetWidth;
-    if (width > 768) {
-        $("#remote__video__container").attr("style", "height:100%");
-    } else {
+    if (width < 768) {
         $("#remote__video__container").attr("style", "height:min-content");
     }
 }
