@@ -2,9 +2,11 @@ const { Server } = require("socket.io");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const morgan = require("morgan");
 const path = require("path");
 const Logger = require("./Logger");
 const bodyParser = require("body-parser");
+
 const log = new Logger("server");
 require("dotenv").config();
 const port = process.env.PORT || 1227;
@@ -20,23 +22,6 @@ let peerWebURLArr = [];
 let urlObj = {};
 
 let io, server;
-
-// const CORS_fn = (req, res) => {
-//     res.setHeader("Access-Control-Allow-Origin", "*");
-//     res.setHeader(
-//         "Access-Control-Allow-Headers",
-//         "Origin, X-Requested-With, Content-Type, Accept"
-//     );
-//     res.setHeader("Access-Control-Allow-Credentials", "true");
-//     res.setHeader("Access-Control-Allow-Methods", "*");
-//     res.setHeader("Access-Control-Max-Age", "3600");
-
-//     if (req.method === "OPTIONS") {
-//         res.writeHead(200);
-//         res.end();
-//         return;
-//     }
-// };
 
 server = require("http").createServer(app);
 
@@ -74,7 +59,24 @@ app.use(
     })
 );
 
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", true);
+    res.setHeader("Access-Control-Max-Age", "3600");
+
+    next();
+});
+
 app.use(redirectSec);
+app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -215,7 +217,14 @@ io.sockets.on("connection", (socket) => {
         let peerWebURLArrSet = new Set(peerWebURLArr);
         let resultURLArr = Array.from(peerWebURLArrSet);
 
-        log.debug("connected peers grp by Peer Address ", peers, peerWebURLArr);
+        // resultURLArr.forEach((url) => {
+        //     peers[config.channel][config.peerID] = {
+        //         web: url,
+        //     };
+        // });
+
+        log.debug("connected peers grp by Peer Address ", peers);
+
         socket.in(config.channel).emit("input_address", config.link);
     });
 

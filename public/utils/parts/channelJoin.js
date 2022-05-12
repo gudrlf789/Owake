@@ -1,5 +1,13 @@
 function checkUserId(userId) {
-    if (userId === "") {
+    // 공백체크
+    let pattern_empty = /\s/g;
+    // 특수문자 체크
+    let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+    if (
+        userId === "" ||
+        userId.match(pattern_empty) ||
+        pattern_spc.test(userId)
+    ) {
         return false;
     } else {
         return true;
@@ -14,19 +22,22 @@ function checkUserId(userId) {
  * 유저 이름 등록
  */
 function enrollUserNameOnChannel(userId, channelName, channelType) {
+    //문자 공백 제거
+    userId = userId.replace(/\s/gi, "");
+
     const reqData = {
         channelType: channelType,
         channelName: channelName,
-        userId: userId
+        userId: userId,
     };
 
     axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => {
-        if(res.data.success){
+        if (res.data.success) {
             window.sessionStorage.setItem("channel", channelName);
             window.sessionStorage.setItem("channelType", channelType);
             window.sessionStorage.setItem("uid", userId);
             window.location.href = `/${channelName}/${channelType}`;
-        }else {
+        } else {
             alert(res.data.error);
         }
     });
@@ -43,19 +54,21 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
     const reqData = {
         channelType: channelType,
         channelName: channelName,
-        userId: userId
+        userId: userId,
     };
 
     axios.post("/channel/info", reqData).then((res) => {
-        if(res.data.success){
-            const result = res.data.channelInfo.userNames.filter(userName => userName === userId);
+        if (res.data.success) {
+            const result = res.data.channelInfo.userNames.filter(
+                (userName) => userName === userId
+            );
 
-            if(result.length > 0) {
+            if (result.length > 0) {
                 alert("Duplicate username exists");
-            }else {
+            } else {
                 enrollUserNameOnChannel(userId, channelName, channelType);
             }
-        }else {
+        } else {
             alert(res.data.error);
         }
     });
@@ -143,7 +156,9 @@ $("#private-channelJoin-btn").click((e) => {
         $("#private-roomPassword").val("");
     } else {
         if (!checkUserId(userId)) {
-            alert("Enter your User Name");
+            alert(
+                "Please enter a valid user name (except spaces and special characters)"
+            );
         } else {
             checkKorean(userId, channelName, channelType);
         }
@@ -156,7 +171,9 @@ $("#public-channelJoin-btn").click((e) => {
     const userId = $("#public-nickName").val();
 
     if (!checkUserId(userId)) {
-        alert("Enter your User Name");
+        alert(
+            "Please enter a valid user name (except spaces and special characters)"
+        );
     } else {
         checkKorean(userId, channelName, channelType);
     }

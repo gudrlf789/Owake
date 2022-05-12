@@ -58,7 +58,11 @@ $(document).on("click", "#mobileChannelPublicBtn", (e) => {
 // });
 
 window.addEventListener("resize", () => {
-    if (window.innerWidth > 768) {
-        mobileBodyContainer.removeChild(mobileMenu);
+    try{
+        if (window.innerWidth > 768) {
+            mobileBodyContainer.removeChild(mobileMenu);
+        }
+    }catch(err) {
+        console.log("에러: " + err);
     }
 });

@@ -59,7 +59,20 @@ $(async () => {
     }
 });
 
-$("#leave").click(function (e) {
+/**
+ * @another 전형동
+ * @date 2022 05 12
+ * @description
+ * mobile Leave desktop Leave Click Event
+ */
+
+const leaveBtn = document.querySelector("#leave");
+const desktopLeaveBtn = document.querySelector("#desktop-leave");
+
+leaveBtn.addEventListener("click", leaveBtnFunc, false);
+desktopLeaveBtn.addEventListener("click", leaveBtnFunc, false);
+
+function leaveBtnFunc(e) {
     const reqData = {
         channelType: window.sessionStorage.getItem("channelType"),
         channelName: window.sessionStorage.getItem("channel"),
@@ -73,7 +86,7 @@ $("#leave").click(function (e) {
             alert(res.data.error);
         }
     });
-});
+}
 
 async function join() {
     options.uid = window.sessionStorage.getItem("uid");
@@ -189,9 +202,16 @@ async function leave() {
 }
 
 async function subscribe(user, mediaType) {
+    let remoteActive = false;
     const uid = user.uid;
-    await client.subscribe(user, mediaType);
-    console.log("subscribe success");
+
+    if (uid !== undefined || uid !== null || uid !== "") {
+        remoteActive = true;
+        await client.subscribe(user, mediaType);
+        console.log("subscribe success");
+    } else {
+        alert("The name registered by the accessed user is invalid.");
+    }
 
     try {
         // let mics = await AgoraRTC.getMicrophones();
@@ -241,6 +261,11 @@ async function subscribe(user, mediaType) {
                 $("#remote-playerlist").append(iconPlayer);
             }
         }
+
+        handlerRemoteDisplaySize();
+        window.addEventListener("resize", handlerRemoteDisplaySize, false);
+
+        usersActive(remoteActive);
     } catch (error) {
         console.log("Permission Error!! ", error);
     }
@@ -450,3 +475,54 @@ function cameraSwitchDisableFunc(e) {
 //         }
 //     }
 // }
+
+/**
+ * @author 전형동
+ * @version 1.0
+ * @data 2022 04.27
+ * @description
+ * Remote Display Size
+ */
+function handlerRemoteDisplaySize() {
+    let windowWidth = document.body.offsetWidth;
+    // Remote Display Size Controller
+    let remotePlayer = document.querySelector("#remote-playerlist").childNodes;
+    let remotePlayerChild;
+
+    let remotePlayerWidth;
+    let remotePlayerHeight;
+
+    if (windowWidth < 768) {
+        for (let i = 0; i < remotePlayer.length; i++) {
+            remotePlayerWidth = windowWidth / 3 - 5;
+            remotePlayerHeight = remotePlayerWidth;
+
+            remotePlayerChild = remotePlayer[i];
+
+            remotePlayerChild.style.setProperty(
+                "width",
+                `${remotePlayerWidth}px`
+            );
+            remotePlayerChild.style.setProperty(
+                "height",
+                `${remotePlayerHeight}px`
+            );
+        }
+    } else {
+        for (let i = 0; i < remotePlayer.length; i++) {
+            remotePlayerChild = remotePlayer[i];
+
+            remotePlayerChild.style.setProperty("width", "230px");
+            remotePlayerChild.style.setProperty("height", "230px");
+        }
+    }
+}
+
+function usersActive(state) {
+    const usersBtn = document.querySelector(".fa-users");
+    if (state === true) {
+        usersBtn.style.color = "#e07478";
+    } else {
+        usersBtn.style.color = "#fff";
+    }
+}

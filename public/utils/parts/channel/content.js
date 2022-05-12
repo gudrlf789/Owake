@@ -18,6 +18,8 @@ export const contentFunc = () => {
         "#local__video__container"
     );
 
+    const mediaImg = document.querySelector("#mediaImg");
+
     const contentShareArea = document.createElement("div");
     const contentSearchContainer = document.createElement("div");
     const contentSearchInput = document.createElement("input");
@@ -79,28 +81,39 @@ export const contentFunc = () => {
     contentSearchInput.addEventListener("change", (e) => {
         const fileData = contentSearchInput.files[0];
 
-        if(!imageType.test(fileData.type) && !mediaType.test(fileData.type)){
+        if (!imageType.test(fileData.type) && !mediaType.test(fileData.type)) {
             alert("Only image, video type file");
             return;
         }
-        
+
+        if(fileData.size > 150000000){
+            alert("You can upload up to 150MB");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("userName", userName);
         formData.append("content", fileData);
 
-        axios.post("/channel/contentsUpload", formData).then((res) => {
-            if (res.data.success) {
-                createContentTab(userName, fileData.type, fileData.name);
-                contentSocket.emit(
-                    "content-info",
-                    channelName,
-                    userName,
-                    fileData.name,
-                    fileData.type
-                );
-                contentSearchInput.value = "";
-            }
-        });
+        axios
+            .post("/channel/contentsUpload", formData)
+            .then((res) => {
+                if (res.data.success) {
+                    createContentTab(userName, fileData.type, fileData.name);
+                    contentSocket.emit(
+                        "content-info",
+                        channelName,
+                        userName,
+                        fileData.name,
+                        fileData.type
+                    );
+                    contentSearchInput.value = "";
+                }
+            })
+            .catch((err) => {
+                alert("Error occur");
+                console.log("에러: " + err);
+            });
     });
 
     function contentShareEnable() {
@@ -108,12 +121,17 @@ export const contentFunc = () => {
         contentShareArea.hidden = false;
         contentShareBtn.style.color = "rgb(165, 199, 236)";
         contentSocket.emit("join-contents", channelName);
+        mediaImg.style.setProperty(
+            "filter",
+            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
+        );
     }
 
     function contentShareDisable() {
         contentShareArea.hidden = true;
         contentShareBtn.style.color = "#fff";
         contentSocket.emit("leave-contents", channelName);
+        mediaImg.style.setProperty("filter", "none");
     }
 
     $(document).on("click", ".middleContainerBtn", (e) => {
@@ -130,7 +148,7 @@ export const contentFunc = () => {
         }
         if (mediaType.test(fileType)) {
             contentShare.innerHTML = `
-                <video class="mediaFile" name="${choiceFile}" controls style="width: 100%; height: 100%">
+                <video class="mediaFile" name="${choiceFile}" controls controlsList="nodownload" style="width: 100%; height: 100%">
                     <source src="${choiceFile}">
                 </video>
             `;
@@ -140,27 +158,30 @@ export const contentFunc = () => {
     $(document).on("click", ".closeContent", (e) => {
         const deleteTagName = e.currentTarget.getAttribute("name");
         deleteContentTab = document.getElementsByName(deleteTagName);
-        originUser = deleteTagName.split('_')[0];
+        originUser = deleteTagName.split("_")[0];
 
-        if(userName === originUser){
+        if (userName === originUser) {
             const data = {
-                fileName: deleteTagName
+                fileName: deleteTagName,
             };
 
             axios.post("/channel/contentsDelete", data).then((res) => {
-                if(res.data.success && res.status === 200){
-                    contentSocket.emit("delete-origin-tag", channelName, deleteTagName);
-                    for(let i = 0 ; i < 3 ; i++){
+                if (res.data.success && res.status === 200) {
+                    contentSocket.emit(
+                        "delete-origin-tag",
+                        channelName,
+                        deleteTagName
+                    );
+                    for (let i = 0; i < 3; i++) {
                         deleteContentTab[0].remove();
                     }
-                }else {
+                } else {
                     alert(res.data.deleteResult);
                 }
             });
-        }else {
+        } else {
             alert("You can delete only the files you post");
         }
-        
     });
 
     /**
@@ -174,8 +195,14 @@ export const contentFunc = () => {
         "play",
         function (e) {
             if (originUser === userName) {
-                const currentTime = document.getElementsByClassName("mediaFile")[0].currentTime;
-                contentSocket.emit("play-origin", channelName, choiceFile, currentTime);
+                const currentTime =
+                    document.getElementsByClassName("mediaFile")[0].currentTime;
+                contentSocket.emit(
+                    "play-origin",
+                    channelName,
+                    choiceFile,
+                    currentTime
+                );
             }
         },
         true
@@ -236,12 +263,14 @@ export const contentFunc = () => {
     document.addEventListener(
         "scroll",
         function (e) {
-            if(e.target.id === ''){
+            if (e.target.id === "") {
                 if (originUser === userName) {
                     const originTop =
-                        document.getElementsByClassName("imageFile")[0].scrollTop;
+                        document.getElementsByClassName("imageFile")[0]
+                            .scrollTop;
                     const originLeft =
-                        document.getElementsByClassName("imageFile")[0].scrollLeft;
+                        document.getElementsByClassName("imageFile")[0]
+                            .scrollLeft;
                     contentSocket.emit(
                         "scroll-origin",
                         channelName,
@@ -305,7 +334,7 @@ export const contentFunc = () => {
 
     contentSocket.on("delete-remote-tag", (deleteTagName) => {
         deleteContentTab = document.getElementsByName(deleteTagName);
-        for(let i = 0 ; i < 3 ; i++){
+        for (let i = 0; i < 3; i++) {
             deleteContentTab[0].remove();
         }
     });

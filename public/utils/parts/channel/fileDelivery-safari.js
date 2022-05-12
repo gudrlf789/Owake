@@ -9,7 +9,7 @@ let device_id = "";
 function updateDevice() {
     let params = {
         api_key: "503d6430f3c124e0f239092e9c916b932a869dfe",
-        profile_name: "owake",
+        profile_name: "user profile",
     };
     if (localStorage.device_key) {
         params.device_key = localStorage.device_key;

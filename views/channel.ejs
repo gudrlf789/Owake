@@ -14,7 +14,11 @@
             <script type="text/javascript" src="owake_rtc.js"></script>
             <script type="text/javascript" src="owake_rtm.js"></script>
             <!-- Jquery -->
-            <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+            <!-- <script type="text/javascript" src="jquery-3.4.1.min.js"></script> -->
+            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"
+                integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
             <!-- Bootstrap -->
             <script type="text/javascript" src="bootstrap.bundle.min.js"></script>
             <!-- Socket.io -->
@@ -29,6 +33,34 @@
             <title>Owake</title>
 
             <script async>
+
+                /**
+                 * @anthor 전형동
+                 * @date 2022.05.12
+                 * @version 1.0
+                 * @descrption
+                 * 공백, 특수문자, 한글 체크
+                 */
+
+                function checkUserId(userNameSession) {
+                    // 공백체크
+                    const pattern_empty = /\s/g;
+                    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+                    // 특수문자 체크
+                    const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+
+                    if (
+                        userNameSession === "" ||
+                        userNameSession.match(pattern_empty) ||
+                        pattern_spc.test(userNameSession) ||
+                        korean.test(userNameSession)
+                    ) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
                 /**
                  * @anthor 박형길
                  * @date 2022.03.22
@@ -46,7 +78,16 @@
                     };
 
                     let userNameSession = window.prompt("Enter the name");
-                    window.sessionStorage.setItem("uid", userNameSession);
+
+                    if (!checkUserId(userNameSession)) {
+                        alert(
+                            "Please enter a valid user name (except spaces and special characters and korean)"
+                        );
+                        location.replace("/")
+                    }
+                    else {
+                        sessionStorage.setItem("uid", userNameSession);
+                    }
 
                     axios.post("/channel/info", reqData).then((res) => {
                         if (res.data.success) {
@@ -102,19 +143,19 @@
 
             <%- include("./popup/fileDelivery") %>
                 <%- include("./popup/deviceSettings") %>
-                    <%- include("./popup/fileHash") %>
+                    <%- include("./popup/identifier") %>
 </head>
 
 <body>
-    <div class="header">
+    <!-- <div class="header">
         <div class="logo">
             <img class="img__logo" src="logo.svg" alt="">
         </div>
         <div class="nav__container">
-            <!-- <div id="video-grid-button" class="options__button">
+            <div id="video-grid-button" class="options__button">
                 <i class="fas fa-th"></i>
                 <span>Grid</span>
-            </div> -->
+            </div>
             <div id="copyUrl" class="options__button">
                 <i class="far fa-clipboard"></i>
                 <span>Invite</span>
@@ -124,8 +165,8 @@
                 <span>Leave</span>
             </div>
         </div>
-    </div>
-    </div>
+    </div> -->
+
     <div class="main">
         <div class="main__left">
             <div class="videos__group">
@@ -138,69 +179,7 @@
                     </div>
                 </div>
             </div>
-            <div class="options">
-                <div class="options__left">
-                    <div id="muteVideo" class="options__button">
-                        <i id="videoIcon" class="fas fa-video"></i>
-                        <span>Cam</span>
-                    </div>
-                    <div id="muteAudio" class="options__button">
-                        <i id="audioIcon" class="fa fa-microphone"></i>
-                        <span>Mic</span>
-                    </div>
-                    <div id="showChat" class="options__button">
-                        <i class="fa fa-comment"></i>
-                        <span>Chat</span>
-                    </div>
-                    <div id="shareScreen" class="options__button">
-                        <i class="fas fa-retweet"></i>
-                        <span>Screen</span>
-                    </div>
-                    <div id="momentShare1" class="options__button">
-                        <i class="fab fa-connectdevelop"></i>
-                        <span>Web</span>
-                    </div>
-                    <!-- <div id="momentShare2" class="options__button">
-                        <i class="fab fa-connectdevelop"></i>
-                        <span>Web2</span>
-                    </div> -->
-                    <!-- <div id="fileShareBtn" class="options__button">
-                        <i class="fab fa-creative-commons-share"></i>
-                        <span>FShare</span>
-                    </div> -->
-                    <!-- 
-                    <div id="textShare" class="options__button">
-                        <i class="fas fa-file-alt"></i>
-                        <span>TShare</span>
-                    </div> 
-                    -->
-                    <div id="whiteBoard" class="options__button">
-                        <i class="fas fa-palette"></i>
-                        <span>WhiteBoard</span>
-                    </div>
-                    <div class="options__button" id="fileDeliveryBtn">
-                        <i class="far fa-folder-open"></i>
-                        <span>File</span>
-                    </div>
-                    <div class="options__button" id="deviceSettingBtn" data-toggle="modal"
-                        data-target="#deviceSettingModal">
-                        <i class="fas fa-cog"></i>
-                        <span>Device</span>
-                    </div>
-                    <div class="options__button" id="fileHashBtn" data-toggle="modal" data-target="#fileHashModal">
-                        <i class="fas fa-file-invoice" aria-hidden="true"></i>
-                        <span>Identifier</span>
-                    </div>
-                    <div id="contentShare" class="options__button">
-                        <i class="fas fa-exchange-alt"></i>
-                        <span>contents</span>
-                    </div>
-                    <div id="pdfShare" class="options__button">
-                        <i class="fas fa-file-pdf"></i>
-                        <span>pdf</span>
-                    </div>
-                </div>
-            </div>
+
         </div>
         <div class="main__right">
             <div class="main__header">
@@ -216,6 +195,119 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="btn__container">
+        <div id="nav__btn" class="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal">
+        </div>
+    </div>
+
+    <div class="options">
+        <section class="logo-container">
+            <span class="logo"></span>
+            <i class="fas fa-chevron-down deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal"></i>
+        </section>
+
+        <div class="swiper optionsSwiper">
+            <div class="swiper-wrapper">
+                <section class="main__options options__left swiper-slide">
+                    <div id="muteVideo" class="options__button">
+                        <i id="videoIcon" class="fas fa-video"></i>
+                        <!-- <img class="optionsBtnImg" src="/png/cam.png"></img> -->
+                        <!-- <span>Cam</span> -->
+                    </div>
+                    <div id="muteAudio" class="options__button">
+                        <i id="audioIcon" class="fa fa-microphone"></i>
+                        <!-- <img class="optionsBtnImg" src="/png/mic.png"></img> -->
+                        <!-- <span>Mic</span> -->
+                    </div>
+
+                    <div id="users" class="options__button">
+                        <i class="fas fa-users"></i>
+                        <!-- <img class="optionsBtnImg" src="/png/users.png"></img> -->
+                        <!-- <span>Users</span> -->
+                    </div>
+
+                    <div class="options__button" id="fileDeliveryBtn">
+                        <!-- <i class="far fa-folder-open"></i> -->
+                        <img id="fileDeliveryImg" class="optionsBtnImg" src="/svg/file_share.svg"></img>
+                        <!-- <span>File</span> -->
+                    </div>
+                    <div class="options__button" id="fileHashBtn">
+                        <!-- <i class="fas fa-file-invoice" aria-hidden="true"></i> -->
+                        <img id="fileHashImg" class="optionsBtnImg" src="/svg/identifire.svg"></img>
+                        <!-- <span>Identifier</span> -->
+                    </div>
+
+                    <div id="shareScreen" class="options__button">
+                        <i class="fas fa-retweet"></i>
+                        <!-- <img class="optionsBtnImg" src="/png/chat.png"></img> -->
+                        <!-- <span>Screen</span> -->
+                    </div>
+
+                    <div class="nav__right options__button">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </section>
+
+                <section class="sub__options options__left swiper-slide">
+                    <div class="nav__left options__button">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+
+                    <div id="momentShare1" class="options__button">
+                        <!-- <i class="fab fa-connectdevelop"></i> -->
+                        <img id="webImg" class="optionsBtnImg" src="/svg/web_share.svg"></img>
+                        <!-- <span>Web</span> -->
+                    </div>
+                    <!-- <div id="momentShare2" class="options__button">
+                <i class="fab fa-connectdevelop"></i>
+                <span>Web2</span>
+            </div> -->
+                    <!-- <div id="fileShareBtn" class="options__button">
+                <i class="fab fa-creative-commons-share"></i>
+                <span>FShare</span>
+            </div> -->
+                    <!-- 
+            <div id="textShare" class="options__button">
+                <i class="fas fa-file-alt"></i>
+                <span>TShare</span>
+            </div> 
+            -->
+                    <div id="contentShare" class="options__button">
+                        <!-- <i class="fas fa-exchange-alt"></i> -->
+                        <img id="mediaImg" class="optionsBtnImg" src="/svg/media_share.svg"></img>
+                        <!-- <span>contents</span> -->
+                    </div>
+                    <div id="pdfShare" class="options__button">
+                        <!-- <i class="fas fa-file-pdf"></i> -->
+                        <img id="pdfImg" class="optionsBtnImg" src="/svg/pdf_share.svg"></img>
+                    </div>
+                    <div id="whiteBoard" class="options__button">
+                        <!-- <i class="fas fa-chalkboard-teacher"></i> -->
+                        <img id="boardImg" class="optionsBtnImg" src="/svg/whiteboard.svg"></img>
+                        <!-- <span>WhiteBoard</span> -->
+                    </div>
+
+                    <div id="showChat" class="options__button">
+                        <i class="fa fa-comment"></i>
+                        <!-- <img class="optionsBtnImg" src="/png/chat.png"></img> -->
+                        <!-- <img src="/svg/chat.svg" alt=""> -->
+                        <!-- <span>Chat</span> -->
+                    </div>
+                    <!-- <div class="options__button" id="deviceSettingBtn" data-toggle="modal"
+                        data-target="#deviceSettingModal">
+                        <i class="fas fa-cog"></i>
+                    </div> -->
+                </section>
+            </div>
+        </div>
+
+        <section class="options__right">
+            <div id="desktop-leave">
+                <i id="leaveBtn"></i>
+            </div>
+        </section>
     </div>
 
     <!-- Scripts -->

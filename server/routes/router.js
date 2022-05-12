@@ -31,6 +31,9 @@ const upload = multer({
 });
 const contentsUpload = multer({
     storage: contentsStorage,
+    limits: {
+        fileSize: 1024 * 1024 * 150
+    }
 });
 const path = require("path");
 const axios = require("axios");
@@ -465,6 +468,12 @@ router.get("/downloadPdf", async (req,res) => {
     
     const fileName = req.query.fileName;
     res.download("./server/contents/" + fileName);
+});
+
+router.post("/channelFirstSpinnerDelete", (req, res) => {
+    return res.status(200).json({
+        success: true
+    });
 });
 
 module.exports = router;

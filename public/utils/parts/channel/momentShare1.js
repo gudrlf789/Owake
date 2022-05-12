@@ -13,6 +13,8 @@
 import { socketInitFunc } from "./socket.js";
 import { options } from "../../rtcClient.js";
 
+const webImg = document.querySelector("#webImg");
+
 export const momentShareFunc1 = () => {
     const momentSocket = socketInitFunc();
     let momentShareActive = false;
@@ -20,7 +22,6 @@ export const momentShareFunc1 = () => {
     let momentShare;
     let iframeInit = false;
     let inputURL;
-    let bypass = "x-frame-bypass";
 
     const momentShareBtn1 = document.querySelector("#momentShare1");
     const localVideoContainer = document.querySelector(
@@ -80,19 +81,25 @@ export const momentShareFunc1 = () => {
     function momentShareEnable() {
         localVideoContainer.append(momentShareArea1);
         momentShareArea1.hidden = false;
-        momentShareBtn1.style.color = "rgb(165, 199, 236)";
         momentSocket.emit("join-web", options.channel);
 
         iframeContainer1.innerHTML = `<iframe id='momentShare-iframe1'
-            name='momentShare' is='${bypass}' frameborder='0'
+            name='momentShare' frameborder='0'
             </iframe>`;
         momentContainer1.appendChild(iframeContainer1);
+
+        webImg.style.setProperty(
+            "filter",
+            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
+        );
     }
 
     function momentShareDisable() {
         momentShareArea1.hidden = true;
         momentShareBtn1.style.color = "#fff";
         momentSocket.emit("leave-web", options.channel);
+
+        webImg.style.setProperty("filter", "none");
     }
 
     searchInput1Btn.addEventListener("click", (e) => {

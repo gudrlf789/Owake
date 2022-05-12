@@ -10,7 +10,7 @@ function updateDevice() {
         dataType: "jsonp",
         data: {
             api_key: "503d6430f3c124e0f239092e9c916b932a869dfe",
-            profile_name: "owake",
+            profile_name: "username",
         },
         cache: false,
     }).done(function (data) {});

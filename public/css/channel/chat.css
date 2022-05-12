@@ -3,6 +3,7 @@
     flex-direction: column;
     flex: 0.3;
     background-color: #242f41;
+    z-index: 20;
 }
 
 .main__chat_window {

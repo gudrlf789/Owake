@@ -10,6 +10,7 @@
 import { options } from "../../rtcClient.js";
 
 let openYN = "N";
+const screenShareIcons = document.querySelector(".fa-retweet");
 
 export const screenShareFunc = () => {
     const screenShareBtn = document.querySelector("#shareScreen");
@@ -60,6 +61,8 @@ async function screenShareJoin() {
                 LeaveShareScreen(screenClient, screenTrack);
             });
         }
+
+        screenShareIcons.style.setProperty("color", "#ec6f74");
     } catch (err) {
         console.log("Agora error: " + err);
         screenClient.leave();
@@ -80,4 +83,6 @@ function LeaveShareScreen(screenClient, screenTrack) {
 
     screenClient.leave();
     openYN = "N";
+
+    screenShareIcons.style.setProperty("color", "#fff");
 }

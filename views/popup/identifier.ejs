@@ -1,0 +1,70 @@
+<!-- 
+
+    @Author 전형동
+    @Date 2022 04 13
+    @Description
+    Identifier UI 변경
+
+ -->
+
+<div class="identifier-container" hidden="true">
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-label">File Indentity Verification</h5>
+        <button class="identifire-section-close">&times;</button>
+    </div>
+    <div class="modal-body identifier-body">
+        <section class="form-signin">
+
+            <div id="top_container">
+                <span class="guide_text">Step 1. <b>Sync</b>
+                    <p>Please click 'Sync' to connect with other users</p>
+                </span>
+                <button id="syncBtn" class="btn btn-primary">Sync</button>
+            </div>
+
+            <div id="middle_container">
+
+                <span class="guide_text">Step 2. <b>Original File</b>
+                    <p>Please check the indentity code of an original file
+                    </p>
+                </span>
+
+                <div style="display: flex;">
+                    <input type="file" class="form-control" id="selectFile_1" style="width: 70%;">
+                    <button id="originHash" class="btn btn-primary" style="width: 30%; height: 50%;">indentify</button>
+                </div>
+
+                <div style="display: flex;">
+                    <input class="input-group input-group-sm mb-3" id="selectOriginalInput" type=" text"
+                        placeholder="Hash Code" readonly="readonly" style="width: 70%;">
+                    <button id="originCopy" style="width: 30%; height: 50%;">Copy</button>
+                </div>
+
+                <span class="guide_text">Step 3. <b>Comparison File</b>
+                    <p>Please check the indentity code of a comparison file
+                    </p>
+                </span>
+
+                <div style="display: flex;">
+                    <input type="file" class="form-control" id="selectFile_2" style="width: 70%;">
+                    <button id="remoteHash" class="btn btn-primary" style="width: 30%; height: 50%;">indentify</button>
+                </div>
+
+                <div style="display: flex;">
+                    <input class="input-group input-group-sm mb-3" id="selectComparisonInput" type=" text"
+                        placeholder="Hash Code" readonly="readonly" style="width: 70%;">
+                    <button id="comparisonCopy" style="width: 30%; height: 50%;">Copy</button>
+                </div>
+            </div>
+
+            <div id="bottom_container">
+                <span class="guide_text">Step 4. <b>Verify</b>
+                    <p>Please click “Verify” to verify the indentity of the file(s)
+                    </p>
+                </span>
+                <button class="btn btn-primary" id="clickVerifyFile">Verify</button>
+            </div>
+            <input class="input-group input-group-sm mb-3" type="text" id="compareResult" placeholder="Result" readonly>
+        </section>
+    </div>
+</div>
