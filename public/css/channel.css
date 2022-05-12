@@ -299,6 +299,9 @@ video:hover {
 }
 
 @media (min-width: 768px) {
+    #remote__video__container {
+        height: min-content;
+    }
 }
 
 @media (max-width: 768px) {
@@ -351,6 +354,7 @@ video:hover {
     #remote-playerlist > div {
         /* width: 130px;*/
     }
+
     #local__video__container {
         position: absolute;
         width: 100%;
@@ -398,42 +402,17 @@ video:hover {
         margin: 8px;
     }
 
-    #remote__videoBox {
-        position: relative;
-        width: 130px;
-        height: 130px;
-        margin: 8px;
-    }
-
     .player > div {
         border-radius: 50%;
     }
 
     #remote__videoBox > div {
-        /* border: 2px solid #fff;
-        border-radius: 20px; */
         border-radius: 50%;
     }
 
     #shareScreen {
         display: none;
     }
-    /* #speechRecognition {
-        display: none;
-    } */
-    /* .owake-btn {
-        display: block;
-        padding: 1rem;
-        width: 67px;
-        height: 67px;
-        z-index: 20;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        cursor: pointer;
-        filter: invert(28%) sepia(11%) saturate(2582%) hue-rotate(147deg)
-            brightness(94%) contrast(85%);
-    } */
 }
 
 /* Animation */
