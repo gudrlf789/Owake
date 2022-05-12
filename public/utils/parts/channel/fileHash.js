@@ -59,6 +59,17 @@ export const fileHash = () => {
     function identifireDisable() {
         identifireContainer.hidden = true;
         fileHashImg.style.setProperty("filter", "none");
+
+        hashSocket.emit("leave-hash", channelName);
+        selectFile1.value = "";
+        selectFile2.value = "";
+        selectOriginalInput.value = "";
+        selectComparisonInput.value = "";
+        $("#syncBtn").attr("disabled", false);
+        $("#selectFile_1").attr("disabled", true);
+        $("#selectFile_2").attr("disabled", true);
+        $("#originHash").attr("disabled", true);
+        $("#remoteHash").attr("disabled", true);
     }
 
     function makeFileToHash(data, textHtml) {
