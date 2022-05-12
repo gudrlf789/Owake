@@ -99,7 +99,6 @@ async function getDeviceFunc() {
 async function handlerDeviceSetting() {
     videoBox = document.querySelector("#local__videoBox");
     $(".cam-list").delegate("a", "click", (e) => {
-        e.preventDefault();
         if (e.target.innerText.includes("back")) {
             switchCamera(e.target.innerText);
             setTimeout(() => {
@@ -113,7 +112,6 @@ async function handlerDeviceSetting() {
         }
     });
     $(".mic-list").delegate("a", "click", function (e) {
-        e.preventDefault();
         switchMicrophone(e.target.innerText);
     });
     volumeAnimation = requestAnimationFrame(setVolumeWave);

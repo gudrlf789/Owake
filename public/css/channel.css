@@ -343,7 +343,7 @@ video:hover {
         justify-content: left;
         align-items: baseline;
         overflow-x: auto;
-        z-index: 30;
+        z-index: 7;
     }
 
     #remote-playerlist {
