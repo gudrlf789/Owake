@@ -73,16 +73,34 @@ function receiveFile(url) {
     $("<iframe />").attr("src", url).hide().appendTo("body");
 }
 
+function checkIphoneMobile() {
+    const checkIphone = navigator.userAgent.toLowerCase();
+
+    if (checkIphone.indexOf("iphone") > -1) {
+        alert(
+            "We are sorry for that iPhone users can't use send and receive button yet."
+        );
+        return false;
+    }
+    return true;
+}
+
 function clickEvent() {
     $("#sendBtn").click(() => {
-        let files = $("#fileInput").prop("files");
-        if (files.length > 0) {
-            createKey(files);
+        if(checkIphoneMobile()){
+            let files = $("#fileInput").prop("files");
+            if (files.length > 0) {
+                createKey(files);
+            }else{
+                alert("Please select file");
+            }
         }
     });
 
     $("#receiveBtn").click(() => {
-        receiveKey($("#keyInput").val());
+        if(checkIphoneMobile()){
+            receiveKey($("#keyInput").val());
+        }
     });
 
     $("#keyInput").keyup((e) => {
