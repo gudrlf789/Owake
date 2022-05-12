@@ -33,6 +33,34 @@
             <title>Owake</title>
 
             <script async>
+
+                /**
+                 * @anthor 전형동
+                 * @date 2022.05.12
+                 * @version 1.0
+                 * @descrption
+                 * 공백, 특수문자, 한글 체크
+                 */
+
+                function checkUserId(userNameSession) {
+                    // 공백체크
+                    const pattern_empty = /\s/g;
+                    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+                    // 특수문자 체크
+                    const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+
+                    if (
+                        userNameSession === "" ||
+                        userNameSession.match(pattern_empty) ||
+                        pattern_spc.test(userNameSession) ||
+                        korean.test(userNameSession)
+                    ) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
                 /**
                  * @anthor 박형길
                  * @date 2022.03.22
@@ -51,12 +79,15 @@
 
                     let userNameSession = window.prompt("Enter the name");
 
-                    if (userNameSession === "") {
-                        alert("You must to enter id");
-                        window.location.href = "/";
+                    if (!checkUserId(userNameSession)) {
+                        alert(
+                            "Please enter a valid user name (except spaces and special characters and korean)"
+                        );
+                        location.replace("/")
                     }
-
-                    window.sessionStorage.setItem("uid", userNameSession);
+                    else {
+                        sessionStorage.setItem("uid", userNameSession);
+                    }
 
                     axios.post("/channel/info", reqData).then((res) => {
                         if (res.data.success) {
