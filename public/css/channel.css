@@ -298,12 +298,6 @@ video:hover {
     left: 50%;
 }
 
-@media (min-width: 768px) {
-    #remote__video__container {
-        height: min-content;
-    }
-}
-
 @media (max-width: 768px) {
     #remote__video__container {
         height: min-content;
