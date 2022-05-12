@@ -59,7 +59,20 @@ $(async () => {
     }
 });
 
-$("#leave").click(function (e) {
+/**
+ * @another 전형동
+ * @date 2022 05 12
+ * @description
+ * mobile Leave desktop Leave Click Event
+ */
+
+const leaveBtn = document.querySelector("#leave");
+const desktopLeaveBtn = document.querySelector("#desktop-leave");
+
+leaveBtn.addEventListener("click", leaveBtnFunc, false);
+desktopLeaveBtn.addEventListener("click", leaveBtnFunc, false);
+
+function leaveBtnFunc(e) {
     const reqData = {
         channelType: window.sessionStorage.getItem("channelType"),
         channelName: window.sessionStorage.getItem("channel"),
@@ -73,7 +86,7 @@ $("#leave").click(function (e) {
             alert(res.data.error);
         }
     });
-});
+}
 
 async function join() {
     options.uid = window.sessionStorage.getItem("uid");
