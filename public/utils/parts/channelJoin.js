@@ -95,6 +95,10 @@ $("input:radio[name=join_userType]").change((e) => {
 });
 
 $("#channelJoin-btn").click((e) => {
+    channelJoinAction();
+});
+
+function channelJoinAction() {
     const reqData = {
         channelType: $("input:radio[name=join_channelType]:checked").val(),
         channelName: $("#join-channelName").val(),
@@ -141,9 +145,19 @@ $("#channelJoin-btn").click((e) => {
             alert(res.data.error);
         }
     });
+}
+
+$("#private-nickName").keydown((e) => {
+    if (e.which === 13) {
+        privateChannelJoinAction();
+    }
 });
 
 $("#private-channelJoin-btn").click((e) => {
+    privateChannelJoinAction();
+});
+
+function privateChannelJoinAction() {
     const channelName = $("#private-channelName").val();
     const checkingPassword = $("#private-passwordChecking").val();
     const channelType = $("#private-channelType").val();
@@ -163,9 +177,19 @@ $("#private-channelJoin-btn").click((e) => {
             checkKorean(userId, channelName, channelType);
         }
     }
+}
+
+$("#public-nickName").keydown((e) => {
+    if (e.which === 13) {
+        publicChannelJoinAction();
+    }
 });
 
 $("#public-channelJoin-btn").click((e) => {
+    publicChannelJoinAction();
+});
+
+function publicChannelJoinAction() {
     const channelName = $("#public-channelName").val();
     const channelType = $("#public-channelType").val();
     const userId = $("#public-nickName").val();
@@ -177,4 +201,4 @@ $("#public-channelJoin-btn").click((e) => {
     } else {
         checkKorean(userId, channelName, channelType);
     }
-});
+}
