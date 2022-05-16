@@ -58,6 +58,7 @@
 body,
 html {
     -webkit-overflow-scrolling: touch;
+    touch-action: manipulation;
     width: 100%;
     height: 100%;
 }
@@ -419,16 +420,6 @@ video:hover {
     }
 }
 
-@media (max-width: 320px) {
-    .mobile__options {
-        display: flex;
-    }
-
-    .default__options {
-        display: none;
-    }
-}
-
 @media (max-height: 768px) {
     .main {
         height: calc(var(--vh, 1vh) * 87);
@@ -440,6 +431,19 @@ video:hover {
 
     #nav__btn {
         height: calc(var(--vh, 1vh) * 13);
+    }
+}
+
+@media (max-width: 320px) {
+    .mobile__options {
+        display: flex;
+    }
+
+    .default__options {
+        display: none;
+    }
+    .options__right {
+        display: none;
     }
 }
 
