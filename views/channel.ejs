@@ -198,12 +198,8 @@
         </div>
     </div>
 
-    <div class="btn__container">
-        <div id="nav__btn" class="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal">
-        </div>
-    </div>
-
     <div class="options">
+        <div id="nav__btn" class="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal"></div>
         <section class="logo-container">
             <span class="logo"></span>
             <i class="fas fa-chevron-down deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal"></i>
@@ -211,7 +207,7 @@
 
         <div class="swiper optionsSwiper">
             <div class="swiper-wrapper">
-                <section class="main__options options__left swiper-slide">
+                <section class="default__options main__options options__left swiper-slide">
                     <div id="muteVideo" class="options__button">
                         <i id="videoIcon" class="fas fa-video"></i>
                         <!-- <img class="optionsBtnImg" src="/png/cam.png"></img> -->
@@ -252,7 +248,7 @@
                     </div>
                 </section>
 
-                <section class="sub__options options__left swiper-slide">
+                <section class="default__options sub__options options__left swiper-slide">
                     <div class="nav__left options__button">
                         <i class="fas fa-chevron-left"></i>
                     </div>
@@ -301,6 +297,65 @@
                         data-target="#deviceSettingModal">
                         <i class="fas fa-cog"></i>
                     </div> -->
+                </section>
+
+
+                <!-- Display Width 320px 이하가 되었을 경우 -->
+                <section class="mobile__options mobile__options_1 options__left swiper-slide">
+                    <div id="muteVideo" class="options__button">
+                        <i id="videoIcon" class="fas fa-video"></i>
+                    </div>
+                    <div id="muteAudio" class="options__button">
+                        <i id="audioIcon" class="fa fa-microphone"></i>
+                    </div>
+
+                    <div id="users" class="options__button">
+                        <i class="fas fa-users"></i>
+                    </div>
+
+                    <div class="nav__right options__button">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </section>
+
+                <section class="mobile__options mobile__options_2 options__left swiper-slide">
+                    <div class="options__button" id="fileDeliveryBtn">
+                        <img id="fileDeliveryImg" class="optionsBtnImg" src="/svg/file_share.svg"></img>
+                    </div>
+
+                    <div class="options__button" id="fileHashBtn">
+                        <img id="fileHashImg" class="optionsBtnImg" src="/svg/identifire.svg"></img>
+                    </div>
+
+                    <div id="shareScreen" class="options__button">
+                        <i class="fas fa-retweet"></i>
+                    </div>
+
+
+                    <div id="momentShare1" class="options__button">
+                        <img id="webImg" class="optionsBtnImg" src="/svg/web_share.svg"></img>
+                    </div>
+                    <div id="contentShare" class="options__button">
+                        <img id="mediaImg" class="optionsBtnImg" src="/svg/media_share.svg"></img>
+                    </div>
+                </section>
+
+                <section class="mobile__options mobile__options_3 options__left swiper-slide">
+                    <div class="nav__left options__button">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+
+                    <div id="pdfShare" class="options__button">
+                        <img id="pdfImg" class="optionsBtnImg" src="/svg/pdf_share.svg"></img>
+                    </div>
+
+                    <div id="whiteBoard" class="options__button">
+                        <img id="boardImg" class="optionsBtnImg" src="/svg/whiteboard.svg"></img>
+                    </div>
+
+                    <div id="showChat" class="options__button">
+                        <i class="fa fa-comment"></i>
+                    </div>
                 </section>
             </div>
         </div>

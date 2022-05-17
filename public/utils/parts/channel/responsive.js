@@ -18,7 +18,38 @@ function playerNameHidden() {
 
     let classNameSearch = {};
 
-    if (bodyWidth < 768) {
+    if (bodyWidth <= 1280) {
+        playerName.hidden = true;
+        optionsNext.hidden = false;
+        optionsPrev.hidden = false;
+
+        logOutBtn.hidden = false;
+
+        for (let i = 0; i < mainOptions.classList.length; i++) {
+            classNameSearch.main = mainOptions.classList[i];
+            classNameSearch.sub = subOptions.classList[i];
+
+            if (
+                !classNameSearch.main.includes("swiper-slide") ||
+                !classNameSearch.main.includes("swiper-slide-active") ||
+                !classNameSearch.main.includes("swiper-slide-next")
+            ) {
+                mainOptions.classList.add("swiper-slide");
+                mainOptions.classList.add("swiper-slide-active");
+                mainOptions.classList.add("swiper-slide-next");
+            }
+
+            if (
+                !classNameSearch.sub.includes("swiper-slide") ||
+                !classNameSearch.sub.includes("swiper-slide-active") ||
+                !classNameSearch.sub.includes("swiper-slide-next")
+            ) {
+                subOptions.classList.add("swiper-slide");
+                subOptions.classList.add("swiper-slide-active");
+                subOptions.classList.add("swiper-slide-next");
+            }
+        }
+    } else if (bodyWidth <= 768) {
         playerName.hidden = true;
         optionsNext.hidden = false;
         optionsPrev.hidden = false;
