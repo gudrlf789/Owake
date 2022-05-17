@@ -245,6 +245,7 @@ router.post("/delete", (req, res) => {
     const docName =
         bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
     const imagePath = path.join(__dirname, `../uploads/${bodyData.imageName}`);
+    const contentsPath = path.join(__dirname, `../contents/${bodyData.channelName}`);
 
     firebaseCollection
         .doc(docName)
@@ -253,10 +254,18 @@ router.post("/delete", (req, res) => {
             if (doc.exists) {
                 realDeleteData(docName, res);
                 // 이미지 삭제
+                // 방에 관련된 컨텐츠 폴더 삭제
                 try {
                     if (fs.statSync(imagePath)) {
                         fs.unlinkSync(imagePath);
                     }
+                    
+                    fs.readdir(contentsPath, (err) => {
+                        if(err){
+                            return;
+                        }
+                        fs.rmdirSync(contentsPath, { recursive: true });
+                    });
                 } catch (err) {
                     if (err.code === "ENOENT") {
                         console.log(
