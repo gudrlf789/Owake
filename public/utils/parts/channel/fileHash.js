@@ -20,6 +20,7 @@ export const fileHash = () => {
     const clickVerifyFile = document.getElementById("clickVerifyFile");
     const originCopy = document.getElementById("originCopy");
     const comparisonCopy = document.getElementById("comparisonCopy");
+    const userName = window.sessionStorage.getItem("uid");
     const channelName = window.sessionStorage.getItem("channel");
     const loginData = {
         id: "",
@@ -76,6 +77,8 @@ export const fileHash = () => {
         if (formData.has("fileInput")) {
             formData.delete("fileInput");
         }
+        formData.append("userName", userName);
+        formData.append("channelName", channelName);
         formData.append("fileInput", data);
 
         axios.post("/channel/hashFile", formData, {
@@ -94,6 +97,7 @@ export const fileHash = () => {
             textHtml.value = res.data.hashCode;
         }).catch((err) => {
             alert("Error occur");
+            $("#spinnerModal").modal("hide");
             console.log("에러: " + err);
         });
     };

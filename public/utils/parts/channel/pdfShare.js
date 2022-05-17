@@ -112,7 +112,7 @@ export const pdfFunc = () => {
         });
 
         pdfjsLib
-            .getDocument("/channel/downloadPdf?fileName=" + fileName)
+            .getDocument(`/channel/downloadPdf?channelName=${channelName}&userName=${originUser}&fileName=${fileName}`)
             .promise.then(
                 (pdf) => {
                     myState.pdf = pdf;
@@ -156,6 +156,7 @@ export const pdfFunc = () => {
         }
 
         formData.append("userName", userName);
+        formData.append("channelName", channelName);
         formData.append("content", fileData);
 
         axios
@@ -216,6 +217,8 @@ export const pdfFunc = () => {
         if (userName === originUser) {
             const data = {
                 fileName: deleteTagName,
+                channelName: channelName,
+                userName: originUser
             };
 
             axios.post("/channel/contentsDelete", data).then((res) => {
