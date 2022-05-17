@@ -15,14 +15,22 @@ const storage = multer.diskStorage({
 });
 const contentsStorage = multer.diskStorage({
     destination: function (req, res, cb) {
-        cb(null, `./server/contents`);
+        fs.readdir(`./server/contents/${req.body.channelName}`, (err) => {
+            if(err){
+                fs.mkdirSync(`./server/contents/${req.body.channelName}`);
+            }
+
+            fs.readdir(`./server/contents/${req.body.channelName}/${req.body.userName}`, (err , files) => {
+                if(err){
+                    fs.mkdirSync(`./server/contents/${req.body.channelName}/${req.body.userName}`);
+                }
+                
+                cb(null, `./server/contents/${req.body.channelName}/${req.body.userName}`);
+            });
+        });
     },
     filename: function (req, file, cb) {
-        if(req.body.userName){
-            cb(null, req.body.userName + "_"  + file.originalname);
-        }else{
-            cb(null, file.originalname);
-        }
+        cb(null, req.body.userName + "_"  + file.originalname);
     },
 });
 
@@ -237,6 +245,7 @@ router.post("/delete", (req, res) => {
     const docName =
         bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
     const imagePath = path.join(__dirname, `../uploads/${bodyData.imageName}`);
+    const contentsPath = path.join(__dirname, `../contents/${bodyData.channelName}`);
 
     firebaseCollection
         .doc(docName)
@@ -245,10 +254,18 @@ router.post("/delete", (req, res) => {
             if (doc.exists) {
                 realDeleteData(docName, res);
                 // 이미지 삭제
+                // 방에 관련된 컨텐츠 폴더 삭제
                 try {
                     if (fs.statSync(imagePath)) {
                         fs.unlinkSync(imagePath);
                     }
+                    
+                    fs.readdir(contentsPath, (err) => {
+                        if(err){
+                            return;
+                        }
+                        fs.rmdirSync(contentsPath, { recursive: true });
+                    });
                 } catch (err) {
                     if (err.code === "ENOENT") {
                         console.log(
@@ -361,8 +378,17 @@ router.post("/removeUserNameOnChannel", async (req, res) => {
             userNames: firebase.firestore.FieldValue.arrayRemove(bodyData.userId)
         })
         .then((e) => {
-            return res.status(200).json({
-                success: true,
+            fs.readdir(`./server/contents/${bodyData.channelName}/${bodyData.userId}`, (err , files) => {
+                if(err){
+                    return res.status(200).json({
+                        success: true,
+                    });
+                }
+
+                fs.rmdirSync(`./server/contents/${bodyData.channelName}/${bodyData.userId}`, { recursive: true });
+                return res.status(200).json({
+                    success: true,
+                });
             });
         })
         .catch((err) => {
@@ -403,8 +429,8 @@ router.post("/jwt", async (req, res) => {
 
 router.post("/hashFile", contentsUpload.single("fileInput"), async (req, res) => {
     const formData = new FormData();
-
-    fs.readFile("./server/contents/" + req.file.filename, (err, data) => {
+    
+    fs.readFile(`./server/contents/${req.body.channelName}/${req.body.userName}/${req.file.filename}`, (err, data) => {
         formData.append("fileInput", data, {
             filename: req.file.originalname,
         });
@@ -418,7 +444,7 @@ router.post("/hashFile", contentsUpload.single("fileInput"), async (req, res) =>
             }
         )
         .then((result) => {
-            fs.unlinkSync("./server/contents/" + req.file.originalname);
+            fs.unlinkSync(`./server/contents/${req.body.channelName}/${req.body.userName}/${req.body.userName}_${req.file.originalname}`);
             return res.json({
                 hashCode: result.data.output.file_hash
             });
@@ -440,9 +466,9 @@ router.post("/contentsUpload", contentsUpload.single("content"), async (req, res
 router.post("/contentsDelete", async (req, res) => {
     const bodyData = req.body;
 
-    if(fs.existsSync("./server/contents/" + bodyData.fileName)){
+    if(fs.existsSync(`./server/contents/${bodyData.channelName}/${bodyData.userName}/${bodyData.fileName}`)){
         try {
-            fs.unlinkSync("./server/contents/" + bodyData.fileName);
+            fs.unlinkSync(`./server/contents/${bodyData.channelName}/${bodyData.userName}/${bodyData.fileName}`);
             return res.status(200).json({
                 success: true
             });
@@ -465,9 +491,9 @@ router.get("/downloadPdf", async (req,res) => {
         res.setHeader('Content-Type', 'application/octet-stream');
         res.send(data);
     });*/
-    
-    const fileName = req.query.fileName;
-    res.download("./server/contents/" + fileName);
+    const { channelName, userName, fileName } = req.query;
+
+    res.download(`./server/contents/${channelName}/${userName}/${fileName}`);
 });
 
 router.post("/channelFirstSpinnerDelete", (req, res) => {

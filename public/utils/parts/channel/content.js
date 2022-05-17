@@ -93,6 +93,7 @@ export const contentFunc = () => {
 
         const formData = new FormData();
         formData.append("userName", userName);
+        formData.append("channelName", channelName);
         formData.append("content", fileData);
 
         axios
@@ -141,14 +142,14 @@ export const contentFunc = () => {
         if (imageType.test(fileType)) {
             contentShare.innerHTML = `
                 <div class="imageFile" name="${choiceFile}" style="overflow: auto; height:100%">
-                    <img src="${choiceFile}" style="width: 100%" />
+                    <img src="${channelName}/${originUser}/${choiceFile}" style="width: 100%" />
                 </div>
             `;
         }
         if (mediaType.test(fileType)) {
             contentShare.innerHTML = `
                 <video class="mediaFile" name="${choiceFile}" controls controlsList="nodownload" style="width: 100%; height: 100%">
-                    <source src="${choiceFile}">
+                    <source src="${channelName}/${originUser}/${choiceFile}">
                 </video>
             `;
         }
@@ -162,6 +163,8 @@ export const contentFunc = () => {
         if (userName === originUser) {
             const data = {
                 fileName: deleteTagName,
+                channelName: channelName,
+                userName: originUser
             };
 
             axios.post("/channel/contentsDelete", data).then((res) => {
@@ -171,7 +174,7 @@ export const contentFunc = () => {
                         channelName,
                         deleteTagName
                     );
-                    for (let i = 0; i < 3; i++) {
+                    for (let i = 0; i < 2; i++) {
                         deleteContentTab[0].remove();
                     }
                 } else {
@@ -337,7 +340,7 @@ export const contentFunc = () => {
 
     contentSocket.on("delete-remote-tag", (deleteTagName) => {
         deleteContentTab = document.getElementsByName(deleteTagName);
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
             deleteContentTab[0].remove();
         }
     });
