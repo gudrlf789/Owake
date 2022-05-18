@@ -1,4 +1,7 @@
 import { socketInitFunc } from "./socket.js";
+import { deviceScan } from "./deviceScan.js";
+
+let event = deviceScan();
 
 export const contentFunc = () => {
     const contentSocket = socketInitFunc();
@@ -58,7 +61,7 @@ export const contentFunc = () => {
 
     contentSearchContainer.style.setProperty("flex-direction", "column");
 
-    contentShareBtn.addEventListener("click", (e) => {
+    contentShareBtn.addEventListener(event, (e) => {
         contentShareActive = !contentShareActive;
         contentShareActive ? contentShareEnable() : contentShareDisable();
     });
@@ -155,7 +158,7 @@ export const contentFunc = () => {
         }
     });
 
-    $(document).on("click", ".closeContent", (e) => {
+    $(document).on(event, ".closeContent", (e) => {
         const deleteTagName = e.currentTarget.getAttribute("name");
         deleteContentTab = document.getElementsByName(deleteTagName);
         originUser = deleteTagName.split("_")[0];
@@ -167,6 +170,7 @@ export const contentFunc = () => {
                 userName: originUser
             };
 
+<<<<<<< HEAD
             axios.post("/channel/contentsDelete", data).then((res) => {
                 if (res.data.success && res.status === 200) {
                     contentSocket.emit(
@@ -176,15 +180,29 @@ export const contentFunc = () => {
                     );
                     for (let i = 0; i < 2; i++) {
                         deleteContentTab[0].remove();
+=======
+            axios
+                .post("/channel/contentsDelete", data)
+                .then((res) => {
+                    if (res.data.success && res.status === 200) {
+                        contentSocket.emit(
+                            "delete-origin-tag",
+                            channelName,
+                            deleteTagName
+                        );
+                        for (let i = 0; i < 3; i++) {
+                            deleteContentTab[0].remove();
+                        }
+                    } else {
+                        alert(res.data.deleteResult);
+>>>>>>> serve_main
                     }
-                } else {
-                    alert(res.data.deleteResult);
-                }
-            }).catch((err) => {
-                alert("Error occur");
-                $("#spinnerModal").modal("hide");
-                console.log("에러: " + err);
-            });
+                })
+                .catch((err) => {
+                    alert("Error occur");
+                    $("#spinnerModal").modal("hide");
+                    console.log("에러: " + err);
+                });
         } else {
             alert("You can delete only the files you post");
         }

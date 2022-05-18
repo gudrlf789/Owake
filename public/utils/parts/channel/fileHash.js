@@ -1,4 +1,6 @@
 import { socketInitFunc } from "./socket.js";
+import { deviceScan } from "./deviceScan.js";
+
 /**
  * @Author 박형길
  * @Date 2022 04 13
@@ -9,13 +11,16 @@ import { socketInitFunc } from "./socket.js";
 export const fileHash = () => {
     let hashSocket = socketInitFunc();
     let formData = new FormData();
+    let event = deviceScan();
 
     const selectFile1 = document.getElementById("selectFile_1");
     const selectFile2 = document.getElementById("selectFile_2");
     const originHash = document.getElementById("originHash");
     const remoteHash = document.getElementById("remoteHash");
     const selectOriginalInput = document.getElementById("selectOriginalInput");
-    const selectComparisonInput = document.getElementById("selectComparisonInput");
+    const selectComparisonInput = document.getElementById(
+        "selectComparisonInput"
+    );
     const compareResult = document.getElementById("compareResult");
     const clickVerifyFile = document.getElementById("clickVerifyFile");
     const originCopy = document.getElementById("originCopy");
@@ -42,13 +47,12 @@ export const fileHash = () => {
     });
 
     function identifireFunc() {
-        identifireBtn.addEventListener("click", (e) => {
+        identifireBtn.addEventListener(event, (e) => {
             identifireActivator = !identifireActivator;
             identifireActivator ? identifireEnable() : identifireDisable();
         });
-    
-    };
-    
+    }
+
     function identifireEnable() {
         identifireContainer.hidden = false;
         fileHashImg.style.setProperty(
@@ -56,7 +60,7 @@ export const fileHash = () => {
             "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
         );
     }
-    
+
     function identifireDisable() {
         identifireContainer.hidden = true;
         fileHashImg.style.setProperty("filter", "none");
@@ -103,27 +107,27 @@ export const fileHash = () => {
     };
 
     function checkFileSelected(file) {
-        if(file.length === 0){
+        if (file.length === 0) {
             alert("You have to select file");
             return false;
         }
-       
+
         return true;
     }
 
-    originHash.addEventListener("click", (e) => {
-        if(checkFileSelected(selectFile1.files)){
+    originHash.addEventListener(event, (e) => {
+        if (checkFileSelected(selectFile1.files)) {
             makeFileToHash(selectFile1.files[0], selectOriginalInput);
         }
     });
 
-    remoteHash.addEventListener("click", (e) => {
-        if(checkFileSelected(selectFile2.files)){
+    remoteHash.addEventListener(event, (e) => {
+        if (checkFileSelected(selectFile2.files)) {
             makeFileToHash(selectFile2.files[0], selectComparisonInput);
         }
     });
 
-    clickVerifyFile.addEventListener("click", (e) => {
+    clickVerifyFile.addEventListener(event, (e) => {
         compareResult.style.fontWeight = "bold";
 
         if (selectOriginalInput.value === selectComparisonInput.value) {
@@ -135,39 +139,38 @@ export const fileHash = () => {
         }
     });
 
-    originCopy.addEventListener("click", (e) => {
+    originCopy.addEventListener(event, (e) => {
         navigator.clipboard.writeText(selectOriginalInput.value);
         alert("Copied the text: " + selectOriginalInput.value);
     });
 
-    comparisonCopy.addEventListener("click", (e) => {
+    comparisonCopy.addEventListener(event, (e) => {
         navigator.clipboard.writeText(selectComparisonInput.value);
         alert("Copied the text: " + selectComparisonInput.value);
     });
 
-    $("#syncBtn").click((e) => {
+    $(document).on("#syncBtn", event, (e) => {
         hashSocket.emit("join-hash", channelName);
         axios
             .post("/channel/jwt", loginData)
             .then((res) => {
-                if(res.data.success){
+                if (res.data.success) {
                     alert("Sync is completed");
                     $("#syncBtn").attr("disabled", true);
                     $("#selectFile_1").attr("disabled", false);
                     $("#selectFile_2").attr("disabled", false);
                     $("#originHash").attr("disabled", false);
                     $("#remoteHash").attr("disabled", false);
-                }else{
+                } else {
                     alert("Fail to connect with other users");
                 }
-                
             })
             .catch((err) => {
                 alert(err);
             });
     });
 
-    $("#closeBtn").click((e) => {
+    $(document).on("#closeBtn", event, (e) => {
         identifireContainer.hidden = true;
         fileHashImg.style.setProperty("filter", "none");
         hashSocket.emit("leave-hash", channelName);

@@ -110,10 +110,17 @@
         /* display: block;
         position: fixed; */
         display: block;
+<<<<<<< HEAD
         width: 70px;
         /* height: calc(var(--vh, 1vh) * 7); */
         background-image: url("../../img/button/navbtn.gif");
         background-size: contain;
+=======
+        position: fixed;
+        width: 50px;
+        height: calc(var(--vh, 1vh) * 7);
+        background-image: url("../../../svg/navbtn.svg");
+>>>>>>> serve_main
         background-repeat: no-repeat;
         background-position: center;
         margin-left: 0.6rem;
