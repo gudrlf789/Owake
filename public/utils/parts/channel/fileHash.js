@@ -21,6 +21,9 @@ export const fileHash = () => {
     const selectComparisonInput = document.getElementById(
         "selectComparisonInput"
     );
+    const syncBtn = document.querySelector("#syncBtn");
+    const closeBtn = document.querySelector("#closeBtn");
+
     const compareResult = document.getElementById("compareResult");
     const clickVerifyFile = document.getElementById("clickVerifyFile");
     const originCopy = document.getElementById("originCopy");
@@ -85,26 +88,29 @@ export const fileHash = () => {
         formData.append("channelName", channelName);
         formData.append("fileInput", data);
 
-        axios.post("/channel/hashFile", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity
-        }).then((res) => {
-            hashSocket.emit(
-                "submit_hash",
-                res.data.hashCode,
-                textHtml.id,
-                channelName
-            );
-            textHtml.value = res.data.hashCode;
-        }).catch((err) => {
-            alert("Error occur");
-            $("#spinnerModal").modal("hide");
-            console.log("에러: " + err);
-        });
-    };
+        axios
+            .post("/channel/hashFile", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+                maxContentLength: Infinity,
+                maxBodyLength: Infinity,
+            })
+            .then((res) => {
+                hashSocket.emit(
+                    "submit_hash",
+                    res.data.hashCode,
+                    textHtml.id,
+                    channelName
+                );
+                textHtml.value = res.data.hashCode;
+            })
+            .catch((err) => {
+                alert("Error occur");
+                $("#spinnerModal").modal("hide");
+                console.log("에러: " + err);
+            });
+    }
 
     function checkFileSelected(file) {
         if (file.length === 0) {
@@ -149,7 +155,28 @@ export const fileHash = () => {
         alert("Copied the text: " + selectComparisonInput.value);
     });
 
-    $(document).on("#syncBtn", event, (e) => {
+    // $(document).on("#syncBtn", event, (e) => {
+    //     hashSocket.emit("join-hash", channelName);
+    //     axios
+    //         .post("/channel/jwt", loginData)
+    //         .then((res) => {
+    //             if (res.data.success) {
+    //                 alert("Sync is completed");
+    //                 $("#syncBtn").attr("disabled", true);
+    //                 $("#selectFile_1").attr("disabled", false);
+    //                 $("#selectFile_2").attr("disabled", false);
+    //                 $("#originHash").attr("disabled", false);
+    //                 $("#remoteHash").attr("disabled", false);
+    //             } else {
+    //                 alert("Fail to connect with other users");
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             alert(err);
+    //         });
+    // });
+
+    syncBtn.addEventListener(event, (e) => {
         hashSocket.emit("join-hash", channelName);
         axios
             .post("/channel/jwt", loginData)
@@ -170,7 +197,7 @@ export const fileHash = () => {
             });
     });
 
-    $(document).on("#closeBtn", event, (e) => {
+    closeBtn.addEventListener(event, (e) => {
         identifireContainer.hidden = true;
         fileHashImg.style.setProperty("filter", "none");
         hashSocket.emit("leave-hash", channelName);
@@ -184,6 +211,21 @@ export const fileHash = () => {
         $("#originHash").attr("disabled", true);
         $("#remoteHash").attr("disabled", true);
     });
+
+    // $(document).on("#closeBtn", `${event}`, (e) => {
+    //     identifireContainer.hidden = true;
+    //     fileHashImg.style.setProperty("filter", "none");
+    //     hashSocket.emit("leave-hash", channelName);
+    //     selectFile1.value = "";
+    //     selectFile2.value = "";
+    //     selectOriginalInput.value = "";
+    //     selectComparisonInput.value = "";
+    //     $("#syncBtn").attr("disabled", false);
+    //     $("#selectFile_1").attr("disabled", true);
+    //     $("#selectFile_2").attr("disabled", true);
+    //     $("#originHash").attr("disabled", true);
+    //     $("#remoteHash").attr("disabled", true);
+    // });
 
     hashSocket.on("input_hash", (data) => {
         $(`#${data.textHtmlId}`).val(`${data.hash}`);

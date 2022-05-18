@@ -137,7 +137,7 @@ export const contentFunc = () => {
         mediaImg.style.setProperty("filter", "none");
     }
 
-    $(document).on("click", ".middleContainerBtn", (e) => {
+    $(document).on(event, ".middleContainerBtn", (e) => {
         const fileType = e.currentTarget.children[0].value;
         originUser = e.currentTarget.getAttribute("name").split("_")[0];
         choiceFile = e.currentTarget.getAttribute("name");
