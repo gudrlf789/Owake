@@ -8,13 +8,16 @@
  */
 
 import { options } from "../../rtcClient.js";
+import { deviceScan } from "./deviceScan.js";
 
 let openYN = "N";
+let event = deviceScan();
+
 const screenShareIcons = document.querySelector(".fa-retweet");
 
 export const screenShareFunc = () => {
     const screenShareBtn = document.querySelector("#shareScreen");
-    screenShareBtn.addEventListener("click", screenShareJoin);
+    screenShareBtn.addEventListener(event, screenShareJoin);
 };
 
 async function screenShareJoin() {

@@ -107,7 +107,7 @@
         position: fixed;
         width: 50px;
         height: calc(var(--vh, 1vh) * 7);
-        background-image: url("../../../48h/navbtn.gif");
+        background-image: url("../../../svg/navbtn.svg");
         background-repeat: no-repeat;
         background-position: center;
         margin-left: 0.6rem;
