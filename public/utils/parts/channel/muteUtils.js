@@ -9,10 +9,14 @@
  */
 
 import { localTracks, totalUsers, options } from "../../rtcClient.js";
+import { deviceScan } from "./deviceScan.js";
 
 const videoIcon = document.getElementById("videoIcon");
 const audioIcon = document.getElementById("audioIcon");
-let playerWrapper;
+const audioBtn = document.querySelector("#muteAudio");
+const videoBtn = document.querySelector("#muteVideo");
+
+let event = deviceScan();
 
 let localTrackState = {
     videoTrackMuted: false,
@@ -37,7 +41,7 @@ export const muteUtilsFunc = () => {
         }, 3000);
     }
 
-    $("#muteAudio").click(function (e) {
+    audioBtn.addEventListener(event, (e) => {
         if (!localTrackState.audioTrackMuted) {
             muteAudio();
             alert("audio mute activation");
@@ -47,7 +51,7 @@ export const muteUtilsFunc = () => {
         }
     });
 
-    $("#muteVideo").click(function (e) {
+    videoBtn.addEventListener(event, (e) => {
         if (!localTrackState.videoTrackMuted) {
             muteVideo();
             alert("video mute activation");

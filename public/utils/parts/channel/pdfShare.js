@@ -1,9 +1,11 @@
 import { socketInitFunc } from "./socket.js";
+import { deviceScan } from "./deviceScan.js";
 
 export const pdfFunc = () => {
     const pdfSocket = socketInitFunc();
     const pdfType = /(.*?)\/(pdf|PDF)$/i;
     let pdfShareActive = false;
+    let event = deviceScan();
 
     const userName = window.sessionStorage.getItem("uid");
     const channelName = window.sessionStorage.getItem("channel");
@@ -78,7 +80,7 @@ export const pdfFunc = () => {
 
     pdfSearchContainer.style.setProperty("flex-direction", "column");
 
-    pdfShareBtn.addEventListener("click", (e) => {
+    pdfShareBtn.addEventListener(event, (e) => {
         pdfShareActive = !pdfShareActive;
         pdfShareActive ? pdfShareEnable() : pdfShareDisable();
     });
@@ -108,11 +110,11 @@ export const pdfFunc = () => {
 
     function pdfInit(fileName) {
         $("#spinnerModal").modal({
-            backdrop: false
+            backdrop: false,
         });
 
         pdfjsLib
-            .getDocument("/channel/downloadPdf?fileName=" + fileName)
+            .getDocument(`/channel/downloadPdf?channelName=${channelName}&userName=${originUser}&fileName=${fileName}`)
             .promise.then(
                 (pdf) => {
                     myState.pdf = pdf;
@@ -150,12 +152,13 @@ export const pdfFunc = () => {
             return alert("Only PDF file");
         }
 
-        if(fileData.size > 150000000){
+        if (fileData.size > 150000000) {
             alert("You can upload up to 150MB");
             return;
         }
 
         formData.append("userName", userName);
+        formData.append("channelName", channelName);
         formData.append("content", fileData);
 
         axios
@@ -199,7 +202,7 @@ export const pdfFunc = () => {
         pdfImg.style.setProperty("filter", "none");
     }
 
-    $(document).on("click", ".pdfMiddleContainerBtn", async (e) => {
+    $(document).on(event, ".pdfMiddleContainerBtn", async (e) => {
         originUser = e.currentTarget.getAttribute("name").split("_")[0];
         choiceFile = e.currentTarget.getAttribute("name");
 
@@ -208,7 +211,7 @@ export const pdfFunc = () => {
         await pdfInit(choiceFile);
     });
 
-    $(document).on("click", ".pdfCloseContent", (e) => {
+    $(document).on(event, ".pdfCloseContent", (e) => {
         const deleteTagName = e.currentTarget.getAttribute("name");
         deleteContentTab = document.getElementsByName(deleteTagName);
         originUser = deleteTagName.split("_")[0];
@@ -216,6 +219,8 @@ export const pdfFunc = () => {
         if (userName === originUser) {
             const data = {
                 fileName: deleteTagName,
+                channelName: channelName,
+                userName: originUser
             };
 
             axios.post("/channel/contentsDelete", data).then((res) => {
@@ -239,7 +244,7 @@ export const pdfFunc = () => {
         }
     });
 
-    $(document).on("click", "#pdf-page-next", (e) => {
+    $(document).on(event, "#pdf-page-next", (e) => {
         if (myState.pdf == null || myState.currentPage > myState.pdf.numPages) {
             alert("This is last page");
             return;
@@ -256,7 +261,7 @@ export const pdfFunc = () => {
         }
     });
 
-    $(document).on("click", "#pdf-page-previous", (e) => {
+    $(document).on(event, "#pdf-page-previous", (e) => {
         if (myState.pdf == null || myState.currentPage <= 1) {
             alert("This is first page");
             return;

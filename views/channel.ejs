@@ -50,7 +50,7 @@
                     const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
 
                     if (
-                        userNameSession === "" ||
+                        userNameSession === "" || userNameSession === null ||
                         userNameSession.match(pattern_empty) ||
                         pattern_spc.test(userNameSession) ||
                         korean.test(userNameSession)

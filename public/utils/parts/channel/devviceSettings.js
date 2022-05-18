@@ -1,4 +1,5 @@
 import { localTracks } from "../../rtcClient.js";
+import { deviceScan } from "./deviceScan.js";
 
 /**
  * @author 전형동
@@ -26,6 +27,8 @@ let currentCam; // the camera you are using
 let volumeAnimation;
 let videoBox;
 let cameraSwitchActive = false;
+
+let event = deviceScan();
 
 /**
  * 2022 02 25
@@ -75,7 +78,7 @@ export const recodingDeviceCtrl = () => {
         cancelAnimationFrame(volumeAnimation);
     });
 
-    deviceSettingBtn.addEventListener("click", handlerDeviceSetting);
+    deviceSettingBtn.addEventListener(event, handlerDeviceSetting);
 };
 
 async function getDeviceFunc() {

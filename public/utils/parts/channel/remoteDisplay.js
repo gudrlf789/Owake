@@ -10,15 +10,17 @@
  * 2. 유저가 접속한 상태라면 분홍색 아니면 흰색
  */
 
+import { deviceScan } from "./deviceScan.js";
+
 const usersBtn = document.querySelector("#users");
 const remotePlayerList = document.querySelector("#remote-playerlist");
 
+let event = deviceScan();
+
 let usersBtnActive = false;
-let width;
 
 export const remoteDisplay = () => {
-    // window.addEventListener("resize", resizeRemoteContainerAction, false);
-    usersBtn.addEventListener("click", clickRemoteDisplayAction, false);
+    usersBtn.addEventListener(event, clickRemoteDisplayAction, false);
 };
 
 function clickRemoteDisplayAction(e) {
@@ -48,11 +50,4 @@ function usersDisplayEnable(element) {
 function usersDisplayDisable(element) {
     remotePlayerList.hidden = true;
     element.style.color = "#fff";
-}
-
-function resizeRemoteContainerAction() {
-    width = window.document.body.offsetWidth;
-    if (width < 768) {
-        $("#remote__video__container").attr("style", "height:min-content");
-    }
 }
