@@ -167,20 +167,9 @@ export const contentFunc = () => {
             const data = {
                 fileName: deleteTagName,
                 channelName: channelName,
-                userName: originUser
+                userName: originUser,
             };
 
-<<<<<<< HEAD
-            axios.post("/channel/contentsDelete", data).then((res) => {
-                if (res.data.success && res.status === 200) {
-                    contentSocket.emit(
-                        "delete-origin-tag",
-                        channelName,
-                        deleteTagName
-                    );
-                    for (let i = 0; i < 2; i++) {
-                        deleteContentTab[0].remove();
-=======
             axios
                 .post("/channel/contentsDelete", data)
                 .then((res) => {
@@ -190,12 +179,11 @@ export const contentFunc = () => {
                             channelName,
                             deleteTagName
                         );
-                        for (let i = 0; i < 3; i++) {
+                        for (let i = 0; i < 2; i++) {
                             deleteContentTab[0].remove();
                         }
                     } else {
                         alert(res.data.deleteResult);
->>>>>>> serve_main
                     }
                 })
                 .catch((err) => {
