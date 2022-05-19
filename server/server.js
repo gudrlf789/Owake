@@ -107,7 +107,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/:channelName/:channelType", (req, res) => {
-    let appID = "4343e4c08654493cb8997de783a9aaeb";
+    let appID = "50b9cd9de2d54849a139e3db52e7928a";
 
     res.render("channel", {
         channelName: req.params.channelName,

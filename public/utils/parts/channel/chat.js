@@ -1,10 +1,13 @@
+import { deviceScan } from "./deviceScan.js";
+let event = deviceScan();
+
 export const mobileDisplayCtr = () => {
     let messagesActive = false;
 
     const showChat = document.querySelector("#showChat");
     const mainRight = document.querySelector(".main__right");
 
-    showChat.addEventListener("click", () => {
+    showChat.addEventListener(event, () => {
         messagesActive = !messagesActive;
         messagesActive ? messageEnable() : messageDisable();
     });

@@ -80,7 +80,7 @@ function playerNameHidden() {
                 subOptions.classList.add("swiper-slide-next");
             }
         }
-    } else {
+    } else if (bodyWidth > 1280) {
         playerName.hidden = false;
         optionsNext.hidden = true;
         optionsPrev.hidden = true;

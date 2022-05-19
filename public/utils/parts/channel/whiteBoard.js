@@ -1,4 +1,7 @@
 import { socketInitFunc } from "./socket.js";
+import { deviceScan } from "./deviceScan.js";
+
+let event = deviceScan();
 
 const whiteboardSocket = socketInitFunc();
 // Container Publising...
@@ -48,7 +51,7 @@ whiteBoardContainer.appendChild(whiteBoardOptionsContainer);
 
 export const whiteBoardFunc = () => {
     // Click Event Handler
-    whiteBoardBtn.addEventListener("click", (e) => {
+    whiteBoardBtn.addEventListener(event, (e) => {
         handleWhiteboard(e);
     });
 
@@ -183,11 +186,12 @@ export const whiteBoardFunc = () => {
         }
 
         function onMouseDown(e) {
-            if(checkIphoneMobile()){
+            if (checkIphoneMobile()) {
                 drawing = true;
                 current.x =
                     e.clientX - rect.left || e.touches[0].clientX - rect.left;
-                current.y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
+                current.y =
+                    e.clientY - rect.top || e.touches[0].clientY - rect.top;
             }
         }
 

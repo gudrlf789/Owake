@@ -8,13 +8,16 @@
  */
 
 import { options } from "../../rtcClient.js";
+import { deviceScan } from "./deviceScan.js";
 
 let openYN = "N";
+let event = deviceScan();
+
 const screenShareIcons = document.querySelector(".fa-retweet");
 
 export const screenShareFunc = () => {
     const screenShareBtn = document.querySelector("#shareScreen");
-    screenShareBtn.addEventListener("click", screenShareJoin);
+    screenShareBtn.addEventListener(event, screenShareJoin);
 };
 
 async function screenShareJoin() {
@@ -37,14 +40,10 @@ async function screenShareJoin() {
     try {
         const screenTrack = await AgoraRTC.createScreenVideoTrack(
             {
-                encoderConfig: {
-                    frameRate: 60,
-                    bitrateMax: 4780,
-                    bitrateMin: 3150,
-                },
+                encoderConfig: "1080p_1",
                 // encoderConfig: "1080p_5", // frameRate : 60, bitrateMax : 4780
-                // optimizationMode: "detail",   // 영상의 품질을 우선
-                optimizationMode: "motion", // 영상의 부드러움을 우선
+                optimizationMode: "detail", // 영상의 품질을 우선
+                // optimizationMode: "motion", // 영상의 부드러움을 우선
                 screenSourceType: "screen", // 'screen', 'application', 'window'
             },
             "auto"

@@ -24,6 +24,7 @@ import { SwiperFunc } from "./parts/channel/swiper.js";
 import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 import { pdfFunc } from "./parts/channel/pdfShare.js";
+import { deviceScan } from "./parts/channel/deviceScan.js";
 
 $(() => {
     channelFirstSpinnerDeleteFunc();
@@ -52,6 +53,7 @@ const fileDeliveryContainer = document.querySelector("#delivery_container");
 const fileDeliveryImg = document.querySelector("#fileDeliveryImg");
 
 let deliveryActive = false;
+let event = deviceScan();
 
 let isSafari =
     /constructor/i.test(window.HTMLElement) ||
@@ -64,7 +66,7 @@ let isSafari =
 
 if (!isSafari) {
     fileDeliveryBtn.addEventListener(
-        "click",
+        event,
         (e) => {
             deliveryActive = !deliveryActive;
             deliveryActive ? fileDeliveryEnable() : fileDeliveryDisable();
@@ -73,7 +75,7 @@ if (!isSafari) {
     );
 } else {
     fileDeliveryBtn.addEventListener(
-        "click",
+        event,
         (e) => {
             deliveryActive = !deliveryActive;
             deliveryActive ? fileDeliverySafariEnable() : fileDeliveryDisable();
