@@ -106,6 +106,10 @@ app.get("/", (req, res, next) => {
     res.render("index");
 });
 
+app.get("/main", (req, res, next) => {
+    res.render("index2");
+});
+
 app.get("/:channelName/:channelType", (req, res) => {
     let appID = "50b9cd9de2d54849a139e3db52e7928a";
 
