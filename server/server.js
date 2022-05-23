@@ -103,10 +103,7 @@ app.use(express.json());
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
-    res.render("index");
-});
-
-app.get("/main", (req, res, next) => {
+    // res.render("index");
     res.render("index2");
 });
 

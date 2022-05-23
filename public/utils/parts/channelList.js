@@ -11,29 +11,27 @@ function checkPassword(channelName, channelPassword, channelType) {
     }
 }
 
-$(document).on(
-    "click",
-    ".channel-box-wrapper > .channel-thumnail, .channel-box-wrapper > .channel-box-title, .channel-box-wrapper > .channel-box-description",
-    (e) => {
-        const channelType =
-            e.currentTarget.parentNode.childNodes[0].childNodes[0].value;
-        const channelName =
-            e.currentTarget.parentNode.childNodes[0].childNodes[1].value;
-        const channelPassword =
-            e.currentTarget.parentNode.childNodes[0].childNodes[2].value;
+$(document).on("click", ".channel-thumnail", (e) => {
+    console.log(e.currentTarget);
 
-        switch (channelType) {
-            case "Public":
-                checkPassword(channelName, channelPassword, channelType);
-                break;
-            case "Private":
-                checkPassword(channelName, channelPassword, channelType);
-                break;
-            default:
-                break;
-        }
+    const channelType =
+        e.currentTarget.parentNode.childNodes[0].childNodes[0].value;
+    const channelName =
+        e.currentTarget.parentNode.childNodes[0].childNodes[1].value;
+    const channelPassword =
+        e.currentTarget.parentNode.childNodes[0].childNodes[2].value;
+
+    switch (channelType) {
+        case "Public":
+            checkPassword(channelName, channelPassword, channelType);
+            break;
+        case "Private":
+            checkPassword(channelName, channelPassword, channelType);
+            break;
+        default:
+            break;
     }
-);
+});
 
 $(document).on("click", "#channelUpdateBtn", (e) => {
     const channelType =
@@ -93,8 +91,7 @@ const callChannelList = () => {
                 if (data.channelType === "Public" && data.Kronosa === "N") {
                     $(".channel-box-container").append(
                         $(
-                            "<div class='channel-box'>" +
-                                "<div class='channel-box-wrapper'>" +
+                            "<article class='channel-box content-container'>" +
                                 "<div class='hidden-data'>" +
                                 `<input type='hidden' value=${data.channelType} >` +
                                 `<input type='hidden' value="${data.channelName}" >` +
@@ -103,16 +100,15 @@ const callChannelList = () => {
                                 `<input type='hidden' value=${data.channelCategory} >` +
                                 `<input type='hidden' value="${data.channelDescription}" >` +
                                 "</div>" +
-                                "<div class='channel-thumnail'>" +
-                                `<img src='${data.imageName}' />` +
-                                "</div>" +
-                                "<div class='channel-box-title'>" +
-                                data.channelName +
-                                "</div>" +
-                                "<div class='channel-box-description'>" +
-                                `<p>${data.channelDescription}</p>` +
-                                "</div>" +
-                                "<div class='channel-box-footer'>" +
+                                "<a href='#' class='thumbnail channel-thumnail'>" +
+                                `<img src='${data.imageName}' alt='' class='thumbnail-image'>` +
+                                "</a>" +
+                                "<div class='content-bottom-section'>" +
+                                "<a href='#'>" +
+                                `<img src='http://unsplash.it/36/36?gravity=center' alt='' class='channel-icon'>` +
+                                "</a>" +
+                                "<div class='content-title-container'>" +
+                                `<a href='#' class='content-title'>${data.channelName}</a>` +
                                 "<div class='channel-box-footer-icon'>" +
                                 `${
                                     data.channelPassword.length !== 0 ||
@@ -121,15 +117,28 @@ const callChannelList = () => {
                                         : "<img src='./img/unlock.svg' alt='' class='unlock-icon'></img>"
                                 }` +
                                 "</div>" +
-                                "<div class='channel-box-footer-btn'>" +
-                                "<div class='channel-box-footer-btn-update' id='channelUpdateBtn' data-toggle='modal' data-target='#channelUpdateModal'>" +
+                                "</div>" +
+                                "</div>" +
+                                "<div class='content-details'>" +
+                                `<a href='#' class='content-channel-description'>${data.channelDescription}</a>` +
+                                "<div class='content-metadata'>" +
+                                "<div class='content-channel-options'>" +
+                                "<div class='channel-box-footer-btn-update' id='channelUpdateBtn' data-toggle='modal'" +
+                                "data-target='#channelUpdateModal'>" +
                                 "<span>Edit</span>" +
                                 "</div>" +
-                                "<div class='channel-box-footer-btn-remove' id='channelDeleteBtn' data-toggle='modal' data-target='#channelDeleteModal'>" +
+                                "<div class='channel-box-footer-btn-remove' id='channelDeleteBtn' data-toggle='modal'" +
+                                "data-target='#channelDeleteModal'>" +
                                 "<span>Delete</span>" +
                                 "</div>" +
                                 "</div>" +
-                                "</div>"
+                                "<div class='content-symbol-button'>" +
+                                "<i class='symbol-icon'></i>" +
+                                "<span>10 On_line</span>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>" +
+                                "</article>"
                         )
                     );
                 }

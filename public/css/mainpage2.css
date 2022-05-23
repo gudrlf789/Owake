@@ -1,4 +1,28 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+@import "./lib/bootstrap.min.css";
+
+@font-face {
+    font-family: "NEXON Lv2 Gothic";
+    src: url("../fonts/NEXON_Lv2_Gothic.eot");
+    src: url("../fonts/NEXON_Lv2_Gothic.woff");
+    src: url("../fonts/NEXON_Lv2_Gothic?#iefix") format("embedded-opentype");
+}
+
+@font-face {
+    font-family: "NEXON Lv2 Gothic Light";
+    src: url("../fonts/NEXON_Lv2_Gothic_Light.eot");
+    src: url("../fonts/NEXON_Lv2_Gothic_Light.woff");
+    src: url("../fonts/NEXON_Lv2_Gothic_Light?#iefix")
+        format("embedded-opentype");
+}
+
+@font-face {
+    font-family: "NEXON Lv2 Gothic Bold";
+    src: url("../fonts/NEXON_Lv2_Gothic_Bold.eot");
+    src: url("../fonts/NEXON_Lv2_Gothic_Bold.woff");
+    src: url("../fonts/NEXON_Lv2_Gothic_Bold?#iefix")
+        format("embedded-opentype");
+}
 
 :root {
     --main-color: #282833;
@@ -6,6 +30,7 @@
     --thumbnail-box-color: #33314a;
     --thumbnail-title: #fff;
     --thumbnail-description: #d9d8dd;
+    --content-options: #942558;
 }
 
 *,
@@ -14,11 +39,20 @@
     box-sizing: border-box;
 }
 
-body {
-    margin: 0;
+body,
+html {
+    -webkit-overflow-scrolling: touch;
+    touch-action: manipulation;
+    width: 100%;
+    height: 100%;
 }
 
-.container {
+body {
+    margin: 0;
+    font-family: "NEXON Lv2 Gothic" !important;
+}
+
+.channel-container {
     display: flex;
 }
 
@@ -42,6 +76,13 @@ body {
 
 .content-section:first-child {
     border-top: none;
+}
+
+.content-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
 }
 
 .content-container {
@@ -81,6 +122,7 @@ body {
     display: flex;
     align-items: flex-start;
     margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .channel-icon {
@@ -100,30 +142,47 @@ body {
 .content-title {
     font-size: 1.1rem;
     font-weight: bold;
-    margin-bottom: 0.5rem;
-    text-decoration: none;
     color: var(--thumbnail-title);
 }
 
 .content-channel-description {
     margin-bottom: 0.5rem;
     text-decoration: none;
-    font-size: 0.7rem;
+    font-size: 1rem;
     color: var(--thumbnail-description);
     transition: color 150ms;
 }
 
 .content-channel-description:hover {
-    color: #111;
+    font-weight: bold;
 }
 
 .content-metadata {
     display: flex;
-    justify-content: end;
-    font-size: 0.5rem;
+    justify-content: space-between;
+    font-size: 0.8rem;
     text-align: right;
 
     color: var(--thumbnail-description);
+}
+
+.content-channel-options {
+    display: flex;
+}
+
+.content-channel-options > div {
+    margin-right: 5px;
+}
+
+.content-channel-options div:hover {
+    color: var(--content-options);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.content-symbol-button {
+    display: flex;
+    align-items: end;
 }
 
 .content-section-title {
