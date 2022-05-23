@@ -12,8 +12,6 @@ function checkPassword(channelName, channelPassword, channelType) {
 }
 
 $(document).on("click", ".channel-thumnail", (e) => {
-    console.log(e.currentTarget);
-
     const channelType =
         e.currentTarget.parentNode.childNodes[0].childNodes[0].value;
     const channelName =
@@ -35,19 +33,19 @@ $(document).on("click", ".channel-thumnail", (e) => {
 
 $(document).on("click", "#channelUpdateBtn", (e) => {
     const channelType =
-        e.currentTarget.parentNode.parentNode.parentNode.childNodes[0]
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
             .children[0].value;
     const channelName =
-        e.currentTarget.parentNode.parentNode.parentNode.childNodes[0]
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
             .children[1].value;
     const imageName =
-        e.currentTarget.parentNode.parentNode.parentNode.childNodes[0]
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
             .children[3].value;
     const channelCategory =
-        e.currentTarget.parentNode.parentNode.parentNode.childNodes[0]
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
             .children[4].value;
     const channelDescription =
-        e.currentTarget.parentNode.parentNode.parentNode.childNodes[0]
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
             .children[5].value;
 
     $("#update_channelName").val(channelName);
@@ -68,13 +66,13 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
 
 $(document).on("click", "#channelDeleteBtn", (e) => {
     const channelType =
-        e.currentTarget.parentNode.parentNode.parentNode.childNodes[0]
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
             .children[0].value;
     const channelName =
-        e.currentTarget.parentNode.parentNode.parentNode.childNodes[0]
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
             .children[1].value;
     const imageName =
-        e.currentTarget.parentNode.parentNode.parentNode.childNodes[0]
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
             .children[3].value;
 
     $("#delete_channelType").val(channelType);
