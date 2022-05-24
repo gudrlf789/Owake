@@ -340,6 +340,15 @@ io.sockets.on("connection", (socket) => {
         socket.join(channelName);
     });
 
+    socket.on("pdf-info", (channelName, userName, fileName, fileType) => {
+        let data = {
+            userName: userName,
+            fileName: fileName,
+            fileType: fileType,
+        };
+        socket.to(channelName).emit("input-pdf", data);
+    });
+
     socket.on("pdf-origin-next", (channelName, nextPage, fileName) => {
         socket.to(channelName).emit("pdf-remote-next", nextPage, fileName);
     });
