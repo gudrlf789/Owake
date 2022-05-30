@@ -104,7 +104,7 @@ app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
     // res.render("index");
-    res.render("index2");
+    res.render("index");
 });
 
 app.get("/:channelName/:channelType", (req, res) => {

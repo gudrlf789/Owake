@@ -41,10 +41,10 @@ async function screenShareJoin() {
         const screenTrack = await AgoraRTC.createScreenVideoTrack(
             {
                 encoderConfig: "1080p_1",
-                // encoderConfig: "1080p_5", // frameRate : 60, bitrateMax : 4780
                 optimizationMode: "detail", // 영상의 품질을 우선
+                // encoderConfig: "1080p_5", // frameRate : 60, bitrateMax : 4780
                 // optimizationMode: "motion", // 영상의 부드러움을 우선
-                screenSourceType: "screen", // 'screen', 'application', 'window'
+                // screenSourceType: "screen", // 'screen', 'application', 'window'
             },
             "auto"
         );

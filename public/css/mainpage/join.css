@@ -1,0 +1,57 @@
+:root {
+    --content-container-color: #282833;
+    --content-white-color: #fff;
+    --input-form-color: #50aed0;
+    --label-font-color: #b1c8d0;
+    --button-color: #ec7172;
+}
+
+.content-container {
+    background-color: var(--content-container-color);
+}
+
+.channel-content-title {
+    color: var(--content-white-color);
+}
+
+.content-label {
+    color: var(--content-white-color);
+}
+
+.content-body-container {
+    display: flex;
+}
+
+.input-label-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-right: 3rem;
+}
+
+.input-form {
+    background-color: var(--input-form-color);
+}
+
+.label-font {
+    color: var(--label-font-color);
+}
+
+.content-footer-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo-container {
+    width: 100px;
+}
+
+.logo-container > img {
+    width: 100%;
+    height: 100%;
+}
+
+.join-container > button {
+    background-color: var(--button-color);
+    color: var(--content-white-color);
+}

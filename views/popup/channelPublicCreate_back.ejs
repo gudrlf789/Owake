@@ -1,0 +1,275 @@
+<div class="modal fade" id="channelPublicCreate" tabindex="-1" aria-labelledby="publicChannelModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog content-dialog" role="document">
+        <div class="content-container modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h3 class="channel-content-title mb-0">Create a Channel</h2>
+            </div>
+
+            <div class="channel-type-options-container p-5 pt-0 pb-3">
+                <div class="channel-options-container">
+                    <label class="content-label h6" for="check-igovern">I Govern</label>
+                    <input class="form-check-input" id="check-igovern" type="checkbox" name="igovern" value="igovern">
+                </div>
+
+                <div class="channel-options-container">
+                    <label class="content-label h6" for="check-wegovern">We Govern</label>
+                    <input class="form-check-input" id="check-wegovern" type="checkbox" name="wegovern"
+                        value="wegovern">
+                </div>
+
+                <div class="channel-options-container">
+                    <label class="content-label h6" for="check-private">Private</label>
+                    <input class="form-check-input" id="check-private" type="checkbox" name="privateActivate"
+                        value="private">
+                </div>
+            </div>
+
+            <section class="modal-body p-5 pt-0 pb-0 content-body-container">
+                <div class="col-sm" hidden="true">
+                    <input id="public-channelName" type="hidden" />
+                    <input id="public-passwordChecking" type="hidden" />
+                    <input id="public-channelType" type="hidden" />
+
+                    <input id="private-channelName" type="hidden" />
+                    <input id="private-passwordChecking" type="hidden" />
+                    <input id="private-channelType" type="hidden" />
+                </div>
+
+                <div class="input-label-container public-container">
+                    <label class="content-label mb-1" for="public-adminName">Admin ID</label>
+                </div>
+
+                <div class="input-label-container private-container" hidden="true">
+                    <label class="content-label mb-1" for="private-adminName">Admin ID</label>
+                    <label class="content-label mb-1" for="private-adminPassword">Admin Password</label>
+                    <label class="content-label mb-1" for="private-channelPassword">Channel Password</label>
+                    <label class="content-label mb-1" for="private-channelPasswordreoncfirm">Password reconfirm</label>
+                </div>
+
+                <div class="input-container public-container">
+                    <div class="form-floating mb-1">
+                        <input type="text" class="input-form mb-1 rounded-3" id="public-adminName">
+                    </div>
+                </div>
+
+
+                <div class="input-container private-container" hidden="true">
+                    <div class="form-floating mb-1">
+                        <input type="text" class="input-form mb-1 rounded-3" id="private-adminName">
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input type="password" class="input-form mb-1 rounded-3" id="private-adminPassword">
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input type="password" class="input-form mb-1 rounded-3" id="private-channelPassword">
+                    </div>
+
+                    <div class="form-floating mb-1">
+                        <input type="password" class="input-form mb-1 rounded-3" id="private-channelPasswordreoncfirm">
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="p-5 pt-4 pb-3 content-channelset-container">
+
+                <div class="channelset channel-title">
+                    <label class="content-label mb-1" for="private-roomPassword">Channel Name</label>
+                </div>
+
+
+                <div class="channelset channel-title">
+                    <div class="form-floating mb-1">
+                        <input type="password" class="input-form mb-1 rounded-3" id="private-roomPassword">
+                    </div>
+                </div>
+
+                <div class="channelset channel-thumbnail">
+                    <input type="file" name="file" id="file" class="public-inputfile"
+                        data-multiple-caption="{count} files selected" multiple />
+                    <label for="file">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
+                            <path
+                                d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z">
+                            </path>
+                        </svg>
+
+                        <span>Choose a file</span>
+                    </label>
+                </div>
+            </section>
+
+
+
+            <section class="p-5 pt-0 pb-3 content-options-check-container">
+                <div class="left-options">
+                    <div class="mic-check check-option">
+                        <span class="font">Microphone</span>
+                    </div>
+
+                    <div class="cam-check check-option">
+                        <span class="font">Camera</span>
+                    </div>
+
+                    <div class="file-check check-option">
+                        <span class="font">File Sharing</span>
+                    </div>
+
+                    <div class="screen-check check-option">
+                        <span class="font">Screen Sharing</span>
+                    </div>
+
+                    <div class="verifi-check check-option">
+                        <span class="font">Verification</span>
+                    </div>
+                </div>
+
+                <div class="left-options-checkbox">
+                    <div class="mic-checkbox check-option">
+                        <input class="form-check-input" type="checkbox">
+                    </div>
+
+                    <div class="cam-checkbox check-option">
+                        <input class="form-check-input" type="checkbox">
+
+                    </div>
+
+                    <div class="file-checkbox check-option">
+                        <input class="form-check-input" type="checkbox">
+
+                    </div>
+
+                    <div class="screen-checkbox check-option">
+                        <input class="form-check-input" type="checkbox">
+
+                    </div>
+
+                    <div class="verifi-checkbox check-option">
+                        <input class="form-check-input" type="checkbox">
+
+                    </div>
+                </div>
+
+                <div class="right-options">
+                    <div class="web-check check-option">
+                        <span class="font">Web Sharing</span>
+
+                    </div>
+
+                    <div class="contents-check check-option">
+                        <span class="font">Contents sharing</span>
+
+                    </div>
+
+                    <div class="pdf-check check-option">
+                        <span class="font">PDF sharing</span>
+
+                    </div>
+
+                    <div class="white-check check-option">
+                        <span class="font">White board</span>
+
+                    </div>
+
+                    <div class="chat-check check-option">
+                        <span class="font">Chat</span>
+
+                    </div>
+                </div>
+
+                <div class="right-options-checkbox">
+                    <div class="web-checkbox check-option">
+                        <input class="form-check-input" type="checkbox">
+                    </div>
+
+                    <div class="contents-checkbox check-option">
+                        <input class="form-check-input" type="checkbox">
+
+                    </div>
+
+                    <div class="pdf-checkbox check-option">
+                        <input class="form-check-input" type="checkbox">
+
+                    </div>
+
+                    <div class="white-checkbox check-option">
+                        <input class="form-check-input" type="checkbox">
+
+                    </div>
+
+                    <div class="chat-checkbox check-option">
+                        <input class="form-check-input" type="checkbox">
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="p-5 pt-0 pb-3 content-footer-container">
+                <div class="govern-logo-container">
+                    <img src="mainpage/govern.svg" alt="">
+                </div>
+                <div class="create-channel-btn-container">
+                    <button id="create-channel-btn" class="btn">Create</button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+    let inputs = document.querySelectorAll('.public-inputfile');
+    let checkPrivate = document.querySelector("#check-private");
+    let privateContainer = document.querySelectorAll(".private-container");
+    let publicContainer = document.querySelectorAll(".public-container");
+
+    Array.prototype.forEach.call(inputs, function (input) {
+        let label = input.nextElementSibling,
+            labelVal = label.innerHTML;
+
+        input.addEventListener('change', function (e) {
+            let fileName = '';
+            if (this.files && this.files.length > 1)
+                fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
+            else
+                fileName = e.target.value.split('\\').pop();
+
+            if (fileName)
+                label.querySelector('span').innerHTML = fileName;
+            else
+                label.innerHTML = labelVal;
+        });
+
+        // Firefox bug fix
+        input.addEventListener('focus', function () { input.classList.add('has-focus'); });
+        input.addEventListener('blur', function () { input.classList.remove('has-focus'); });
+    });
+
+    function checkOptionsResult(event) {
+        let result = "";
+        if (event.target.checked === true) {
+            result = event.target.checked;
+            console.log("Check state ", result)
+            publicContainer[0].hidden = true;
+            privateContainer[0].hidden = false;
+
+            publicContainer[1].hidden = true;
+            privateContainer[1].hidden = false;
+        }
+        else {
+            result = event.target.checked;
+            console.log("Check state ", result)
+            publicContainer[0].hidden = false;
+            privateContainer[0].hidden = true;
+
+            publicContainer[1].hidden = false;
+            privateContainer[1].hidden = true;
+        }
+    }
+
+
+    checkPrivate.addEventListener("click", checkOptionsResult, false)
+
+</script>
