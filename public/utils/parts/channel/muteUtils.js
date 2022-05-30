@@ -87,8 +87,6 @@ async function muteVideo() {
     // totalUsers[options.uid].videoTrack.setMuted(true);
     // totalUsers[options.uid].videoTrack.setEnabled(false);
     videoIcon.className = "fas fa-video-slash";
-
-    console.log(totalUsers[options.uid]);
 }
 
 async function unmuteVideo() {

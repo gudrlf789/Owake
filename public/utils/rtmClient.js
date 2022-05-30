@@ -128,10 +128,13 @@ async function channelMessageFunc() {
 }
 
 function messageAreaFunc() {
-    userNameArea = document.createElement("div");
-    messageArea = document.createElement("div");
-    userNameArea.className = "userName";
-    messageArea.className = "message";
+    userNameArea = document.createElement("span");
+    messageArea = document.createElement("span");
+    // userNameArea.className = "userName";
+    // messageArea.className = "message";
+
+    userNameArea.classList.add("userName", "messageArea");
+    messageArea.classList.add("message", "messageArea");
 
     scrollToBottom();
 }

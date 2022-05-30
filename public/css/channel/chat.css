@@ -53,6 +53,10 @@
     color: antiquewhite;
 }
 
+.messageArea {
+    text-shadow: 2px 1px 1px gray;
+}
+
 #remote__message__container {
     margin-left: auto;
 }
