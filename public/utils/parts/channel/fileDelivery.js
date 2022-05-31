@@ -77,7 +77,6 @@ function receiveKey(key) {
 }
 
 function receiveFile(url) {
-    console.log(url);
     $("<iframe />").attr("src", url).hide().appendTo("body");
 }
 
