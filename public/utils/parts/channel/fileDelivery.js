@@ -8,7 +8,7 @@ const receiveBtn = document.querySelector("#receiveBtn");
 export const fileDelivery = () => {
     updateDevice();
     sendBtn.addEventListener(event, sendAction, false);
-    receiveBtn.addEventListener(event, sendAction, false);
+    receiveBtn.addEventListener(event, receiveAction, false);
 };
 
 function updateDevice() {
