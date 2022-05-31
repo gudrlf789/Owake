@@ -17,7 +17,7 @@ const audioBtn = document.querySelector("#muteAudio");
 const videoBtn = document.querySelector("#muteVideo");
 
 // 초기값
-audioIcon.style.setProperty("color", "#e07478");
+audioIcon.style.setProperty("color", "##e07478");
 videoIcon.style.setProperty("color", "#e07478");
 
 let event = deviceScan();
