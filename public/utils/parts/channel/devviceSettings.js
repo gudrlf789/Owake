@@ -77,7 +77,7 @@ export const recodingDeviceCtrl = () => {
         cancelAnimationFrame(volumeAnimation);
     });
 
-    deviceSettingBtn.addEventListener(event, handlerDeviceSetting);
+    deviceSettingBtn.addEventListener("click", handlerDeviceSetting);
 };
 
 async function getDeviceFunc() {

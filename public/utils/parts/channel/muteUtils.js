@@ -41,7 +41,7 @@ export const muteUtilsFunc = () => {
         }, 3000);
     }
 
-    audioBtn.addEventListener(event, (e) => {
+    audioBtn.addEventListener("click", (e) => {
         if (!localTrackState.audioTrackMuted) {
             muteAudio();
             alert("audio mute activation");
@@ -51,7 +51,7 @@ export const muteUtilsFunc = () => {
         }
     });
 
-    videoBtn.addEventListener(event, (e) => {
+    videoBtn.addEventListener("click", (e) => {
         if (!localTrackState.videoTrackMuted) {
             muteVideo();
             alert("video mute activation");

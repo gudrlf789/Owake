@@ -74,7 +74,7 @@ if (!isSafari) {
     );
 } else {
     fileDeliveryBtn.addEventListener(
-        event,
+        "click",
         (e) => {
             deliveryActive = !deliveryActive;
             deliveryActive ? fileDeliverySafariEnable() : fileDeliveryDisable();

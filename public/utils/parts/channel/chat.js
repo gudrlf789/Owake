@@ -7,7 +7,7 @@ export const mobileDisplayCtr = () => {
     const chatImg = document.querySelector("#chat-img");
     const mainRight = document.querySelector(".main__right");
 
-    chatImg.addEventListener(event, () => {
+    chatImg.addEventListener("click", () => {
         messagesActive = !messagesActive;
         messagesActive ? messageEnable() : messageDisable();
     });

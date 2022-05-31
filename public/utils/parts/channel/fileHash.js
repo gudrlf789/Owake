@@ -50,7 +50,7 @@ export const fileHash = () => {
     });
 
     function identifireFunc() {
-        identifireBtn.addEventListener(event, (e) => {
+        identifireBtn.addEventListener("click", (e) => {
             identifireActivator = !identifireActivator;
             identifireActivator ? identifireEnable() : identifireDisable();
         });
@@ -117,19 +117,19 @@ export const fileHash = () => {
         return true;
     }
 
-    originHash.addEventListener(event, (e) => {
+    originHash.addEventListener("click", (e) => {
         if (checkFileSelected(selectFile1.files)) {
             makeFileToHash(selectFile1.files[0], selectOriginalInput);
         }
     });
 
-    remoteHash.addEventListener(event, (e) => {
+    remoteHash.addEventListener("click", (e) => {
         if (checkFileSelected(selectFile2.files)) {
             makeFileToHash(selectFile2.files[0], selectComparisonInput);
         }
     });
 
-    clickVerifyFile.addEventListener(event, (e) => {
+    clickVerifyFile.addEventListener("click", (e) => {
         compareResult.style.fontWeight = "bold";
 
         if (selectOriginalInput.value === selectComparisonInput.value) {
@@ -141,12 +141,12 @@ export const fileHash = () => {
         }
     });
 
-    originCopy.addEventListener(event, (e) => {
+    originCopy.addEventListener("click", (e) => {
         navigator.clipboard.writeText(selectOriginalInput.value);
         alert("Copied the text: " + selectOriginalInput.value);
     });
 
-    comparisonCopy.addEventListener(event, (e) => {
+    comparisonCopy.addEventListener("click", (e) => {
         navigator.clipboard.writeText(selectComparisonInput.value);
         alert("Copied the text: " + selectComparisonInput.value);
     });
@@ -172,7 +172,7 @@ export const fileHash = () => {
     //         });
     // });
 
-    syncBtn.addEventListener(event, (e) => {
+    syncBtn.addEventListener("click", (e) => {
         hashSocket.emit("join-hash", channelName);
         axios
             .post("/channel/jwt", loginData)
@@ -193,7 +193,7 @@ export const fileHash = () => {
             });
     });
 
-    closeBtn.addEventListener(event, (e) => {
+    closeBtn.addEventListener("click", (e) => {
         identifireContainer.hidden = true;
         fileHashImg.style.setProperty("filter", "none");
         hashSocket.emit("leave-hash", channelName);

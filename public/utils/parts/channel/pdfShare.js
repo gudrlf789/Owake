@@ -198,7 +198,7 @@ export const pdfFunc = () => {
         pdfImg.src = "/right/pdf.svg";
     }
 
-    $(document).on(event, ".pdfMiddleContainerBtn", async (e) => {
+    $(document).on("click", ".pdfMiddleContainerBtn", async (e) => {
         originUser = e.currentTarget.getAttribute("name").split("_")[0];
         choiceFile = e.currentTarget.getAttribute("name");
 
@@ -207,7 +207,7 @@ export const pdfFunc = () => {
         await pdfInit(choiceFile);
     });
 
-    $(document).on(event, ".pdfCloseContent", (e) => {
+    $(document).on("click", ".pdfCloseContent", (e) => {
         const deleteTagName = e.currentTarget.getAttribute("name");
         deleteContentTab = document.getElementsByName(deleteTagName);
         originUser = deleteTagName.split("_")[0];
@@ -238,7 +238,7 @@ export const pdfFunc = () => {
         }
     });
 
-    $(document).on(event, "#pdf-page-next", (e) => {
+    $(document).on("click", "#pdf-page-next", (e) => {
         if (myState.pdf == null || myState.currentPage > myState.pdf.numPages) {
             alert("This is last page");
             return;
@@ -255,7 +255,7 @@ export const pdfFunc = () => {
         }
     });
 
-    $(document).on(event, "#pdf-page-previous", (e) => {
+    $(document).on("click", "#pdf-page-previous", (e) => {
         if (myState.pdf == null || myState.currentPage <= 1) {
             alert("This is first page");
             return;

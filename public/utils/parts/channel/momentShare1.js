@@ -76,7 +76,7 @@ export const momentShareFunc1 = () => {
     momentTabArea1.style.setProperty("position", "absolute");
     momentTabArea1.style.setProperty("z-index", "5");
 
-    momentShareBtn1.addEventListener(event, (e) => {
+    momentShareBtn1.addEventListener("click", (e) => {
         momentShareActive = !momentShareActive;
         momentShareActive ? momentShareEnable() : momentShareDisable();
     });
@@ -102,7 +102,7 @@ export const momentShareFunc1 = () => {
         webImg.src = "/left/web.svg";
     }
 
-    searchInput1Btn.addEventListener(event, (e) => {
+    searchInput1Btn.addEventListener("click", (e) => {
         inputURL = searchInput1.value;
         if (inputURL.length === 0) {
             alert("Please enter your address.");

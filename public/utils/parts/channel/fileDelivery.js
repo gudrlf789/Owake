@@ -1,6 +1,14 @@
+import { deviceScan } from "./deviceScan.js";
+
+let event = deviceScan();
+
+const sendBtn = document.querySelector("#sendBtn");
+const receiveBtn = document.querySelector("#receiveBtn");
+
 export const fileDelivery = () => {
     updateDevice();
-    clickEvent();
+    sendBtn.addEventListener(event, sendAction, false);
+    receiveBtn.addEventListener(event, sendAction, false);
 };
 
 function updateDevice() {
@@ -88,35 +96,37 @@ function checkIphoneMobile() {
     return true;
 }
 
-function clickEvent() {
-    $("#sendBtn").click(() => {
-        if (checkIphoneMobile()) {
-            let files = $("#fileInput").prop("files");
-            if (files.length > 0) {
-                createKey(files);
-            } else {
-                alert("Please select file");
-            }
-        }
-    });
+function sendAction() {
+    // if (checkIphoneMobile()) {
+    //     let files = $("#fileInput").prop("files");
+    //     if (files.length > 0) {
+    //         createKey(files);
+    //     } else {
+    //         alert("Please select file");
+    //     }
+    // }
 
-    $("#receiveBtn").click(() => {
-        if (checkIphoneMobile()) {
-            receiveKey($("#keyInput").val());
-        }
-    });
-
-    $("#keyInput").keyup((e) => {
-        if (e.keyCode == 13) {
-            $("#receiveBtn").click();
-        }
-    });
-
-    $("#keyInput").keydown(() => {
-        $("#receiveForm .form-group").removeClass("has-error");
-        $("#status")
-            .text("")
-            .removeClass("text-danger")
-            .addClass("text-success");
-    });
+    let files = $("#fileInput").prop("files");
+    if (files.length > 0) {
+        createKey(files);
+    } else {
+        alert("Please select file");
+    }
 }
+
+function receiveAction() {
+    if (checkIphoneMobile()) {
+        receiveKey($("#keyInput").val());
+    }
+}
+
+$("#keyInput").keyup((e) => {
+    if (e.keyCode == 13) {
+        receiveAction();
+    }
+});
+
+$("#keyInput").keydown(() => {
+    $("#receiveForm .form-group").removeClass("has-error");
+    $("#status").text("").removeClass("text-danger").addClass("text-success");
+});

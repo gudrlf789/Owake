@@ -17,7 +17,7 @@ const screenShareBtn = document.querySelector("#screenShare-img");
 
 export const screenShareFunc = () => {
     const screenShareBtn = document.querySelector("#shareScreen");
-    screenShareBtn.addEventListener(event, screenShareJoin);
+    screenShareBtn.addEventListener("click", screenShareJoin);
 };
 
 async function screenShareJoin() {
