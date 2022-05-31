@@ -1,12 +1,11 @@
 <div class="delivery_container" id="delivery_container">
-    <a href="javascript:openWindowPop('https://owake-file.herokuapp.com/fileTransfer/api/v1', 'popup')">File
+    <a href="javascript:openWindowPop('https://owake-file.herokuapp.com/api/v1/fileTransfer', 'popup')">File
         Transfer</a>
 </div>
 
 <script>
-
     function openWindowPop(url, name) {
-        let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no';
+        let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no location=no';
         window.open(url, name, options);
     }
 </script>

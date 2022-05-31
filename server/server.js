@@ -60,21 +60,21 @@ app.use(
     })
 );
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.setHeader("Access-Control-Allow-Credentials", true);
-    res.setHeader("Access-Control-Max-Age", "3600");
+// app.use((req, res, next) => {
+//     res.setHeader("Access-Control-Allow-Origin", "*");
+//     res.setHeader(
+//         "Access-Control-Allow-Methods",
+//         "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+//     );
+//     res.setHeader(
+//         "Access-Control-Allow-Headers",
+//         "Origin, X-Requested-With, Content-Type, Accept"
+//     );
+//     res.setHeader("Access-Control-Allow-Credentials", true);
+//     res.setHeader("Access-Control-Max-Age", "3600");
 
-    next();
-});
+//     next();
+// });
 
 app.use(redirectSec);
 app.use(morgan("dev"));
@@ -110,7 +110,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/:channelName/:channelType", (req, res) => {
-    let appID = "50b9cd9de2d54849a139e3db52e7928a";
+    let appID = "b11ab973693e46b78b73e55aae3a6a11";
 
     res.render("channel", {
         channelName: req.params.channelName,
