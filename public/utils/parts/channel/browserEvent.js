@@ -1,6 +1,5 @@
 export const browserEvent = () => {
     browserClose();
-    crossSiteCookieFunc();
 };
 
 function browserClose() {
