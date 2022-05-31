@@ -115,9 +115,10 @@ function sendAction() {
 }
 
 function receiveAction() {
-    if (checkIphoneMobile()) {
-        receiveKey($("#keyInput").val());
-    }
+    // if (checkIphoneMobile()) {
+
+    // }
+    receiveKey($("#keyInput").val());
 }
 
 $("#keyInput").keyup((e) => {
