@@ -10,7 +10,9 @@ export const fileDelivery = () => {
                     profile_name: "username",
                 },
                 cache: false,
-            }).done(function (data) {});
+            }).done(function (data) {
+                console.log(data);
+            });
         }
         function createKey(files) {
             var params = { file: [] };
@@ -63,10 +65,15 @@ export const fileDelivery = () => {
                         .text("failed")
                         .removeClass("text-success")
                         .addClass("text-danger");
+
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(error);
                 });
         }
 
         function receiveFile(url) {
+            console.log(url);
             $("<iframe />").attr("src", url).hide().appendTo("body");
         }
 

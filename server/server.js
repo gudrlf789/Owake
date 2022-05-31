@@ -53,28 +53,28 @@ function redirectSec(req, res, next) {
 
 app.set("view engine", "ejs");
 
-// app.use(
-//     cors({
-//         origin: "*",
-//         credential: true,
-//     })
-// );
+app.use(
+    cors({
+        origin: "*",
+        credential: true,
+    })
+);
 
-// app.use((req, res, next) => {
-//     res.setHeader("Access-Control-Allow-Origin", "*");
-//     res.setHeader(
-//         "Access-Control-Allow-Methods",
-//         "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-//     );
-//     res.setHeader(
-//         "Access-Control-Allow-Headers",
-//         "Origin, X-Requested-With, Content-Type, Accept"
-//     );
-//     res.setHeader("Access-Control-Allow-Credentials", true);
-//     res.setHeader("Access-Control-Max-Age", "3600");
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", true);
+    res.setHeader("Access-Control-Max-Age", "3600");
 
-//     next();
-// });
+    next();
+});
 
 app.use(redirectSec);
 app.use(morgan("dev"));
@@ -89,8 +89,6 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
 app.use(express.static(path.join(__dirname, "../public/img")));
 app.use(express.static(path.join(__dirname, "../public/lib")));
-app.use(express.static(path.join(__dirname, "../public/lib/p5")));
-app.use(express.static(path.join(__dirname, "../public/lib/p5/addons")));
 app.use(express.static(path.join(__dirname, "../public/utils")));
 app.use(express.static(path.join(__dirname, "../public/utils/parts")));
 app.use(express.static(path.join(__dirname, "../public/icons")));
