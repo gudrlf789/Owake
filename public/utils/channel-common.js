@@ -3,7 +3,6 @@ import { channelFirstSpinnerDeleteFunc } from "./parts/channel/channelFirstSpinn
 import { mobileDisplayCtr } from "./parts/channel/chat.js";
 import { f12defense } from "./parts/channel/f12defense.js";
 import { fileDelivery } from "./parts/channel/fileDelivery.js";
-import { fileDeliverySafari } from "./parts/channel/fileDelivery-safari.js";
 // P2P 개발할 때까지 중단
 // import { fileShare } from "./parts/channel/fileShare.js";
 import { momentShareFunc1 } from "./parts/channel/momentShare1.js";

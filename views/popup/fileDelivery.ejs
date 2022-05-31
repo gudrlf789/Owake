@@ -1,23 +1,12 @@
 <div class="delivery_container" id="delivery_container">
-    <div class="container">
-        <h5 class="title" id="fileDelivery_Title">File Delivery</h5>
-    </div>
-    <div class="fileShare__container">
-        <form id="sendForm" class="col-sm-6">
-            <div class="form-group filebox">
-                <input id="fileInput" name="file[]" type="file" class="form-control" multiple /><br />
-                <input type="button" id="sendBtn" class="btn btn-default form-control fileDeliveryBtn"
-                    value="Send"></input><br /><br />
-                <label for="">Key: </label> <span id="key" class="text-success"></span>
-            </div>
-        </form>
-        <form id="receiveForm" class="col-sm-6">
-            <div class="form-group">
-                <input id="keyInput" class="form-control" /><br />
-                <input type="button" id="receiveBtn" class="btn btn-default form-control fileDeliveryBtn"
-                    value="Receive"></input><br /><br />
-                <label for="">Status: </label> <span id="status" class="text-success"></span>
-            </div>
-        </form>
-    </div>
+    <a href="javascript:openWindowPop('https://owake-file.herokuapp.com/fileTransfer/api/v1', 'popup')">File
+        Transfer</a>
 </div>
+
+<script>
+
+    function openWindowPop(url, name) {
+        let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no';
+        window.open(url, name, options);
+    }
+</script>
