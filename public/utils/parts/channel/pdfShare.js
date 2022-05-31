@@ -224,9 +224,16 @@ export const pdfFunc = () => {
                         channelName,
                         deleteTagName
                     );
-                    for (let i = 0; i < 2; i++) {
-                        deleteContentTab[0].remove();
+                    if (deleteContentTab.length === 2) {
+                        for (let i = 0; i < 2; i++) {
+                            deleteContentTab[0].remove();
+                        }
+                    } else {
+                        for (let i = 0; i < 3; i++) {
+                            deleteContentTab[0].remove();
+                        }
                     }
+
                     myState.pdf = null;
                     clearCanvas();
                 } else {
@@ -337,9 +344,16 @@ export const pdfFunc = () => {
 
     pdfSocket.on("delete-remote-tag", (deleteTagName) => {
         deleteContentTab = document.getElementsByName(deleteTagName);
-        for (let i = 0; i < 2; i++) {
-            deleteContentTab[0].remove();
+        if (deleteContentTab.length == 2) {
+            for (let i = 0; i < 2; i++) {
+                deleteContentTab[0].remove();
+            }
+        } else {
+            for (let i = 0; i < 3; i++) {
+                deleteContentTab[0].remove();
+            }
         }
+
         clearCanvas();
     });
 };

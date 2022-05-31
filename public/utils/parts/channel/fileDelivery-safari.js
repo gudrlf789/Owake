@@ -6,7 +6,9 @@ sendBtn.addEventListener(event, sendAction, false);
 receiveBtn.addEventListener(event, receiveAction, false);
 
 export const fileDeliverySafari = () => {
-    updateDevice();
+    $(document).ready(function () {
+        updateDevice();
+    });
 };
 
 let device_key = "";

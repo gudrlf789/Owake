@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const path = require("path");
 const Logger = require("./Logger");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 const log = new Logger("server");
 require("dotenv").config();
@@ -79,6 +80,10 @@ app.use(redirectSec);
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(
+    cookieParser(process.env.COOKIE_SECRET, { sameSite: "none", secure: true })
+);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
@@ -337,6 +342,19 @@ io.sockets.on("connection", (socket) => {
 
     socket.on("join-pdf", (channelName) => {
         socket.join(channelName);
+    });
+
+    socket.on("pdf-info", (channelName, userName, fileName, fileType) => {
+        let data = {
+            userName: userName,
+            fileName: fileName,
+            fileType: fileType,
+        };
+        socket.to(channelName).emit("input-pdf", data);
+    });
+
+    socket.on("delete-origin-pdf-tag", (channelName, deleteTagName) => {
+        socket.to(channelName).emit("delete-remote-pdf-tag", deleteTagName);
     });
 
     socket.on("pdf-origin-next", (channelName, nextPage, fileName) => {

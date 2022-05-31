@@ -27,7 +27,6 @@ import { deviceScan } from "./parts/channel/deviceScan.js";
 
 $(() => {
     channelFirstSpinnerDeleteFunc();
-
     mobileDisplayCtr();
     f12defense();
     SwiperFunc();
@@ -52,51 +51,20 @@ const fileDeliveryContainer = document.querySelector("#delivery_container");
 const fileDeliveryImg = document.querySelector("#fileDelivery-img");
 
 let deliveryActive = false;
-let event = deviceScan();
 
-let isSafari =
-    /constructor/i.test(window.HTMLElement) ||
-    (function (p) {
-        return p.toString() === "[object SafariRemoteNotification]";
-    })(
-        !window["safari"] ||
-            (typeof safari !== "undefined" && safari.pushNotification)
-    );
-
-if (!isSafari) {
-    fileDeliveryBtn.addEventListener(
-        "click",
-        (e) => {
-            deliveryActive = !deliveryActive;
-            deliveryActive ? fileDeliveryEnable() : fileDeliveryDisable();
-        },
-        false
-    );
-} else {
-    fileDeliveryBtn.addEventListener(
-        "click",
-        (e) => {
-            deliveryActive = !deliveryActive;
-            deliveryActive ? fileDeliverySafariEnable() : fileDeliveryDisable();
-        },
-        false
-    );
-}
+fileDeliveryBtn.addEventListener(
+    "click",
+    (e) => {
+        deliveryActive = !deliveryActive;
+        deliveryActive ? fileDeliveryEnable() : fileDeliveryDisable();
+    },
+    false
+);
 
 function fileDeliveryEnable() {
     fileDeliveryContainer.style.setProperty("display", "block");
     fileDeliveryImg.src = "/left/file_a.svg";
-    $(document).ready(() => {
-        fileDelivery();
-    });
-}
-
-function fileDeliverySafariEnable() {
-    fileDeliveryContainer.style.setProperty("display", "block");
-    fileDeliveryImg.src = "/left/file_a.svg";
-    $(document).ready(() => {
-        fileDeliverySafari();
-    });
+    fileDelivery();
 }
 
 function fileDeliveryDisable() {
