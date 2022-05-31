@@ -75,7 +75,7 @@ function receiveKey(key) {
 
     $("#status").text("waiting");
     $.ajax({
-        url: "https://send-anywhere.com/web/v1/key/" + key,
+        url: `https://send-anywhere.com/web/v1/key/${key}`,
         type: "GET",
         dataType: "jsonp",
         data: params,
