@@ -68,7 +68,8 @@ async function muteAudio() {
     totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = false;
     // totalUsers[options.uid].audioTrack.setMuted(true);
     // totalUsers[options.uid].audioTrack.setEnabled(false);
-    audioIcon.className = "fa fa-microphone-slash";
+    audioIcon.className = "fa fa-microphone";
+    audioIcon.style.setProperty("color", "#fff");
 }
 
 async function unmuteAudio() {
@@ -78,6 +79,7 @@ async function unmuteAudio() {
     // totalUsers[options.uid].audioTrack.setMuted(false);
     // totalUsers[options.uid].audioTrack.setEnabled(true);
     audioIcon.className = "fa fa-microphone";
+    audioIcon.style.setProperty("color", "#e07478");
 }
 
 async function muteVideo() {
@@ -86,7 +88,8 @@ async function muteVideo() {
     totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = false;
     // totalUsers[options.uid].videoTrack.setMuted(true);
     // totalUsers[options.uid].videoTrack.setEnabled(false);
-    videoIcon.className = "fas fa-video-slash";
+    videoIcon.className = "fas fa-video";
+    videoIcon.style.setProperty("color", "#fff");
 }
 
 async function unmuteVideo() {
@@ -96,4 +99,5 @@ async function unmuteVideo() {
     // totalUsers[options.uid].videoTrack.setMuted(false);
     // totalUsers[options.uid].videoTrack.setEnabled(true);
     videoIcon.className = "fas fa-video";
+    videoIcon.style.setProperty("color", "#e07478");
 }

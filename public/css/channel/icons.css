@@ -74,11 +74,11 @@
     align-items: center;
     width: 100%;
     height: 1.8rem;
-    background: rgb(236, 111, 115);
+    background: #4db9de;
     color: #fff;
-    font-size: 0.8rem;
+    font-size: 0.65rem;
     font-weight: 900;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     cursor: pointer;
 }
 
@@ -113,7 +113,7 @@
     }
 
     #leaveBtn {
-        width: 3.5rem;
-        height: 2.9rem;
+        width: 2.5rem;
+        height: 2.5rem;
     }
 }
