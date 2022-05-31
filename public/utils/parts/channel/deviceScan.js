@@ -1,12 +1,13 @@
 export const deviceScan = () => {
     let deviceScan = navigator.userAgent;
-    let deviceEvent = deviceScan.match(/iPhone/i || /iPad/i)
-        ? "touchstart"
-        : "click";
+    let touchstart = "touchstart";
+    let click = "click";
 
-    if (deviceScan.match(/iPhone/i || /iPad/i)) {
-        console.log("Iphone or iPad");
+    if (deviceScan.includes("iPhone") || deviceScan.includes("iPad")) {
+        console.log("Iphone or Ipad");
+        return touchstart;
+    } else {
+        console.log("Android or Web");
+        return click;
     }
-    console.log("Android or Web");
-    return deviceEvent;
 };
