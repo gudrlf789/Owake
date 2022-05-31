@@ -66,6 +66,9 @@ function receiveKey(key) {
                 .text("failed")
                 .removeClass("text-success")
                 .addClass("text-danger");
+            console.log(xhr);
+            console.log(textStatus);
+            console.log(error);
         });
 }
 
@@ -87,18 +90,18 @@ function checkIphoneMobile() {
 
 function clickEvent() {
     $("#sendBtn").click(() => {
-        if(checkIphoneMobile()){
+        if (checkIphoneMobile()) {
             let files = $("#fileInput").prop("files");
             if (files.length > 0) {
                 createKey(files);
-            }else{
+            } else {
                 alert("Please select file");
             }
         }
     });
 
     $("#receiveBtn").click(() => {
-        if(checkIphoneMobile()){
+        if (checkIphoneMobile()) {
             receiveKey($("#keyInput").val());
         }
     });

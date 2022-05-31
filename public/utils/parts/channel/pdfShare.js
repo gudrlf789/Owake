@@ -22,7 +22,7 @@ export const pdfFunc = () => {
     const localVideoContainer = document.querySelector(
         "#local__video__container"
     );
-    const pdfImg = document.querySelector("#pdfImg");
+    const pdfImg = document.querySelector("#pdf-img");
 
     const pdfShareArea = document.createElement("div");
     const pdfSearchContainer = document.createElement("div");
@@ -190,10 +190,7 @@ export const pdfFunc = () => {
         pdfShareBtn.style.color = "rgb(165, 199, 236)";
         pdfSocket.emit("join-pdf", channelName);
 
-        pdfImg.style.setProperty(
-            "filter",
-            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-        );
+        pdfImg.src = "/right/pdf_a.svg";
     }
 
     function pdfShareDisable() {
@@ -201,7 +198,7 @@ export const pdfFunc = () => {
         pdfShareBtn.style.color = "#fff";
         pdfSocket.emit("leave-pdf", channelName);
 
-        pdfImg.style.setProperty("filter", "none");
+        pdfImg.src = "/right/pdf.svg";
     }
 
     $(document).on(event, ".pdfMiddleContainerBtn", async (e) => {

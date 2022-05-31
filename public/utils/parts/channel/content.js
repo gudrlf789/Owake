@@ -21,7 +21,7 @@ export const contentFunc = () => {
         "#local__video__container"
     );
 
-    const mediaImg = document.querySelector("#mediaImg");
+    const mediaImg = document.querySelector("#media-img");
 
     const contentShareArea = document.createElement("div");
     const contentSearchContainer = document.createElement("div");
@@ -125,16 +125,13 @@ export const contentFunc = () => {
         localVideoContainer.append(contentShareArea);
         contentShareArea.hidden = false;
         contentSocket.emit("join-contents", channelName);
-        mediaImg.style.setProperty(
-            "filter",
-            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-        );
+        mediaImg.src = "/right/media_a.svg";
     }
 
     function contentShareDisable() {
         contentShareArea.hidden = true;
         contentSocket.emit("leave-contents", channelName);
-        mediaImg.style.setProperty("filter", "none");
+        mediaImg.src = "/right/media.svg";
     }
 
     $(document).on(event, ".middleContainerBtn", (e) => {

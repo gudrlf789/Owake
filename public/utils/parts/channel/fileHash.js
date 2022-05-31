@@ -35,7 +35,7 @@ export const fileHash = () => {
         password: "",
     };
     const identifireContainer = document.querySelector(".identifier-container");
-    const fileHashImg = document.querySelector("#fileHashImg");
+    const fileHashImg = document.querySelector("#fileHash-img");
     const identifireBtn = document.querySelector("#fileHashBtn");
 
     let identifireActivator = false;
@@ -58,15 +58,12 @@ export const fileHash = () => {
 
     function identifireEnable() {
         identifireContainer.hidden = false;
-        fileHashImg.style.setProperty(
-            "filter",
-            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-        );
+        fileHashImg.src = "/left/hash_a.svg";
     }
 
     function identifireDisable() {
         identifireContainer.hidden = true;
-        fileHashImg.style.setProperty("filter", "none");
+        fileHashImg.src = "/left/hash.svg";
 
         hashSocket.emit("leave-hash", channelName);
         selectFile1.value = "";
@@ -199,7 +196,9 @@ export const fileHash = () => {
 
     closeBtn.addEventListener(event, (e) => {
         identifireContainer.hidden = true;
-        fileHashImg.style.setProperty("filter", "none");
+        fileHashImg.src = "/left/hash.svg";
+        identifireActivator = false;
+
         hashSocket.emit("leave-hash", channelName);
         selectFile1.value = "";
         selectFile2.value = "";

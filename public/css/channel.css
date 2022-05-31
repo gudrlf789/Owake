@@ -1,4 +1,4 @@
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
 @import "./channel/momentShare.css";
 @import "./channel/chat.css";
 @import "./lib/bootstrap.min.css";
@@ -124,7 +124,7 @@ html {
     position: relative;
     overflow: hidden;
     /* height: 92vh; */
-    height: calc(var(--vh, 1vh) * 93);
+    height: calc(var(--vh, 1vh) * 91);
     display: flex;
 }
 

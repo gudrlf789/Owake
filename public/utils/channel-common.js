@@ -9,7 +9,6 @@ import { fileDeliverySafari } from "./parts/channel/fileDelivery-safari.js";
 import { momentShareFunc1 } from "./parts/channel/momentShare1.js";
 // import { momentShareFunc2 } from "./parts/channel/momentShare2.js";
 import { muteUtilsFunc } from "./parts/channel/muteUtils.js";
-import { optionsBtn } from "./parts/channel/options-btn.js";
 import { recodingDeviceCtrl } from "./parts/channel/devviceSettings.js";
 import { remoteDisplay } from "./parts/channel/remoteDisplay.js";
 import { screenShareFunc } from "./parts/channel/screenShare.js";
@@ -33,7 +32,6 @@ $(() => {
     f12defense();
     SwiperFunc();
     remoteDisplay();
-    optionsBtn();
     responsiveFunc();
     mobileReflashClose();
     momentShareFunc1();
@@ -45,12 +43,13 @@ $(() => {
     fileHash();
     contentFunc();
     pdfFunc();
+    copyInfo();
 });
 
 // FileDelivery Activator Functions
 const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
 const fileDeliveryContainer = document.querySelector("#delivery_container");
-const fileDeliveryImg = document.querySelector("#fileDeliveryImg");
+const fileDeliveryImg = document.querySelector("#fileDelivery-img");
 
 let deliveryActive = false;
 let event = deviceScan();
@@ -86,10 +85,7 @@ if (!isSafari) {
 
 function fileDeliveryEnable() {
     fileDeliveryContainer.style.setProperty("display", "block");
-    fileDeliveryImg.style.setProperty(
-        "filter",
-        "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-    );
+    fileDeliveryImg.src = "/left/file_a.svg";
     $(document).ready(() => {
         fileDelivery();
     });
@@ -97,10 +93,7 @@ function fileDeliveryEnable() {
 
 function fileDeliverySafariEnable() {
     fileDeliveryContainer.style.setProperty("display", "block");
-    fileDeliveryImg.style.setProperty(
-        "filter",
-        "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-    );
+    fileDeliveryImg.src = "/left/file_a.svg";
     $(document).ready(() => {
         fileDeliverySafari();
     });
@@ -108,5 +101,5 @@ function fileDeliverySafariEnable() {
 
 function fileDeliveryDisable() {
     fileDeliveryContainer.style.setProperty("display", "none");
-    fileDeliveryImg.style.setProperty("filter", "none");
+    fileDeliveryImg.src = "/left/file.svg";
 }

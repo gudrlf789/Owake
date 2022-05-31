@@ -13,7 +13,7 @@ import { deviceScan } from "./deviceScan.js";
 let openYN = "N";
 let event = deviceScan();
 
-const screenShareIcons = document.querySelector(".fa-retweet");
+const screenShareBtn = document.querySelector("#screenShare-img");
 
 export const screenShareFunc = () => {
     const screenShareBtn = document.querySelector("#shareScreen");
@@ -61,7 +61,7 @@ async function screenShareJoin() {
             });
         }
 
-        screenShareIcons.style.setProperty("color", "#ec6f74");
+        screenShareBtn.src = "/left/screen_a.svg";
     } catch (err) {
         console.log("Agora error: " + err);
         screenClient.leave();
@@ -83,5 +83,5 @@ function LeaveShareScreen(screenClient, screenTrack) {
     screenClient.leave();
     openYN = "N";
 
-    screenShareIcons.style.setProperty("color", "#fff");
+    screenShareBtn.src = "/left/screen.svg";
 }

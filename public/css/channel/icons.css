@@ -32,12 +32,11 @@
 
 .logo {
     display: block;
-    background-image: url("../../../32h/logo.png");
+    background-image: url("/logo.png");
     background-repeat: no-repeat;
     background-position: left;
-    background-size: 4rem;
-    width: 100%;
-    height: 100%;
+    background-size: 100%;
+    width: 5rem;
     margin-left: 2rem;
 }
 
@@ -78,7 +77,12 @@
     content: "Logout";
 }
 
-.fa-chevron-down {
+.logo-container {
+    display: flex;
+    margin: 0.5rem;
+}
+
+/* .fa-chevron-down {
     color: #fff;
     display: flex;
     align-items: center;
@@ -87,7 +91,7 @@
     left: 6.5rem;
     bottom: 1.3rem;
     cursor: pointer;
-}
+} */
 
 #nav__btn {
     display: none;
