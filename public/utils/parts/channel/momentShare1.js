@@ -91,7 +91,7 @@ export const momentShareFunc1 = () => {
             </iframe>`;
         momentContainer1.appendChild(iframeContainer1);
 
-        webImg.src = "/right/web_a.svg";
+        webImg.src = "/left/web_a.svg";
     }
 
     function momentShareDisable() {
@@ -99,7 +99,7 @@ export const momentShareFunc1 = () => {
         momentShareBtn1.style.color = "#fff";
         momentSocket.emit("leave-web", options.channel);
 
-        webImg.src = "/right/web.svg";
+        webImg.src = "/left/web.svg";
     }
 
     searchInput1Btn.addEventListener(event, (e) => {

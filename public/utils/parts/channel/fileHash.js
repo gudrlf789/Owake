@@ -81,8 +81,7 @@ export const fileHash = () => {
         if (formData.has("fileInput")) {
             formData.delete("fileInput");
         }
-        formData.append("userName", userName);
-        formData.append("channelName", channelName);
+        
         formData.append("fileInput", data);
 
         axios
@@ -196,9 +195,7 @@ export const fileHash = () => {
 
     closeBtn.addEventListener(event, (e) => {
         identifireContainer.hidden = true;
-        fileHashImg.src = "/left/hash.svg";
-        identifireActivator = false;
-
+        fileHashImg.style.setProperty("filter", "none");
         hashSocket.emit("leave-hash", channelName);
         selectFile1.value = "";
         selectFile2.value = "";

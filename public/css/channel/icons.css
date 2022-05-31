@@ -60,6 +60,14 @@
     align-items: center;
 }
 
+#mobile-leave {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
 #leaveBtn {
     display: flex;
     justify-content: center;
@@ -73,36 +81,21 @@
     cursor: pointer;
 }
 
-#leaveBtn::before {
-    content: "Logout";
-}
-
 .logo-container {
     display: flex;
     margin: 0.5rem;
 }
 
-/* .fa-chevron-down {
-    color: #fff;
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    position: fixed;
-    left: 6.5rem;
-    bottom: 1.3rem;
-    cursor: pointer;
-} */
-
 #nav__btn {
     display: none;
 }
 
-@media (max-width: 768px) {
-    .logo {
-        display: none;
-    }
+#mobile-leave {
+    grid-area: logout;
+}
 
-    .fa-chevron-down {
+@media (max-width: 768px) {
+    .logo-container {
         display: none;
     }
 
@@ -110,17 +103,16 @@
         display: block;
     }
 
+    #mobile-leave {
+        display: flex;
+    }
+
     .options__right {
         display: none;
     }
 
-    #nav__btn {
-        display: block;
-        width: 70px;
-        background-image: url("../../../svg/navbtn.svg");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        margin-left: 0.6rem;
+    #leaveBtn {
+        width: 3.5rem;
+        height: 3rem;
     }
 }

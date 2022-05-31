@@ -85,7 +85,7 @@ export const pdfFunc = () => {
         pdfShareActive ? pdfShareEnable() : pdfShareDisable();
     });
 
-    function createContentTab(userName, fileType, fileName) {
+    function createPdfTab(userName, fileType, fileName) {
         const html = `
             <span class="pdfMiddleContainerBtn" name="${userName}_${fileName}"
             style="margin: 0.4rem; padding: 0.2rem; background: #182843; color: #fff; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">
@@ -114,9 +114,7 @@ export const pdfFunc = () => {
         });
 
         pdfjsLib
-            .getDocument(
-                `/channel/downloadPdf?channelName=${channelName}&userName=${originUser}&fileName=${fileName}`
-            )
+            .getDocument("/channel/downloadPdf?fileName=" + fileName)
             .promise.then(
                 (pdf) => {
                     myState.pdf = pdf;
@@ -160,16 +158,15 @@ export const pdfFunc = () => {
         }
 
         formData.append("userName", userName);
-        formData.append("channelName", channelName);
         formData.append("content", fileData);
 
         axios
             .post("/channel/contentsUpload", formData)
             .then((res) => {
                 if (res.data.success) {
-                    createContentTab(userName, fileData.type, fileData.name);
+                    createPdfTab(userName, fileData.type, fileData.name);
                     pdfSocket.emit(
-                        "content-info",
+                        "pdf-info",
                         channelName,
                         userName,
                         fileData.name,
@@ -218,8 +215,6 @@ export const pdfFunc = () => {
         if (userName === originUser) {
             const data = {
                 fileName: deleteTagName,
-                channelName: channelName,
-                userName: originUser,
             };
 
             axios.post("/channel/contentsDelete", data).then((res) => {
@@ -314,8 +309,8 @@ export const pdfFunc = () => {
      * @Description
      * @returns
      */
-    pdfSocket.on("input-content", (data) => {
-        createContentTab(data.userName, data.fileType, data.fileName);
+    pdfSocket.on("input-pdf", (data) => {
+        createPdfTab(data.userName, data.fileType, data.fileName);
     });
 
     pdfSocket.on("pdf-remote-next", (nextPage, playingFile) => {

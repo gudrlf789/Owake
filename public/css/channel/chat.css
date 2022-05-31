@@ -67,10 +67,10 @@
         position: absolute;
         left: 0;
         bottom: 0;
-        height: 400px;
+        max-height: 400px;
+        max-width: 100vw;
         background: none;
         margin-bottom: 5px;
-        width: 80%;
         z-index: 20;
     }
 
