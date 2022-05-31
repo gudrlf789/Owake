@@ -1,6 +1,12 @@
+import { deviceScan } from "./deviceScan.js";
+
+let event = deviceScan();
+
+sendBtn.addEventListener(event, sendAction, false);
+receiveBtn.addEventListener(event, receiveAction, false);
+
 export const fileDeliverySafari = () => {
     updateDevice();
-    clickEvent();
 };
 
 let device_key = "";
@@ -95,29 +101,42 @@ function receiveFile(url) {
     $("<iframe />").attr("src", url).hide().appendTo("body");
 }
 
-function clickEvent() {
-    $("#sendBtn").click(() => {
+function checkIphoneMobile() {
+    const checkIphone = navigator.userAgent.toLowerCase();
+
+    if (checkIphone.indexOf("iphone") > -1) {
+        alert(
+            "We are sorry for that iPhone users can't use send and receive button yet."
+        );
+        return false;
+    }
+    return true;
+}
+
+function sendAction() {
+    if (checkIphoneMobile()) {
         let files = $("#fileInput").prop("files");
         if (files.length > 0) {
             createKey(files);
+        } else {
+            alert("Please select file");
         }
-    });
-
-    $("#receiveBtn").click(() => {
-        receiveKey($("#keyInput").val());
-    });
-
-    $("#keyInput").keyup((e) => {
-        if (e.keyCode == 13) {
-            $("#receiveBtn").click();
-        }
-    });
-
-    $("#keyInput").keydown(() => {
-        $("#receiveForm .form-group").removeClass("has-error");
-        $("#status")
-            .text("")
-            .removeClass("text-danger")
-            .addClass("text-success");
-    });
+    }
 }
+
+function receiveAction() {
+    if (checkIphoneMobile()) {
+        receiveKey($("#keyInput").val());
+    }
+}
+
+$("#keyInput").keyup((e) => {
+    if (e.keyCode == 13) {
+        receiveAction();
+    }
+});
+
+$("#keyInput").keydown(() => {
+    $("#receiveForm .form-group").removeClass("has-error");
+    $("#status").text("").removeClass("text-danger").addClass("text-success");
+});

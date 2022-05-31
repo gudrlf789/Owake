@@ -18,6 +18,9 @@ const videoBtn = document.querySelector("#muteVideo");
 
 let event = deviceScan();
 
+let muteActive = false;
+let muteState;
+
 let localTrackState = {
     videoTrackMuted: false,
     audioTrackMuted: false,
@@ -25,79 +28,98 @@ let localTrackState = {
 
 export const muteUtilsFunc = () => {
     $(async () => {
-        if (document.readyState == "loading") {
-            // 아직 로딩 중이므로 이벤트를 기다립니다.
-            document.addEventListener("DOMContentLoaded", muteStart, false);
-        } else {
-            // DOM이 완성되었습니다!
+        setTimeout(() => {
             muteStart();
-        }
+        }, 3000);
     });
 
     function muteStart() {
-        setTimeout(() => {
-            muteVideo();
-            muteAudio();
-        }, 3000);
+        muteActive = true;
+        muteVideo(muteActive);
+        muteAudio(muteActive);
     }
 
     audioBtn.addEventListener("click", (e) => {
         if (!localTrackState.audioTrackMuted) {
-            muteAudio();
+            muteActive = true;
+            muteAudio(muteActive);
             alert("audio mute activation");
         } else {
-            unmuteAudio();
+            muteActive = false;
+            unmuteAudio(muteActive);
             alert("audio unmute activation");
         }
     });
 
     videoBtn.addEventListener("click", (e) => {
         if (!localTrackState.videoTrackMuted) {
-            muteVideo();
+            muteActive = true;
+            muteVideo(muteActive);
             alert("video mute activation");
         } else {
-            unmuteVideo();
+            muteActive = false;
+            unmuteVideo(muteActive);
             alert("video unmute activation");
         }
     });
 };
 
-async function muteAudio() {
+async function muteAudio(mute) {
     if (!localTracks.audioTrack) return;
-    localTrackState.audioTrackMuted = true;
-    totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = false;
-    // totalUsers[options.uid].audioTrack.setMuted(true);
-    // totalUsers[options.uid].audioTrack.setEnabled(false);
-    audioIcon.className = "fa fa-microphone";
-    audioIcon.style.setProperty("color", "#fff");
+
+    if (mute === true) {
+        localTrackState.audioTrackMuted = true;
+        totalUsers[
+            options.uid
+        ].audioTrack._originMediaStreamTrack.enabled = false;
+        // totalUsers[options.uid].audioTrack.setMuted(true);
+        // totalUsers[options.uid].audioTrack.setEnabled(false);
+        audioIcon.className = "fa fa-microphone";
+        audioIcon.style.setProperty("color", "#fff");
+    }
 }
 
-async function unmuteAudio() {
+async function unmuteAudio(mute) {
     if (!localTracks.audioTrack) return;
-    localTrackState.audioTrackMuted = false;
-    totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = true;
-    // totalUsers[options.uid].audioTrack.setMuted(false);
-    // totalUsers[options.uid].audioTrack.setEnabled(true);
-    audioIcon.className = "fa fa-microphone";
-    audioIcon.style.setProperty("color", "#e07478");
+
+    if (mute === false) {
+        localTrackState.audioTrackMuted = false;
+        totalUsers[
+            options.uid
+        ].audioTrack._originMediaStreamTrack.enabled = true;
+        // totalUsers[options.uid].audioTrack.setMuted(false);
+        // totalUsers[options.uid].audioTrack.setEnabled(true);
+        audioIcon.className = "fa fa-microphone";
+        audioIcon.style.setProperty("color", "#e07478");
+    }
 }
 
-async function muteVideo() {
+async function muteVideo(mute) {
     if (!localTracks.videoTrack) return;
-    localTrackState.videoTrackMuted = true;
-    totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = false;
-    // totalUsers[options.uid].videoTrack.setMuted(true);
-    // totalUsers[options.uid].videoTrack.setEnabled(false);
-    videoIcon.className = "fas fa-video";
-    videoIcon.style.setProperty("color", "#fff");
+
+    if (mute === true) {
+        localTrackState.videoTrackMuted = true;
+        totalUsers[
+            options.uid
+        ].videoTrack._originMediaStreamTrack.enabled = false;
+        // totalUsers[options.uid].videoTrack.setMuted(true);
+        // totalUsers[options.uid].videoTrack.setEnabled(false);
+        videoIcon.className = "fas fa-video";
+        videoIcon.style.setProperty("color", "#fff");
+    }
 }
 
-async function unmuteVideo() {
+async function unmuteVideo(mute) {
     if (!localTracks.videoTrack) return;
-    localTrackState.videoTrackMuted = false;
-    totalUsers[options.uid].videoTrack._originMediaStreamTrack.enabled = true;
-    // totalUsers[options.uid].videoTrack.setMuted(false);
-    // totalUsers[options.uid].videoTrack.setEnabled(true);
-    videoIcon.className = "fas fa-video";
-    videoIcon.style.setProperty("color", "#e07478");
+
+    if (mute === false) {
+        localTrackState.videoTrackMuted = false;
+        totalUsers[
+            options.uid
+        ].videoTrack._originMediaStreamTrack.enabled = true;
+        // totalUsers[options.uid].videoTrack.setMuted(false);
+        // totalUsers[options.uid].videoTrack.setEnabled(true);
+        videoIcon.className = "fas fa-video";
+        videoIcon.style.setProperty("color", "#e07478");
+    }
 }

@@ -58,7 +58,7 @@ function sendFile(url, data) {
 function receiveKey(key) {
     $("#status").text("waiting");
     $.ajax({
-        url: "https://send-anywhere.com/web/v1/key/" + key,
+        url: `https://send-anywhere.com/web/v1/key/${key}`,
         type: "GET",
         dataType: "jsonp",
         timeout: 3000,
@@ -97,28 +97,20 @@ function checkIphoneMobile() {
 }
 
 function sendAction() {
-    // if (checkIphoneMobile()) {
-    //     let files = $("#fileInput").prop("files");
-    //     if (files.length > 0) {
-    //         createKey(files);
-    //     } else {
-    //         alert("Please select file");
-    //     }
-    // }
-
-    let files = $("#fileInput").prop("files");
-    if (files.length > 0) {
-        createKey(files);
-    } else {
-        alert("Please select file");
+    if (checkIphoneMobile()) {
+        let files = $("#fileInput").prop("files");
+        if (files.length > 0) {
+            createKey(files);
+        } else {
+            alert("Please select file");
+        }
     }
 }
 
 function receiveAction() {
-    // if (checkIphoneMobile()) {
-
-    // }
-    receiveKey($("#keyInput").val());
+    if (checkIphoneMobile()) {
+        receiveKey($("#keyInput").val());
+    }
 }
 
 $("#keyInput").keyup((e) => {

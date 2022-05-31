@@ -65,7 +65,7 @@ let isSafari =
 
 if (!isSafari) {
     fileDeliveryBtn.addEventListener(
-        event,
+        "click",
         (e) => {
             deliveryActive = !deliveryActive;
             deliveryActive ? fileDeliveryEnable() : fileDeliveryDisable();
