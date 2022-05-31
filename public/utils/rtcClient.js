@@ -66,8 +66,8 @@ $(async () => {
  * mobile Leave desktop Leave Click Event
  */
 
-const desktopLeaveBtn = document.querySelector("#desktop-leave");
-desktopLeaveBtn.addEventListener("click", leaveBtnFunc, false);
+const LeaveBtn = document.querySelector("#leaveBtn");
+LeaveBtn.addEventListener("click", leaveBtnFunc, false);
 
 function leaveBtnFunc(e) {
     const reqData = {
