@@ -51,7 +51,7 @@ whiteBoardContainer.appendChild(whiteBoardOptionsContainer);
 
 export const whiteBoardFunc = () => {
     // Click Event Handler
-    whiteBoardBtn.addEventListener(event, (e) => {
+    whiteBoardBtn.addEventListener("click", (e) => {
         handleWhiteboard(e);
     });
 
