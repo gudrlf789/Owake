@@ -1,12 +1,10 @@
 import { channelFirstSpinnerDeleteFunc } from "./parts/channel/channelFirstSpinnerDelete.js";
-
 import { mobileDisplayCtr } from "./parts/channel/chat.js";
 import { f12defense } from "./parts/channel/f12defense.js";
 import { fileDelivery } from "./parts/channel/fileDelivery.js";
 // P2P 개발할 때까지 중단
 // import { fileShare } from "./parts/channel/fileShare.js";
 import { momentShareFunc1 } from "./parts/channel/momentShare1.js";
-// import { momentShareFunc2 } from "./parts/channel/momentShare2.js";
 import { muteUtilsFunc } from "./parts/channel/muteUtils.js";
 import { recodingDeviceCtrl } from "./parts/channel/devviceSettings.js";
 import { remoteDisplay } from "./parts/channel/remoteDisplay.js";
@@ -42,31 +40,5 @@ $(() => {
     contentFunc();
     pdfFunc();
     copyInfo();
-});
-
-// FileDelivery Activator Functions
-const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
-const fileDeliveryContainer = document.querySelector("#delivery_container");
-const fileDeliveryImg = document.querySelector("#fileDelivery-img");
-
-let deliveryActive = false;
-
-fileDeliveryBtn.addEventListener(
-    "click",
-    (e) => {
-        deliveryActive = !deliveryActive;
-        deliveryActive ? fileDeliveryEnable() : fileDeliveryDisable();
-    },
-    false
-);
-
-function fileDeliveryEnable() {
-    fileDeliveryContainer.style.setProperty("display", "block");
-    fileDeliveryImg.src = "/left/file_a.svg";
     fileDelivery();
-}
-
-function fileDeliveryDisable() {
-    fileDeliveryContainer.style.setProperty("display", "none");
-    fileDeliveryImg.src = "/left/file.svg";
-}
+});
