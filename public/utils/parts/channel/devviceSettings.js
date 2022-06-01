@@ -18,7 +18,6 @@ import { deviceScan } from "./deviceScan.js";
 // Select DOM
 const deviceSettingBtn = document.querySelector(".deviceSettingBtn");
 const cameraSwitchBtn = document.querySelector("#camera-switching");
-const dropdownItem = document.querySelector(".dropdown-item");
 
 let mics = []; // all microphones devices you can use
 let cams = []; // all cameras devices you can use
@@ -78,7 +77,7 @@ export const recodingDeviceCtrl = () => {
         cancelAnimationFrame(volumeAnimation);
     });
 
-    deviceSettingBtn.addEventListener(event, handlerDeviceSetting);
+    deviceSettingBtn.addEventListener("click", handlerDeviceSetting);
 };
 
 async function getDeviceFunc() {

@@ -1,5 +1,106 @@
+<style type="text/css">
+  #spinnerModal {
+    display: inline-table;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 50%;
+    margin: auto;
+    z-index: 9999;
+  }
+
+  .st0 {
+    fill: url(#SVGID_1_);
+  }
+
+  .loading {
+
+    display: inline-block;
+
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 2000ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: spin;
+    -moz-animation-duration: 2000ms;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -ms-animation-name: spin;
+    -ms-animation-duration: 2000ms;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
+    animation-name: spin;
+    animation-duration: 2000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  svg {
+    display: inline-block;
+    width: 4rem;
+    height: 4rem;
+    vertical-align: text-bottom;
+  }
+
+  @-ms-keyframes spin {
+    from {
+      -ms-transform: rotate(0deg);
+    }
+
+    to {
+      -ms-transform: rotate(360deg);
+    }
+  }
+
+  @-moz-keyframes spin {
+    from {
+      -moz-transform: rotate(0deg);
+    }
+
+    to {
+      -moz-transform: rotate(360deg);
+    }
+  }
+
+  @-webkit-keyframes spin {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
 <div class="text-center" id="spinnerModal">
-  <div class="spinner-border text-info" role="status">
-    <span class="sr-only">Loading...</span>
+  <div class="loading">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="레이어_1" x="0px"
+      y="0px" viewBox="0 0 1920 1080" style="enable-background:new 0 0 1920 1080;" xml:space="preserve">
+      <g>
+        <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="488.9016" y1="539.7368" x2="1431.4142"
+          y2="539.7368" gradientTransform="matrix(0.9659 -0.2588 0.2588 0.9659 -106.9776 266.8982)">
+          <stop offset="0" style="stop-color:#33314A" />
+          <stop offset="0.25" style="stop-color:#50AED0" />
+          <stop offset="0.5" style="stop-color:#81C69A" />
+          <stop offset="0.75" style="stop-color:#F4C25E" />
+          <stop offset="1" style="stop-color:#EB7172" />
+        </linearGradient>
+        <path class="st0"
+          d="M838.2,84.5C586.8,151.9,437.6,410.3,505,661.7s325.8,400.6,577.2,333.2c251.4-67.4,400.6-325.8,333.2-577.2   C1348,166.4,1089.6,17.2,838.2,84.5z M1045.8,859.5C869.2,906.8,687.7,802,640.4,625.4C593.1,448.8,697.9,267.3,874.5,220   s358.1,57.5,405.4,234.1C1327.2,630.7,1222.4,812.2,1045.8,859.5z"
+          style="animation: loader 4s initial;animation-duration: 4s inherit;@keyframes .st0: 50% {transform:rotate(90deg)};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;" />
+      </g>
+    </svg>
   </div>
 </div>

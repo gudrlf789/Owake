@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const path = require("path");
 const Logger = require("./Logger");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 const log = new Logger("server");
 require("dotenv").config();
@@ -59,33 +60,35 @@ app.use(
     })
 );
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.setHeader("Access-Control-Allow-Credentials", true);
-    res.setHeader("Access-Control-Max-Age", "3600");
+// app.use((req, res, next) => {
+//     res.setHeader("Access-Control-Allow-Origin", "*");
+//     res.setHeader(
+//         "Access-Control-Allow-Methods",
+//         "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+//     );
+//     res.setHeader(
+//         "Access-Control-Allow-Headers",
+//         "Origin, X-Requested-With, Content-Type, Accept"
+//     );
+//     res.setHeader("Access-Control-Allow-Credentials", true);
+//     res.setHeader("Access-Control-Max-Age", "3600");
 
-    next();
-});
+//     next();
+// });
 
 app.use(redirectSec);
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(
+    cookieParser(process.env.COOKIE_SECRET, { sameSite: "none", secure: true })
+);
+
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/css")));
 app.use(express.static(path.join(__dirname, "../public/img")));
 app.use(express.static(path.join(__dirname, "../public/lib")));
-app.use(express.static(path.join(__dirname, "../public/lib/p5")));
-app.use(express.static(path.join(__dirname, "../public/lib/p5/addons")));
 app.use(express.static(path.join(__dirname, "../public/utils")));
 app.use(express.static(path.join(__dirname, "../public/utils/parts")));
 app.use(express.static(path.join(__dirname, "../public/icons")));
@@ -108,7 +111,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/:channelName/:channelType", (req, res) => {
-    let appID = "50b9cd9de2d54849a139e3db52e7928a";
+    let appID = "b11ab973693e46b78b73e55aae3a6a11";
 
     res.render("channel", {
         channelName: req.params.channelName,
@@ -338,6 +341,19 @@ io.sockets.on("connection", (socket) => {
 
     socket.on("join-pdf", (channelName) => {
         socket.join(channelName);
+    });
+
+    socket.on("pdf-info", (channelName, userName, fileName, fileType) => {
+        let data = {
+            userName: userName,
+            fileName: fileName,
+            fileType: fileType,
+        };
+        socket.to(channelName).emit("input-pdf", data);
+    });
+
+    socket.on("delete-origin-pdf-tag", (channelName, deleteTagName) => {
+        socket.to(channelName).emit("delete-remote-pdf-tag", deleteTagName);
     });
 
     socket.on("pdf-origin-next", (channelName, nextPage, fileName) => {

@@ -9,7 +9,6 @@ function playerNameHidden() {
     const playerName = document.querySelector("#local-player-name");
     const mainOptions = document.querySelector(".main__options");
     const subOptions = document.querySelector(".sub__options");
-    const logOutBtn = document.querySelector(".options__right");
 
     const optionsNext = document.querySelector(".nav__right");
     const optionsPrev = document.querySelector(".nav__left");
@@ -22,8 +21,6 @@ function playerNameHidden() {
         playerName.hidden = true;
         optionsNext.hidden = false;
         optionsPrev.hidden = false;
-
-        logOutBtn.hidden = false;
 
         for (let i = 0; i < mainOptions.classList.length; i++) {
             classNameSearch.main = mainOptions.classList[i];
@@ -54,8 +51,6 @@ function playerNameHidden() {
         optionsNext.hidden = false;
         optionsPrev.hidden = false;
 
-        logOutBtn.hidden = true;
-
         for (let i = 0; i < mainOptions.classList.length; i++) {
             classNameSearch.main = mainOptions.classList[i];
             classNameSearch.sub = subOptions.classList[i];
@@ -84,8 +79,6 @@ function playerNameHidden() {
         playerName.hidden = false;
         optionsNext.hidden = true;
         optionsPrev.hidden = true;
-
-        logOutBtn.hidden = false;
 
         for (let i = 0; i < mainOptions.classList.length; i++) {
             classNameSearch.main = mainOptions.classList[i];

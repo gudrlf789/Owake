@@ -8,32 +8,29 @@
     --main-light: #eeeeee;
     --button-color-Cobalt-Blue: #3b5682;
     /* --main-color: #282833; */
-    font-family: "Poppins", sans-serif;
 }
 
 .options {
     position: relative;
-    /* padding: 1rem; */
-    /* display: flex; */
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(3, 1fr); */
+    grid-template-areas: "logo options logout";
     background-color: var(--main-darklg);
-    height: calc(var(--vh, 1vh) * 7);
-    justify-content: center;
+    height: calc(var(--vh, 1vh) * 9);
 }
 
-.options__left {
+/* .options__left {
     display: flex;
     align-items: center;
     justify-content: center;
-}
+} */
 
 .options__right {
     margin-left: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 1rem;
+    margin-right: 2rem;
 }
 
 .options__button {
@@ -43,12 +40,18 @@
     align-items: center;
     /* background-color: var(--button-color-Cobalt-Blue); */
     /* height: 50px; */
-    width: 25px;
+    /* width: 25px; */
+    width: 2.6rem;
     border-radius: 5px;
     color: var(--main-light);
-    font-size: 1.2rem;
+    font-size: 1.23rem;
     margin: 0 0.5rem;
     cursor: pointer;
+}
+
+.optionsBtnImg {
+    max-height: 1.23rem;
+    min-height: 1.23rem;
 }
 
 .options__button > i {
@@ -66,13 +69,13 @@
     box-shadow: 5px 3px 3px black;
 }
 
-.optionsBtnImg {
-    max-height: 1.2rem;
-}
-
 .swiper {
     width: 100%;
     height: 100%;
+}
+
+.swiper-wrapper {
+    justify-content: center;
 }
 
 .swiper-slide {
@@ -90,6 +93,14 @@
     align-items: center;
 }
 
+.main__options {
+    display: flex;
+}
+
+.sub__options {
+    display: flex;
+}
+
 .top__nav__container {
     display: none;
 }
@@ -98,26 +109,45 @@
     display: flex;
 }
 
-@media (max-width: 768px) {
-    /* .options {
-        position: absolute;
-        right: 0;
-        bottom: 50px;
-        background-color: transparent !important;
-        flex-direction: column;
-        z-index: 20;
-    } */
+.logo-container {
+    grid-area: logo;
+}
+
+.default__options {
+    grid-area: options;
+}
+
+.options__right {
+    grid-area: logout;
+}
+
+.options__number {
+    margin-right: auto;
+    font-size: xx-small !important;
+}
+
+@media (min-width: 1280px) {
+    .main__options {
+        justify-content: flex-end;
+    }
 
     .sub__options {
-        /* margin-left: 20px; */
+        justify-content: flex-start;
     }
+}
 
+@media (min-width: 768px) {
+    .swiper-wrapper {
+        justify-content: normal;
+    }
+}
+
+@media (max-width: 768px) {
     .options {
-        display: flex;
+        grid-template-areas: "logout options";
     }
 
-    .options__button {
-        /* margin-bottom: 4px !important;
-        background-color: transparent !important; */
+    .swiper-wrapper {
+        justify-content: normal;
     }
 }

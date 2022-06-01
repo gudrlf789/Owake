@@ -1,0 +1,746 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+@import url("https://unpkg.com/@themesberg/flowbite@1.2.0/dist/flowbite.min.css");
+@import "./lib/bootstrap.min.css";
+
+@font-face {
+    font-family: "NEXON Lv2 Gothic";
+    src: url("../fonts/NEXON_Lv2_Gothic.eot");
+    src: url("../fonts/NEXON_Lv2_Gothic.woff");
+    src: url("../fonts/NEXON_Lv2_Gothic?#iefix") format("embedded-opentype");
+}
+
+@font-face {
+    font-family: "NEXON Lv2 Gothic Light";
+    src: url("../fonts/NEXON_Lv2_Gothic_Light.eot");
+    src: url("../fonts/NEXON_Lv2_Gothic_Light.woff");
+    src: url("../fonts/NEXON_Lv2_Gothic_Light?#iefix")
+        format("embedded-opentype");
+}
+
+@font-face {
+    font-family: "NEXON Lv2 Gothic Bold";
+    src: url("../fonts/NEXON_Lv2_Gothic_Bold.eot");
+    src: url("../fonts/NEXON_Lv2_Gothic_Bold.woff");
+    src: url("../fonts/NEXON_Lv2_Gothic_Bold?#iefix")
+        format("embedded-opentype");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* IOS 스크롤바 멈추는 문제 해결 */
+body,
+html {
+    -webkit-overflow-scrolling: touch;
+    touch-action: manipulation;
+    width: 100%;
+    height: 100%;
+    font-family: "NEXON Lv2 Gothic" !important;
+}
+
+.mobile-top-navbar {
+    display: none;
+}
+
+.mobile-category {
+    display: none;
+}
+
+.main-container {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.nav-container {
+    flex: 0.1;
+    background-color: #292d4e;
+    padding: 1rem;
+}
+
+.nav-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.nav-inner-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-top: 17px;
+    cursor: pointer;
+}
+
+.nav-inner-wrapper > p > span {
+    color: #fff;
+    font-size: 17px;
+}
+
+.nav-inner-wrapper > p > span:hover {
+    color: #ad8aee;
+}
+
+.logo {
+    margin-bottom: 30px;
+    position: absolute;
+    bottom: 0;
+    width: 100px;
+    cursor: pointer;
+}
+
+.logo > img {
+    width: 100%;
+}
+
+.body-container {
+    position: relative;
+    flex: 1;
+    background-color: #4db9de;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow: auto;
+}
+
+.body-container-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#select_options_search {
+    border-radius: 8px;
+    height: 30px;
+    font-size: 13px;
+    width: 100px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.search-bar {
+    display: flex;
+    margin-top: 30px;
+}
+
+.search-bar > input {
+    height: 30px;
+    width: 20vw;
+    text-align: center;
+    border-radius: 8px;
+    margin-right: 5px;
+    outline: none;
+}
+
+.search-bar > img {
+    cursor: pointer;
+}
+
+.top-body-container {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    width: 95%;
+}
+
+.middle-body-container {
+    display: flex;
+    margin: 10px;
+    width: 95%;
+}
+
+.bottom-body-container {
+    display: flex;
+    margin: 20px;
+    width: 90%;
+}
+
+.business-course-container {
+    display: table;
+    position: relative;
+    padding: 1.5rem;
+}
+
+.business-title-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.business-title {
+    display: flex;
+    align-items: end;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.business-right-subnav {
+    display: flex;
+}
+
+.business-right-subnav > button {
+    margin-right: 10px;
+}
+
+.business-right-subnav > button {
+    font-size: 14px !important;
+}
+
+.business-box-container {
+    display: flex;
+    flex-wrap: wrap;
+    -ms-overflow-style: none;
+}
+
+.business-box-container::-webkit-scrollbar {
+    display: none;
+}
+
+.business-box {
+    background-color: #fff;
+    border-radius: 11px;
+    margin: 10px;
+}
+
+.business-box-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: 250px;
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+.business-thumnail {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.business-thumnail > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.business-box-title {
+    flex: 0.2;
+}
+
+.business-box-description {
+    display: grid;
+    flex: 0.6;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.business-box-description > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-height: 23px;
+    /* max-height: 32px; */
+    -webkit-line-clamp: 1;
+    /* 표시하고자 하는 라인 수 */
+    -webkit-box-orient: vertical;
+}
+
+.business-box-footer {
+    position: relative;
+    display: flex;
+    margin-top: 15px;
+}
+
+.business-name > p > span {
+    font-size: 12px;
+}
+
+.business-users {
+    margin-left: auto;
+}
+
+.business-users > p > span {
+    font-size: 12px;
+}
+
+.business-button {
+    width: 100px;
+    box-sizing: content-box;
+    border: 1px solid #000;
+    background: #fff;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.partner-button {
+    width: 50px;
+    box-sizing: content-box;
+    text-align: center;
+    padding: 5px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+#channelPublicBtn > img {
+    margin-bottom: 8px;
+}
+
+#channelPrivateBtn > img {
+    margin-bottom: 8px;
+}
+
+/* Channel */
+
+.channelJoin-info {
+    width: 200px;
+    margin: 10px;
+    font-size: 13px;
+}
+
+.channel-info-group {
+    justify-content: center;
+}
+
+.channel-menu {
+    position: absolute;
+    right: 0;
+    margin-right: 8px;
+    display: block;
+}
+
+.channel-course-container {
+    display: table;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+}
+
+.channel-thumnail {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.channel-thumnail > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.channel-title-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.channel-title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.channel-right-subnav {
+    margin-right: 10px;
+}
+
+.channel-right-subnav > button {
+    font-size: 14px !important;
+}
+
+.channel-box-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    -ms-overflow-style: none;
+}
+
+.channel-box-container::-webkit-scrollbar {
+    display: none;
+}
+
+.channel-box {
+    display: flex;
+    background-color: #fff;
+    border-radius: 11px;
+    margin: 10px;
+}
+
+.channel-box-footer-btn-update:hover {
+    cursor: pointer;
+    color: deepskyblue;
+}
+
+.channel-box-footer-btn-remove:hover {
+    cursor: pointer;
+    color: rgb(255, 0, 0);
+}
+
+.channel-box-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: 250px;
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+.channel-thumnail-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.channel-box-title {
+    flex: 0.2;
+    font-weight: bold;
+}
+
+.channel-box-description {
+    display: grid;
+    flex: 0.6;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: gray;
+}
+
+.channel-box-description > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-height: 23px;
+    /* max-height: 32px; */
+    -webkit-line-clamp: 1;
+    /* 표시하고자 하는 라인 수 */
+    -webkit-box-orient: vertical;
+}
+
+.channel-box-footer {
+    flex: 0.2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.channel-right-subnav {
+    display: flex;
+}
+
+.channel-right-subnav > button {
+    margin-right: 10px;
+}
+
+.channel-box-footer-btn {
+    display: flex;
+}
+
+#channelUpdateBtn {
+    margin-right: 10px;
+}
+
+/* Channel Btn FileBox Btn */
+.filebox {
+    display: flex;
+}
+
+.filebox .upload-name {
+    flex: 1;
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    color: #999999;
+    font-size: 12px;
+}
+
+.filebox label {
+    flex: 0.3;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: #999999;
+    cursor: pointer;
+    height: 40px;
+    width: 100%;
+    font-size: 12px;
+}
+
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+/* Category CSS */
+.col-sm > label {
+    font-size: 12px;
+}
+
+.col-sm > select {
+    height: 40px;
+    font-size: 12px;
+}
+
+/* Radio Btn */
+.choose-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.choose-innner-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 12px;
+}
+
+.choose-innner-wrapper > p {
+    font-size: 12px;
+}
+
+/* ChannelDelete CSS */
+#channelDeleteAdminInfo {
+    display: flex;
+    justify-content: center;
+}
+
+#channelDeleteAdminInfo > div {
+    margin: 10px;
+}
+
+#channelDeleteChannelInfo {
+    display: flex;
+    justify-content: center;
+}
+
+#channelDeleteChannelInfo > div {
+    margin: 10px;
+}
+
+/* Bottom */
+
+.bottom-container-first-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    margin: 10px;
+}
+
+/* Button Container */
+.submit-container {
+    display: flex;
+}
+
+.submit-container > button {
+    margin-right: 10px;
+}
+
+#public-nickName {
+    width: 100%;
+}
+
+.channelJoinContainer {
+    width: 25rem;
+}
+
+@media (max-width: 768px) {
+    .mobile-top-navbar {
+        display: flex;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .mobile_channel-join-btn {
+        display: inline-block;
+        margin-left: auto;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .mobile_channel-join-btn > img {
+        width: 45px;
+    }
+
+    .search-icon {
+        width: 35px;
+    }
+
+    .mobile-search-input-container {
+        margin-right: 10px;
+    }
+
+    .mobile-search-input {
+        height: 100%;
+        width: 100%;
+        text-align: center;
+    }
+
+    .search-icon {
+        display: flex;
+    }
+
+    .mobile-category {
+        margin: 10px;
+        display: flex;
+    }
+
+    .mobile-category > .category-box {
+        width: 60px;
+        height: 60px;
+        border: 1px solid #000;
+        border-radius: 10px;
+        margin-right: 7px;
+        display: flex;
+        justify-content: center;
+        font-size: 12px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .mobileClickMenu {
+        width: 70px;
+        height: fit-content;
+        position: fixed;
+        bottom: 70px;
+        right: 3px;
+        z-index: 60;
+    }
+
+    .mobile-menu-btn {
+        width: 50px;
+        height: 50px;
+    }
+
+    .mobile-channel-btn > p {
+        font-weight: 400;
+        text-shadow: 1px 1px 0px #fff;
+    }
+
+    #mobileChannelPublicBtn {
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    #mobileChannelPrivateBtn {
+        text-align: center;
+    }
+
+    .search-bar {
+        display: none;
+    }
+
+    #select_options_search {
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .nav-container {
+        display: none;
+    }
+
+    .business-box-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .business-box-wrapper {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .business-box-wrapper > img {
+        width: 100%;
+    }
+
+    .business-right-subnav {
+        display: none;
+    }
+
+    .channel-right-subnav {
+        display: none;
+    }
+
+    .top-body-container {
+        height: max-content;
+    }
+
+    .middle-body-container {
+        height: max-content;
+    }
+
+    .business-course-container {
+        padding: 1rem;
+    }
+
+    .channel-course-container {
+        padding: 1rem;
+    }
+
+    .channel-box-container {
+        flex-direction: column;
+        flex-wrap: inherit;
+    }
+
+    .channel-box-container > .channel-box {
+        width: 100%;
+    }
+
+    .channel-box-wrapper {
+        width: 100%;
+    }
+
+    .channel-menu {
+        position: absolute;
+        right: 0;
+        margin-right: 8px;
+        display: block;
+    }
+
+    .bottom-container-first-wrapper {
+        flex-direction: column;
+    }
+
+    .mobile-main-fixed-menu {
+        display: block !important;
+        position: fixed;
+        bottom: 8px;
+        right: 12px;
+        font-size: 35px;
+        z-index: 50;
+    }
+
+    /* ChannelDelete CSS */
+    #channelDeleteAdminInfo {
+        flex-wrap: wrap;
+    }
+
+    #channelDeleteChannelInfo {
+        flex-wrap: wrap;
+    }
+}
+
+/* toggle Icon */
+#toggle__videoConference {
+    display: none;
+}
+
+/* textArea */
+.channelInfo__description {
+    width: 100%;
+}

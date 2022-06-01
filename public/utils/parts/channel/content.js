@@ -1,7 +1,4 @@
 import { socketInitFunc } from "./socket.js";
-import { deviceScan } from "./deviceScan.js";
-
-let event = deviceScan();
 
 export const contentFunc = () => {
     const contentSocket = socketInitFunc();
@@ -21,7 +18,7 @@ export const contentFunc = () => {
         "#local__video__container"
     );
 
-    const mediaImg = document.querySelector("#mediaImg");
+    const mediaImg = document.querySelector("#media-img");
 
     const contentShareArea = document.createElement("div");
     const contentSearchContainer = document.createElement("div");
@@ -61,7 +58,7 @@ export const contentFunc = () => {
 
     contentSearchContainer.style.setProperty("flex-direction", "column");
 
-    contentShareBtn.addEventListener(event, (e) => {
+    contentShareBtn.addEventListener("click", (e) => {
         contentShareActive = !contentShareActive;
         contentShareActive ? contentShareEnable() : contentShareDisable();
     });
@@ -96,7 +93,6 @@ export const contentFunc = () => {
 
         const formData = new FormData();
         formData.append("userName", userName);
-        formData.append("channelName", channelName);
         formData.append("content", fileData);
 
         axios
@@ -125,19 +121,16 @@ export const contentFunc = () => {
         localVideoContainer.append(contentShareArea);
         contentShareArea.hidden = false;
         contentSocket.emit("join-contents", channelName);
-        mediaImg.style.setProperty(
-            "filter",
-            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-        );
+        mediaImg.src = "/right/media_a.svg";
     }
 
     function contentShareDisable() {
         contentShareArea.hidden = true;
         contentSocket.emit("leave-contents", channelName);
-        mediaImg.style.setProperty("filter", "none");
+        mediaImg.src = "/right/media.svg";
     }
 
-    $(document).on(event, ".middleContainerBtn", (e) => {
+    $(document).on("click", ".middleContainerBtn", (e) => {
         const fileType = e.currentTarget.children[0].value;
         originUser = e.currentTarget.getAttribute("name").split("_")[0];
         choiceFile = e.currentTarget.getAttribute("name");
@@ -145,20 +138,20 @@ export const contentFunc = () => {
         if (imageType.test(fileType)) {
             contentShare.innerHTML = `
                 <div class="imageFile" name="${choiceFile}" style="overflow: auto; height:100%">
-                    <img src="${channelName}/${originUser}/${choiceFile}" style="width: 100%" />
+                    <img src="${choiceFile}" style="width: 100%" />
                 </div>
             `;
         }
         if (mediaType.test(fileType)) {
             contentShare.innerHTML = `
                 <video class="mediaFile" name="${choiceFile}" controls controlsList="nodownload" style="width: 100%; height: 100%">
-                    <source src="${channelName}/${originUser}/${choiceFile}">
+                    <source src="${choiceFile}">
                 </video>
             `;
         }
     });
 
-    $(document).on(event, ".closeContent", (e) => {
+    $(document).on("click", ".closeContent", (e) => {
         const deleteTagName = e.currentTarget.getAttribute("name");
         deleteContentTab = document.getElementsByName(deleteTagName);
         originUser = deleteTagName.split("_")[0];
@@ -166,8 +159,6 @@ export const contentFunc = () => {
         if (userName === originUser) {
             const data = {
                 fileName: deleteTagName,
-                channelName: channelName,
-                userName: originUser,
             };
 
             axios
@@ -179,8 +170,14 @@ export const contentFunc = () => {
                             channelName,
                             deleteTagName
                         );
-                        for (let i = 0; i < 2; i++) {
-                            deleteContentTab[0].remove();
+                        if (deleteContentTab.length === 2) {
+                            for (let i = 0; i < 2; i++) {
+                                deleteContentTab[0].remove();
+                            }
+                        } else {
+                            for (let i = 0; i < 3; i++) {
+                                deleteContentTab[0].remove();
+                            }
                         }
                     } else {
                         alert(res.data.deleteResult);
@@ -346,8 +343,14 @@ export const contentFunc = () => {
 
     contentSocket.on("delete-remote-tag", (deleteTagName) => {
         deleteContentTab = document.getElementsByName(deleteTagName);
-        for (let i = 0; i < 2; i++) {
-            deleteContentTab[0].remove();
+        if (deleteContentTab.length === 2) {
+            for (let i = 0; i < 2; i++) {
+                deleteContentTab[0].remove();
+            }
+        } else {
+            for (let i = 0; i < 3; i++) {
+                deleteContentTab[0].remove();
+            }
         }
     });
 };
