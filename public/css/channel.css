@@ -1,7 +1,7 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+@import "./lib/bootstrap.min.css";
 @import "./channel/momentShare.css";
 @import "./channel/chat.css";
-@import "./lib/bootstrap.min.css";
 @import "./channel/whiteBoard.css";
 @import "./channel/fileShare.css";
 @import "./channel/gridView.css";
@@ -9,7 +9,6 @@
 @import "./channel/swiper.css";
 @import "./channel/content.css";
 @import "./channel/pdfShare.css";
-@import "./channel/fileDelivery.css";
 @import "./channel/navigation.css";
 @import "./channel/icons.css";
 @import "./channel/identifire.css";
