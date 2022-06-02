@@ -1,4 +1,5 @@
 // FileDelivery Activator Functions
+const localVideoContainer = document.querySelector("#local__video__container");
 const fileDeliveryBtn = document.querySelector("#fileDeliveryBtn");
 const fileDeliveryImg = document.querySelector("#fileDelivery-img");
 
@@ -17,17 +18,37 @@ export const fileDelivery = () => {
 
 function fileDeliveryEnable() {
     fileDeliveryImg.src = "/left/file_a.svg";
-    openWindowPop();
-}
-
-function openWindowPop() {
-    let url = "https://owakeproxy.ga/api/v1/fileTransfer";
-    let name = "popup";
-    let options =
-        "top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no location=no";
-    window.open(url, name, options);
+    // openWindowPop();
+    openIframeLayer();
 }
 
 function fileDeliveryDisable() {
     fileDeliveryImg.src = "/left/file.svg";
+    closeIframeLayer();
+}
+
+function openIframeLayer() {
+    const iframeLayerContainer = document.createElement("section");
+    iframeLayerContainer.className = "fileDelivery-layer-container";
+    const iframe = document.createElement("iframe");
+    iframe.style.setProperty("position", "absolute");
+    iframe.style.setProperty("top", "0");
+    iframe.style.setProperty("left", "0");
+    iframe.style.setProperty("right", "0");
+    iframe.style.setProperty("margin", "0 auto");
+    iframe.style.setProperty("width", "100%");
+    iframe.style.setProperty("height", "100%");
+
+    let url = "https://owakeproxy.ga/api/v1/fileTransfer";
+    iframe.src = url;
+
+    iframeLayerContainer.appendChild(iframe);
+    localVideoContainer.appendChild(iframeLayerContainer);
+}
+
+function closeIframeLayer() {
+    const getFileDeliveryLayer = document.querySelector(
+        ".fileDelivery-layer-container"
+    );
+    localVideoContainer.removeChild(getFileDeliveryLayer);
 }
