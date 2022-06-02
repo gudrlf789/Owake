@@ -115,7 +115,7 @@ export const pdfFunc = () => {
 
         pdfjsLib
             .getDocument(
-                `/channel/downloadPdf?channelName=${channelName}&userName=${originUser}&fileName=${fileName}`
+                "/channel/downloadPdf?fileName=" + fileName
             )
             .promise.then(
                 (pdf) => {
@@ -160,7 +160,6 @@ export const pdfFunc = () => {
         }
 
         formData.append("userName", userName);
-        formData.append("channelName", channelName);
         formData.append("content", fileData);
 
         axios
@@ -221,20 +220,25 @@ export const pdfFunc = () => {
         if (userName === originUser) {
             const data = {
                 fileName: deleteTagName,
-                channelName: channelName,
-                userName: originUser,
             };
 
             axios.post("/channel/contentsDelete", data).then((res) => {
                 if (res.data.success && res.status === 200) {
                     pdfSocket.emit(
-                        "delete-origin-tag",
+                        "delete-origin-pdf-tag",
                         channelName,
                         deleteTagName
                     );
-                    for (let i = 0; i < 2; i++) {
-                        deleteContentTab[0].remove();
+                    if(deleteContentTab.length === 2){
+                        for (let i = 0; i < 2; i++) {
+                            deleteContentTab[0].remove();
+                        }
+                    }else{
+                        for (let i = 0; i < 3; i++) {
+                            deleteContentTab[0].remove();
+                        }
                     }
+                    
                     myState.pdf = null;
                     clearCanvas();
                 } else {
@@ -343,11 +347,18 @@ export const pdfFunc = () => {
         }
     });
 
-    pdfSocket.on("delete-remote-tag", (deleteTagName) => {
+    pdfSocket.on("delete-remote-pdf-tag", (deleteTagName) => {
         deleteContentTab = document.getElementsByName(deleteTagName);
-        for (let i = 0; i < 2; i++) {
-            deleteContentTab[0].remove();
+        if(deleteContentTab.length == 2){
+            for (let i = 0; i < 2; i++) {
+                deleteContentTab[0].remove();
+            }
+        }else{
+            for (let i = 0; i < 3; i++) {
+                deleteContentTab[0].remove();
+            }
         }
+        
         clearCanvas();
     });
 };
