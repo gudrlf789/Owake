@@ -45,23 +45,19 @@ body,
 html {
     -webkit-overflow-scrolling: auto;
     touch-action: auto;
-}
-
-body {
-    margin: 0;
     font-family: "NEXON Lv2 Gothic" !important;
+    margin: 0;
+    padding: 0;
+    background-color: var(--main-color);
 }
 
 .channel-container {
     display: flex;
-    height: 100%;
 }
 
 .left-container {
     flex: 0.1;
-
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: var(--left-navbar-color);
@@ -69,7 +65,7 @@ body {
 
 .body-container {
     flex: 0.9;
-    height: 100%;
+    background-color: var(--main-color);
 }
 
 .content-section {
