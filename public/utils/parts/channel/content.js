@@ -18,7 +18,7 @@ export const contentFunc = () => {
         "#local__video__container"
     );
 
-    const mediaImg = document.querySelector("#mediaImg");
+    const mediaImg = document.querySelector("#media-img");
 
     const contentShareArea = document.createElement("div");
     const contentSearchContainer = document.createElement("div");
@@ -121,16 +121,13 @@ export const contentFunc = () => {
         localVideoContainer.append(contentShareArea);
         contentShareArea.hidden = false;
         contentSocket.emit("join-contents", channelName);
-        mediaImg.style.setProperty(
-            "filter",
-            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-        );
+        mediaImg.src = "/right/media_a.svg";
     }
 
     function contentShareDisable() {
         contentShareArea.hidden = true;
         contentSocket.emit("leave-contents", channelName);
-        mediaImg.style.setProperty("filter", "none");
+        mediaImg.src = "/right/media.svg";
     }
 
     $(document).on("click", ".middleContainerBtn", (e) => {
@@ -164,30 +161,33 @@ export const contentFunc = () => {
                 fileName: deleteTagName,
             };
 
-            axios.post("/channel/contentsDelete", data).then((res) => {
-                if (res.data.success && res.status === 200) {
-                    contentSocket.emit(
-                        "delete-origin-tag",
-                        channelName,
-                        deleteTagName
-                    );
-                    if(deleteContentTab.length === 2){
-                        for (let i = 0; i < 2; i++) {
-                            deleteContentTab[0].remove();
+            axios
+                .post("/channel/contentsDelete", data)
+                .then((res) => {
+                    if (res.data.success && res.status === 200) {
+                        contentSocket.emit(
+                            "delete-origin-tag",
+                            channelName,
+                            deleteTagName
+                        );
+                        if (deleteContentTab.length === 2) {
+                            for (let i = 0; i < 2; i++) {
+                                deleteContentTab[0].remove();
+                            }
+                        } else {
+                            for (let i = 0; i < 3; i++) {
+                                deleteContentTab[0].remove();
+                            }
                         }
-                    }else{
-                        for (let i = 0; i < 3; i++) {
-                            deleteContentTab[0].remove();
-                        }
+                    } else {
+                        alert(res.data.deleteResult);
                     }
-                } else {
-                    alert(res.data.deleteResult);
-                }
-            }).catch((err) => {
-                alert("Error occur");
-                $("#spinnerModal").modal("hide");
-                console.log("에러: " + err);
-            });
+                })
+                .catch((err) => {
+                    alert("Error occur");
+                    $("#spinnerModal").modal("hide");
+                    console.log("에러: " + err);
+                });
         } else {
             alert("You can delete only the files you post");
         }
@@ -343,11 +343,11 @@ export const contentFunc = () => {
 
     contentSocket.on("delete-remote-tag", (deleteTagName) => {
         deleteContentTab = document.getElementsByName(deleteTagName);
-        if(deleteContentTab.length === 2) {
+        if (deleteContentTab.length === 2) {
             for (let i = 0; i < 2; i++) {
                 deleteContentTab[0].remove();
             }
-        }else{
+        } else {
             for (let i = 0; i < 3; i++) {
                 deleteContentTab[0].remove();
             }

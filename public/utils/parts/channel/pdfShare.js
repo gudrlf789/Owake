@@ -22,7 +22,7 @@ export const pdfFunc = () => {
     const localVideoContainer = document.querySelector(
         "#local__video__container"
     );
-    const pdfImg = document.querySelector("#pdfImg");
+    const pdfImg = document.querySelector("#pdf-img");
 
     const pdfShareArea = document.createElement("div");
     const pdfSearchContainer = document.createElement("div");
@@ -114,9 +114,7 @@ export const pdfFunc = () => {
         });
 
         pdfjsLib
-            .getDocument(
-                "/channel/downloadPdf?fileName=" + fileName
-            )
+            .getDocument("/channel/downloadPdf?fileName=" + fileName)
             .promise.then(
                 (pdf) => {
                     myState.pdf = pdf;
@@ -189,10 +187,7 @@ export const pdfFunc = () => {
         pdfShareBtn.style.color = "rgb(165, 199, 236)";
         pdfSocket.emit("join-pdf", channelName);
 
-        pdfImg.style.setProperty(
-            "filter",
-            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-        );
+        pdfImg.src = "/right/pdf_a.svg";
     }
 
     function pdfShareDisable() {
@@ -200,10 +195,10 @@ export const pdfFunc = () => {
         pdfShareBtn.style.color = "#fff";
         pdfSocket.emit("leave-pdf", channelName);
 
-        pdfImg.style.setProperty("filter", "none");
+        pdfImg.src = "/right/pdf.svg";
     }
 
-    $(document).on(event, ".pdfMiddleContainerBtn", async (e) => {
+    $(document).on("click", ".pdfMiddleContainerBtn", async (e) => {
         originUser = e.currentTarget.getAttribute("name").split("_")[0];
         choiceFile = e.currentTarget.getAttribute("name");
 
@@ -212,7 +207,7 @@ export const pdfFunc = () => {
         await pdfInit(choiceFile);
     });
 
-    $(document).on(event, ".pdfCloseContent", (e) => {
+    $(document).on("click", ".pdfCloseContent", (e) => {
         const deleteTagName = e.currentTarget.getAttribute("name");
         deleteContentTab = document.getElementsByName(deleteTagName);
         originUser = deleteTagName.split("_")[0];
@@ -225,20 +220,20 @@ export const pdfFunc = () => {
             axios.post("/channel/contentsDelete", data).then((res) => {
                 if (res.data.success && res.status === 200) {
                     pdfSocket.emit(
-                        "delete-origin-pdf-tag",
+                        "delete-origin-tag",
                         channelName,
                         deleteTagName
                     );
-                    if(deleteContentTab.length === 2){
+                    if (deleteContentTab.length === 2) {
                         for (let i = 0; i < 2; i++) {
                             deleteContentTab[0].remove();
                         }
-                    }else{
+                    } else {
                         for (let i = 0; i < 3; i++) {
                             deleteContentTab[0].remove();
                         }
                     }
-                    
+
                     myState.pdf = null;
                     clearCanvas();
                 } else {
@@ -250,7 +245,7 @@ export const pdfFunc = () => {
         }
     });
 
-    $(document).on(event, "#pdf-page-next", (e) => {
+    $(document).on("click", "#pdf-page-next", (e) => {
         if (myState.pdf == null || myState.currentPage > myState.pdf.numPages) {
             alert("This is last page");
             return;
@@ -267,7 +262,7 @@ export const pdfFunc = () => {
         }
     });
 
-    $(document).on(event, "#pdf-page-previous", (e) => {
+    $(document).on("click", "#pdf-page-previous", (e) => {
         if (myState.pdf == null || myState.currentPage <= 1) {
             alert("This is first page");
             return;
@@ -347,18 +342,18 @@ export const pdfFunc = () => {
         }
     });
 
-    pdfSocket.on("delete-remote-pdf-tag", (deleteTagName) => {
+    pdfSocket.on("delete-remote-tag", (deleteTagName) => {
         deleteContentTab = document.getElementsByName(deleteTagName);
-        if(deleteContentTab.length == 2){
+        if (deleteContentTab.length == 2) {
             for (let i = 0; i < 2; i++) {
                 deleteContentTab[0].remove();
             }
-        }else{
+        } else {
             for (let i = 0; i < 3; i++) {
                 deleteContentTab[0].remove();
             }
         }
-        
+
         clearCanvas();
     });
 };

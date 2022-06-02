@@ -35,7 +35,7 @@ export const fileHash = () => {
         password: "",
     };
     const identifireContainer = document.querySelector(".identifier-container");
-    const fileHashImg = document.querySelector("#fileHashImg");
+    const fileHashImg = document.querySelector("#fileHash-img");
     const identifireBtn = document.querySelector("#fileHashBtn");
 
     let identifireActivator = false;
@@ -50,7 +50,7 @@ export const fileHash = () => {
     });
 
     function identifireFunc() {
-        identifireBtn.addEventListener(event, (e) => {
+        identifireBtn.addEventListener("click", (e) => {
             identifireActivator = !identifireActivator;
             identifireActivator ? identifireEnable() : identifireDisable();
         });
@@ -58,15 +58,12 @@ export const fileHash = () => {
 
     function identifireEnable() {
         identifireContainer.hidden = false;
-        fileHashImg.style.setProperty(
-            "filter",
-            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-        );
+        fileHashImg.src = "/left/hash_a.svg";
     }
 
     function identifireDisable() {
         identifireContainer.hidden = true;
-        fileHashImg.style.setProperty("filter", "none");
+        fileHashImg.src = "/left/hash.svg";
 
         hashSocket.emit("leave-hash", channelName);
         selectFile1.value = "";
@@ -120,19 +117,19 @@ export const fileHash = () => {
         return true;
     }
 
-    originHash.addEventListener(event, (e) => {
+    originHash.addEventListener("click", (e) => {
         if (checkFileSelected(selectFile1.files)) {
             makeFileToHash(selectFile1.files[0], selectOriginalInput);
         }
     });
 
-    remoteHash.addEventListener(event, (e) => {
+    remoteHash.addEventListener("click", (e) => {
         if (checkFileSelected(selectFile2.files)) {
             makeFileToHash(selectFile2.files[0], selectComparisonInput);
         }
     });
 
-    clickVerifyFile.addEventListener(event, (e) => {
+    clickVerifyFile.addEventListener("click", (e) => {
         compareResult.style.fontWeight = "bold";
 
         if (selectOriginalInput.value === selectComparisonInput.value) {
@@ -144,12 +141,12 @@ export const fileHash = () => {
         }
     });
 
-    originCopy.addEventListener(event, (e) => {
+    originCopy.addEventListener("click", (e) => {
         navigator.clipboard.writeText(selectOriginalInput.value);
         alert("Copied the text: " + selectOriginalInput.value);
     });
 
-    comparisonCopy.addEventListener(event, (e) => {
+    comparisonCopy.addEventListener("click", (e) => {
         navigator.clipboard.writeText(selectComparisonInput.value);
         alert("Copied the text: " + selectComparisonInput.value);
     });
@@ -175,7 +172,7 @@ export const fileHash = () => {
     //         });
     // });
 
-    syncBtn.addEventListener(event, (e) => {
+    syncBtn.addEventListener("click", (e) => {
         hashSocket.emit("join-hash", channelName);
         axios
             .post("/channel/jwt", loginData)
@@ -196,7 +193,7 @@ export const fileHash = () => {
             });
     });
 
-    closeBtn.addEventListener(event, (e) => {
+    closeBtn.addEventListener("click", (e) => {
         identifireContainer.hidden = true;
         fileHashImg.style.setProperty("filter", "none");
         hashSocket.emit("leave-hash", channelName);

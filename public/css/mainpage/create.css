@@ -33,8 +33,7 @@
 }
 
 .content-channelset-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
 }
 
 .input-label-container {
@@ -46,6 +45,7 @@
 
 .input-form {
     background-color: var(--input-form-color);
+    width: 100%;
 }
 
 .label-font {
@@ -58,7 +58,7 @@
 }
 
 .govern-logo-container {
-    width: 13rem;
+    width: 15rem;
 }
 
 .govern-logo-container > img {
@@ -93,7 +93,7 @@
 .channel-options-container {
     display: flex;
     justify-content: space-between;
-    width: 7rem;
+    width: 100%;
 }
 
 .font {
@@ -141,7 +141,18 @@
 }
 
 .check-option {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 0.8rem;
+}
+
+.check-option img {
+    width: 1.7rem;
+    margin-right: 0.4rem;
+}
+
+.check-option > input {
+    margin-left: 2rem;
 }
 
 /* checkbox  */
@@ -151,7 +162,58 @@
     border-color: #ec7172;
 }
 
-/* channelset  */
+/* channel thumbnail  */
 .channel-thumbnail {
-    margin-left: auto;
+    width: 60%;
+}
+
+/* check password */
+.check-password-container {
+    display: flex;
+}
+
+.channel-options-container > * {
+    margin-right: 0.5rem;
+}
+
+.fa-circle-question {
+    color: #fff;
+    margin-right: auto;
+    display: flex;
+    margin-top: 0.2rem;
+    cursor: pointer;
+}
+
+.channel-info-container {
+    width: 100%;
+}
+
+.channel-info {
+    color: var(--font-color);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+}
+
+.channel-info > input {
+    background: #50aed0;
+}
+
+.channel-password-checkbox {
+    width: 50%;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.channel-password-checkbox > input {
+    background: #fff;
+}
+
+.channel-password-checkbox > * {
+    margin-right: 1rem;
+}
+
+.channel-password-input > input {
+    width: 50%;
+    text-indent: 10px;
 }
