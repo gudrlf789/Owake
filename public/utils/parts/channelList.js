@@ -33,20 +33,20 @@ $(document).on("click", ".channel-thumnail", (e) => {
 
 $(document).on("click", "#channelUpdateBtn", (e) => {
     const channelType =
-        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
-            .children[0].value;
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode
+            .childNodes[0].children[0].value;
     const channelName =
-        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
-            .children[1].value;
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode
+            .childNodes[0].children[1].value;
     const imageName =
-        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
-            .children[3].value;
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode
+            .childNodes[0].children[3].value;
     const channelCategory =
-        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
-            .children[4].value;
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode
+            .childNodes[0].children[4].value;
     const channelDescription =
-        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
-            .children[5].value;
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode
+            .childNodes[0].children[5].value;
 
     $("#update_channelName").val(channelName);
     $("#update_upload").val(imageName);
@@ -66,14 +66,14 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
 
 $(document).on("click", "#channelDeleteBtn", (e) => {
     const channelType =
-        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
-            .children[0].value;
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode
+            .childNodes[0].children[0].value;
     const channelName =
-        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
-            .children[1].value;
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode
+            .childNodes[0].children[1].value;
     const imageName =
-        e.currentTarget.parentNode.parentNode.parentNode.parentNode.childNodes[0]
-            .children[3].value;
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode
+            .childNodes[0].children[3].value;
 
     $("#delete_channelType").val(channelType);
     $("#delete_channelName").val(channelName);
@@ -102,9 +102,6 @@ const callChannelList = () => {
                                 `<img src='${data.imageName}' alt='' class='thumbnail-image'>` +
                                 "</a>" +
                                 "<div class='content-bottom-section'>" +
-                                "<a href='#'>" +
-                                `<img src='http://unsplash.it/36/36?gravity=center' alt='' class='channel-icon'>` +
-                                "</a>" +
                                 "<div class='content-title-container'>" +
                                 `<a href='#' class='content-title'>${data.channelName}</a>` +
                                 "<div class='channel-box-footer-icon'>" +
@@ -143,6 +140,12 @@ const callChannelList = () => {
             }
         }
     });
+};
+
+const selectOptionsChannelList = () => {
+    let selectOptions = document.querySelector(".search-select");
+    let result = selectOptions.value;
+    return result;
 };
 
 callChannelList();

@@ -1,0 +1,157 @@
+:root {
+    --content-container-color: #282833;
+    --content-white-color: #fff;
+    --input-form-color: #50aed0;
+    --label-font-color: #b1c8d0;
+    --button-color: #ec7172;
+    --font-color: #fff;
+}
+
+.content-dialog {
+    max-width: 600px;
+}
+
+.content-container {
+    background-color: var(--content-container-color);
+}
+
+.channel-content-title {
+    color: var(--content-white-color);
+}
+
+.content-label {
+    color: var(--content-white-color);
+}
+
+.content-body-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content-file-container > input[type="file"] {
+    color: #fff;
+}
+
+.content-channelset-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.input-label-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-right: 3rem;
+}
+
+.input-form {
+    background-color: var(--input-form-color);
+}
+
+.label-font {
+    color: var(--label-font-color);
+}
+
+.content-footer-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.govern-logo-container {
+    width: 13rem;
+}
+
+.govern-logo-container > img {
+    width: 100%;
+    height: 100%;
+}
+
+.join-container > button {
+    background-color: var(--button-color);
+    color: var(--content-white-color);
+}
+
+.create-channel-btn-container {
+    margin-top: auto;
+    margin-bottom: 1rem;
+}
+
+.create-channel-btn-container > button {
+    background-color: var(--button-color);
+    color: var(--content-white-color);
+}
+
+.channel-type-options-container label {
+    color: var(--button-color);
+}
+
+.channel-type-options-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.channel-options-container {
+    display: flex;
+    justify-content: space-between;
+    width: 7rem;
+}
+
+.font {
+    color: var(--font-color);
+}
+
+/* File Input */
+.js .public-inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.public-inputfile + label {
+    font-size: 0.8em;
+    color: white;
+    display: inline-block;
+    border-radius: 20px;
+    padding: 0.4rem;
+}
+
+.public-inputfile + label {
+    cursor: pointer; /* "hand" cursor */
+}
+
+.public-inputfile + label svg {
+    fill: currentColor;
+}
+
+.public-inputfile + label * {
+    pointer-events: none;
+}
+
+.no-js .public-inputfile + label {
+    display: none;
+}
+
+/* Options Check List */
+.content-options-check-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.check-option {
+    margin-bottom: 0.8rem;
+}
+
+/* checkbox  */
+
+.form-check-input:checked {
+    background-color: #ec7172;
+    border-color: #ec7172;
+}
+
+/* channelset  */
+.channel-thumbnail {
+    margin-left: auto;
+}

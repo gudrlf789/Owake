@@ -1,45 +1,45 @@
 <div class="modal fade" id="channelPrivateJoin" tabindex="-1" aria-labelledby="channelPrivateJoinModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="channelPrivateJoinModalLabel">
-                    Join Your Private Channel
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div class="modal-dialog" role="document">
+        <div class="content-container modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <!-- <h5 class="modal-title">Modal title</h5> -->
+                <h4 class="channel-content-title fw-bold mb-0">Private owake world</h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div id="channelJoin-Container">
-                    <div class="row admin-info-group">
 
-                        <div class="col-sm" hidden="true">
-                            <input id="private-channelName" type="hidden" />
-                            <input id="private-passwordChecking" type="hidden" />
-                            <input id="private-channelType" type="hidden" />
-                        </div>
+            <div class="modal-body p-5 pt-0 content-body-container">
 
-                        <div class="col-sm">
-                            <p class="nickname-text">User Name</p>
-                            <input id="private-nickName" type="text" placeholder="Enter a User Name" required />
-                        </div>
+                <div class="col-sm" hidden="true">
+                    <input id="private-channelName" type="hidden" />
+                    <input id="private-passwordChecking" type="hidden" />
+                    <input id="private-channelType" type="hidden" />
+                </div>
 
-                        <div class="col-sm">
-                            <div>
-                                <p>Channel Password</p>
-                                <input id="private-roomPassword" type="password"
-                                    placeholder="Enter a Channel Password" />
-                            </div>
-                        </div>
+                <div class="input-label-container">
+                    <label class="content-label mb-3" for="private-nickName">Name</label>
+                    <label class="content-label mb-3" for="private-roomPassword">Password</label>
+                </div>
 
+                <div class="input-container">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="input-form form-control rounded-3" id="private-nickName">
+                        <label class="label-font" for="floatingInput">Enter your name</label>
                     </div>
-                    <br><br>
-                    <div class="button-group">
-                        <button id="private-channelJoin-btn" class="btn btn-primary btn-sm">
-                            Join
-                        </button>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="input-form form-control rounded-3" id="private-roomPassword">
+                        <label class="label-font" for="floatingPassword">Enter world password</label>
                     </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer pt-3 content-footer-container">
+                <div class="logo-container">
+                    <img src="mainpage/logo.png" alt="">
+                </div>
+                <div class="join-container">
+                    <button id="private-channelJoin-btn" class="btn">Join</button>
                 </div>
             </div>
         </div>

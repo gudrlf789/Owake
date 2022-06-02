@@ -14,11 +14,7 @@
             <script type="text/javascript" src="owake_rtc.js"></script>
             <script type="text/javascript" src="owake_rtm.js"></script>
             <!-- Jquery -->
-            <!-- <script type="text/javascript" src="jquery-3.4.1.min.js"></script> -->
-            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"
-                integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ=="
-                crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
             <!-- Bootstrap -->
             <script type="text/javascript" src="bootstrap.bundle.min.js"></script>
             <!-- Socket.io -->
@@ -142,10 +138,9 @@
 
             </script>
 
-            <%- include("./popup/fileDelivery") %>
-                <%- include("./popup/deviceSettings") %>
-                    <%- include("./popup/identifier") %>
-                        <%- include("./popup/spinnerModal") %>
+            <%- include("./popup/deviceSettings") %>
+                <%- include("./popup/identifier") %>
+                    <%- include("./popup/spinnerModal") %>
 </head>
 
 <body>
@@ -180,10 +175,13 @@
     </div>
 
     <div class="options">
-        <div id="nav__btn" class="deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal"></div>
+
+        <div id="mobile-leave">
+            <span id="leaveBtn">Log<br />out</span>
+        </div>
+
         <section class="logo-container">
             <span class="logo"></span>
-            <i class="fas fa-chevron-down deviceSettingBtn" data-toggle="modal" data-target="#deviceSettingModal"></i>
         </section>
 
         <div class="swiper optionsSwiper">
@@ -194,7 +192,7 @@
 
         <section class="options__right">
             <div id="desktop-leave">
-                <i id="leaveBtn"></i>
+                <span id="leaveBtn">Logout</span>
             </div>
         </section>
     </div>

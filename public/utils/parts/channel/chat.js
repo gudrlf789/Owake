@@ -4,10 +4,10 @@ let event = deviceScan();
 export const mobileDisplayCtr = () => {
     let messagesActive = false;
 
-    const showChat = document.querySelector("#showChat");
+    const chatImg = document.querySelector("#chat-img");
     const mainRight = document.querySelector(".main__right");
 
-    showChat.addEventListener(event, () => {
+    chatImg.addEventListener("click", () => {
         messagesActive = !messagesActive;
         messagesActive ? messageEnable() : messageDisable();
     });
@@ -15,11 +15,11 @@ export const mobileDisplayCtr = () => {
     function messageEnable() {
         mainRight.hidden = false;
         mainRight.style.display = "flex";
-        showChat.children[0].style.color = "#ec6f73";
+        chatImg.src = "/right/chat_a.svg";
     }
     function messageDisable() {
         mainRight.hidden = true;
-        showChat.children[0].style.color = "#fff";
+        chatImg.src = "/right/chat.svg";
     }
 
     document.activeElement.blur();

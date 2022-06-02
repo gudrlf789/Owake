@@ -36,7 +36,7 @@ const selectLocalVideoContainer = document.querySelector(
 );
 
 const whiteBoardBtn = document.querySelector("#whiteBoard");
-const boardImg = document.querySelector("#boardImg");
+const boardImg = document.querySelector("#board-img");
 
 let whiteBoardBtnActive = false;
 
@@ -51,7 +51,7 @@ whiteBoardContainer.appendChild(whiteBoardOptionsContainer);
 
 export const whiteBoardFunc = () => {
     // Click Event Handler
-    whiteBoardBtn.addEventListener(event, (e) => {
+    whiteBoardBtn.addEventListener("click", (e) => {
         handleWhiteboard(e);
     });
 
@@ -65,10 +65,7 @@ export const whiteBoardFunc = () => {
         whiteBoardContainer.hidden = false;
         boardDrawStart();
 
-        boardImg.style.setProperty(
-            "filter",
-            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-        );
+        boardImg.src = "/right/whiteboard_a.svg";
     }
     function whiteBoardDisable() {
         whiteBoardContainer.hidden = true;
@@ -79,7 +76,7 @@ export const whiteBoardFunc = () => {
             window.sessionStorage.getItem("channel")
         );
 
-        boardImg.style.setProperty("filter", "none");
+        boardImg.src = "/right/whiteboard.svg";
     }
     // Container Publising End
 

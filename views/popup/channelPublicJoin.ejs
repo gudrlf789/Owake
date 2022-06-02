@@ -1,28 +1,38 @@
 <div class="modal fade" id="channelPublicJoin" tabindex="-1" aria-labelledby="channelPublicJoinModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content channelJoinContainer">
-            <div class="modal-header">
-                <h5 class="modal-title" id="channelPublicJoinModalLabel">
-                    Join Your Public Channel
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div class="modal-dialog" role="document">
+        <div class="content-container modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h4 class="channel-content-title fw-bold mb-0">Public owake world</h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div id="channelJoin-Container">
-                    <div class="user-info-group">
-                        <input id="public-channelName" type="hidden" />
-                        <input id="public-channelType" type="hidden" />
-                        <input id="public-nickName" type="text" placeholder="Enter Your User Name" required />
+
+            <div class="modal-body p-5 pt-0 content-body-container">
+
+                <div class="col-sm" hidden="true">
+                    <input id="public-channelName" type="hidden" />
+                    <input id="public-channelType" type="hidden" />
+                </div>
+
+                <div class="input-label-container">
+                    <label class="content-label mb-3" for="">Name</label>
+                </div>
+
+                <div class="input-container">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="input-form form-control rounded-3" id="public-nickName">
+                        <label class="label-font" for="public-nickName">Enter your name</label>
                     </div>
-                    <br><br>
-                    <div class="button-group">
-                        <button id="public-channelJoin-btn" class="btn btn-primary btn-sm">
-                            Join
-                        </button>
-                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer pt-3 content-footer-container">
+                <div class="logo-container">
+                    <img src="mainpage/logo.png" alt="">
+                </div>
+                <div class="join-container">
+                    <button id="public-channelJoin-btn" class="btn">Join</button>
                 </div>
             </div>
         </div>

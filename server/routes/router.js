@@ -18,9 +18,9 @@ const contentsStorage = multer.diskStorage({
         cb(null, `./server/contents`);
     },
     filename: function (req, file, cb) {
-        if(req.body.userName){
-            cb(null, req.body.userName + "_"  + file.originalname);
-        }else{
+        if (req.body.userName) {
+            cb(null, req.body.userName + "_" + file.originalname);
+        } else {
             cb(null, file.originalname);
         }
     },
@@ -32,8 +32,8 @@ const upload = multer({
 const contentsUpload = multer({
     storage: contentsStorage,
     limits: {
-        fileSize: 1024 * 1024 * 150
-    }
+        fileSize: 1024 * 1024 * 150,
+    },
 });
 const path = require("path");
 const axios = require("axios");
@@ -130,7 +130,8 @@ router.get("/kronosaChannelList", (req, res, next) => {
 
 router.post("/register", upload.single("image"), async (req, res) => {
     const bodyData = req.body;
-    bodyData.imageName = bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName;
+    bodyData.imageName =
+        bodyData.adminId + "_" + nowDate + "_" + bodyData.imageName;
     bodyData.userNames = [];
 
     const docName =
@@ -328,7 +329,9 @@ router.post("/enrollUserNameOnChannel", async (req, res) => {
     firebaseCollection
         .doc(docName)
         .update({
-            userNames: firebase.firestore.FieldValue.arrayUnion(bodyData.userId)
+            userNames: firebase.firestore.FieldValue.arrayUnion(
+                bodyData.userId
+            ),
         })
         .then((e) => {
             return res.status(200).json({
@@ -358,7 +361,9 @@ router.post("/removeUserNameOnChannel", async (req, res) => {
     firebaseCollection
         .doc(docName)
         .update({
-            userNames: firebase.firestore.FieldValue.arrayRemove(bodyData.userId)
+            userNames: firebase.firestore.FieldValue.arrayRemove(
+                bodyData.userId
+            ),
         })
         .then((e) => {
             return res.status(200).json({
@@ -379,100 +384,112 @@ router.post("/removeUserNameOnChannel", async (req, res) => {
  * @version 1.0
  * @descrption
  * trustOS api 사용하여 파일 해쉬화
- * 
+ *
  */
 router.post("/jwt", async (req, res) => {
     const bodyData = req.body;
     bodyData.id = process.env.trustOsId;
     bodyData.password = process.env.trustOsPassword;
 
-    axios.post('https://pro.virtualtrust.io/cert/login', bodyData)
-      .then(result => {
-        jwt = result.data.message;
-        return res.json({
-            success: true,
-        });
-      })
-      .catch(err => {
-        return res.json({
-            success: false,
-            error: err
-        });
-      });
-});
-
-router.post("/hashFile", contentsUpload.single("fileInput"), async (req, res) => {
-    const formData = new FormData();
-
-    fs.readFile("./server/contents/" + req.file.filename, (err, data) => {
-        formData.append("fileInput", data, {
-            filename: req.file.originalname,
-        });
-
-        axios.post("https://pro.virtualtrust.io/cert/certificate/file/hash", formData,
-            {
-                headers: {
-                    ...formData.getHeaders(),
-                    Authorization: "Bearer " + jwt,
-                },
-            }
-        )
+    axios
+        .post("https://pro.virtualtrust.io/cert/login", bodyData)
         .then((result) => {
-            fs.unlinkSync("./server/contents/" + req.file.originalname);
+            jwt = result.data.message;
             return res.json({
-                hashCode: result.data.output.file_hash
+                success: true,
             });
         })
         .catch((err) => {
             return res.json({
-                error: err
+                success: false,
+                error: err,
             });
         });
-    });
 });
 
-router.post("/contentsUpload", contentsUpload.single("content"), async (req, res) => {
-    return res.status(200).json({
-        success: true
-    });
-});
+router.post(
+    "/hashFile",
+    contentsUpload.single("fileInput"),
+    async (req, res) => {
+        const formData = new FormData();
+
+        fs.readFile("./server/contents/" + req.file.filename, (err, data) => {
+            formData.append("fileInput", data, {
+                filename: req.file.originalname,
+            });
+
+            axios
+                .post(
+                    "https://pro.virtualtrust.io/cert/certificate/file/hash",
+                    formData,
+                    {
+                        headers: {
+                            ...formData.getHeaders(),
+                            Authorization: "Bearer " + jwt,
+                        },
+                    }
+                )
+                .then((result) => {
+                    fs.unlinkSync("./server/contents/" + req.file.originalname);
+                    return res.json({
+                        hashCode: result.data.output.file_hash,
+                    });
+                })
+                .catch((err) => {
+                    return res.json({
+                        error: err,
+                    });
+                });
+        });
+    }
+);
+
+router.post(
+    "/contentsUpload",
+    contentsUpload.single("content"),
+    async (req, res) => {
+        return res.status(200).json({
+            success: true,
+        });
+    }
+);
 
 router.post("/contentsDelete", async (req, res) => {
     const bodyData = req.body;
 
-    if(fs.existsSync("./server/contents/" + bodyData.fileName)){
+    if (fs.existsSync("./server/contents/" + bodyData.fileName)) {
         try {
             fs.unlinkSync("./server/contents/" + bodyData.fileName);
             return res.status(200).json({
-                success: true
+                success: true,
             });
-        }catch (err) {
+        } catch (err) {
             return res.status(500).json({
                 success: false,
-                result: err
+                result: err,
             });
         }
-    }else {
+    } else {
         return res.status(200).json({
             success: false,
-            result: "No files exist"
+            result: "No files exist",
         });
     }
 });
 
-router.get("/downloadPdf", async (req,res) => {
+router.get("/downloadPdf", async (req, res) => {
     /*fs.readFile("./server/contents/리눅스 명령어.pdf", (err, data) => {
         res.setHeader('Content-Type', 'application/octet-stream');
         res.send(data);
     });*/
-    
+
     const fileName = req.query.fileName;
     res.download("./server/contents/" + fileName);
 });
 
 router.post("/channelFirstSpinnerDelete", (req, res) => {
     return res.status(200).json({
-        success: true
+        success: true,
     });
 });
 

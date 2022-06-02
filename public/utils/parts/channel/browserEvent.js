@@ -1,6 +1,5 @@
 export const browserEvent = () => {
     browserClose();
-    crossSiteCookieFunc();
 };
 
 function browserClose() {
@@ -57,16 +56,4 @@ function deleteAllCookies() {
     for (i in c)
         document.cookie =
             /^[^=]+/.exec(c[i])[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-}
-
-/**
- * @author 전형동
- * @version 1.1
- * @data 2022.05.11
- * @description
- * Cross Site Error 잡기
- */
-
-function crossSiteCookieFunc() {
-    document.cookie = "crossCookie=bar; SameSite=None; Secure";
 }
