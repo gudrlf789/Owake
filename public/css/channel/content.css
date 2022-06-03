@@ -1,9 +1,14 @@
+:root {
+    --area-color: #888888;
+    --tab-color: #fff;
+    --tab-hover: #282832;
+}
+
 #contentShareArea {
     position: absolute;
-    background: #546362;
+    background: var(--area-color);
     width: 100%;
     height: 100%;
-    /* border-radius: 25px; */
     top: 0;
     z-index: 9;
 }
@@ -12,10 +17,41 @@
     position: absolute;
     width: 100%;
     height: 92%;
-    /* border-radius: 25px; */
     border: none;
     left: 0;
     bottom: 0;
+}
+
+#contentNavContainer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    z-index: 5;
+}
+
+.contentTab {
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    background: var(--area-color);
+    border-radius: 8px;
+}
+
+.middleContainerBtn span {
+    color: var(--tab-color);
+}
+
+.closeContent {
+    margin-right: 10px;
+}
+
+.closeContent > i {
+    color: var(--tab-color);
+    cursor: pointer;
+}
+
+.closeContent > i:hover {
+    color: var(--tab-hover);
 }
 
 #contentSearchContainer {

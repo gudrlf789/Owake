@@ -67,9 +67,8 @@ export const momentShareFunc1 = () => {
 
     momentTabArea1.style.setProperty("height", "auto");
     momentTabArea1.style.setProperty("width", "100%");
-    momentTabArea1.style.setProperty("background", "#fff");
     momentTabArea1.style.setProperty("padding", "5px");
-    momentTabArea1.style.setProperty("border", "2px solid #000");
+    momentTabArea1.style.setProperty("border", "0.1px solid #000");
     momentTabArea1.style.setProperty("display", "-webkit-box");
     momentTabArea1.style.setProperty("align-items", "center");
     momentTabArea1.style.setProperty("overflow-x", "auto");

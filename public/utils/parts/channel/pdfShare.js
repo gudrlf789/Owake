@@ -70,9 +70,8 @@ export const pdfFunc = () => {
     pdfShare.append(pdfRender);
     pdfShare.frameborder = "0";
 
-    pdfTabArea.style.setProperty("height", "100%");
-    pdfTabArea.style.setProperty("background", "#fff");
-    pdfTabArea.style.setProperty("border", "2px solid #000");
+    pdfTabArea.style.setProperty("background", "#282832");
+    pdfTabArea.style.setProperty("border", "0.1px solid #000");
     pdfTabArea.style.setProperty("display", "-webkit-box");
     pdfTabArea.style.setProperty("align-items", "center");
     pdfTabArea.style.setProperty("overflow", "auto");
@@ -87,13 +86,15 @@ export const pdfFunc = () => {
 
     function createPdfTab(userName, fileType, fileName) {
         const html = `
-            <span class="pdfMiddleContainerBtn" name="${userName}_${fileName}"
-            style="margin: 0.4rem; padding: 0.2rem; background: #182843; color: #fff; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">
-                <input type="hidden" value=${fileType}>
-                <span style="background: #182843; color: white;">${userName}-${fileName}</span>
-            </span>
-            <div class="pdfCloseContent" name="${userName}_${fileName}">
-                <i class="fas fa-times"></i>
+            <div class="pdfTab">
+                <span class="pdfMiddleContainerBtn" name="${userName}_${fileName}"
+                style="margin: 0.4rem; padding: 0.2rem; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">
+                    <input type="hidden" value=${fileType}>
+                    <span>${userName}-${fileName}</span>
+                </span>
+                <div class="pdfCloseContent" name="${userName}_${fileName}">
+                    <i class="fas fa-times"></i>
+                </div>
             </div>
         `;
 
