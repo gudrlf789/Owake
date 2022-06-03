@@ -51,6 +51,12 @@ html {
     background-color: var(--main-color);
 }
 
+.slider-logo {
+    width: 12rem;
+    margin: 15px;
+    transform: translateY(250px);
+}
+
 .channel-container {
     display: flex;
 }
@@ -74,7 +80,6 @@ html {
     gap: 3rem 1rem;
     padding: 3rem 0;
     margin: 0 1.5rem;
-    border-top: 4px solid #ccc;
 }
 
 .content-section:first-child {
@@ -140,6 +145,7 @@ html {
     display: flex;
     flex-direction: column;
     width: 100%;
+    margin-top: auto;
 }
 
 .content-title {
@@ -211,6 +217,7 @@ html {
 }
 
 .web-slider {
+    position: relative;
     display: block;
     height: 400px;
     padding: 1rem;
@@ -294,14 +301,15 @@ html {
 
 .search-select {
     display: block;
-    position: absolute;
-    top: 16rem;
-    width: 55vw;
+    width: 14rem;
     height: 2.3rem;
     border-radius: 20px;
     font-size: 0.355rem;
     text-align: center;
     background-color: #fff;
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
 }
 
 .search-select option {
@@ -361,6 +369,11 @@ html {
         align-items: center;
     }
 
+    .mobile-slider-logo {
+        width: 10rem;
+        display: inline-block;
+    }
+
     .left-container {
         display: none;
     }
@@ -381,5 +394,18 @@ html {
 
     .mobile-navbtn {
         display: block;
+    }
+
+    .search-select {
+        display: block;
+        position: absolute;
+        top: 16rem;
+        width: 55vw;
+        height: 2.3rem;
+        border-radius: 20px;
+        font-size: 0.355rem;
+        text-align: center;
+        background-color: #fff;
+        right: inherit;
     }
 }
