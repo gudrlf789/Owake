@@ -198,6 +198,14 @@
     background: #50aed0;
 }
 
+.channel-description {
+    flex-direction: column;
+}
+
+.channel-info > textarea {
+    margin-top: 0.5rem;
+}
+
 .channel-password-checkbox {
     width: auto;
     justify-content: flex-start;

@@ -1,5 +1,6 @@
 let channelContainer = $(".channel-box-container");
 let partnerChannelContainer = $(".partner-channel-container");
+let selectOptions = document.querySelector(".search-select");
 
 function checkPassword(channelName, channelPassword, channelType) {
     if (channelPassword !== "") {
@@ -166,7 +167,6 @@ function channelListLoad(data) {
 }
 
 const selectOptionsChannel = () => {
-    let selectOptions = document.querySelector(".search-select");
     let result = selectOptions.value;
     console.log(result);
 
@@ -192,4 +192,4 @@ function initChannelList() {
 }
 
 window.addEventListener("load", selectOptionsChannel, false);
-window.addEventListener("input", selectOptionsChannel, false);
+selectOptions.addEventListener("input", selectOptionsChannel, false);
