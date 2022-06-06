@@ -28,7 +28,7 @@ if (selectVideo) {
 
 localVideoContainer.className = "grid-off";
 
-let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+export let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
 export let localTracks = {
     videoTrack: null,

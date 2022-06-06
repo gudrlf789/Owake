@@ -5,7 +5,16 @@
  * Audio Mixing 개발중...
  */
 
-const playButton = $(".audioPlay");
+import { localTracks, client } from "../../rtcClient.js";
+
+const playButton = document.querySelector(".audioPlay");
+const audioMixingBtn = document.querySelector("#audio-mixing");
+const audioEffectBtn = document.querySelector("#audio-effect");
+const stopAudioMixingBtn = document.querySelector("#stop-audio-mixing");
+const audioBarAndProgressBtn = document.querySelector(".audio-bar .progress");
+const volumeBtn = document.querySelector("#volume");
+const localMixingBtn = document.querySelector("#local-audio-mixing");
+
 let audioMixingProgressAnimation;
 
 let audioMixing = {
@@ -13,48 +22,40 @@ let audioMixing = {
     duration: 0,
 };
 
-export const audioMixingAndAudioEffect = () => {};
+export const audioMixingAndAudioEffect = () => {
+    audioMixingBtn.addEventListener("click", startAudioMixing, false);
+    stopAudioMixingBtn.addEventListener("click", stopAudioMixing, false);
+    audioBarAndProgressBtn.addEventListener("click", (e) => {
+        setAudioMixingPosition(e.offsetX);
+        return false;
+    });
+    volumeBtn.addEventListener("click", (e) => {
+        setVolume($("#volume").val());
+    });
 
-$("#audio-mixing").click(function (e) {
-    startAudioMixing();
-});
+    localMixingBtn.addEventListener("click", (e) => {
+        const file = $("#local-file").prop("files")[0];
+        if (!file) {
+            console.warn("please choose a audio file");
+            return;
+        }
+        startAudioMixing(file);
+        return false;
+    });
 
-$("#audio-effect").click(async function (e) {
-    // play the audio effect
-    await playEffect(1, { source: "audio.mp3" });
-    console.log("play audio effect success");
-});
+    playButton.addEventListener("click", () => {
+        if (audioMixing.state === "IDLE" || audioMixing.state === "LOADING")
+            return;
+        toggleAudioMixing();
+        return false;
+    });
+};
 
-$("#stop-audio-mixing").click(function (e) {
-    stopAudioMixing();
-    return false;
-});
-
-$(".audio-bar .progress").click(function (e) {
-    setAudioMixingPosition(e.offsetX);
-    return false;
-});
-
-$("#volume").click(function (e) {
-    setVolume($("#volume").val());
-});
-
-$("#local-audio-mixing").click(function (e) {
-    // get selected file
-    const file = $("#local-file").prop("files")[0];
-    if (!file) {
-        console.warn("please choose a audio file");
-        return;
-    }
-    startAudioMixing(file);
-    return false;
-});
-
-playButton.click(function () {
-    if (audioMixing.state === "IDLE" || audioMixing.state === "LOADING") return;
-    toggleAudioMixing();
-    return false;
-});
+// $("#audio-effect").click(async function (e) {
+//     // play the audio effect
+//     await playEffect(1, { source: "audio.mp3" });
+//     console.log("play audio effect success");
+// });
 
 function setAudioMixingPosition(clickPosX) {
     if (audioMixing.state === "IDLE" || audioMixing.state === "LOADING") return;
@@ -95,7 +96,7 @@ async function startAudioMixing(file) {
 
         audioMixing.duration = localTracks.audioMixingTrack.duration;
         $(".audio-duration").text(toMMSS(audioMixing.duration));
-        playButton.toggleClass("active", true);
+        $(".audioPlay").toggleClass("active", true);
         setAudioMixingProgress();
         audioMixing.state = "PLAYING";
         console.log("start audio mixing");
@@ -116,7 +117,7 @@ function stopAudioMixing() {
     $(".progress-bar").css("width", "0%");
     $(".audio-current-time").text(toMMSS(0));
     $(".audio-duration").text(toMMSS(0));
-    playButton.toggleClass("active", false);
+    $(".audioPlay").toggleClass("active", false);
     cancelAnimationFrame(audioMixingProgressAnimation);
     console.log("stop audio mixing");
 }
@@ -130,7 +131,7 @@ function toggleAudioMixing() {
 
         audioMixing.state = "PLAYING";
     } else {
-        playButton.toggleClass("active", false);
+        $(".audioPlay").toggleClass("active", false);
 
         // pause audio mixing
         localTracks.audioMixingTrack.pauseProcessAudioBuffer();
