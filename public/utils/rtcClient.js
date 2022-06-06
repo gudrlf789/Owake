@@ -359,6 +359,7 @@ function joinToChannel() {
         peerName: options.uid,
     });
 }
+
 async function sendToServer(msg, config = {}) {
     await socket.emit(msg, config);
 }

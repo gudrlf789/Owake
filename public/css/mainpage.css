@@ -2,6 +2,7 @@
 @import "./lib/bootstrap.min.css";
 @import "./mainpage/create.css";
 @import "./mainpage/join.css";
+@import "./mainpage/navbar.css";
 
 @font-face {
     font-family: "NEXON Lv2 Gothic";
@@ -27,6 +28,7 @@
 }
 
 :root {
+    --body-color: #343341;
     --main-color: #282833;
     --left-navbar-color: #343341;
     --thumbnail-box-color: #33314a;
@@ -48,7 +50,7 @@ html {
     font-family: "NEXON Lv2 Gothic" !important;
     margin: 0;
     padding: 0;
-    background-color: var(--main-color);
+    background-color: var(--body-color);
 }
 
 .slider-logo {
@@ -62,6 +64,7 @@ html {
 }
 
 .left-container {
+    height: 100vh;
     flex: 0.1;
     display: flex;
     justify-content: center;

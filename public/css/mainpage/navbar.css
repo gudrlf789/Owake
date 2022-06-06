@@ -1,0 +1,13 @@
+.options-navbar {
+    display: flex;
+    margin-bottom: auto;
+    margin-top: 10rem;
+}
+
+.options-navbar > li {
+    list-style: none;
+}
+
+.options-navbar > li > a {
+    text-decoration: none;
+}
