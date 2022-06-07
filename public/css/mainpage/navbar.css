@@ -8,6 +8,8 @@
     list-style: none;
 }
 
-.options-navbar > li > a {
+.options-navbar > li > span {
     text-decoration: none;
+    color: #fff;
+    cursor: pointer;
 }

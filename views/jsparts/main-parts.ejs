@@ -7,8 +7,6 @@
 <script async src="channelModify.js"></script>
 <script async src="channelRemove.js"></script>
 <script async src="channelJoin.js"></script>
-<!-- <script async src="channelKronosa.js"></script> -->
-<script async src="mobileFixedBtn.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NCY0Z9RGNH"></script>
@@ -20,7 +18,20 @@
     gtag('config', 'G-NCY0Z9RGNH');
 
     document.cookie = 'cross-site-cookie=bar; SameSite=None; Secure';
+
+    const bodyContainer = document.querySelector(".body-container");
+
+    function initBody() {
+        for (let i = 0; i < bodyContainer.children.length; i++) {
+            console.log(bodyContainer.children.length)
+            bodyContainer.children[i].remove();
+        }
+        $(".body-container").load("../map.html");
+    }
+
 </script>
+
+
 
 <!-- <script async>
     if (window.location.protocol !== "https:") {
