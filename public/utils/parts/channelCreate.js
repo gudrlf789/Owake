@@ -156,15 +156,7 @@ function createChannelData(typeFlag) {
     });
 }
 
-$("#private_create").click((e) => {
-    if (fileSizeCheck("private") === false) {
-        return alert("Please check the file size (2MB or less)");
-    } else {
-        createChannelData("private");
-    }
-});
-
-$("#public_create").click((e) => {
+$("#create-channel-btn").click((e) => {
     if (fileSizeCheck("public") === false) {
         return alert("Please check the file size (2MB or less)");
     } else {
@@ -181,12 +173,31 @@ $("input:radio[name=channelRadioBtn]").change((e) => {
     }
 });
 
+$("#password_use_yes").click((e) => {
+    $("#password_use_no").prop("checked", false);
+    $("#public_channelPassword").attr("disabled",false);
+    $("#public_channelPassword_confirm").attr("disabled",false);
+});
+
+$("#password_use_no").click((e) => {
+    $("#public_channelPassword").val("");
+    $("#public_channelPassword_confirm").val("");
+
+    $("#password_use_yes").prop("checked", false);
+    $("#public_channelPassword").attr("disabled",true);
+    $("#public_channelPassword_confirm").attr("disabled",true);
+});
+
 $("#public_file_thumnail").change((e) => {
     $("#public_upload").val(e.currentTarget.files[0].name);
 });
 
-$("#private_file_thumnail").change((e) => {
-    $("#private_upload").val(e.currentTarget.files[0].name);
+$("#public_file_thumnail").focus((e) => {
+    e.currentTarget.classList.add('has-focus');
+});
+
+$("#public_file_thumnail").blur((e) => {
+    e.currentTarget.classList.remove('has-focus');
 });
 
 function fileSizeCheck(typeFlag) {

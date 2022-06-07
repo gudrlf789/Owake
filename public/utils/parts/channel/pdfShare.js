@@ -220,7 +220,7 @@ export const pdfFunc = () => {
             axios.post("/channel/contentsDelete", data).then((res) => {
                 if (res.data.success && res.status === 200) {
                     pdfSocket.emit(
-                        "delete-origin-tag",
+                        "delete-origin-pdf-tag",
                         channelName,
                         deleteTagName
                     );
@@ -342,7 +342,7 @@ export const pdfFunc = () => {
         }
     });
 
-    pdfSocket.on("delete-remote-tag", (deleteTagName) => {
+    pdfSocket.on("delete-remote-pdf-tag", (deleteTagName) => {
         deleteContentTab = document.getElementsByName(deleteTagName);
         if (deleteContentTab.length == 2) {
             for (let i = 0; i < 2; i++) {
