@@ -27,7 +27,7 @@ function afterAction(typeFlag) {
     $(`#${typeFlag}_adminPassword`).val("");
     $(`#${typeFlag}_channelName`).val("");
     $(`#${typeFlag}_channelPassword`).val("");
-    $(`#${typeFlag}_theme-category`).val("News");
+    //$(`#${typeFlag}_theme-category`).val("News");
     $(`#${typeFlag}_file_thumnail`).val("");
     $(`#${typeFlag}_upload`).val("");
     $(`#${typeFlag}_channel-description`).val("");
@@ -56,6 +56,19 @@ function checkCreateData(typeFlag) {
     }
 }
 
+function checkIdentityPassword(typeFlag) {
+    const password = $(`#${typeFlag}_channelPassword`).val();
+    const confirmPassword = $(`#${typeFlag}_channelPassword_confirm`).val();
+    
+    if(password !== confirmPassword) {
+        alert("The passwords are not the same");
+        $(`${typeFlag}_channelPassword_confirm`).focus();
+        return false;
+    }
+
+    return true;
+};
+
 function createChannelData(typeFlag) {
     console.log(":::::: createChannelData ::::::");
     const imageType = /(.*?)\/(jpg|jpeg|png|gif|bmp)$/;
@@ -74,6 +87,8 @@ function createChannelData(typeFlag) {
         alert(`Please enter ${result.failData}`);
         return;
     }
+
+    if(!checkIdentityPassword(typeFlag)) return;
 
     new Compressor(fileSelect, {
         quality: 0.2,
@@ -94,17 +109,22 @@ function createChannelData(typeFlag) {
             );
             formData.append(
                 "channelType",
-                typeFlag === "private" ? "Private" : "Public"
+                //typeFlag === "private" ? "Private" : "Public"
+                "Public"
+            );
+            formData.append(
+                "governType",
+                $("input:checkbox[name=channelGovernType]:checked").val() === "I" ? $("#check-igovern").val() : $("#check-wegovern").val()
             );
             formData.append("channelName", $(`#${typeFlag}_channelName`).val());
             formData.append(
                 "channelPassword",
                 $(`#${typeFlag}_channelPassword`).val()
             );
-            formData.append(
+            /*formData.append(
                 "channelCategory",
                 $(`#${typeFlag}-theme-category`).val()
-            );
+            );*/
             formData.append(
                 "channelDescription",
                 $(`#${typeFlag}_channel-description`).val()
@@ -164,32 +184,31 @@ $("#create-channel-btn").click((e) => {
     }
 });
 
-$("input:radio[name=channelRadioBtn]").change((e) => {
-    if (e.currentTarget.value == "Public") {
-        $("#channelPassword").attr("disabled", true);
-        $("#channelPassword").val("");
+$("input:checkbox[name=channelGovernType]").change((e) => {
+    if(e.target.id === "check-igovern") {
+        $("#check-wegovern").prop("checked",false);
     } else {
-        $("#channelPassword").attr("disabled", false);
+        $("#check-igovern").prop("checked",false);
     }
 });
 
-$("#password_use_yes").click((e) => {
-    $("#password_use_no").prop("checked", false);
-    $("#public_channelPassword").attr("disabled",false);
-    $("#public_channelPassword_confirm").attr("disabled",false);
-});
+$("input:radio[name=channelRadioBtn]").change((e) => {
+    if (e.target.id === "password_use_yes") {
+        $("#password_use_no").prop("checked", false);
+        $("#public_channelPassword").attr("disabled",false);
+        $("#public_channelPassword_confirm").attr("disabled",false);
+    } else {
+        $("#public_channelPassword").val("");
+        $("#public_channelPassword_confirm").val("");
 
-$("#password_use_no").click((e) => {
-    $("#public_channelPassword").val("");
-    $("#public_channelPassword_confirm").val("");
-
-    $("#password_use_yes").prop("checked", false);
-    $("#public_channelPassword").attr("disabled",true);
-    $("#public_channelPassword_confirm").attr("disabled",true);
+        $("#password_use_yes").prop("checked", false);
+        $("#public_channelPassword").attr("disabled",true);
+        $("#public_channelPassword_confirm").attr("disabled",true);
+    }
 });
 
 $("#public_file_thumnail").change((e) => {
-    $("#public_upload").val(e.currentTarget.files[0].name);
+    $("#public_upload").text(e.currentTarget.files[0].name);
 });
 
 $("#public_file_thumnail").focus((e) => {

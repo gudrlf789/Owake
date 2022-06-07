@@ -11,14 +11,13 @@
             <div class="channel-type-options-container p-5 pt-0 pb-3">
                 <div class="channel-options-container">
                     <label class="content-label h5" for="check-igovern">I govern</label>
-                    <input class="form-check-input" id="check-igovern" type="checkbox" name="igovern" value="igovern">
+                    <input class="form-check-input" id="check-igovern" type="checkbox" name="channelGovernType" value="I" checked="true">
                     <i class="fa-solid fa-circle-question"></i>
                 </div>
 
                 <div class="channel-options-container">
                     <label class="content-label h5" for="check-wegovern">We govern</label>
-                    <input class="form-check-input" id="check-wegovern" type="checkbox" name="wegovern"
-                        value="wegovern">
+                    <input class="form-check-input" id="check-wegovern" type="checkbox" name="channelGovernType" value="WE">
                     <i class="fa-solid fa-circle-question"></i>
                 </div>
             </div>
@@ -59,9 +58,9 @@
 
                         <div class="channel-info channel-password-checkbox">
                             <label for="">Yes</label>
-                            <input type="radio" id="password_use_yes" class="form-check-input" checked="true">
+                            <input type="radio" id="password_use_yes" name="channelRadioBtn" class="form-check-input" checked="true">
                             <label for="">No</label>
-                            <input type="radio" id="password_use_no" class="form-check-input">
+                            <input type="radio" id="password_use_no" name="channelRadioBtn" class="form-check-input">
                         </div>
                     </div>
 
@@ -82,7 +81,7 @@
 
                     <div class="channel-info channel-description">
                         <label for="">Description</label>
-                        <textarea class="form-control" rows="3"></textarea>
+                        <textarea id="public_channel-description" class="form-control" rows="3"></textarea>
                     </div>
                 </div>
             </section>
