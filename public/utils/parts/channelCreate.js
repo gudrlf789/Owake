@@ -59,15 +59,15 @@ function checkCreateData(typeFlag) {
 function checkIdentityPassword(typeFlag) {
     const password = $(`#${typeFlag}_channelPassword`).val();
     const confirmPassword = $(`#${typeFlag}_channelPassword_confirm`).val();
-    
-    if(password !== confirmPassword) {
+
+    if (password !== confirmPassword) {
         alert("The passwords are not the same");
         $(`${typeFlag}_channelPassword_confirm`).focus();
         return false;
     }
 
     return true;
-};
+}
 
 function createChannelData(typeFlag) {
     console.log(":::::: createChannelData ::::::");
@@ -88,7 +88,7 @@ function createChannelData(typeFlag) {
         return;
     }
 
-    if(!checkIdentityPassword(typeFlag)) return;
+    if (!checkIdentityPassword(typeFlag)) return;
 
     new Compressor(fileSelect, {
         quality: 0.2,
@@ -114,7 +114,10 @@ function createChannelData(typeFlag) {
             );
             formData.append(
                 "governType",
-                $("input:checkbox[name=channelGovernType]:checked").val() === "I" ? $("#check-igovern").val() : $("#check-wegovern").val()
+                $("input:checkbox[name=channelGovernType]:checked").val() ===
+                    "I"
+                    ? $("#check-igovern").val()
+                    : $("#check-wegovern").val()
             );
             formData.append("channelName", $(`#${typeFlag}_channelName`).val());
             formData.append(
@@ -155,7 +158,7 @@ function createChannelData(typeFlag) {
                     if (res.data.success) {
                         alert("The channel has been successfully created");
                         afterAction(typeFlag);
-                        callChannelList();
+                        selectOptionsChannel();
                     } else {
                         alert(
                             `ChannelName: ${$(
@@ -185,25 +188,25 @@ $("#create-channel-btn").click((e) => {
 });
 
 $("input:checkbox[name=channelGovernType]").change((e) => {
-    if(e.target.id === "check-igovern") {
-        $("#check-wegovern").prop("checked",false);
+    if (e.target.id === "check-igovern") {
+        $("#check-wegovern").prop("checked", false);
     } else {
-        $("#check-igovern").prop("checked",false);
+        $("#check-igovern").prop("checked", false);
     }
 });
 
 $("input:radio[name=channelRadioBtn]").change((e) => {
     if (e.target.id === "password_use_yes") {
         $("#password_use_no").prop("checked", false);
-        $("#public_channelPassword").attr("disabled",false);
-        $("#public_channelPassword_confirm").attr("disabled",false);
+        $("#public_channelPassword").attr("disabled", false);
+        $("#public_channelPassword_confirm").attr("disabled", false);
     } else {
         $("#public_channelPassword").val("");
         $("#public_channelPassword_confirm").val("");
 
         $("#password_use_yes").prop("checked", false);
-        $("#public_channelPassword").attr("disabled",true);
-        $("#public_channelPassword_confirm").attr("disabled",true);
+        $("#public_channelPassword").attr("disabled", true);
+        $("#public_channelPassword_confirm").attr("disabled", true);
     }
 });
 
@@ -212,11 +215,11 @@ $("#public_file_thumnail").change((e) => {
 });
 
 $("#public_file_thumnail").focus((e) => {
-    e.currentTarget.classList.add('has-focus');
+    e.currentTarget.classList.add("has-focus");
 });
 
 $("#public_file_thumnail").blur((e) => {
-    e.currentTarget.classList.remove('has-focus');
+    e.currentTarget.classList.remove("has-focus");
 });
 
 function fileSizeCheck(typeFlag) {

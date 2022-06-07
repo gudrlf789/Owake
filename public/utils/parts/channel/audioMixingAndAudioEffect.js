@@ -12,7 +12,7 @@ const audioMixingBtn = document.querySelector("#audio-mixing");
 const audioEffectBtn = document.querySelector("#audio-effect");
 const stopAudioMixingBtn = document.querySelector("#stop-audio-mixing");
 const audioBarAndProgressBtn = document.querySelector(".audio-bar .progress");
-const volumeBtn = document.querySelector("#volume");
+const volume = document.querySelector("#volume");
 const localMixingBtn = document.querySelector("#local-audio-mixing");
 
 let audioMixingProgressAnimation;
@@ -29,8 +29,8 @@ export const audioMixingAndAudioEffect = () => {
         setAudioMixingPosition(e.offsetX);
         return false;
     });
-    volumeBtn.addEventListener("click", (e) => {
-        setVolume($("#volume").val());
+    volume.addEventListener("click", (e) => {
+        setVolume(volume.value);
     });
 
     localMixingBtn.addEventListener("click", (e) => {
