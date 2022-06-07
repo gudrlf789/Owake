@@ -87,13 +87,17 @@
 
 .channel-type-options-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .channel-options-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+.channel-options-container > * {
+    margin-right: 0.5rem;
 }
 
 .font {
@@ -156,7 +160,6 @@
 }
 
 /* checkbox  */
-
 .form-check-input:checked {
     background-color: #ec7172;
     border-color: #ec7172;
@@ -164,16 +167,12 @@
 
 /* channel thumbnail  */
 .channel-thumbnail {
-    width: 60%;
+    width: auto;
 }
 
 /* check password */
 .check-password-container {
     display: flex;
-}
-
-.channel-options-container > * {
-    margin-right: 0.5rem;
 }
 
 .fa-circle-question {
@@ -199,8 +198,16 @@
     background: #50aed0;
 }
 
+.channel-description {
+    flex-direction: column;
+}
+
+.channel-info > textarea {
+    margin-top: 0.5rem;
+}
+
 .channel-password-checkbox {
-    width: 50%;
+    width: auto;
     justify-content: flex-start;
     align-items: center;
 }
@@ -216,4 +223,24 @@
 .channel-password-input > input {
     width: 50%;
     text-indent: 10px;
+}
+
+@media (max-width: 768px) {
+    .content-label {
+        font-size: 1rem;
+    }
+
+    .channel-info > label,
+    .channel-info > input {
+        flex: 0.5;
+    }
+
+    .channel-info-container input[type="text"],
+    .channel-info-container input[type="password"] {
+        width: 100%;
+    }
+
+    .content-options-check-container {
+        display: block;
+    }
 }

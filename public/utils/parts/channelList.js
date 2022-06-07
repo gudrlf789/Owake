@@ -1,3 +1,7 @@
+let channelContainer = $(".channel-box-container");
+let partnerChannelContainer = $(".partner-channel-container");
+let selectOptions = document.querySelector(".search-select");
+
 function checkPassword(channelName, channelPassword, channelType) {
     if (channelPassword !== "") {
         $("#private-channelName").val(channelName);
@@ -83,69 +87,109 @@ $(document).on("click", "#channelDeleteBtn", (e) => {
 const callChannelList = () => {
     axios.get("/channel/list").then((res) => {
         // 자식요소 모두 삭제 후 불러오기
-        $(".channel-box-container").empty();
         if (res.data.success) {
             for (data of res.data.channelList) {
                 if (data.channelType === "Public" && data.Kronosa === "N") {
-                    $(".channel-box-container").append(
-                        $(
-                            "<article class='channel-box content-container'>" +
-                                "<div class='hidden-data'>" +
-                                `<input type='hidden' value=${data.channelType} >` +
-                                `<input type='hidden' value="${data.channelName}" >` +
-                                `<input type='hidden' value=${data.channelPassword} >` +
-                                `<input type='hidden' value="${data.imageName}" >` +
-                                `<input type='hidden' value=${data.channelCategory} >` +
-                                `<input type='hidden' value="${data.channelDescription}" >` +
-                                "</div>" +
-                                "<a href='#' class='thumbnail channel-thumnail'>" +
-                                `<img src='${data.imageName}' alt='' class='thumbnail-image'>` +
-                                "</a>" +
-                                "<div class='content-bottom-section'>" +
-                                "<div class='content-title-container'>" +
-                                `<a href='#' class='content-title'>${data.channelName}</a>` +
-                                "<div class='channel-box-footer-icon'>" +
-                                `${
-                                    data.channelPassword.length !== 0 ||
-                                    data.channelPassword !== ""
-                                        ? "<img src='./img/lock.svg' alt='' class='lock-icon'></img>"
-                                        : "<img src='./img/unlock.svg' alt='' class='unlock-icon'></img>"
-                                }` +
-                                "</div>" +
-                                "</div>" +
-                                "</div>" +
-                                "<div class='content-details'>" +
-                                `<a href='#' class='content-channel-description'>${data.channelDescription}</a>` +
-                                "<div class='content-metadata'>" +
-                                "<div class='content-channel-options'>" +
-                                "<div class='channel-box-footer-btn-update' id='channelUpdateBtn' data-toggle='modal'" +
-                                "data-target='#channelUpdateModal'>" +
-                                "<span>Edit</span>" +
-                                "</div>" +
-                                "<div class='channel-box-footer-btn-remove' id='channelDeleteBtn' data-toggle='modal'" +
-                                "data-target='#channelDeleteModal'>" +
-                                "<span>Delete</span>" +
-                                "</div>" +
-                                "</div>" +
-                                "<div class='content-symbol-button'>" +
-                                "<i class='symbol-icon'></i>" +
-                                "<span>10 On_line</span>" +
-                                "</div>" +
-                                "</div>" +
-                                "</div>" +
-                                "</article>"
-                        )
-                    );
+                    channelListLoad(data);
                 }
             }
         }
     });
 };
 
-const selectOptionsChannelList = () => {
-    let selectOptions = document.querySelector(".search-select");
-    let result = selectOptions.value;
-    return result;
+const callChannelKronosaList = () => {
+    axios.get("/channel/kronosaChannelList").then((res) => {
+        // 자식요소 모두 삭제 후 불러오기
+        for (data of res.data.channelList) {
+            if (data.channelType === "Public" && data.Kronosa === "Y") {
+                channelListLoad(data);
+            }
+        }
+    });
 };
 
-callChannelList();
+function channelListLoad(data) {
+    let container;
+    if (data.Kronosa === "N") {
+        container = ".channel-box-container";
+    } else {
+        container = ".partner-channel-container";
+    }
+    $(`${container}`).append(
+        $(
+            "<article class='channel-box content-container'>" +
+                "<div class='hidden-data'>" +
+                `<input type='hidden' value=${data.channelType} >` +
+                `<input type='hidden' value="${data.channelName}" >` +
+                `<input type='hidden' value=${data.channelPassword} >` +
+                `<input type='hidden' value="${data.imageName}" >` +
+                `<input type='hidden' value=${data.channelCategory} >` +
+                `<input type='hidden' value="${data.channelDescription}" >` +
+                "</div>" +
+                "<a href='#' class='thumbnail channel-thumnail'>" +
+                `<img src='${data.imageName}' alt='' class='thumbnail-image'>` +
+                "</a>" +
+                "<div class='content-bottom-section'>" +
+                "<div class='content-title-container'>" +
+                `<a href='#' class='content-title'>${data.channelName}</a>` +
+                "<div class='channel-box-footer-icon'>" +
+                `${
+                    data.channelPassword.length !== 0 ||
+                    data.channelPassword !== ""
+                        ? "<img src='./img/lock.svg' alt='' class='lock-icon'></img>"
+                        : "<img src='./img/unlock.svg' alt='' class='unlock-icon'></img>"
+                }` +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "<div class='content-details'>" +
+                `<a href='#' class='content-channel-description'>${data.channelDescription}</a>` +
+                "<div class='content-metadata'>" +
+                "<div class='content-channel-options'>" +
+                "<div class='channel-box-footer-btn-update' id='channelUpdateBtn' data-toggle='modal'" +
+                "data-target='#channelUpdateModal'>" +
+                "<span>Edit</span>" +
+                "</div>" +
+                "<div class='channel-box-footer-btn-remove' id='channelDeleteBtn' data-toggle='modal'" +
+                "data-target='#channelDeleteModal'>" +
+                "<span>Delete</span>" +
+                "</div>" +
+                "</div>" +
+                "<div class='content-symbol-button'>" +
+                "<i class='symbol-icon'></i>" +
+                "<span>10 On_line</span>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</article>"
+        )
+    );
+}
+
+const selectOptionsChannel = () => {
+    let result = selectOptions.value;
+    console.log(result);
+
+    if (result === "allChannel") {
+        partnerChannelContainer.css("display", "grid");
+        initChannelList();
+        callChannelList();
+        callChannelKronosaList();
+    } else if (result === "channel") {
+        partnerChannelContainer.css("display", "none");
+        initChannelList();
+        callChannelList();
+    } else if (result === "partnerChannel") {
+        partnerChannelContainer.css("display", "grid");
+        initChannelList();
+        callChannelKronosaList();
+    }
+};
+
+function initChannelList() {
+    channelContainer.empty();
+    partnerChannelContainer.empty();
+}
+
+window.addEventListener("load", selectOptionsChannel, false);
+selectOptions.addEventListener("input", selectOptionsChannel, false);
