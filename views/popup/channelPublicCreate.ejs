@@ -11,14 +11,13 @@
             <div class="channel-type-options-container p-5 pt-0 pb-3">
                 <div class="channel-options-container">
                     <label class="content-label h5" for="check-igovern">I govern</label>
-                    <input class="form-check-input" id="check-igovern" type="checkbox" name="igovern" value="igovern">
+                    <input class="form-check-input" id="check-igovern" type="checkbox" name="channelGovernType" value="I" checked="true">
                     <i class="fa-solid fa-circle-question"></i>
                 </div>
 
                 <div class="channel-options-container">
                     <label class="content-label h5" for="check-wegovern">We govern</label>
-                    <input class="form-check-input" id="check-wegovern" type="checkbox" name="wegovern"
-                        value="wegovern">
+                    <input class="form-check-input" id="check-wegovern" type="checkbox" name="channelGovernType" value="WE">
                     <i class="fa-solid fa-circle-question"></i>
                 </div>
             </div>
@@ -39,18 +38,17 @@
                 <div class="channel-info-container pb-4">
                     <div class="channel-info channel-name">
                         <label for="">Channel Name</label>
-                        <input type="text">
+                        <input type="text" id="public_channelName">
                     </div>
 
                     <div class="channel-info channel-thumbnail-container">
                         <label for=""></label>
                         <!-- Channel Thumbnail -->
                         <div class="channel-thumbnail">
-                            <input type="file" name="file" id="file" class="public-inputfile"
-                                data-multiple-caption="{count} files selected" multiple hidden="true" />
-                            <label for="file">
+                            <input type="file" name="file" id="public_file_thumnail" class="public-inputfile" hidden="true" />
+                            <label for="public_file_thumnail">
                                 <i class="fa-solid fa-image"></i>
-                                <span>Attach a channel image</span>
+                                <span id="public_upload">Attach a channel image</span>
                             </label>
                         </div>
                     </div>
@@ -60,30 +58,30 @@
 
                         <div class="channel-info channel-password-checkbox">
                             <label for="">Yes</label>
-                            <input type="checkbox" class="form-check-input">
+                            <input type="radio" id="password_use_yes" name="channelRadioBtn" class="form-check-input" checked="true">
                             <label for="">No</label>
-                            <input type="checkbox" class="form-check-input">
+                            <input type="radio" id="password_use_no" name="channelRadioBtn" class="form-check-input">
                         </div>
                     </div>
 
                     <div class="channel-info channel-password-input">
-                        <input type="password" placeholder="Password">
-                        <input type="password" placeholder="Confirm">
+                        <input type="password" placeholder="Password" id="public_channelPassword">
+                        <input type="password" placeholder="Confirm" id="public_channelPassword_confirm">
                     </div>
 
                     <div class="channel-info admin-id">
                         <label for="">Admin ID</label>
-                        <input type="text">
+                        <input type="text" id="public_adminId">
                     </div>
 
                     <div class="channel-info admin-password">
                         <label for="">Admin Password</label>
-                        <input type="password">
+                        <input type="password" id="public_adminPassword">
                     </div>
 
                     <div class="channel-info channel-description">
                         <label for="">Description</label>
-                        <textarea class="form-control" rows="3"></textarea>
+                        <textarea id="public_channel-description" class="form-control" rows="3"></textarea>
                     </div>
                 </div>
             </section>
@@ -98,7 +96,7 @@
                         </div>
 
                         <div class="cam-checkbox check-option">
-                            <input class="form-check-input" id="cam-check" type="checkbox">
+                            <input class="form-check-input" id="cam-check" type="checkbox" checked="true" disabled="true">
                         </div>
                     </div>
 
@@ -108,7 +106,7 @@
                             <label class="font">Microphone</label>
                         </div>
                         <div class="mic-checkbox check-option">
-                            <input class="form-check-input" id="mic-check" type="checkbox">
+                            <input class="form-check-input" id="mic-check" type="checkbox" checked="true" disabled="true">
                         </div>
                     </div>
 
@@ -119,7 +117,7 @@
                         </div>
 
                         <div class="file-checkbox check-option">
-                            <input class="form-check-input" id="file-check" type="checkbox">
+                            <input class="form-check-input" id="file-check" type="checkbox" checked="true" disabled="true">
                         </div>
                     </div>
 
@@ -130,7 +128,7 @@
                         </div>
 
                         <div class="verifi-checkbox check-option">
-                            <input class="form-check-input" id="verifi-check" type="checkbox">
+                            <input class="form-check-input" id="verifi-check" type="checkbox" checked="true" disabled="true">
                         </div>
                     </div>
 
@@ -142,7 +140,7 @@
                         </div>
 
                         <div class="screen-checkbox check-option">
-                            <input class="form-check-input" id="screen-check" type="checkbox">
+                            <input class="form-check-input" id="screen-check" type="checkbox" checked="true" disabled="true">
                         </div>
                     </div>
                 </div>
@@ -156,7 +154,7 @@
                         </div>
 
                         <div class="web-checkbox check-option">
-                            <input class="form-check-input" type="checkbox">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
                         </div>
 
                     </div>
@@ -168,7 +166,7 @@
                         </div>
 
                         <div class="contents-checkbox check-option">
-                            <input class="form-check-input" type="checkbox">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
                         </div>
 
                     </div>
@@ -180,7 +178,7 @@
                         </div>
 
                         <div class="pdf-checkbox check-option">
-                            <input class="form-check-input" type="checkbox">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
                         </div>
 
                     </div>
@@ -192,7 +190,7 @@
                         </div>
 
                         <div class="white-checkbox check-option">
-                            <input class="form-check-input" type="checkbox">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
                         </div>
                     </div>
 
@@ -203,7 +201,7 @@
                         </div>
 
                         <div class="chat-checkbox check-option">
-                            <input class="form-check-input" type="checkbox">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
                         </div>
 
                     </div>
@@ -220,34 +218,4 @@
             </section>
         </div>
     </div>
-
-
-    <script>
-        let inputs = document.querySelectorAll('.public-inputfile');
-        let checkPrivate = document.querySelector("#check-private");
-
-        Array.prototype.forEach.call(inputs, function (input) {
-            let label = input.nextElementSibling,
-                labelVal = label.innerHTML;
-
-            input.addEventListener('change', function (e) {
-                let fileName = '';
-                if (this.files && this.files.length > 1)
-                    fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
-                else
-                    fileName = e.target.value.split('\\').pop();
-
-                if (fileName)
-                    label.querySelector('span').innerHTML = fileName;
-                else
-                    label.innerHTML = labelVal;
-            });
-
-            // Firefox bug fix
-            input.addEventListener('focus', function () { input.classList.add('has-focus'); });
-            input.addEventListener('blur', function () { input.classList.remove('has-focus'); });
-        });
-
-
-    </script>
 </div>
