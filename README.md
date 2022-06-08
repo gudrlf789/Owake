@@ -2,6 +2,9 @@
 
 # CSS 수정
 
-수정함: public/css/mainpage.css
+수정함: public/css/channel.css
 
-메인페이지 CSS 전체 수정
+# Audio Mix 기능 추가
+
+수정함: views/channel.ejs
+수정함: views/popup/deviceSettings.ejs
