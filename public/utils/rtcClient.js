@@ -168,7 +168,7 @@ async function join() {
     } else {
         alert("인식된 디바이스가 아무것도 없음");
     }
-
+    
     videoTransformAction();
 }
 
