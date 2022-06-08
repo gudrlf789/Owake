@@ -109,6 +109,11 @@ app.get("/", (req, res, next) => {
     res.render("index");
 });
 
+app.get("/map", (req, res, next) => {
+    // res.render("index");
+    res.render("map");
+});
+
 app.get("/:channelName/:channelType/:governType", (req, res) => {
     let appID = "b11ab973693e46b78b73e55aae3a6a11";
     
