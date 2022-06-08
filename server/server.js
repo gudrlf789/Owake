@@ -264,7 +264,6 @@ io.sockets.on("connection", (socket) => {
     });
 
     socket.on("file-progress", (progress, channel) => {
-        log.debug(progress);
         socket.in(channel).emit("fs-progress", progress);
     });
 
@@ -382,6 +381,19 @@ io.sockets.on("connection", (socket) => {
 
     socket.on("leave-pdf", (channelName) => {
         socket.leave(channelName);
+    });
+
+    /**
+     * Maps Point
+     */
+
+    socket.on("map-point", (params) => {
+        socket.emit("receive-point", params);
+    });
+
+    socket.on("caller", (id) => {
+        log.debug("Caller :::", id);
+        socket.emit("Recipients", id);
     });
 
     /**
