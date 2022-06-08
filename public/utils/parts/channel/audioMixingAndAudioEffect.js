@@ -8,8 +8,6 @@
 import { localTracks, client } from "../../rtcClient.js";
 
 const playButton = document.querySelector(".audioPlay");
-const audioMixingBtn = document.querySelector("#audio-mixing");
-const audioEffectBtn = document.querySelector("#audio-effect");
 const stopAudioMixingBtn = document.querySelector("#stop-audio-mixing");
 const audioBarAndProgressBtn = document.querySelector(".audio-bar .progress");
 const volume = document.querySelector("#volume");
@@ -23,7 +21,6 @@ let audioMixing = {
 };
 
 export const audioMixingAndAudioEffect = () => {
-    audioMixingBtn.addEventListener("click", startAudioMixing, false);
     stopAudioMixingBtn.addEventListener("click", stopAudioMixing, false);
     audioBarAndProgressBtn.addEventListener("click", (e) => {
         setAudioMixingPosition(e.offsetX);
