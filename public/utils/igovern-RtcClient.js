@@ -27,7 +27,7 @@ import { closeSocketInstance } from "./igovern-channel-common.js";
  
  localVideoContainer.className = "grid-off";
  
- let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+ export let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
  
  export let localTracks = {
      videoTrack: null,
@@ -96,7 +96,7 @@ import { closeSocketInstance } from "./igovern-channel-common.js";
  
      const checkDeskTopCamera = await AgoraRTC.getCameras();
      const checkDeskTopAudio = await AgoraRTC.getMicrophones();
- 
+     
      await client.join(
          options.appid,
          options.channel,
@@ -160,13 +160,7 @@ import { closeSocketInstance } from "./igovern-channel-common.js";
          localTracks.videoTrack === undefined &&
          localTracks.audioTrack !== undefined
      ) {
-         // await client.publish(localTracks.audioTrack);
-         localTracks.audioTrack.play(localVideoBox);
-         await client.publish(
-             Object.values(localTracks.audioTrack).filter(
-                 (track) => track !== null
-             )
-         );
+         await client.publish(localTracks.audioTrack);
      } else if (
          localTracks.videoTrack !== undefined &&
          localTracks.audioTrack === undefined
