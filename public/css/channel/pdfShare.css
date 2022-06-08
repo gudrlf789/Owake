@@ -21,8 +21,14 @@
     /* border-radius: 25px; */
     border: none;
     left: 0;
-    bottom: 0;
     overflow: auto;
+}
+
+#pdfNavContainer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    z-index: 5;
 }
 
 #pdfRender {
@@ -52,15 +58,6 @@
 
 .pdfCloseContent {
     margin-right: 10px;
-}
-
-.pdfCloseContent > i {
-    color: var(--tab-color);
-    cursor: pointer;
-}
-
-.pdfCloseContent > i:hover {
-    color: var(--tab-hover);
 }
 
 #pdfTabArea {
