@@ -13,6 +13,9 @@ let mapOptions = {
     zoom: 10,
 };
 let popup;
+let peerCallBtn;
+let popupContent;
+let callBtn;
 
 function showPosition(position) {
     pointerArr.push(position.coords.latitude, position.coords.longitude);
@@ -39,6 +42,12 @@ const markerCard = (id) => {
 };
 
 function mapWrite() {
+    // Socket Start
+    socket.emit("map-point", {
+        peerID: socket.id,
+        point: mapOptions.center,
+    });
+
     map = new L.map("map", mapOptions).setView(mapOptions.center, 13);
     layer = new L.TileLayer(
         "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -48,10 +57,6 @@ function mapWrite() {
     popup = markerCard(socket.id);
     marker = new L.Marker(mapOptions.center).addTo(map).bindPopup(popup);
 
-    socket.emit("map-point", {
-        peerID: socket.id,
-        point: mapOptions.center,
-    });
 
     // 배열 비워주기
     pointerArr.length = 0;
@@ -60,15 +65,12 @@ function mapWrite() {
 socket.on("receive-point", (params) => {
     console.log(params.peerID, params.point);
 
-    popup = markerCard(params.peerID);
-    marker = new L.Marker(params.point).addTo(map).bindPopup(popup);
+    // popup = markerCard(params.peerID);
+    // marker = new L.Marker(params.point).addTo(map).bindPopup(popup);
 });
 
-function callAction() {
-    socket.emit("Caller", socket.id);
-}
-
 socket.on("Recipients", (params) => {
+    console.log(params);
     alert(`I got a call from ${params}`);
 });
 
