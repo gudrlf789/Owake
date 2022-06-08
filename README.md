@@ -1,3 +1,7 @@
-## 2022.4.4 패치노트
+## 2022.6.6 패치노트
 
-1. momentShare Socket 전송 내용 일부 수정
+# CSS 수정
+
+수정함: public/css/mainpage.css
+
+메인페이지 CSS 전체 수정

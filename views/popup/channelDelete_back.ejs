@@ -1,11 +1,14 @@
 <div class="modal fade" id="channelDeleteModal" tabindex="-1" aria-labelledby="channelDeleteModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content content-container">
+        <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title content-title" id="channelDeleteModalLabel">
+                <h5 class="modal-title" id="channelDeleteModalLabel">
                     Delete Channel
                 </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div id="channelDelete-Container">
@@ -20,7 +23,7 @@
                             <input id="delete_adminPassword" type="password" placeholder="Enter Admin Password"
                                 required>
                         </div>
-                        <input id="delete_imageName" type="hidden">
+                        <input id="delete_imageName" type="hidden" >
                     </div>
 
                     <div class="row channel-info-group" id="channelDeleteChannelInfo">

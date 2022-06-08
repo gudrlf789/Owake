@@ -5,8 +5,8 @@
 
     <div class="options-navbar">
         <li class="options-navbar-list">
-            <span onclick="initBody()">Channel</span>
-            <span onclick="initBody()">How's Going</span>
+            <span class="load-channel">Channel</span>
+            <span class="load-map" onclick="initBody()">How's Going</span>
         </li>
     </div>
 
@@ -15,3 +15,12 @@
             data-target="#channelPublicCreate">
     </div>
 </div>
+
+<script>
+    const loadChannel = document.querySelector(".load-channel")
+    loadChannel.addEventListener("click", locationHome, false)
+
+    function locationHome() {
+        location.href = "/"
+    }
+</script>

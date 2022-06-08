@@ -2,7 +2,9 @@
 @import url("https://unpkg.com/leaflet@1.8.0/dist/leaflet.css");
 @import "./lib/bootstrap.min.css";
 @import "./mainpage/create.css";
+@import "./mainpage/update.css";
 @import "./mainpage/join.css";
+@import "./mainpage/delete.css";
 @import "./mainpage/navbar.css";
 
 @font-face {

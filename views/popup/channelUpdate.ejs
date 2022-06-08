@@ -1,104 +1,90 @@
+<script>(function (e, t, n) { var r = e.querySelectorAll("html")[0]; r.className = r.className.replace(/(^|s)no-js(s|$)/, "$1js$2") })(document, window, 0);</script>
+
 <div class="modal fade" id="channelUpdateModal" tabindex="-1" aria-labelledby="updateChannelModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateChannelModalLabel">
-                    Update Channel
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div class="modal-dialog content-dialog" role="document">
+        <div class="content-container modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h3 class="channel-content-title mb-0">Update a Channel</h2>
             </div>
-            <div class="modal-body">
-                <div id="channelCreate-div">
 
-                    <div class="row choose-info-group">
-                        <div class="col-sm choose-container">
-                            <p class="choose-info-title">Channel a Channel Type</p>
-                            <div class="choose-wrapper">
-                                <div class="choose-innner-wrapper">
-                                    <input id="update_public" name="update_channelType" type="radio" value="Public"
-                                        disabled>
-                                    <p>Public Channel</p>
-                                </div>
-                                <div class="choose-innner-wrapper">
-                                    <input id="update_private" name="update_channelType" type="radio" value="Private"
-                                        disabled>
-                                    <p>Private Channel</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm choose-container">
-                            <p class="choose-info-title">Password Usage</p>
-                            <div class="choose-wrapper">
-                                <div class="choose-innner-wrapper">
-                                    <input type="radio" name="update_password" value="Y">
-                                    <p>Yes</p>
-                                </div>
-                                <div class="choose-innner-wrapper">
-                                    <input type="radio" name="update_password" value="N" checked>
-                                    <p>No</p>
-                                </div>
-                            </div>
-                        </div>
+            <section class="modal-body p-5 pt-0 pb-0 content-body-container">
+                <!-- Hidden Key Value -->
+                <div class="col-sm" hidden="true">
+                    <input id="public-channelName" type="hidden" />
+                    <input id="public-passwordChecking" type="hidden" />
+                    <input id="public-channelType" type="hidden" />
+
+                    <input id="private-channelName" type="hidden" />
+                    <input id="private-passwordChecking" type="hidden" />
+                    <input id="private-channelType" type="hidden" />
+                </div>
+
+                <!-- Channel Options / Setting -->
+                <div class="channel-info-container pb-4">
+                    <div class="channel-info channel-name">
+                        <label for="">Channel Name</label>
+                        <input type="text" id="update_channelName">
                     </div>
 
-
-                    <div class="row admin-info-group">
-                        <div class="col-sm">
-                            <p class="admin-info-text">Admin ID</p>
-                            <input id="update_adminId" type="text" placeholder="Enter the AdminID">
-                        </div>
-                        <div class="col-sm">
-                            <p class="admin-info-text">Admin Password</p>
-                            <input id="update_adminPassword" type="password" placeholder="Enter the Admin Password">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row roomSetting-info-group">
-                        <div class="col-sm">
-                            <p class="channel-info-text">Channel Name</p>
-                            <input id="update_channelName" type="text" placeholder="Enter the Channel Name" disabled>
-                        </div>
-                        <div class="col-sm">
-                            <p class="channel-info-text">Channel Password</p>
-                            <input id="update_channelPassword" type="password" placeholder="Enter the Channel Password"
-                                disabled>
-                        </div>
-                    </div>
-                    <br><br>
-                    <div class="filebox">
-                        <label for="update_file_thumnail">Channel Image(up to 2MB)</label>
-                        <input id="update_upload" class="upload-name" placeholder="Search for a channel image file"
-                            disabled />
-                        <input id="update_file_thumnail" type="file">
-                    </div>
-                    <div class="row category-info-group">
-                        <div class="col-sm">
-                            <label for="theme-category">Channel Category</label>
-                            <select id="update_theme-category">
-                                <%- include("category") %>
-                            </select>
+                    <div class="channel-info channel-thumbnail-container">
+                        <label for=""></label>
+                        <!-- Channel Thumbnail -->
+                        <div class="channel-thumbnail">
+                            <input type="file" name="file" id="public_file_thumnail" class="public-inputfile"
+                                hidden="true" />
+                            <label for="public_file_thumnail">
+                                <i class="fa-solid fa-image"></i>
+                                <span id="public_upload">Attach a channel image</span>
+                            </label>
                         </div>
                     </div>
 
-                    <div class="row description-info-group">
+                    <div class="channel-info channel-password">
+                        <label for="">Password</label>
 
-                        <div class="col-sm">
-                            <label for="description">Description</label>
-                            <textarea class="channelInfo__description" name="channel-description"
-                                id="update_channel-description" cols="20" rows="5"></textarea>
+                        <div class="channel-info channel-password-checkbox">
+                            <label for="">Yes</label>
+                            <input type="radio" id="password_use_yes" name="update_password" class="form-check-input"
+                                checked="true">
+                            <label for="">No</label>
+                            <input type="radio" id="password_use_no" name="update_password" class="form-check-input">
                         </div>
                     </div>
-                    <br><br>
-                    <div class="button-group">
-                        <button id="updateBtn" class="btn btn-primary btn-sm">
-                            Update
-                        </button>
+
+                    <div class="channel-info channel-password-input">
+                        <input type="password" placeholder="Password" id="public_channelPassword">
+                        <input type="password" placeholder="Confirm" id="public_channelPassword_confirm">
+                    </div>
+
+                    <div class="channel-info admin-id">
+                        <label for="">Admin ID</label>
+                        <input type="text" id="public_adminId">
+                    </div>
+
+                    <div class="channel-info admin-password">
+                        <label class="update-admin-label" for="">Admin Password</label>
+                        <div class="password-container update-password">
+                            <input type="password" id="public_adminPassword">
+                            <input type="password" id="public_adminPassword-confirm">
+                        </div>
+                    </div>
+
+                    <div class="channel-info channel-description">
+                        <label for="">Description</label>
+                        <textarea id="public_channel-description" class="form-control" rows="3"></textarea>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <section class="p-5 pt-0 pb-3 content-footer-container">
+                <div class="govern-logo-container">
+                    <img src="/mainpage/govern(w).svg" alt="">
+                </div>
+                <div class="create-channel-btn-container">
+                    <button id="create-channel-btn" class="btn">Update</button>
+                </div>
+            </section>
         </div>
     </div>
 </div>

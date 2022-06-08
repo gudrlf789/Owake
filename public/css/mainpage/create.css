@@ -194,7 +194,7 @@
     margin-bottom: 0.4rem;
 }
 
-.channel-info > input {
+.channel-info input {
     background: #50aed0;
 }
 
@@ -204,6 +204,7 @@
 
 .channel-info > textarea {
     margin-top: 0.5rem;
+    background: #50aed0;
 }
 
 .channel-password-checkbox {
