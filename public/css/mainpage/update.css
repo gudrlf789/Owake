@@ -1,0 +1,9 @@
+.channel-info > .update-admin-label {
+    flex: 0.5;
+    width: 100%;
+}
+
+.password-container {
+    flex-direction: column;
+    flex: 0.5;
+}

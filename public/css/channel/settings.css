@@ -2,6 +2,14 @@
     display: none !important;
 }
 
+.mixing-group > div > * {
+    margin-bottom: 6px;
+}
+
+.mixing-group > * {
+    margin-bottom: 6px;
+}
+
 @media (max-width: 768px) {
     .logoutBtn {
         display: block !important;

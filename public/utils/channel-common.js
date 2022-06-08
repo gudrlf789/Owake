@@ -21,6 +21,7 @@ import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 import { pdfFunc } from "./parts/channel/pdfShare.js";
 import { deviceScan } from "./parts/channel/deviceScan.js";
+// import { audioMixingAndAudioEffect } from "./parts/channel/audioMixingAndAudioEffect.js";
 
 $(() => {
     channelFirstSpinnerDeleteFunc();
@@ -41,4 +42,5 @@ $(() => {
     pdfFunc();
     copyInfo();
     fileDelivery();
+    // audioMixingAndAudioEffect();
 });

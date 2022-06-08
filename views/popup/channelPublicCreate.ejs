@@ -1,82 +1,221 @@
+<script>(function (e, t, n) { var r = e.querySelectorAll("html")[0]; r.className = r.className.replace(/(^|s)no-js(s|$)/, "$1js$2") })(document, window, 0);</script>
+
 <div class="modal fade" id="channelPublicCreate" tabindex="-1" aria-labelledby="publicChannelModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="publicChannelModalLabel">
-                    Create a Public Channel
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div class="modal-dialog content-dialog" role="document">
+        <div class="content-container modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h3 class="channel-content-title mb-0">Create a Channel</h2>
             </div>
-            <div class="modal-body">
-                <div id="channelCreate-div">
 
-                    <div class="container admin-info-group">
-                        <div class="row channel-info-group">
-                            <div class="channelJoin-info channelUserName-wrapper">
-                                <p class="w-100 channel-info-username">Admin ID</p>
-                                <input class="w-100" id="public_adminId" type="text" placeholder="Enter the Username"
-                                    required>
-                            </div>
+            <div class="channel-type-options-container p-5 pt-0 pb-3">
+                <div class="channel-options-container">
+                    <label class="content-label h5" for="check-igovern">I govern</label>
+                    <input class="form-check-input" id="check-igovern" type="checkbox" name="channelGovernType" value="I" checked="true">
+                    <i class="fa-solid fa-circle-question"></i>
+                </div>
 
-                            <div class="channelJoin-info channelUserPassword-wrapper">
-                                <p class="w-100 channel-info-userPassword">Admin Password</p>
-                                <input class="w-100" id="public_adminPassword" type="password"
-                                    placeholder="Enter a User Password">
-                            </div>
-                        </div>
-
-                        <div class="row channel-info-group">
-                            <div class="channelJoin-info channelName-wrapper">
-                                <p class="w-100 channel-info-name">Channel Name</p>
-                                <input class="w-100" id="public_channelName" type="text"
-                                    placeholder="Enter a Channel Name" required>
-                            </div>
-
-                            <div class="channelJoin-info channelPassword-wrapper">
-                                <p class="w-100 channel-info-password">Channel Password</p>
-                                <input class="w-100" id="public_channelPassword" type="password"
-                                    placeholder="Enter a Channel Password" required>
-                            </div>
-                        </div>
-                    </div>
-                    <br><br>
-
-                    <div class="filebox">
-                        <label for="public_file_thumnail">Channel Image(up to 2MB)</label>
-                        <input id="public_upload" class="upload-name" placeholder="Search for a channel image file"
-                            disabled />
-                        <input id="public_file_thumnail" type="file">
-                    </div>
-
-                    <div class="row category-info-group">
-                        <div class="col-sm">
-                            <label for="theme-category">Category</label>
-
-                            <select id="public-theme-category">
-                                <%- include("category") %>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row description-info-group">
-                        <div class="col-sm">
-                            <label for="description">Description</label>
-
-                            <textarea class="channelInfo__description" name="channel-description" id="public_channel-description"
-                                cols="20" rows="5"></textarea>
-                        </div>
-                    </div>
-                    <br><br>
-                    <div class="button-group">
-                        <button id="public_create" type="submit" class="btn btn-primary btn-sm">
-                            Create
-                        </button>
-                    </div>
+                <div class="channel-options-container">
+                    <label class="content-label h5" for="check-wegovern">We govern</label>
+                    <input class="form-check-input" id="check-wegovern" type="checkbox" name="channelGovernType" value="WE">
+                    <i class="fa-solid fa-circle-question"></i>
                 </div>
             </div>
+
+            <section class="modal-body p-5 pt-0 pb-0 content-body-container">
+                <!-- Hidden Key Value -->
+                <div class="col-sm" hidden="true">
+                    <input id="public-channelName" type="hidden" />
+                    <input id="public-passwordChecking" type="hidden" />
+                    <input id="public-channelType" type="hidden" />
+
+                    <input id="private-channelName" type="hidden" />
+                    <input id="private-passwordChecking" type="hidden" />
+                    <input id="private-channelType" type="hidden" />
+                </div>
+
+                <!-- Channel Options / Setting -->
+                <div class="channel-info-container pb-4">
+                    <div class="channel-info channel-name">
+                        <label for="">Channel Name</label>
+                        <input type="text" id="public_channelName">
+                    </div>
+
+                    <div class="channel-info channel-thumbnail-container">
+                        <label for=""></label>
+                        <!-- Channel Thumbnail -->
+                        <div class="channel-thumbnail">
+                            <input type="file" name="file" id="public_file_thumnail" class="public-inputfile" hidden="true" />
+                            <label for="public_file_thumnail">
+                                <i class="fa-solid fa-image"></i>
+                                <span id="public_upload">Attach a channel image</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="channel-info channel-password">
+                        <label for="">Password</label>
+
+                        <div class="channel-info channel-password-checkbox">
+                            <label for="">Yes</label>
+                            <input type="radio" id="password_use_yes" name="channelRadioBtn" class="form-check-input" checked="true">
+                            <label for="">No</label>
+                            <input type="radio" id="password_use_no" name="channelRadioBtn" class="form-check-input">
+                        </div>
+                    </div>
+
+                    <div class="channel-info channel-password-input">
+                        <input type="password" placeholder="Password" id="public_channelPassword">
+                        <input type="password" placeholder="Confirm" id="public_channelPassword_confirm">
+                    </div>
+
+                    <div class="channel-info admin-id">
+                        <label for="">Admin ID</label>
+                        <input type="text" id="public_adminId">
+                    </div>
+
+                    <div class="channel-info admin-password">
+                        <label for="">Admin Password</label>
+                        <input type="password" id="public_adminPassword">
+                    </div>
+
+                    <div class="channel-info channel-description">
+                        <label for="">Description</label>
+                        <textarea id="public_channel-description" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <section class="p-5 pt-0 pb-3 content-options-check-container">
+                <div class="left-options">
+                    <div class="cam-check check-option">
+
+                        <div class="check-img">
+                            <img src="svg/cam.svg" alt="Cam">
+                            <label class="font" for="">Camera</label>
+                        </div>
+
+                        <div class="cam-checkbox check-option">
+                            <input class="form-check-input" id="cam-check" type="checkbox" checked="true" disabled="true">
+                        </div>
+                    </div>
+
+                    <div class="mic-check check-option">
+                        <div class="check-img">
+                            <img src="svg/mic.svg" alt="Mic">
+                            <label class="font">Microphone</label>
+                        </div>
+                        <div class="mic-checkbox check-option">
+                            <input class="form-check-input" id="mic-check" type="checkbox" checked="true" disabled="true">
+                        </div>
+                    </div>
+
+                    <div class="file-check check-option">
+                        <div class="check-img">
+                            <img src="svg/file.svg" alt="File">
+                            <label class="font">File Sharing</label>
+                        </div>
+
+                        <div class="file-checkbox check-option">
+                            <input class="form-check-input" id="file-check" type="checkbox" checked="true" disabled="true">
+                        </div>
+                    </div>
+
+                    <div class="verifi-check check-option">
+                        <div class="check-img">
+                            <img src="svg/identifire.svg" alt="Verification">
+                            <label class="font">Verification</label>
+                        </div>
+
+                        <div class="verifi-checkbox check-option">
+                            <input class="form-check-input" id="verifi-check" type="checkbox" checked="true" disabled="true">
+                        </div>
+                    </div>
+
+                    <div class="screen-check check-option">
+
+                        <div class="check-img">
+                            <img src="svg/screen.svg" alt="Screen Share">
+                            <label class="font">Screen sharing</label>
+                        </div>
+
+                        <div class="screen-checkbox check-option">
+                            <input class="form-check-input" id="screen-check" type="checkbox" checked="true" disabled="true">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-options">
+                    <div class="web-check check-option">
+
+                        <div class="check-img">
+                            <img src="svg/web.svg" alt="Web Share">
+                            <label class="font">Web Sharing</label>
+                        </div>
+
+                        <div class="web-checkbox check-option">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
+                        </div>
+
+                    </div>
+
+                    <div class="contents-check check-option">
+                        <div class="check-img">
+                            <img src="svg/media.svg" alt="Contents Share">
+                            <label class="font">Contents sharing</label>
+                        </div>
+
+                        <div class="contents-checkbox check-option">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
+                        </div>
+
+                    </div>
+
+                    <div class="pdf-check check-option">
+                        <div class="check-img">
+                            <img src="svg/pdf.svg" alt="PDF Share">
+                            <label class="font">PDF sharing</label>
+                        </div>
+
+                        <div class="pdf-checkbox check-option">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
+                        </div>
+
+                    </div>
+
+                    <div class="white-check check-option">
+                        <div class="check-img">
+                            <img src="svg/whiteboard.svg" alt="White Board">
+                            <label class="font">White board</label>
+                        </div>
+
+                        <div class="white-checkbox check-option">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
+                        </div>
+                    </div>
+
+                    <div class="chat-check check-option">
+                        <div class="check-img">
+                            <img src="svg/chat.svg" alt="Chat">
+                            <label class="font">Chat</label>
+                        </div>
+
+                        <div class="chat-checkbox check-option">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="p-5 pt-0 pb-3 content-footer-container">
+                <div class="govern-logo-container">
+                    <img src="/mainpage/govern(w).svg" alt="">
+                </div>
+                <div class="create-channel-btn-container">
+                    <button id="create-channel-btn" class="btn">Create</button>
+                </div>
+            </section>
         </div>
     </div>
 </div>

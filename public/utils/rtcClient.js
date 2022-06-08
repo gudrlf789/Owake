@@ -28,7 +28,7 @@ if (selectVideo) {
 
 localVideoContainer.className = "grid-off";
 
-let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+export let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
 export let localTracks = {
     videoTrack: null,
@@ -344,6 +344,7 @@ function joinToChannel() {
         peerName: options.uid,
     });
 }
+
 async function sendToServer(msg, config = {}) {
     await socket.emit(msg, config);
 }

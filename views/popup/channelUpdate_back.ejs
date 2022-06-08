@@ -1,0 +1,104 @@
+<div class="modal fade" id="channelUpdateModal" tabindex="-1" aria-labelledby="updateChannelModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateChannelModalLabel">
+                    Update Channel
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="channelCreate-div">
+
+                    <div class="row choose-info-group">
+                        <div class="col-sm choose-container">
+                            <p class="choose-info-title">Channel a Channel Type</p>
+                            <div class="choose-wrapper">
+                                <div class="choose-innner-wrapper">
+                                    <input id="update_public" name="update_channelType" type="radio" value="Public"
+                                        disabled>
+                                    <p>Public Channel</p>
+                                </div>
+                                <div class="choose-innner-wrapper">
+                                    <input id="update_private" name="update_channelType" type="radio" value="Private"
+                                        disabled>
+                                    <p>Private Channel</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm choose-container">
+                            <p class="choose-info-title">Password Usage</p>
+                            <div class="choose-wrapper">
+                                <div class="choose-innner-wrapper">
+                                    <input type="radio" name="update_password" value="Y">
+                                    <p>Yes</p>
+                                </div>
+                                <div class="choose-innner-wrapper">
+                                    <input type="radio" name="update_password" value="N" checked>
+                                    <p>No</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row admin-info-group">
+                        <div class="col-sm">
+                            <p class="admin-info-text">Admin ID</p>
+                            <input id="update_adminId" type="text" placeholder="Enter the AdminID">
+                        </div>
+                        <div class="col-sm">
+                            <p class="admin-info-text">Admin Password</p>
+                            <input id="update_adminPassword" type="password" placeholder="Enter the Admin Password">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row roomSetting-info-group">
+                        <div class="col-sm">
+                            <p class="channel-info-text">Channel Name</p>
+                            <input id="update_channelName" type="text" placeholder="Enter the Channel Name" disabled>
+                        </div>
+                        <div class="col-sm">
+                            <p class="channel-info-text">Channel Password</p>
+                            <input id="update_channelPassword" type="password" placeholder="Enter the Channel Password"
+                                disabled>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="filebox">
+                        <label for="update_file_thumnail">Channel Image(up to 2MB)</label>
+                        <input id="update_upload" class="upload-name" placeholder="Search for a channel image file"
+                            disabled />
+                        <input id="update_file_thumnail" type="file">
+                    </div>
+                    <div class="row category-info-group">
+                        <div class="col-sm">
+                            <label for="theme-category">Channel Category</label>
+                            <select id="update_theme-category">
+                                <%- include("category") %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row description-info-group">
+
+                        <div class="col-sm">
+                            <label for="description">Description</label>
+                            <textarea class="channelInfo__description" name="channel-description"
+                                id="update_channel-description" cols="20" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="button-group">
+                        <button id="updateBtn" class="btn btn-primary btn-sm">
+                            Update
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

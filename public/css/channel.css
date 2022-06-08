@@ -1,7 +1,7 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+@import "./lib/bootstrap.min.css";
 @import "./channel/momentShare.css";
 @import "./channel/chat.css";
-@import "./lib/bootstrap.min.css";
 @import "./channel/whiteBoard.css";
 @import "./channel/fileShare.css";
 @import "./channel/gridView.css";
@@ -9,7 +9,6 @@
 @import "./channel/swiper.css";
 @import "./channel/content.css";
 @import "./channel/pdfShare.css";
-@import "./channel/fileDelivery.css";
 @import "./channel/navigation.css";
 @import "./channel/icons.css";
 @import "./channel/identifire.css";
@@ -56,11 +55,16 @@
 /* IOS 스크롤바 멈추는 문제 해결 */
 body,
 html {
+<<<<<<< HEAD
+    -webkit-overflow-scrolling: auto;
+    touch-action: auto;
+=======
     -webkit-overflow-scrolling: touch;
     touch-action: manipulation;
     width: 100%;
     height: 100%;
     font-family: "NEXON Lv2 Gothic" !important;
+>>>>>>> Owake
 }
 
 .nav__container {

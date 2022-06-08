@@ -1,0 +1,36 @@
+:root {
+    --content-container-color: #282833;
+    --content-white-color: #fff;
+    --input-form-color: #50aed0;
+    --label-font-color: #b1c8d0;
+    --button-color: #ec7172;
+    --font-color: #fff;
+}
+
+.channelDelete-info {
+    display: flex;
+}
+
+.channelDelete-info input {
+    flex: 0.5;
+    background: var(--input-form-color);
+}
+
+.channelDelete-info p {
+    width: 100%;
+    color: var(--font-color);
+}
+
+.channelDelete-info p,
+.channelDelete-info input {
+    margin-bottom: 0.6rem;
+}
+
+.button-group {
+    display: flex;
+    justify-content: end;
+}
+
+.button-group button {
+    background: var(--button-color);
+}

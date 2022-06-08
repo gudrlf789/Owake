@@ -70,9 +70,8 @@ export const pdfFunc = () => {
     pdfShare.append(pdfRender);
     pdfShare.frameborder = "0";
 
-    pdfTabArea.style.setProperty("height", "100%");
-    pdfTabArea.style.setProperty("background", "#fff");
-    pdfTabArea.style.setProperty("border", "2px solid #000");
+    pdfTabArea.style.setProperty("background", "#282832");
+    pdfTabArea.style.setProperty("border", "0.1px solid #000");
     pdfTabArea.style.setProperty("display", "-webkit-box");
     pdfTabArea.style.setProperty("align-items", "center");
     pdfTabArea.style.setProperty("overflow", "auto");
@@ -87,13 +86,15 @@ export const pdfFunc = () => {
 
     function createPdfTab(userName, fileType, fileName) {
         const html = `
-            <span class="pdfMiddleContainerBtn" name="${userName}_${fileName}"
-            style="margin: 0.4rem; padding: 0.2rem; background: #182843; color: #fff; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">
-                <input type="hidden" value=${fileType}>
-                <span style="background: #182843; color: white;">${userName}-${fileName}</span>
-            </span>
-            <div class="pdfCloseContent" name="${userName}_${fileName}">
-                <i class="fas fa-times"></i>
+            <div class="pdfTab">
+                <span class="pdfMiddleContainerBtn" name="${userName}_${fileName}"
+                style="margin: 0.4rem; padding: 0.2rem; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">
+                    <input type="hidden" value=${fileType}>
+                    <span>${userName}-${fileName}</span>
+                </span>
+                <div class="pdfCloseContent" name="${userName}_${fileName}">
+                    <i class="fas fa-times"></i>
+                </div>
             </div>
         `;
 
@@ -220,7 +221,7 @@ export const pdfFunc = () => {
             axios.post("/channel/contentsDelete", data).then((res) => {
                 if (res.data.success && res.status === 200) {
                     pdfSocket.emit(
-                        "delete-origin-tag",
+                        "delete-origin-pdf-tag",
                         channelName,
                         deleteTagName
                     );
@@ -342,7 +343,7 @@ export const pdfFunc = () => {
         }
     });
 
-    pdfSocket.on("delete-remote-tag", (deleteTagName) => {
+    pdfSocket.on("delete-remote-pdf-tag", (deleteTagName) => {
         deleteContentTab = document.getElementsByName(deleteTagName);
         if (deleteContentTab.length == 2) {
             for (let i = 0; i < 2; i++) {
