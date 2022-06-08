@@ -17,7 +17,7 @@ import { checkIsHost } from "./igovern-checkIsHost.js";
 
 let event = deviceScan();
 
-const webImg = document.querySelector("#webImg");
+const webImg = document.querySelector("#web-img");
 
 export const momentShareFunc = (momentShareSocket) => {
     let momentShareActive = false;
