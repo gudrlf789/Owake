@@ -1,3 +1,8 @@
+import { options } from "../../igovern-RtcClient.js";
+import { deviceScan } from "./igovern-deviceScan.js";
+import { channelName } from "./igovern-sessionStorage.js";
+import { checkIsHost } from "./igovern-checkIsHost.js";
+
 /**
  * @author 전형동
  * @version 1.0
@@ -9,8 +14,6 @@
  * 일반 웹사이트는 XFrameByPass를 사용하고,
  * Youtube 영상을 Embed 할 때는 XFrameByPass를 사용하지 않게 구현
  */
-import { options } from "../../igovernRtcClient.js";
-import { deviceScan } from "./igovern-deviceScan.js";
 
 let event = deviceScan();
 
@@ -64,45 +67,53 @@ export const momentShareFunc = (momentShareSocket) => {
 
     momentTabArea1.style.setProperty("height", "auto");
     momentTabArea1.style.setProperty("width", "100%");
-    momentTabArea1.style.setProperty("background", "#fff");
     momentTabArea1.style.setProperty("padding", "5px");
-    momentTabArea1.style.setProperty("border", "2px solid #000");
+    momentTabArea1.style.setProperty("border", "0.1px solid #000");
     momentTabArea1.style.setProperty("display", "-webkit-box");
     momentTabArea1.style.setProperty("align-items", "center");
     momentTabArea1.style.setProperty("overflow-x", "auto");
     momentTabArea1.style.setProperty("position", "absolute");
     momentTabArea1.style.setProperty("z-index", "5");
 
-    momentShareBtn1.addEventListener(event, (e) => {
-        momentShareActive = !momentShareActive;
+    momentShareSocket.on("igoven-momentShare-client", (momentShareActive) => {
         momentShareActive ? momentShareEnable() : momentShareDisable();
+    });
+
+    function momentShareSocketEvent(momentShareActive) {
+        momentShareActive ? momentShareEnable() : momentShareDisable();
+        momentShareSocket.emit("igoven-momentShare", channelName, momentShareActive);
+    };
+
+    momentShareBtn1.addEventListener("click", (e) => {
+        momentShareActive = !momentShareActive;
+
+        if(checkIsHost()){
+            momentShareSocketEvent(momentShareActive);
+        }else {
+            alert("Host Only");
+        }
     });
 
     function momentShareEnable() {
         localVideoContainer.append(momentShareArea1);
         momentShareArea1.hidden = false;
-        //momentShareSocket.emit("join-web", options.channel);
 
         iframeContainer1.innerHTML = `<iframe id='momentShare-iframe1'
             name='momentShare' frameborder='0'
             </iframe>`;
         momentContainer1.appendChild(iframeContainer1);
 
-        webImg.style.setProperty(
-            "filter",
-            "invert(69%) sepia(56%) saturate(3565%) hue-rotate(310deg) brightness(90%) contrast(106%)"
-        );
+        webImg.src = "/left/web_a.svg";
     }
 
     function momentShareDisable() {
         momentShareArea1.hidden = true;
         momentShareBtn1.style.color = "#fff";
-        //momentShareSocket.emit("leave-web", options.channel);
 
-        webImg.style.setProperty("filter", "none");
+        webImg.src = "/left/web.svg";
     }
 
-    searchInput1Btn.addEventListener(event, (e) => {
+    searchInput1Btn.addEventListener("click", (e) => {
         inputURL = searchInput1.value;
         if (inputURL.length === 0) {
             alert("Please enter your address.");
