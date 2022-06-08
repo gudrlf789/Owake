@@ -4,6 +4,7 @@
 @import "./mainpage/create.css";
 @import "./mainpage/update.css";
 @import "./mainpage/join.css";
+@import "./mainpage/delete.css";
 @import "./mainpage/navbar.css";
 
 @font-face {
