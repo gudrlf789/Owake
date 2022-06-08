@@ -19,7 +19,7 @@
     height: 92%;
     border: none;
     left: 0;
-    bottom: 0;
+    bottom: auto;
 }
 
 #contentNavContainer {
@@ -43,15 +43,6 @@
 
 .closeContent {
     margin-right: 10px;
-}
-
-.closeContent > i {
-    color: var(--tab-color);
-    cursor: pointer;
-}
-
-.closeContent > i:hover {
-    color: var(--tab-hover);
 }
 
 #contentSearchContainer {

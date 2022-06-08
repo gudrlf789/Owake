@@ -1,5 +1,5 @@
-import { scrollToBottom } from "./parts/igovern/igorven-chat.js";
-import { options } from "./igovernRtcClient.js";
+import { scrollToBottom } from "./parts/igovern/igovern-chat.js";
+import { options } from "./igovern-RtcClient.js";
 
 const messageList = document.getElementById("messages");
 let channelMessageText = document.getElementById("chat_message");
@@ -26,7 +26,7 @@ let rtmClient = AgoraRTM.createInstance(options.appid);
 /**
  * @Auther 전형동
  * @Date : 2022 03 09
- * @Description : RTM Connection Log..
+ * scription : RTM Connection Log..
  * 같은 아이디로 리모트에서 로그인을 하면 로그인 되어있는 클라이언트는 튕긴다.
  */
 // RTM State Log....
@@ -128,10 +128,13 @@ async function channelMessageFunc() {
 }
 
 function messageAreaFunc() {
-    userNameArea = document.createElement("div");
-    messageArea = document.createElement("div");
-    userNameArea.className = "userName";
-    messageArea.className = "message";
+    userNameArea = document.createElement("span");
+    messageArea = document.createElement("span");
+    // userNameArea.className = "userName";
+    // messageArea.className = "message";
+
+    userNameArea.classList.add("userName", "messageArea");
+    messageArea.classList.add("message", "messageArea");
 
     scrollToBottom();
 }
