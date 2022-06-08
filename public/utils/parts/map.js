@@ -2,13 +2,9 @@ import { socketInitFunc } from "./channel/socket.js";
 
 let socket = socketInitFunc();
 
-let longitude;
-let latitude;
-let popup;
 let marker;
 let map;
 let layer;
-let pointer;
 
 let pointerArr = [];
 
@@ -16,16 +12,6 @@ let mapOptions = {
     center: pointerArr,
     zoom: 10,
 };
-
-let greenIcon = L.icon({
-    iconUrl: "leaf-green.png",
-
-    iconSize: [38, 95], // size of the icon
-    shadowSize: [50, 64], // size of the shadow
-    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62], // the same for the shadow
-    popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
-});
 
 function showPosition(position) {
     pointerArr.push(position.coords.latitude, position.coords.longitude);

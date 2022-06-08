@@ -162,12 +162,12 @@ async function join() {
         localTracks.videoTrack === undefined &&
         localTracks.audioTrack !== undefined
     ) {
-        // await client.publish(localTracks.audioTrack);
-        await client.publish(
-            Object.values(localTracks.audioTrack).filter(
-                (track) => track !== null
-            )
-        );
+        await client.publish(localTracks.audioTrack);
+        // await client.publish(
+        //     Object.values(localTracks.audioTrack).filter(
+        //         (track) => track !== null
+        //     )
+        // );
     } else if (
         localTracks.videoTrack !== undefined &&
         localTracks.audioTrack === undefined
