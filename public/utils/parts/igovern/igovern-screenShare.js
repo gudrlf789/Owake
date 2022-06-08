@@ -10,7 +10,7 @@ import { checkIsHost } from "./igovern-checkIsHost.js";
  * 1. ScreenShare 취소하면 세션 에러나는 현상 수정
  */
 
- import { options } from "../../rtcClient.js";
+ import { options } from "../../igovern-RtcClient.js";
  
  let openYN = "N";
  const screenShareBtn = document.querySelector("#screenShare-img");

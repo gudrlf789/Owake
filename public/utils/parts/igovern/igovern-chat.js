@@ -1,3 +1,6 @@
+import { deviceScan } from "./igovern-deviceScan.js";
+let event = deviceScan();
+
 export const mobileDisplayCtr = () => {
     let messagesActive = false;
 

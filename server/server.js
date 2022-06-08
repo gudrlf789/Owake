@@ -173,7 +173,8 @@ io.sockets.on("connection", (socket) => {
 
     log.debug("[" + socket.id + "] connection accepted");
 
-    /////테스트
+    ///// igovern
+
     socket.on("igovern-join-channel", (channelName) => {
         socket.join(channelName);
     });
@@ -190,6 +191,10 @@ io.sockets.on("connection", (socket) => {
         socket
             .to(channelName)
             .emit("igoven-fileHash-client", identifireActivator);
+    });
+
+    socket.on("igoven-momentShare", (channelName, momentShareActive) => {
+        socket.to(channelName).emit("igoven-momentShare-client", momentShareActive);
     });
 
     socket.on("igoven-contentShare", (channelName, contentShareActive) => {
