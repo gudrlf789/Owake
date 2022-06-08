@@ -13,6 +13,8 @@ function playerNameHidden() {
     const optionsNext = document.querySelector(".nav__right");
     const optionsPrev = document.querySelector(".nav__left");
 
+    const audioMix = document.querySelector("#audioMix");
+
     const bodyWidth = document.body.offsetWidth;
 
     let classNameSearch = {};
@@ -50,6 +52,8 @@ function playerNameHidden() {
         playerName.hidden = true;
         optionsNext.hidden = false;
         optionsPrev.hidden = false;
+
+        audioMix.hidden = true;
 
         for (let i = 0; i < mainOptions.classList.length; i++) {
             classNameSearch.main = mainOptions.classList[i];

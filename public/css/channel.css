@@ -13,6 +13,7 @@
 @import "./channel/icons.css";
 @import "./channel/identifire.css";
 @import "./channel/settings.css";
+@import "./channel/audioMix.css";
 
 @font-face {
     font-family: "NEXON Lv2 Gothic";

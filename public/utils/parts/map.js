@@ -31,11 +31,11 @@ const markerCard = (id) => {
     let card = `
         <div class="card" style="width: 18rem;">
             <div class="card-body">
-            <h5 class="card-title">${id}</h5>
-            <p class="card-text">Hello</p>
-            <input type="button" id="peer__call" class="btn btn-primary" value="Call"/>
+                <h5 class="card-title">${id}</h5>
+                <p class="card-text">Hello</p>
+                <input type="button" id="peer__call" class="btn btn-primary" value="Call"/>
+            </div>
         </div>
-    </div>
     `;
 
     return card;
@@ -56,7 +56,6 @@ function mapWrite() {
 
     popup = markerCard(socket.id);
     marker = new L.Marker(mapOptions.center).addTo(map).bindPopup(popup);
-
 
     // 배열 비워주기
     pointerArr.length = 0;
