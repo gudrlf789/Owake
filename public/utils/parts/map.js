@@ -12,6 +12,7 @@ let mapOptions = {
     center: pointerArr,
     zoom: 10,
 };
+let popup;
 
 function showPosition(position) {
     pointerArr.push(position.coords.latitude, position.coords.longitude);
@@ -44,9 +45,8 @@ function mapWrite() {
     );
     map.addLayer(layer);
 
-    marker = new L.Marker(mapOptions.center)
-        .addTo(map)
-        .bindPopup(markerCard(socket.id));
+    popup = markerCard(socket.id);
+    marker = new L.Marker(mapOptions.center).addTo(map).bindPopup(popup);
 
     socket.emit("map-point", {
         peerID: socket.id,
@@ -59,9 +59,9 @@ function mapWrite() {
 
 socket.on("receive-point", (params) => {
     console.log(params.peerID, params.point);
-    marker = new L.Marker(params.point)
-        .addTo(map)
-        .bindPopup(markerCard(params.peerID));
+
+    popup = markerCard(params.peerID);
+    marker = new L.Marker(params.point).addTo(map).bindPopup(popup);
 });
 
 function callAction() {
