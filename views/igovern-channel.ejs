@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- meta tag -->
+    <%- include("./headparts/meta-parts") %>
+        <!-- meta tag end -->
+
+        <!-- favicon package -->
+        <%- include('./headparts/favicon-parts') %>
+            <!-- favicon End -->
+            <link rel="stylesheet" href="channel.css" media="all">
+
+            <script type="text/javascript" src="owake_rtc.js"></script>
+            <script type="text/javascript" src="owake_rtm.js"></script>
+            <!-- Jquery -->
+            <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+            <!-- Bootstrap -->
+            <script type="text/javascript" src="bootstrap.bundle.min.js"></script>
+            <!-- Socket.io -->
+            <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+            <!-- axios -->
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <!-- Swiper -->
+            <script type="text/javascript" src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+            <!-- Pdf.js -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.min.js"></script>
+
+            <title>Owake</title>
+
+            <script>
+
+                /**
+                 * @anthor 전형동
+                 * @date 2022.05.12
+                 * @version 1.0
+                 * @descrption
+                 * 공백, 특수문자, 한글 체크
+                 */
+
+                function checkUserId(userNameSession) {
+                    // 공백체크
+                    const pattern_empty = /\s/g;
+                    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+                    // 특수문자 체크
+                    const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+
+                    if (
+                        userNameSession === "" || userNameSession === null ||
+                        userNameSession.match(pattern_empty) ||
+                        pattern_spc.test(userNameSession) ||
+                        korean.test(userNameSession)
+                    ) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
+                /**
+                 * @anthor 박형길
+                 * @date 2022.03.22
+                 * @version 1.0
+                 * @descrption
+                 * 유저 이름 중복 체크 & 등록
+                 */
+                function enrollAndCheckUserName() {
+                    const channelType = window.sessionStorage.getItem('channelType');
+                    const channelName = window.sessionStorage.getItem('channel');
+
+                    const reqData = {
+                        channelType: channelType,
+                        channelName: channelName
+                    };
+
+                    let userNameSession = window.prompt("Enter the name");
+
+                    if (!checkUserId(userNameSession)) {
+                        alert(
+                            "Please enter a valid user name (except spaces and special characters and korean)"
+                        );
+                        location.replace("/")
+                    }
+                    else {
+                        sessionStorage.setItem("uid", userNameSession);
+                    }
+
+                    axios.post("/channel/info", reqData).then((res) => {
+                        if (res.data.success) {
+                            const result = res.data.channelInfo.userNames.filter(userName => userName === userNameSession);
+                            if (result.length > 0) {
+                                alert("Duplicate username exists");
+                                sessionStorage.clear();
+                                window.location.href = "/";
+                            } else {
+                                reqData.userId = userNameSession;
+                                const channelPassword = res.data.channelInfo.channelPassword;
+
+                                if (channelPassword !== "") {
+                                    const roomPassword = window.prompt("Enter the password");
+
+                                    if (channelPassword !== roomPassword) {
+                                        alert("Wrong Password");
+                                        sessionStorage.clear();
+                                        window.location.href = "/";
+                                    } else {
+                                        axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => { });
+                                    }
+
+                                } else {
+                                    axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => { });
+                                }
+                            }
+
+                        } else {
+                            alert(res.data.error);
+                            window.location.href = "/";
+                        }
+                    });
+                }
+
+                /**
+                 * @anthor 박형길
+                 * @date 2022.03.22
+                 * @version 1.0
+                 * @descrption
+                 * 1. 새로고침 시에 세션스토리지에 값이 있는 경우
+                 * 유저 이름 DB에서 삭제 후에 다시 등록
+                 * 2. 새로고침 시에 세션스토리지에 값이 비어있는 경우
+                 * 유저 이름 DB에 바로 등록
+                 */
+                if (window.sessionStorage.length === 0) {
+                    window.sessionStorage.setItem('channel', '<%= channelName %>');
+                    window.sessionStorage.setItem('channelType', '<%= channelType %>');
+
+                    enrollAndCheckUserName();
+                }
+
+            </script>
+
+            <%- include("./popup/deviceSettings") %>
+                <%- include("./popup/identifier") %>
+                    <%- include("./popup/spinnerModal") %>
+</head>
+
+<body>
+    <div class="main">
+        <div class="main__left">
+            <div class="videos__group">
+                <div id="video-grid">
+                    <div id="local__video__container">
+                        <p id="local-player-name" class="player-name"></p>
+                    </div>
+                    <div id="remote__video__container">
+                        <div id="remote-playerlist"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="main__right">
+            <div class="main__header">
+            </div>
+            <div class="main__chat_window">
+                <div class="messages" id="messages"></div>
+            </div>
+            <div class="main__message_container">
+                <input id="chat_message" type="text" autocomplete="off" placeholder="Type a message here..."
+                    maxlength="100">
+                <div id="send" class="options__button">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="options">
+
+        <div id="mobile-leave">
+            <span id="leaveBtn">Log<br />out</span>
+        </div>
+
+        <section class="logo-container">
+            <span class="logo"></span>
+        </section>
+
+        <div class="swiper optionsSwiper">
+            <div class="swiper-wrapper">
+                <%- include('./options/default-options') %>
+            </div>
+        </div>
+
+        <section class="options__right">
+            <div id="desktop-leave">
+                <span id="leaveBtn">Logout</span>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <%- include("./jsparts/igovern-channel-parts") %>
+</body>
+
+</html>

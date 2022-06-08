@@ -21,22 +21,24 @@ function checkUserId(userId) {
  * @descrption
  * 유저 이름 등록
  */
-function enrollUserNameOnChannel(userId, channelName, channelType) {
+function enrollUserNameOnChannel(userId, channelName, channelType, governType) {
     //문자 공백 제거
     userId = userId.replace(/\s/gi, "");
+
+    if(!governType) governType = "WE";
 
     const reqData = {
         channelType: channelType,
         channelName: channelName,
         userId: userId,
     };
-
+    
     axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => {
         if (res.data.success) {
             window.sessionStorage.setItem("channel", channelName);
             window.sessionStorage.setItem("channelType", channelType);
             window.sessionStorage.setItem("uid", userId);
-            window.location.href = `/${channelName}/${channelType}`;
+            window.location.href = `/${channelName}/${channelType}/${governType}`;
         } else {
             alert(res.data.error);
         }
@@ -56,7 +58,7 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
         channelName: channelName,
         userId: userId,
     };
-
+    
     axios.post("/channel/info", reqData).then((res) => {
         if (res.data.success) {
             const result = res.data.channelInfo.userNames.filter(
@@ -66,7 +68,12 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
             if (result.length > 0) {
                 alert("Duplicate username exists");
             } else {
-                enrollUserNameOnChannel(userId, channelName, channelType);
+                if(res.data.channelInfo.adminId === userId) {
+                    window.sessionStorage.setItem("isHost", "Y");
+                }else {
+                    window.sessionStorage.setItem("isHost", "N");
+                }
+                enrollUserNameOnChannel(userId, channelName, channelType, res.data.channelInfo.governType);
             }
         } else {
             alert(res.data.error);
