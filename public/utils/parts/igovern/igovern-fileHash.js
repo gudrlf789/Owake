@@ -91,8 +91,7 @@ export const fileHash = (fileHashSocket) => {
         if (formData.has("fileInput")) {
             formData.delete("fileInput");
         }
-        formData.append("userName", userName);
-        formData.append("channelName", channelName);
+        
         formData.append("fileInput", data);
 
         axios
