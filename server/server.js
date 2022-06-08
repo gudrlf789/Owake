@@ -106,14 +106,20 @@ app.use(express.json());
 app.use("/channel", mainRouter);
 
 app.get("/", (req, res, next) => {
-    // res.render("index");
     res.render("index");
 });
 
-app.get("/:channelName/:channelType", (req, res) => {
+app.get("/:channelName/:channelType/:governType", (req, res) => {
     let appID = "b11ab973693e46b78b73e55aae3a6a11";
-
-    res.render("channel", {
+    
+    if(req.params.governType === "WE") {
+        res.render("channel", {
+            channelName: req.params.channelName,
+            channelType: req.params.channelType,
+            appID,
+        });
+    }
+    res.render("igovern-channel", {
         channelName: req.params.channelName,
         channelType: req.params.channelType,
         appID,
@@ -161,6 +167,48 @@ io.sockets.on("connection", (socket) => {
     sockets[socket.id] = socket;
 
     log.debug("[" + socket.id + "] connection accepted");
+
+
+    /////테스트
+    socket.on("igovern-join-channel", (channelName) => {
+        socket.join(channelName);
+    });
+
+    socket.on("igovern-leave-channel", (channelName) => {
+        socket.leave(channelName);
+    });
+
+    socket.on("igoven-fileDevery", (channelName, deliveryActive) => {
+        socket.to(channelName).emit("igoven-fileDevery-client", deliveryActive);
+    });
+
+    socket.on("igoven-fileHash", (channelName, identifireActivator) => {
+        socket.to(channelName).emit("igoven-fileHash-client", identifireActivator);
+    });
+
+    socket.on("igoven-contentShare", (channelName, contentShareActive) => {
+        socket.to(channelName).emit("igoven-contentShare-client", contentShareActive);
+    });
+
+    socket.on("igoven-choice-host-media", (channelName, fileType, choiceFile) => {
+        socket.to(channelName).emit("igoven-play-host-media", fileType, choiceFile);
+    });
+
+    socket.on("igoven-pdfShare", (channelName, pdfShareActive) => {
+        socket.to(channelName).emit("igoven-pdfShare-client", pdfShareActive);
+    });
+
+    socket.on("igoven-choice-host-pdf", (channelName, originUser, choicedFile, currentPage) => {
+        socket.to(channelName).emit("igoven-play-host-pdf", originUser, choicedFile, currentPage);
+    });
+
+    socket.on("igoven-whiteBoard", (channelName, whiteBoardBtnActive) => {
+        socket.to(channelName).emit("igoven-whiteBoard-client", whiteBoardBtnActive);
+    });
+
+
+    //////////////
+
 
     socket.on("disconnect", (reason) => {
         for (let channel in socket.channels) {
