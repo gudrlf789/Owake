@@ -36,6 +36,13 @@ export const audioMixingAndAudioEffect = (audioMixingSocket) => {
         }
     });
 
+    $("#audioMixModal").on('shown.bs.modal', (e) => {
+        debugger;
+        if(!checkIsHost()) {
+            $("#audioMixModal").modal("hide");
+        }
+    });
+
     audioMixingSocket.on("igoven-audioMixing-client", (audioMixActive) => {
         //audioMixActive ? audioMixingEnable() : audioMixingDisable();
         audioMixActive ? $("#audioMixModal").modal("show") : $("#audioMixModal").modal("hide")
