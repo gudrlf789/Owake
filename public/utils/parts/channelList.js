@@ -29,10 +29,20 @@ $(document).on("click", ".channel-thumnail", (e) => {
 
     switch (channelType) {
         case "Public":
-            checkPassword(channelName, channelPassword, channelType, governType);
+            checkPassword(
+                channelName,
+                channelPassword,
+                channelType,
+                governType
+            );
             break;
         case "Private":
-            checkPassword(channelName, channelPassword, channelType, governType);
+            checkPassword(
+                channelName,
+                channelPassword,
+                channelType,
+                governType
+            );
             break;
         default:
             break;
@@ -160,10 +170,10 @@ function channelListLoad(data) {
                 "<span>Delete</span>" +
                 "</div>" +
                 "</div>" +
-                "<div class='content-symbol-button'>" +
-                "<i class='symbol-icon'></i>" +
-                "<span>10 On_line</span>" +
-                "</div>" +
+                // "<div class='content-symbol-button'>" +
+                // "<i class='symbol-icon'></i>" +
+                // "<span>10 On_line</span>" +
+                // "</div>" +
                 "</div>" +
                 "</div>" +
                 "</article>"
