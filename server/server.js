@@ -308,6 +308,10 @@ io.sockets.on("connection", (socket) => {
         socket.in(config.channel).emit("input_address", config.link);
     });
 
+    socket.on("web-origin-info", (channelName, tabURL, iframeInit) => {
+        socket.to(channelName).emit("web-remote-info", tabURL, iframeInit);
+    });
+
     socket.on("join-whiteboard", (channelName) => {
         socket.join(channelName);
     });
