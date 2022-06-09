@@ -1,0 +1,55 @@
+#audioMixModal {
+    top: 10rem;
+}
+
+.audioMix-container {
+    max-height: 600px;
+    max-width: 600px;
+    padding: 4rem;
+    background: #292933;
+
+    position: absolute;
+    top: 25%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+.title {
+    color: #fff;
+    font-size: 2.1rem;
+    font-weight: 600;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.local-file {
+    color: #fff;
+    background-color: #50a6c7;
+    border: none;
+}
+
+.form-control::placeholder {
+    color: #fff;
+}
+
+.audioMix-button {
+    display: flex;
+    justify-content: space-between;
+}
+
+.audioMix-button input {
+    width: 25rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.audio-time span {
+    color: #fff;
+}
+
+.audio-volume-bar label {
+    color: #fff;
+}
