@@ -188,13 +188,11 @@ export const whiteBoardFunc = (whiteBoardSocket) => {
         }
 
         function onMouseDown(e) {
-            if (checkIphoneMobile()) {
-                drawing = true;
-                current.x =
-                    e.clientX - rect.left || e.touches[0].clientX - rect.left;
-                current.y =
-                    e.clientY - rect.top || e.touches[0].clientY - rect.top;
-            }
+            drawing = true;
+            current.x =
+                e.clientX - rect.left || e.touches[0].clientX - rect.left;
+            current.y 
+                e.clientY - rect.top || e.touches[0].clientY - rect.top;
         }
 
         function onMouseUp(e) {
