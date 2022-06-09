@@ -56,16 +56,11 @@
 /* IOS 스크롤바 멈추는 문제 해결 */
 body,
 html {
-<<<<<<< HEAD
     -webkit-overflow-scrolling: auto;
     touch-action: auto;
-=======
-    -webkit-overflow-scrolling: touch;
-    touch-action: manipulation;
     width: 100%;
     height: 100%;
     font-family: "NEXON Lv2 Gothic" !important;
->>>>>>> Owake
 }
 
 .nav__container {
