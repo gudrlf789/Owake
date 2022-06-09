@@ -2,15 +2,17 @@ let channelContainer = $(".channel-box-container");
 let partnerChannelContainer = $(".partner-channel-container");
 let selectOptions = document.querySelector(".search-select");
 
-function checkPassword(channelName, channelPassword, channelType) {
+function checkPassword(channelName, channelPassword, channelType, governType) {
     if (channelPassword !== "") {
         $("#private-channelName").val(channelName);
         $("#private-passwordChecking").val(channelPassword);
         $("#private-channelType").val(channelType);
+        $("#private-governType").val(governType);
         $("#channelPrivateJoin").modal();
     } else {
         $("#public-channelName").val(channelName);
         $("#public-channelType").val(channelType);
+        $("#public-governType").val(governType);
         $("#channelPublicJoin").modal();
     }
 }
@@ -22,13 +24,15 @@ $(document).on("click", ".channel-thumnail", (e) => {
         e.currentTarget.parentNode.childNodes[0].childNodes[1].value;
     const channelPassword =
         e.currentTarget.parentNode.childNodes[0].childNodes[2].value;
+    const governType =
+        e.currentTarget.parentNode.childNodes[0].childNodes[6].value;
 
     switch (channelType) {
         case "Public":
-            checkPassword(channelName, channelPassword, channelType);
+            checkPassword(channelName, channelPassword, channelType, governType);
             break;
         case "Private":
-            checkPassword(channelName, channelPassword, channelType);
+            checkPassword(channelName, channelPassword, channelType, governType);
             break;
         default:
             break;
@@ -125,6 +129,7 @@ function channelListLoad(data) {
                 `<input type='hidden' value="${data.imageName}" >` +
                 `<input type='hidden' value=${data.channelCategory} >` +
                 `<input type='hidden' value="${data.channelDescription}" >` +
+                `<input type='hidden' value="${data.governType}" >` +
                 "</div>" +
                 "<a href='#' class='thumbnail channel-thumnail'>" +
                 `<img src='${data.imageName}' alt='' class='thumbnail-image'>` +

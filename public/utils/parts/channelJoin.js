@@ -1,3 +1,25 @@
+const passwordChecked = document.querySelector("#passwordSwitchChecked");
+const joinPasswordContainer = document.querySelector("#join-password-container");
+
+$("#channelPublicJoin").on('shown.bs.modal', (e) => {
+    if($("#public-governType").val() === "WE") {
+        passwordChecked.setAttribute("disabled", true);
+    }else {
+        passwordChecked.removeAttribute("disabled");
+    }
+});
+
+passwordChecked.addEventListener("input", () => {
+    if (passwordChecked.checked) {
+        joinPasswordContainer.hidden = false;
+        passwordChecked.value = "on";
+    }
+    else {
+        joinPasswordContainer.hidden = true;
+        passwordChecked.value = "off";
+    }
+});
+
 function checkUserId(userId) {
     // 공백체크
     let pattern_empty = /\s/g;
@@ -45,6 +67,15 @@ function enrollUserNameOnChannel(userId, channelName, channelType, governType) {
     });
 }
 
+function checkHostUser(userId, userPassword, adminId, adminPassword) {
+
+    if(userId === adminId && userPassword === adminPassword){
+        return true;
+    }else{
+        return false;
+    }
+};
+
 /**
  * @anthor 박형길
  * @date 2022.03.22
@@ -53,6 +84,8 @@ function enrollUserNameOnChannel(userId, channelName, channelType, governType) {
  * 유저 이름 중복 체크
  */
 function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
+    const userPassword = $("#public-password").val();
+
     const reqData = {
         channelType: channelType,
         channelName: channelName,
@@ -68,12 +101,17 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
             if (result.length > 0) {
                 alert("Duplicate username exists");
             } else {
-                if(res.data.channelInfo.adminId === userId) {
-                    window.sessionStorage.setItem("isHost", "Y");
-                }else {
+                if(passwordChecked.value === "on") {
+                    if(checkHostUser(userId, userPassword, res.data.channelInfo.adminId, res.data.channelInfo.adminPassword)){
+                        window.sessionStorage.setItem("isHost", "Y");
+                        enrollUserNameOnChannel(userId, channelName, channelType, res.data.channelInfo.governType);
+                    }else {
+                        alert("Wrong adminId or password. please check your adminId or password again");
+                    }
+                }else{
                     window.sessionStorage.setItem("isHost", "N");
+                    enrollUserNameOnChannel(userId, channelName, channelType, res.data.channelInfo.governType);
                 }
-                enrollUserNameOnChannel(userId, channelName, channelType, res.data.channelInfo.governType);
             }
         } else {
             alert(res.data.error);
