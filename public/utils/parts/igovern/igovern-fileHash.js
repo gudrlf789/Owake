@@ -28,7 +28,6 @@ export const fileHash = (fileHashSocket) => {
     const clickVerifyFile = document.getElementById("clickVerifyFile");
     const originCopy = document.getElementById("originCopy");
     const comparisonCopy = document.getElementById("comparisonCopy");
-    const userName = window.sessionStorage.getItem("uid");
     const loginData = {
         id: "",
         password: "",
@@ -103,14 +102,12 @@ export const fileHash = (fileHashSocket) => {
                 maxBodyLength: Infinity,
             })
             .then((res) => {
-                if(checkIsHost()){
-                    fileHashSocket.emit(
-                        "submit_hash",
-                        res.data.hashCode,
-                        textHtml.id,
-                        channelName
-                    );
-                }
+                fileHashSocket.emit(
+                    "submit_hash",
+                    res.data.hashCode,
+                    textHtml.id,
+                    channelName
+                );
                
                 textHtml.value = res.data.hashCode;
             })
@@ -172,15 +169,10 @@ export const fileHash = (fileHashSocket) => {
                 if (res.data.success) {
                     alert("Sync is completed");
                     $("#syncBtn").attr("disabled", true);
-                    if(checkIsHost()){
-                        $("#selectFile_1").attr("disabled", false);
-                        $("#selectFile_2").attr("disabled", false);
-                        $("#originHash").attr("disabled", false);
-                        $("#remoteHash").attr("disabled", false);
-                    }else{
-                        $("#selectFile_2").attr("disabled", false);
-                        $("#remoteHash").attr("disabled", false);
-                    }
+                    $("#selectFile_1").attr("disabled", false);
+                    $("#selectFile_2").attr("disabled", false);
+                    $("#originHash").attr("disabled", false);
+                    $("#remoteHash").attr("disabled", false);
                 } else {
                     alert("Fail to connect with other users");
                 }
