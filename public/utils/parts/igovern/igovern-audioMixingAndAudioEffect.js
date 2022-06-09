@@ -37,7 +37,6 @@ export const audioMixingAndAudioEffect = (audioMixingSocket) => {
     });
 
     $("#audioMixModal").on('shown.bs.modal', (e) => {
-        debugger;
         if(!checkIsHost()) {
             $("#audioMixModal").modal("hide");
         }
