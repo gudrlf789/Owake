@@ -23,8 +23,13 @@
     flex-direction: column;
 }
 
-.input-container {
+.public-input-container {
     display: flex;
+}
+
+.private-input-container {
+    display: flex;
+    flex-direction: column;
 }
 
 .select-governor-toggle {
@@ -37,7 +42,7 @@
     align-items: center;
 }
 
-.form-check-input {
+#passwordSwitchChecked {
     height: 1.5em;
     width: 3em !important;
 }
