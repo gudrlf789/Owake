@@ -74,6 +74,7 @@ export const momentShareFunc = (momentShareSocket) => {
     momentTabArea1.style.setProperty("overflow-x", "auto");
     momentTabArea1.style.setProperty("position", "absolute");
     momentTabArea1.style.setProperty("z-index", "5");
+    momentTabArea1.style.setProperty("bottom", "35px");
 
     momentShareSocket.on("igoven-momentShare-client", (momentShareActive) => {
         momentShareActive ? momentShareEnable() : momentShareDisable();
@@ -312,7 +313,12 @@ export const momentShareFunc = (momentShareSocket) => {
         }
     }
 
+    function hostTransferWeb(tabURL, iframeInit) {
+        
+    }
+
     // Tab Click Event 함수
+    // 테스트
     $(document).on(event, "#momentTab", (e) => {
         let tabURL = e.target.innerText;
         try {
@@ -324,9 +330,17 @@ export const momentShareFunc = (momentShareSocket) => {
                 tabURL.includes("channel")
             ) {
                 iframeInit = true;
+
+                if(checkIsHost()){
+                    momentShareSocket.emit("web-origin-info",channelName, tabURL, iframeInit);
+                }
                 webShareContainerLoad(tabURL, iframeInit);
+                
             } else {
                 iframeInit = false;
+                if(checkIsHost()){
+                    momentShareSocket.emit("web-origin-info",channelName, tabURL, iframeInit);
+                }
                 webShareContainerLoad(tabURL, iframeInit);
             }
         } catch (e) {
@@ -350,6 +364,10 @@ export const momentShareFunc = (momentShareSocket) => {
     momentShareSocket.on("input_address", (url) => {
         createMomentTabFunc(url);
         webShareContainerLoad(url, iframeInit);
+    });
+
+    momentShareSocket.on("web-remote-info", (tabURL, iframeInit) => {
+        webShareContainerLoad(tabURL, iframeInit);
     });
 
     /**

@@ -76,7 +76,7 @@
     height: 92%;
     border: none;
     left: 0;
-    bottom: 0;
+    /* bottom: 0; */
 }
 
 /* #momentTabArea1 {
@@ -88,11 +88,19 @@
     display: none;
 } */
 
+#navContainer1 {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    z-index: 5;
+}
+
 #searchContainer1 {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 
 #searchInput1 {
     margin: 5px;
