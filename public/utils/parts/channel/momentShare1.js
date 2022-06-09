@@ -74,6 +74,7 @@ export const momentShareFunc1 = () => {
     momentTabArea1.style.setProperty("overflow-x", "auto");
     momentTabArea1.style.setProperty("position", "absolute");
     momentTabArea1.style.setProperty("z-index", "5");
+    momentTabArea1.style.setProperty("bottom", "35px");
 
     momentShareBtn1.addEventListener("click", (e) => {
         momentShareActive = !momentShareActive;
