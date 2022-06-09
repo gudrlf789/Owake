@@ -131,7 +131,7 @@ function channelListLoad(data) {
                 "</a>" +
                 "<div class='content-bottom-section'>" +
                 "<div class='content-title-container'>" +
-                `<a href='#' class='content-title'>${data.channelName}</a>` +
+                `<span class='content-title'>${data.channelName}</span>` +
                 "<div class='channel-box-footer-icon'>" +
                 `${
                     data.channelPassword.length !== 0 ||
@@ -143,7 +143,7 @@ function channelListLoad(data) {
                 "</div>" +
                 "</div>" +
                 "<div class='content-details'>" +
-                `<a href='#' class='content-channel-description'>${data.channelDescription}</a>` +
+                `<span class='content-channel-description'>${data.channelDescription}</span>` +
                 "<div class='content-metadata'>" +
                 "<div class='content-channel-options'>" +
                 "<div class='channel-box-footer-btn-update' id='channelUpdateBtn' data-toggle='modal'" +

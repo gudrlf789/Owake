@@ -111,6 +111,7 @@ html {
 .thumbnail {
     position: relative;
     display: flex;
+    max-height: 150px;
 }
 
 .thumbnail::before {
@@ -131,6 +132,7 @@ html {
     min-width: 250px;
     min-height: 150px;
     background-color: #aaa;
+    object-fit: cover;
 }
 
 .content-bottom-section {
