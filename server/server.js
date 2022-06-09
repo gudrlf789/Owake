@@ -177,7 +177,7 @@ io.sockets.on("connection", (socket) => {
 
     log.debug("[" + socket.id + "] connection accepted");
 
-    ///// igovern
+    ///// igovern //////////////////////////////////////
 
     socket.on("igovern-join-channel", (channelName) => {
         socket.join(channelName);
@@ -242,7 +242,13 @@ io.sockets.on("connection", (socket) => {
             .emit("igoven-whiteBoard-client", whiteBoardBtnActive);
     });
 
-    //////////////
+    socket.on("igoven-audioMixing", (channelName, audioMixActive) => {
+        socket
+            .to(channelName)
+            .emit("igoven-audioMixing-client", audioMixActive);
+    });
+
+    /////////////////////////////////////////////////////
 
     socket.on("disconnect", (reason) => {
         for (let channel in socket.channels) {

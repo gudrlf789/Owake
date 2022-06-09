@@ -31,9 +31,9 @@ export const fileDelivery = (socket) => {
     );
 
     function fileDeliverySocketEvent(deliveryActive) {
-    deliveryActive ? fileDeliveryEnable() : fileDeliveryDisable();
-    fileDeliverySocket.emit("igoven-fileDevery", channelName, deliveryActive);
-};
+        deliveryActive ? fileDeliveryEnable() : fileDeliveryDisable();
+        fileDeliverySocket.emit("igoven-fileDevery", channelName, deliveryActive);
+    };
 
 function fileDeliveryEnable() {
     fileDeliveryImg.src = "/left/file_a.svg";

@@ -19,6 +19,7 @@ import { fileHash } from "./parts/igovern/igovern-fileHash.js";
 import { contentFunc } from "./parts/igovern/igovern-content.js";
 import { pdfFunc } from "./parts/igovern/igovern-pdfShare.js";
 import { channelName } from "./parts/igovern/igovern-sessionStorage.js"; 
+import { audioMixingAndAudioEffect } from "./parts/igovern/igovern-audioMixingAndAudioEffect.js";
 
 export function closeSocketInstance () {
     socket.emit("igovern-leave-channel", channelName);
@@ -43,4 +44,5 @@ $(() => {
     fileHash(socket);
     contentFunc(socket);
     pdfFunc(socket);
+    audioMixingAndAudioEffect(socket)
 });
