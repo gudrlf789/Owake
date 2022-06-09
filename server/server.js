@@ -27,8 +27,12 @@ let io, server;
 server = require("http").createServer(app);
 
 io = new Server({
-    pingInterval: 100000,
-    pingTimeout: 100000,
+    /**
+     * 참조
+     * https://stackoverflow.com/questions/29073746/socket-io-disconnect-event-transport-close-client-namespace-disconnect
+     */
+    pingInterval: 25000,
+    pingTimeout: 180000,
     maxHttpBufferSize: 1e8,
 
     cors: {
@@ -194,7 +198,9 @@ io.sockets.on("connection", (socket) => {
     });
 
     socket.on("igoven-momentShare", (channelName, momentShareActive) => {
-        socket.to(channelName).emit("igoven-momentShare-client", momentShareActive);
+        socket
+            .to(channelName)
+            .emit("igoven-momentShare-client", momentShareActive);
     });
 
     socket.on("igoven-contentShare", (channelName, contentShareActive) => {
