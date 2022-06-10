@@ -36,12 +36,6 @@ export const audioMixingAndAudioEffect = (audioMixingSocket) => {
         }
     });
 
-    $("#audioMixModal").on('shown.bs.modal', (e) => {
-        if(!checkIsHost()) {
-            $("#audioMixModal").modal("hide");
-        }
-    });
-
     audioMixingSocket.on("igoven-audioMixing-client", (audioMixActive) => {
         //audioMixActive ? audioMixingEnable() : audioMixingDisable();
         audioMixActive ? $("#audioMixModal").modal("show") : $("#audioMixModal").modal("hide")
@@ -56,8 +50,10 @@ export const audioMixingAndAudioEffect = (audioMixingSocket) => {
         audioMixActive = !audioMixActive;
 
         if(checkIsHost()) {
+            audioMixBtn.setAttribute("data-target", "#audioMixModal");
             audioMixingSocketEvent(audioMixActive);
         }else {
+            audioMixBtn.setAttribute("data-target", "#");
             alert("Host Only");
         }
     });
