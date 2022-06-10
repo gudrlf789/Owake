@@ -74,11 +74,13 @@ html {
     justify-content: center;
     align-items: center;
     background-color: var(--left-navbar-color);
+    padding: 1rem;
 }
 
 .body-container {
     flex: 0.9;
     background-color: var(--main-color);
+    padding: 0 10rem;
 }
 
 .content-section {
@@ -235,6 +237,7 @@ html {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    border-radius: 25px;
 }
 
 .mobile-slider {
@@ -364,6 +367,11 @@ html {
 
     .body-container {
         flex: 0.85;
+        padding: 0;
+    }
+
+    .web-slider {
+        border-radius: 25px;
     }
 }
 
