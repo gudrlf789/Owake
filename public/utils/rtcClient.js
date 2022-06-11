@@ -168,7 +168,8 @@ async function join() {
     } else {
         alert("인식된 디바이스가 아무것도 없음");
     }
-    
+
+    searchVideoAndAudioTrackHandler();
     videoTransformAction();
 }
 
@@ -526,4 +527,40 @@ function usersActive(state) {
     } else {
         usersBtn.style.color = "#fff";
     }
+}
+
+function searchVideoAndAudioTrackHandler() {
+    AgoraRTC.onMicrophoneChanged = async (changedDevice) => {
+        // When plugging in a device, switch to a device that is newly plugged in.
+        if (changedDevice.state === "ACTIVE") {
+            console.log(changedDevice);
+            localTracks.audioTrack.setDevice(changedDevice.device.deviceId);
+            // Switch to an existing device when the current device is unplugged.
+        } else if (
+            changedDevice.device.label ===
+            localTracks.audioTrack.getTrackLabel()
+        ) {
+            console.log(changedDevice);
+            const oldMicrophones = await AgoraRTC.getMicrophones();
+            oldMicrophones[0] &&
+                localTracks.audioTrack.setDevice(oldMicrophones[0].deviceId);
+        }
+    };
+
+    AgoraRTC.onCameraChanged = async (changedDevice) => {
+        // When plugging in a device, switch to a device that is newly plugged in.
+        if (changedDevice.state === "ACTIVE") {
+            console.log(changedDevice);
+            localTracks.videoTrack.setDevice(changedDevice.device.deviceId);
+            // Switch to an existing device when the current device is unplugged.
+        } else if (
+            changedDevice.device.label ===
+            localTracks.videoTrack.getTrackLabel()
+        ) {
+            console.log(changedDevice);
+            const oldCameras = await AgoraRTC.getCameras();
+            oldCameras[0] &&
+                localTracks.videoTrack.setDevice(oldCameras[0].deviceId);
+        }
+    };
 }
