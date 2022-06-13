@@ -352,6 +352,18 @@ html {
         brightness(108%) contrast(101%);
 }
 
+.govern-icon {
+    margin-right: 0.3rem;
+}
+
+#igovern-icon {
+    color: #7ca395;
+}
+
+#wegovern-icon {
+    color: #c67e89;
+}
+
 #spinnerModal {
     position: absolute;
     top: 50%;

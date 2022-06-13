@@ -145,6 +145,11 @@ function channelListLoad(data) {
                 `<img src='${data.imageName}' alt='' class='thumbnail-image'>` +
                 "</a>" +
                 "<div class='content-bottom-section'>" +
+                `${
+                    data.governType === "I"
+                        ? "<span class='govern-icon' id='igovern-icon'>IG</span>"
+                        : "<span class='govern-icon' id='wegovern-icon'>WG</span>"
+                }` +
                 "<div class='content-title-container'>" +
                 `<span class='content-title'>${data.channelName}</span>` +
                 "<div class='channel-box-footer-icon'>" +

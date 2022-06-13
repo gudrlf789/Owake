@@ -243,8 +243,10 @@ function fileSizeCheck(typeFlag) {
 function iGovernHelpPopup() {
     popup = `
     <div class="card i_help" style="width: 18rem;">
-        <div class="card-body">
+        <div class="card-header">
             <h5 class="card-title">I Govern (IG)</h5>
+        </div>
+        <div class="card-body">
             <p class="card-text">The Governor of this world can choose, show, and present the content and services he/she wants to show to all attendees. (Attendees can upload content)</p>
         </div>
     </div>
@@ -256,8 +258,10 @@ function iGovernHelpPopup() {
 function weGovernHelpPopup() {
     popup = `
     <div class="card we_help" style="width: 18rem;">
-        <div class="card-body">
+        <div class="card-header">
             <h5 class="card-title">We Govern (WG)</h5>
+        </div>
+        <div class="card-body">
             <p class="card-text">Any participant can show and present content and services to other participants at the same moment as one of the Governors of this world. (All participants can show and present.)</p>
         </div>
     </div>
