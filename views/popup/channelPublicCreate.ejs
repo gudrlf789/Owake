@@ -3,7 +3,7 @@
 <div class="modal fade" id="channelPublicCreate" tabindex="-1" aria-labelledby="publicChannelModalLabel"
     aria-hidden="true">
     <div class="modal-dialog content-dialog" role="document">
-        <div class="content-container modal-content rounded-4 shadow">
+        <div class="content-container modal-content rounded-4 shadow" id="createChannel-container">
             <div class="modal-header p-5 pb-4 border-bottom-0">
                 <h3 class="channel-content-title mb-0">Create your world</h2>
             </div>
@@ -13,14 +13,14 @@
                     <label class="content-label h5" for="check-igovern">I govern</label>
                     <input class="form-check-input" id="check-igovern" type="checkbox" name="channelGovernType"
                         value="I" checked="true">
-                    <i class="fa-solid fa-circle-question"></i>
+                    <i class="fa-solid fa-circle-question" id="i_govern_help"></i>
                 </div>
 
                 <div class="channel-options-container">
                     <label class="content-label h5" for="check-wegovern">We govern</label>
                     <input class="form-check-input" id="check-wegovern" type="checkbox" name="channelGovernType"
                         value="WE">
-                    <i class="fa-solid fa-circle-question"></i>
+                    <i class="fa-solid fa-circle-question" id="we_govern_help"></i>
                 </div>
             </div>
 

@@ -59,11 +59,6 @@ let videoProfiles = [
         detail: "1920×1080, 30fps, 3000Kbps",
         value: "1080p_2",
     },
-    {
-        label: "200×640",
-        detail: "200×640, 30fps",
-        value: { width: 200, height: 640, frameRate: 30 },
-    }, // custom video profile
 ];
 
 let curVideoProfile;
@@ -77,7 +72,7 @@ export const recodingDeviceCtrl = () => {
         cancelAnimationFrame(volumeAnimation);
     });
 
-    deviceSettingBtn.addEventListener("click", handlerDeviceSetting);
+    deviceSettingBtn.addEventListener("click", handlerDeviceSetting, false);
 };
 
 async function getDeviceFunc() {
@@ -116,6 +111,7 @@ async function handlerDeviceSetting() {
     $(".mic-list").delegate("a", "click", function (e) {
         switchMicrophone(e.target.innerText);
     });
+
     volumeAnimation = requestAnimationFrame(setVolumeWave);
 }
 
