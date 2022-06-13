@@ -14,46 +14,52 @@ function browserClose() {
      * 유저 이름을 DB에서 삭제하는 기능이 추가로 필요하다
      */
     window.addEventListener("beforeunload", (e) => {
+        let confirmationMessage =
+            "Are you sure you want to leave this page without placing the order ?";
+        (e || window.event).returnValue = confirmationMessage;
+
         if (window.sessionStorage.length > 0) {
             const reqData = {
                 channelType: window.sessionStorage.getItem("channelType"),
                 channelName: window.sessionStorage.getItem("channel"),
                 userId: window.sessionStorage.getItem("uid"),
             };
-            axios
-                .post("/channel/removeUserNameOnChannel", reqData)
-                .then((res) => {});
+            axios.post("/channel/removeUserNameOnChannel", reqData);
         }
         sessionStorage.clear();
         deleteAllCookies();
+
+        return confirmationMessage;
     });
 
-    window.addEventListener("unload", (e) => {
-        if (window.sessionStorage.length > 0) {
-            const reqData = {
-                channelType: window.sessionStorage.getItem("channelType"),
-                channelName: window.sessionStorage.getItem("channel"),
-                userId: window.sessionStorage.getItem("uid"),
-            };
-            axios
-                .post("/channel/removeUserNameOnChannel", reqData)
-                .then((res) => {});
-        }
-        sessionStorage.clear();
-        deleteAllCookies();
-    });
-}
+    //     window.addEventListener("unload", (e) => {
+    //         if (window.sessionStorage.length > 0) {
+    //             const reqData = {
+    //                 channelType: window.sessionStorage.getItem("channelType"),
+    //                 channelName: window.sessionStorage.getItem("channel"),
+    //                 userId: window.sessionStorage.getItem("uid"),
+    //             };
+    //             axios
+    //                 .post("/channel/removeUserNameOnChannel", reqData)
+    //                 .then((res) => {});
+    //         }
+    //         sessionStorage.clear();
+    //         deleteAllCookies();
+    //     });
+    // }
 
-/**
- * @author 전형동
- * @version 1.1
- * @data 2022.04.25
- * @description
- * Browser를 나가면 현 도메인의 모든 쿠키를 삭제함.
- */
-function deleteAllCookies() {
-    let c = document.cookie.split("; ");
-    for (i in c)
-        document.cookie =
-            /^[^=]+/.exec(c[i])[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    /**
+     * @author 전형동
+     * @version 1.1
+     * @data 2022.04.25
+     * @description
+     * Browser를 나가면 현 도메인의 모든 쿠키를 삭제함.
+     */
+    function deleteAllCookies() {
+        let c = document.cookie.split("; ");
+        for (i in c)
+            document.cookie =
+                /^[^=]+/.exec(c[i])[0] +
+                "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
 }
