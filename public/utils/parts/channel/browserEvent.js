@@ -13,7 +13,31 @@ function browserClose() {
      * 브라우저를 닫을시에는 sessionStorage값이 전부 남아있기 때문에
      * 유저 이름을 DB에서 삭제하는 기능이 추가로 필요하다
      */
+
     window.addEventListener("beforeunload", (e) => {
+        handlerBrowserCloseEvent(e);
+    });
+
+    // let varUA = navigator.userAgent.toLowerCase();
+    // if (varUA.indexOf("android" > -1)) {
+    //     $(window).blur("beforeunload", (e) => {
+    //         handlerBrowserCloseEvent(e);
+    //     });
+    // } else if (
+    //     varUA.indexOf("iphone") > -1 ||
+    //     varUA.indexOf("ipad") > -1 ||
+    //     varUA.indexOf("ipod") > -1
+    // ) {
+    //     $(window).blur("beforeunload", (e) => {
+    //         handlerBrowserCloseEvent(e);
+    //     });
+    // } else {
+    //     window.addEventListener("beforeunload", (e) => {
+    //         handlerBrowserCloseEvent(e);
+    //     });
+    // }
+
+    function handlerBrowserCloseEvent(e) {
         let confirmationMessage =
             "Are you sure you want to leave this page without placing the order ?";
         (e || window.event).returnValue = confirmationMessage;
@@ -30,7 +54,7 @@ function browserClose() {
         deleteAllCookies();
 
         return confirmationMessage;
-    });
+    }
 
     //     window.addEventListener("unload", (e) => {
     //         if (window.sessionStorage.length > 0) {
