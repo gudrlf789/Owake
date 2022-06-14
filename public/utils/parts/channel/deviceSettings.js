@@ -69,10 +69,6 @@ export const recodingDeviceCtrl = () => {
     cameraSwitchFunc();
     videoResolutionCtrlFunc();
 
-    $("#deviceSettingModal").on("hidden.bs.modal", function (e) {
-        cancelAnimationFrame(volumeAnimation);
-    });
-
     deviceSettingBtn.addEventListener("click", handlerDeviceSetting, false);
 };
 
