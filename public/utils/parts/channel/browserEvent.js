@@ -18,30 +18,7 @@ function browserClose() {
         handlerBrowserCloseEvent(e);
     });
 
-    // let varUA = navigator.userAgent.toLowerCase();
-    // if (varUA.indexOf("android" > -1)) {
-    //     $(window).blur("beforeunload", (e) => {
-    //         handlerBrowserCloseEvent(e);
-    //     });
-    // } else if (
-    //     varUA.indexOf("iphone") > -1 ||
-    //     varUA.indexOf("ipad") > -1 ||
-    //     varUA.indexOf("ipod") > -1
-    // ) {
-    //     $(window).blur("beforeunload", (e) => {
-    //         handlerBrowserCloseEvent(e);
-    //     });
-    // } else {
-    //     window.addEventListener("beforeunload", (e) => {
-    //         handlerBrowserCloseEvent(e);
-    //     });
-    // }
-
     function handlerBrowserCloseEvent(e) {
-        let confirmationMessage =
-            "Are you sure you want to leave this page without placing the order ?";
-        (e || window.event).returnValue = confirmationMessage;
-
         if (window.sessionStorage.length > 0) {
             const reqData = {
                 channelType: window.sessionStorage.getItem("channelType"),
@@ -52,25 +29,7 @@ function browserClose() {
         }
         sessionStorage.clear();
         deleteAllCookies();
-
-        return confirmationMessage;
     }
-
-    //     window.addEventListener("unload", (e) => {
-    //         if (window.sessionStorage.length > 0) {
-    //             const reqData = {
-    //                 channelType: window.sessionStorage.getItem("channelType"),
-    //                 channelName: window.sessionStorage.getItem("channel"),
-    //                 userId: window.sessionStorage.getItem("uid"),
-    //             };
-    //             axios
-    //                 .post("/channel/removeUserNameOnChannel", reqData)
-    //                 .then((res) => {});
-    //         }
-    //         sessionStorage.clear();
-    //         deleteAllCookies();
-    //     });
-    // }
 
     /**
      * @author 전형동
