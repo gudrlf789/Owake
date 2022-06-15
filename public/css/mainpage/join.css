@@ -2,7 +2,7 @@
     --content-container-color: #282833;
     --content-white-color: #fff;
     --input-form-color: #50aed0;
-    --label-font-color: #b1c8d0;
+    --label-font-color: #282833;
     --button-color: #ec7172;
 }
 
@@ -56,10 +56,6 @@
 
 .input-form {
     background-color: var(--input-form-color);
-}
-
-.label-font {
-    color: var(--label-font-color);
 }
 
 .join-content-footer-container {

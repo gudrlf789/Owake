@@ -235,7 +235,7 @@ function privateChannelJoinAction() {
     } else {
         if (!checkUserId(userId)) {
             alert(
-                "Please enter a valid user name (except spaces and special characters)"
+                "Please enter a valid user name (no spaces and special characters)"
             );
         } else {
             checkKorean(userId, channelName, channelType);
@@ -260,7 +260,7 @@ function publicChannelJoinAction() {
 
     if (!checkUserId(userId)) {
         alert(
-            "Please enter a valid user name (except spaces and special characters)"
+            "Please enter a valid user name (no spaces and special characters)"
         );
     } else {
         checkKorean(userId, channelName, channelType);
