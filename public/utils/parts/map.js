@@ -57,16 +57,12 @@ function mapWrite() {
     popup = markerCard(socket.id);
     marker = new L.Marker(mapOptions.center).addTo(map).bindPopup(popup);
 
-
     // 배열 비워주기
     pointerArr.length = 0;
 }
 
 socket.on("receive-point", (params) => {
     console.log(params.peerID, params.point);
-
-    // popup = markerCard(params.peerID);
-    // marker = new L.Marker(params.point).addTo(map).bindPopup(popup);
 });
 
 socket.on("Recipients", (params) => {
