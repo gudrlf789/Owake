@@ -17,7 +17,7 @@ const audioBtn = document.querySelector("#muteAudio");
 const videoBtn = document.querySelector("#muteVideo");
 
 // 초기값
-audioIcon.style.setProperty("color", "##e07478");
+audioIcon.style.setProperty("color", "#e07478");
 videoIcon.style.setProperty("color", "#e07478");
 
 let event = deviceScan();
@@ -62,7 +62,6 @@ export const muteUtilsFunc = () => {
 
 async function muteAudio() {
     if (!localTracks.audioTrack) return;
-
     localTrackState.audioTrackMuted = true;
     totalUsers[options.uid].audioTrack._originMediaStreamTrack.enabled = false;
     // totalUsers[options.uid].audioTrack.setMuted(true);

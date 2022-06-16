@@ -11,20 +11,27 @@ $("#channelPublicJoin").on("shown.bs.modal", (e) => {
     }
 });
 
-passwordChecked.addEventListener("input", () => {
+$("#channelPublicJoin").on("hidden.bs.modal", (e) => {
+    $("#public-nickName").val("");
+    $("#public-password").val("");
+    passwordChecked.value = "off";
+    joinPasswordContainer.hidden = true;
+});
+
+passwordChecked.addEventListener("input", (e) => {
     if (passwordChecked.checked) {
         joinPasswordContainer.hidden = false;
-        passwordChecked.value = "on";
+        e.currentTarget.value = "on";
     } else {
         joinPasswordContainer.hidden = true;
-        passwordChecked.value = "off";
+        e.currentTarget.value = "off";
     }
 });
 
 function checkUserId(userId) {
     // 공백체크
     let pattern_empty = /\s/g;
-    //  영문체크
+    // 영문체크
     let check_eng = /[a-zA-Z]/;
     // 특수문자 체크
     let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
@@ -240,7 +247,7 @@ function privateChannelJoinAction() {
     } else {
         if (!checkUserId(userId)) {
             alert(
-                "Please enter a valid user name (except spaces and special characters)"
+                "Please enter a valid user name (no spaces and special characters)"
             );
         } else {
             checkKorean(userId, channelName, channelType);
@@ -265,7 +272,7 @@ function publicChannelJoinAction() {
 
     if (!checkUserId(userId)) {
         alert(
-            "Please enter a valid user name (except spaces and special characters)"
+            "Please enter a valid user name (no spaces and special characters)"
         );
     } else {
         checkKorean(userId, channelName, channelType);

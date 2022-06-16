@@ -144,18 +144,18 @@ export const contentFunc = (contentShareSocket) => {
         mediaImg.src = "/right/media.svg";
     }
 
-    function playMediaContent(fileType, choiceFile) {
+    function playMediaContent(fileType, choiceFile, originUser) {
         if (imageType.test(fileType)) {
             contentShare.innerHTML = `
                 <div class="imageFile" name="${choiceFile}" style="overflow: auto; height:100%">
-                    <img src="${choiceFile}" style="width: 100%" />
+                    <img src="${channelName}/${originUser}/${choiceFile}" style="width: 100%" />
                 </div>
             `;
         }
         if (mediaType.test(fileType)) {
             contentShare.innerHTML = `
                 <video class="mediaFile" name="${choiceFile}" controls controlsList="nodownload" style="width: 100%; height: 100%">
-                    <source src="${choiceFile}">
+                    <source src="${channelName}/${originUser}/${choiceFile}">
                 </video>
             `;
         }
@@ -167,9 +167,9 @@ export const contentFunc = (contentShareSocket) => {
         choiceFile = e.currentTarget.getAttribute("name");
         
         if(checkIsHost()){
-            contentShareSocket.emit("igoven-choice-host-media", channelName, fileType, choiceFile);
+            contentShareSocket.emit("igoven-choice-host-media", channelName, fileType, choiceFile, originUser);
         }
-        playMediaContent(fileType, choiceFile);
+        playMediaContent(fileType, choiceFile, originUser);
     });
 
     $(document).on(event, ".closeContent", (e) => {
@@ -181,7 +181,7 @@ export const contentFunc = (contentShareSocket) => {
             const data = {
                 fileName: deleteTagName,
                 channelName: channelName,
-                userName: originUser,
+                userName: userName,
             };
 
             axios
@@ -384,7 +384,7 @@ export const contentFunc = (contentShareSocket) => {
         }
     });
 
-    contentShareSocket.on("igoven-play-host-media", (fileType, choiceFile) => {
-        playMediaContent(fileType, choiceFile);
+    contentShareSocket.on("igoven-play-host-media", (fileType, choiceFile, originUser) => {
+        playMediaContent(fileType, choiceFile, originUser);
     });
 };

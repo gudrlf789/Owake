@@ -120,7 +120,7 @@ export const pdfFunc = (pdfShareSocket) => {
         ctx.beginPath();
     }
 
-    function pdfInit(fileName) {
+    function pdfInit(fileName, originUser) {
         $("#spinnerModal").modal({
             backdrop: false,
         });
@@ -223,7 +223,7 @@ export const pdfFunc = (pdfShareSocket) => {
         if(checkIsHost()){
             pdfShareSocket.emit("igoven-choice-host-pdf", channelName, originUser, choiceFile, myState.currentPage);
         }
-        await pdfInit(choiceFile);
+        await pdfInit(choiceFile, originUser);
     });
 
     $(document).on(event, ".pdfCloseContent", (e) => {
@@ -233,6 +233,8 @@ export const pdfFunc = (pdfShareSocket) => {
 
         if (userName === originUser) {
             const data = {
+                channelName: channelName,
+                userName: userName,
                 fileName: deleteTagName,
             };
 
@@ -383,6 +385,6 @@ export const pdfFunc = (pdfShareSocket) => {
         pdfPagePrevious.name = originUser;
         myState.currentPage = currentPage;
 
-        await pdfInit(choiceFile);
+        await pdfInit(choiceFile, originUser);
     });
 };

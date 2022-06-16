@@ -115,7 +115,7 @@ export const pdfFunc = () => {
         });
 
         pdfjsLib
-            .getDocument("/channel/downloadPdf?fileName=" + fileName)
+            .getDocument(`/channel/downloadPdf?fileName=${fileName}&channelName=${channelName}&userName=${originUser}`)
             .promise.then(
                 (pdf) => {
                     myState.pdf = pdf;
@@ -159,6 +159,7 @@ export const pdfFunc = () => {
         }
 
         formData.append("userName", userName);
+        formData.append("channelName", channelName);
         formData.append("content", fileData);
 
         axios
@@ -215,6 +216,8 @@ export const pdfFunc = () => {
 
         if (userName === originUser) {
             const data = {
+                channelName: channelName,
+                userName: userName,
                 fileName: deleteTagName,
             };
 

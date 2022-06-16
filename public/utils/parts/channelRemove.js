@@ -9,7 +9,7 @@ function realDeleteChannel(reqData) {
       $("#delete_channelName").val("");
       $("#delete_channelPassword").val("");
 
-      callChannelList();
+      selectOptionsChannel();
     }else{
       if(res.data.failData){
         alert(`${res.data.failData} is wrong`);
