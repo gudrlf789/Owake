@@ -1,3 +1,6 @@
+import { channelName } from "./igovern-sessionStorage.js";
+import { checkIsHost } from "./igovern-checkIsHost.js";
+
 /**
  * @Author 전형동
  * @Date 2022 06 06
@@ -5,8 +8,9 @@
  * Audio Mixing 개발중...
  */
 
-import { localTracks, client } from "../../rtcClient.js";
+import { localTracks, client } from "../../igovern-RtcClient.js";
 
+const audioMixBtn = document.querySelector("#audioMixBtn");
 const playButton = document.querySelector(".audioPlay");
 const stopAudioMixingBtn = document.querySelector("#stop-audio-mixing");
 const audioBarAndProgressBtn = document.querySelector(".audio-bar .progress");
@@ -14,13 +18,46 @@ const volume = document.querySelector("#volume");
 const localMixingBtn = document.querySelector("#local-audio-mixing");
 
 let audioMixingProgressAnimation;
+let audioMixActive = false;
 
 let audioMixing = {
     state: "IDLE", // "IDLE" | "LOADING | "PLAYING" | "PAUSE"
     duration: 0,
 };
 
-export const audioMixingAndAudioEffect = () => {
+export const audioMixingAndAudioEffect = (audioMixingSocket) => {
+
+    //모달 닫을때 호스트 일때만 동시에 닫음
+    $("#audioMixModal").on('hidden.bs.modal', (e) => {
+        audioMixActive = !audioMixActive;
+
+        if(checkIsHost()) {
+            audioMixingSocketEvent(audioMixActive);
+        }
+    });
+
+    audioMixingSocket.on("igoven-audioMixing-client", (audioMixActive) => {
+        //audioMixActive ? audioMixingEnable() : audioMixingDisable();
+        audioMixActive ? $("#audioMixModal").modal("show") : $("#audioMixModal").modal("hide")
+    });
+
+    function audioMixingSocketEvent(audioMixActive) {
+        //audioMixActive ? audioMixingEnable() : audioMixingDisable();
+        audioMixingSocket.emit("igoven-audioMixing", channelName, audioMixActive);
+    };
+
+    audioMixBtn.addEventListener("click", (e) => {
+        audioMixActive = !audioMixActive;
+
+        if(checkIsHost()) {
+            audioMixBtn.setAttribute("data-target", "#audioMixModal");
+            audioMixingSocketEvent(audioMixActive);
+        }else {
+            audioMixBtn.setAttribute("data-target", "#");
+            alert("Host Only");
+        }
+    });
+
     stopAudioMixingBtn.addEventListener("click", stopAudioMixing, false);
     audioBarAndProgressBtn.addEventListener("click", (e) => {
         setAudioMixingPosition(e.offsetX);
@@ -48,12 +85,6 @@ export const audioMixingAndAudioEffect = () => {
         return false;
     });
 };
-
-// $("#audio-effect").click(async function (e) {
-//     // play the audio effect
-//     await playEffect(1, { source: "audio.mp3" });
-//     console.log("play audio effect success");
-// });
 
 function setAudioMixingPosition(clickPosX) {
     if (audioMixing.state === "IDLE" || audioMixing.state === "LOADING") return;
@@ -163,67 +194,6 @@ async function playEffect(cycle, options) {
     localTracks.audioEffectTrack.play();
     localTracks.audioEffectTrack.startProcessAudioBuffer({ cycle });
 }
-
-// function audioMixContainer() {
-//     const audioMixCtr = $(`<div class="audioMix-container">
-//         <div class="form-container">
-//             <div class="mixing-group button-group">
-//                 <div>
-//                     <div class="fileSelect-title">
-//                         <span class="title">Select File</span>
-//                     </div>
-//                     <input id="local-file" class="form-control" type="file">
-//                 </div>
-
-//                 <div class="audioMix-button">
-//                     <input id="local-audio-mixing" type="button" class="btn btn-primary btn-sm"
-//                         value="Start Audio Mixing" />
-
-//                     <input id="stop-audio-mixing" type="button" class="btn btn-primary btn-sm" value="Stop Audio Mixing" />
-//                 </div>
-//             </div>
-
-//             <div class="audio-controls">
-//                 <div class="play-button">
-//                     <a href="#" title="play audio mixing" class="audioPlay"></a>
-//                 </div>
-//                 <div class="audio-bar">
-//                     <div class="progress">
-//                         <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-//                             aria-valuemax="100"></div>
-//                     </div>
-//                 </div>
-//                 <div class="audio-time"><span class="audio-current-time">00:00</span>/<span
-//                         class="audio-duration">00:00</span></div>
-//             </div>
-
-//             <div class="audio-volume-controls">
-//                 <div class="audio-volume-bar">
-//                     <label for="volume">Audio Mixing Volume</label>
-//                     <input id="volume" type="range" class="custom-range" value="100" min="0" max="100" />
-//                 </div>
-//             </div>
-//         </div>
-//     </div>`);
-//     $("#local__video__container").append(audioMixCtr);
-//     loadCssScript();
-// }
-
-// function loadCssScript() {
-//     const link = document.createElement("link");
-//     link.rel = "stylesheet";
-//     link.href = "../../../channel/audioMix.css";
-//     document.head.appendChild(link);
-// }
-
-// function removeCssScript() {
-//     const linkAll = document.querySelectorAll("link");
-//     for (let i = 0; i < linkAll.childNodes.length; i++) {
-//         if (linkAll.childNodes[i].includes("audioMix")) {
-//             linkAll.childNodes[i].removeChild();
-//         }
-//     }
-// }
 
 // calculate the MM:SS format from millisecond
 function toMMSS(second) {

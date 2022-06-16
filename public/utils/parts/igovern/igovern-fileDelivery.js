@@ -12,7 +12,7 @@ let fileDeliverySocket;
 export const fileDelivery = (socket) => {
     fileDeliverySocket = socket;
 
-    fileDeliverySocket.on("igoven-fileDevery-client", (identifireActivator) => {
+    fileDeliverySocket.on("igoven-fileDevery-client", (deliveryActive) => {
         deliveryActive ? fileDeliveryEnable() : fileDeliveryDisable();
     });
 
@@ -29,12 +29,11 @@ export const fileDelivery = (socket) => {
         },
         false
     );
-};
 
-function fileDeliverySocketEvent(deliveryActive) {
-    deliveryActive ? fileDeliveryEnable() : fileDeliveryDisable();
-    fileDeliverySocket.emit("igoven-fileDevery", channelName, deliveryActive);
-};
+    function fileDeliverySocketEvent(deliveryActive) {
+        deliveryActive ? fileDeliveryEnable() : fileDeliveryDisable();
+        fileDeliverySocket.emit("igoven-fileDevery", channelName, deliveryActive);
+    };
 
 function fileDeliveryEnable() {
     fileDeliveryImg.src = "/left/file_a.svg";
@@ -69,5 +68,7 @@ function closeIframeLayer() {
     const getFileDeliveryLayer = document.querySelector(
         ".fileDelivery-layer-container"
     );
+    debugger;
     localVideoContainer.removeChild(getFileDeliveryLayer);
 }
+};

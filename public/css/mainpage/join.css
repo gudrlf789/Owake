@@ -2,7 +2,7 @@
     --content-container-color: #282833;
     --content-white-color: #fff;
     --input-form-color: #50aed0;
-    --label-font-color: #b1c8d0;
+    --label-font-color: #282833;
     --button-color: #ec7172;
 }
 
@@ -18,8 +18,33 @@
     color: var(--content-white-color);
 }
 
-.content-body-container {
+.join-content-body-container {
     display: flex;
+    flex-direction: column;
+}
+
+.public-input-container {
+    display: flex;
+}
+
+.private-input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.select-governor-toggle {
+    display: flex;
+    justify-content: space-between;
+}
+
+.select-governor-toggle div {
+    display: flex;
+    align-items: center;
+}
+
+#passwordSwitchChecked {
+    height: 1.5em;
+    width: 3em !important;
 }
 
 .input-label-container {
@@ -33,13 +58,10 @@
     background-color: var(--input-form-color);
 }
 
-.label-font {
-    color: var(--label-font-color);
-}
-
-.content-footer-container {
+.join-content-footer-container {
     display: flex;
     justify-content: space-between;
+    border-top: none;
 }
 
 .logo-container {
@@ -54,4 +76,8 @@
 .join-container > button {
     background-color: var(--button-color);
     color: var(--content-white-color);
+}
+
+hr {
+    color: #fff;
 }

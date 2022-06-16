@@ -46,7 +46,7 @@ function playerNameHidden() {
                 subOptions.classList.add("swiper-slide-next");
             }
         }
-    } else if (bodyWidth <= 768) {
+    } else if (bodyWidth < 768) {
         playerName.hidden = true;
         optionsNext.hidden = false;
         optionsPrev.hidden = false;
@@ -75,7 +75,7 @@ function playerNameHidden() {
                 subOptions.classList.add("swiper-slide-next");
             }
         }
-    } else if (bodyWidth > 1280) {
+    } else if (bodyWidth >= 1281) {
         playerName.hidden = false;
         optionsNext.hidden = true;
         optionsPrev.hidden = true;

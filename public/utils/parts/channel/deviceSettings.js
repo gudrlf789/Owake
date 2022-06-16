@@ -21,10 +21,13 @@ const cameraSwitchBtn = document.querySelector("#camera-switching");
 
 let mics = []; // all microphones devices you can use
 let cams = []; // all cameras devices you can use
+let devices = [];
+let output_mics = [];
 let currentMic; // the microphone you are using
 let currentCam; // the camera you are using
 let volumeAnimation;
 let videoBox;
+let curVideoProfile;
 let cameraSwitchActive = false;
 
 let event = deviceScan();
@@ -59,25 +62,14 @@ let videoProfiles = [
         detail: "1920×1080, 30fps, 3000Kbps",
         value: "1080p_2",
     },
-    {
-        label: "200×640",
-        detail: "200×640, 30fps",
-        value: { width: 200, height: 640, frameRate: 30 },
-    }, // custom video profile
 ];
-
-let curVideoProfile;
 
 export const recodingDeviceCtrl = () => {
     getDeviceFunc();
     cameraSwitchFunc();
     videoResolutionCtrlFunc();
 
-    $("#deviceSettingModal").on("hidden.bs.modal", function (e) {
-        cancelAnimationFrame(volumeAnimation);
-    });
-
-    deviceSettingBtn.addEventListener("click", handlerDeviceSetting);
+    deviceSettingBtn.addEventListener("click", handlerDeviceSetting, false);
 };
 
 async function getDeviceFunc() {
@@ -96,6 +88,18 @@ async function getDeviceFunc() {
     cams.forEach((cam) => {
         $(".cam-list").append(`<a class="dropdown-item">${cam.label}</a>`);
     });
+
+    // get Devices
+    devices = await AgoraRTC.getDevices();
+    output_mics = devices[0];
+    $(".mic-output").val(output_mics.label);
+    devices.forEach((mic) => {
+        if (mic.kind === "audiooutput") {
+            $(".mic-output-list").append(
+                `<a class="dropdown-item">${mic.label}</a>`
+            );
+        }
+    });
 }
 
 async function handlerDeviceSetting() {
@@ -113,9 +117,15 @@ async function handlerDeviceSetting() {
             switchCamera(e.target.innerText);
         }
     });
+
     $(".mic-list").delegate("a", "click", function (e) {
         switchMicrophone(e.target.innerText);
     });
+
+    $(".mic-output-list").delegate("a", "click", function (e) {
+        switchOutputMicrophone(e.target.innerText);
+    });
+
     volumeAnimation = requestAnimationFrame(setVolumeWave);
 }
 
@@ -131,6 +141,13 @@ async function switchMicrophone(label) {
     $(".mic-input").val(currentMic.label);
     // switch device of local audio track.
     await localTracks.audioTrack.setDevice(currentMic.deviceId);
+}
+
+async function switchOutputMicrophone(label) {
+    output_mics = devices.find((mic) => mic.label === label);
+    $(".mic-output").val(output_mics.label);
+    // switch device of local audio track.
+    // await localTracks.audioTrack.setDevice(output_mics.deviceId);
 }
 
 // show real-time volume while adjusting device.

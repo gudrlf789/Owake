@@ -41,16 +41,18 @@
 
                 function checkUserId(userNameSession) {
                     // 공백체크
-                    const pattern_empty = /\s/g;
-                    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+                    let pattern_empty = /\s/g;
+                    let korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+                    //  영문체크
+                    let check_eng = /[a-zA-Z]/;
                     // 특수문자 체크
-                    const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+                    let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
 
                     if (
                         userNameSession === "" || userNameSession === null ||
                         userNameSession.match(pattern_empty) ||
                         pattern_spc.test(userNameSession) ||
-                        korean.test(userNameSession)
+                        !check_eng.test(userNameSession)
                     ) {
                         return false;
                     } else {
@@ -74,11 +76,11 @@
                         channelName: channelName
                     };
 
-                    let userNameSession = window.prompt("Enter the name");
+                    let userNameSession = window.prompt("Enter the name (Please enter in English only)");
 
                     if (!checkUserId(userNameSession)) {
                         alert(
-                            "Please enter a valid user name (except spaces and special characters and korean)"
+                            "Please enter a valid user name (no spaces and special characters and korean)"
                         );
                         location.replace("/")
                     }
@@ -142,6 +144,7 @@
             <%- include("./popup/deviceSettings") %>
                 <%- include("./popup/identifier") %>
                     <%- include("./popup/spinnerModal") %>
+                        <%- include("./popup/audioMix.ejs") %>
 </head>
 
 <body>

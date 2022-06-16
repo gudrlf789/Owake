@@ -147,34 +147,25 @@ import { closeSocketInstance } from "./igovern-channel-common.js";
      $("#local-player-name").text(`${options.uid}`);
  
      if (
-         localTracks.videoTrack !== undefined &&
-         localTracks.audioTrack !== undefined
-     ) {
-         localTracks.videoTrack.play(localVideoBox);
-         // await client.publish(Object.values(localTracks));
-         // Agora Code Update version 4.11
-         await client.publish(
-             Object.values(localTracks).filter((track) => track !== null)
-         );
-     } else if (
-         localTracks.videoTrack === undefined &&
-         localTracks.audioTrack !== undefined
-     ) {
-         await client.publish(localTracks.audioTrack);
-     } else if (
-         localTracks.videoTrack !== undefined &&
-         localTracks.audioTrack === undefined
-     ) {
-         localTracks.videoTrack.play(localVideoBox);
-         // await client.publish(localTracks.videoTrack);
-         await client.publish(
-             Object.values(localTracks.videoTrack).filter(
-                 (track) => track !== null
-             )
-         );
-     } else {
-         alert("인식된 디바이스가 아무것도 없음");
-     }
+        localTracks.videoTrack !== undefined &&
+        localTracks.audioTrack !== undefined
+    ) {
+        localTracks.videoTrack.play(localVideoBox);
+        await client.publish(Object.values(localTracks));
+    } else if (
+        localTracks.videoTrack === undefined &&
+        localTracks.audioTrack !== undefined
+    ) {
+        await client.publish(localTracks.audioTrack);
+    } else if (
+        localTracks.videoTrack !== undefined &&
+        localTracks.audioTrack === undefined
+    ) {
+        localTracks.videoTrack.play(localVideoBox);
+        await client.publish(localTracks.videoTrack);
+    } else {
+        alert("인식된 디바이스가 아무것도 없음");
+    }
  
      videoTransformAction();
  }

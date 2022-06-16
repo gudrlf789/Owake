@@ -7,27 +7,50 @@
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body p-5 pt-0 content-body-container">
+            <div class="modal-body p-5 pt-0 join-content-body-container">
 
                 <div class="col-sm" hidden="true">
                     <input id="public-channelName" type="hidden" />
                     <input id="public-channelType" type="hidden" />
+                    <input id="public-governType" type="hidden" />
                 </div>
 
-                <div class="input-label-container">
-                    <label class="content-label mb-3" for="">Name</label>
-                </div>
+                <div class="public-input-container">
+                    <div class="input-label-container">
+                        <label class="content-label mb-3" for="">Name</label>
+                    </div>
 
-                <div class="input-container">
                     <div class="form-floating mb-3">
                         <input type="text" class="input-form form-control rounded-3" id="public-nickName">
-                        <label class="label-font" for="public-nickName">Enter your name</label>
+                        <label class="join-label-font" for="public-nickName">Please enter in English only</label>
+                    </div>
+                </div>
+
+                <div class="select-governor-toggle">
+                    <label class="content-label" for="">Governor</label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="passwordSwitchChecked"
+                            value="off">
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="input-container" id="join-password-container" hidden="true">
+                    <div class="input-label-container">
+                        <label class="content-label mb-3" for="">Password</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="password" class="input-form form-control rounded-3" id="public-password">
+                        <label class="label-font" for="public-password">Please enter your password.
+                        </label>
                     </div>
                 </div>
 
             </div>
 
-            <div class="modal-footer pt-3 content-footer-container">
+            <div class="modal-footer pt-3 join-content-footer-container">
                 <div class="logo-container">
                     <img src="mainpage/logo.png" alt="">
                 </div>

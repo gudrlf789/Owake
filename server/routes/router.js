@@ -15,7 +15,14 @@ const storage = multer.diskStorage({
 });
 const contentsStorage = multer.diskStorage({
     destination: function (req, res, cb) {
-        cb(null, `./server/contents`);
+        fs.readdir(`./server/contents/${req.body.channelName}/${req.body.userName}`, (err) => {
+            if (err) {
+                fs.mkdirSync(`./server/contents/${req.body.channelName}/${req.body.userName}`);
+                cb(null, `./server/contents/${req.body.channelName}/${req.body.userName}`);
+            }else{
+                cb(null, `./server/contents/${req.body.channelName}/${req.body.userName}`);
+            }
+        });
     },
     filename: function (req, file, cb) {
         if (req.body.userName) {
@@ -137,6 +144,12 @@ router.post("/register", upload.single("image"), async (req, res) => {
     const docName =
         bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
 
+    fs.readdir(`./server/contents/${bodyData.channelName}`, (err) => {
+        if (err) {
+            fs.mkdirSync(`./server/contents/${bodyData.channelName}`);
+        }
+    });
+
     const snapshot = await firebaseCollection
         .where("channelName", "==", bodyData.channelName)
         .where("channelType", "==", bodyData.channelType)
@@ -250,6 +263,10 @@ router.post("/delete", (req, res) => {
                     if (fs.statSync(imagePath)) {
                         fs.unlinkSync(imagePath);
                     }
+
+                    fs.rmdir(`./server/contents/${bodyData.channelName}`,{ recursive: true }, err => {
+                        console.log("err : ", err);
+                    })
                 } catch (err) {
                     if (err.code === "ENOENT") {
                         console.log(
@@ -358,6 +375,10 @@ router.post("/removeUserNameOnChannel", async (req, res) => {
     const docName =
         bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
 
+    fs.rmdir(`./server/contents/${bodyData.channelName}/${bodyData.userId}`,{ recursive: true }, err => {
+        console.log("err : ", err);
+    });
+
     firebaseCollection
         .doc(docName)
         .update({
@@ -457,9 +478,9 @@ router.post(
 router.post("/contentsDelete", async (req, res) => {
     const bodyData = req.body;
 
-    if (fs.existsSync("./server/contents/" + bodyData.fileName)) {
+    if (fs.existsSync(`./server/contents/${bodyData.channelName}/${bodyData.userName}/${bodyData.fileName}`)) {
         try {
-            fs.unlinkSync("./server/contents/" + bodyData.fileName);
+            fs.unlinkSync(`./server/contents/${bodyData.channelName}/${bodyData.userName}/${bodyData.fileName}`);
             return res.status(200).json({
                 success: true,
             });
@@ -484,7 +505,9 @@ router.get("/downloadPdf", async (req, res) => {
     });*/
 
     const fileName = req.query.fileName;
-    res.download("./server/contents/" + fileName);
+    const channelName = req.query.channelName;
+    const userName = req.query.userName;
+    res.download(`./server/contents/${channelName}/${userName}/${fileName}`);
 });
 
 router.post("/channelFirstSpinnerDelete", (req, res) => {

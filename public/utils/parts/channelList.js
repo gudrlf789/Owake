@@ -2,15 +2,17 @@ let channelContainer = $(".channel-box-container");
 let partnerChannelContainer = $(".partner-channel-container");
 let selectOptions = document.querySelector(".search-select");
 
-function checkPassword(channelName, channelPassword, channelType) {
+function checkPassword(channelName, channelPassword, channelType, governType) {
     if (channelPassword !== "") {
         $("#private-channelName").val(channelName);
         $("#private-passwordChecking").val(channelPassword);
         $("#private-channelType").val(channelType);
+        $("#private-governType").val(governType);
         $("#channelPrivateJoin").modal();
     } else {
         $("#public-channelName").val(channelName);
         $("#public-channelType").val(channelType);
+        $("#public-governType").val(governType);
         $("#channelPublicJoin").modal();
     }
 }
@@ -22,13 +24,25 @@ $(document).on("click", ".channel-thumnail", (e) => {
         e.currentTarget.parentNode.childNodes[0].childNodes[1].value;
     const channelPassword =
         e.currentTarget.parentNode.childNodes[0].childNodes[2].value;
+    const governType =
+        e.currentTarget.parentNode.childNodes[0].childNodes[6].value;
 
     switch (channelType) {
         case "Public":
-            checkPassword(channelName, channelPassword, channelType);
+            checkPassword(
+                channelName,
+                channelPassword,
+                channelType,
+                governType
+            );
             break;
         case "Private":
-            checkPassword(channelName, channelPassword, channelType);
+            checkPassword(
+                channelName,
+                channelPassword,
+                channelType,
+                governType
+            );
             break;
         default:
             break;
@@ -125,13 +139,19 @@ function channelListLoad(data) {
                 `<input type='hidden' value="${data.imageName}" >` +
                 `<input type='hidden' value=${data.channelCategory} >` +
                 `<input type='hidden' value="${data.channelDescription}" >` +
+                `<input type='hidden' value="${data.governType}" >` +
                 "</div>" +
                 "<a href='#' class='thumbnail channel-thumnail'>" +
                 `<img src='${data.imageName}' alt='' class='thumbnail-image'>` +
                 "</a>" +
                 "<div class='content-bottom-section'>" +
+                `${
+                    data.governType === "I"
+                        ? "<span class='govern-icon' id='igovern-icon'>IG</span>"
+                        : "<span class='govern-icon' id='wegovern-icon'>WG</span>"
+                }` +
                 "<div class='content-title-container'>" +
-                `<a href='#' class='content-title'>${data.channelName}</a>` +
+                `<span class='content-title'>${data.channelName}</span>` +
                 "<div class='channel-box-footer-icon'>" +
                 `${
                     data.channelPassword.length !== 0 ||
@@ -143,7 +163,7 @@ function channelListLoad(data) {
                 "</div>" +
                 "</div>" +
                 "<div class='content-details'>" +
-                `<a href='#' class='content-channel-description'>${data.channelDescription}</a>` +
+                `<span class='content-channel-description'>${data.channelDescription}</span>` +
                 "<div class='content-metadata'>" +
                 "<div class='content-channel-options'>" +
                 "<div class='channel-box-footer-btn-update' id='channelUpdateBtn' data-toggle='modal'" +
@@ -155,10 +175,10 @@ function channelListLoad(data) {
                 "<span>Delete</span>" +
                 "</div>" +
                 "</div>" +
-                "<div class='content-symbol-button'>" +
-                "<i class='symbol-icon'></i>" +
-                "<span>10 On_line</span>" +
-                "</div>" +
+                // "<div class='content-symbol-button'>" +
+                // "<i class='symbol-icon'></i>" +
+                // "<span>10 On_line</span>" +
+                // "</div>" +
                 "</div>" +
                 "</div>" +
                 "</article>"

@@ -6,7 +6,7 @@ import { fileDelivery } from "./parts/channel/fileDelivery.js";
 // import { fileShare } from "./parts/channel/fileShare.js";
 import { momentShareFunc1 } from "./parts/channel/momentShare1.js";
 import { muteUtilsFunc } from "./parts/channel/muteUtils.js";
-import { recodingDeviceCtrl } from "./parts/channel/devviceSettings.js";
+import { recodingDeviceCtrl } from "./parts/channel/deviceSettings.js";
 import { remoteDisplay } from "./parts/channel/remoteDisplay.js";
 import { screenShareFunc } from "./parts/channel/screenShare.js";
 import { whiteBoardFunc } from "./parts/channel/whiteBoard.js";

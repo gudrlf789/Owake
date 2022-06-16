@@ -128,7 +128,7 @@ function channelUpdateFunc(data) {
             $("#update_upload").val("");
             $(`#update_channel-description`).val("");
 
-            callChannelList();
+            selectOptionsChannel();
         } else {
             alert("The channel hasn't been modified");
             $("#channelUpdate").modal("hide");

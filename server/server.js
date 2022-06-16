@@ -27,8 +27,12 @@ let io, server;
 server = require("http").createServer(app);
 
 io = new Server({
-    pingInterval: 100000,
-    pingTimeout: 100000,
+    /**
+     * 참조
+     * https://stackoverflow.com/questions/29073746/socket-io-disconnect-event-transport-close-client-namespace-disconnect
+     */
+    pingInterval: 25000,
+    pingTimeout: 180000,
     maxHttpBufferSize: 1e8,
 
     cors: {
@@ -123,12 +127,13 @@ app.get("/:channelName/:channelType/:governType", (req, res) => {
             channelType: req.params.channelType,
             appID,
         });
+    }else {
+        res.render("igovern-channel", {
+            channelName: req.params.channelName,
+            channelType: req.params.channelType,
+            appID,
+        });
     }
-    res.render("igovern-channel", {
-        channelName: req.params.channelName,
-        channelType: req.params.channelType,
-        appID,
-    });
 });
 
 app.get("/all", (req, res, next) => {
@@ -173,7 +178,8 @@ io.sockets.on("connection", (socket) => {
 
     log.debug("[" + socket.id + "] connection accepted");
 
-    /////테스트
+    ///// igovern //////////////////////////////////////
+
     socket.on("igovern-join-channel", (channelName) => {
         socket.join(channelName);
     });
@@ -192,6 +198,12 @@ io.sockets.on("connection", (socket) => {
             .emit("igoven-fileHash-client", identifireActivator);
     });
 
+    socket.on("igoven-momentShare", (channelName, momentShareActive) => {
+        socket
+            .to(channelName)
+            .emit("igoven-momentShare-client", momentShareActive);
+    });
+
     socket.on("igoven-contentShare", (channelName, contentShareActive) => {
         socket
             .to(channelName)
@@ -200,10 +212,10 @@ io.sockets.on("connection", (socket) => {
 
     socket.on(
         "igoven-choice-host-media",
-        (channelName, fileType, choiceFile) => {
+        (channelName, fileType, choiceFile, originUser) => {
             socket
                 .to(channelName)
-                .emit("igoven-play-host-media", fileType, choiceFile);
+                .emit("igoven-play-host-media", fileType, choiceFile, originUser);
         }
     );
 
@@ -231,7 +243,13 @@ io.sockets.on("connection", (socket) => {
             .emit("igoven-whiteBoard-client", whiteBoardBtnActive);
     });
 
-    //////////////
+    socket.on("igoven-audioMixing", (channelName, audioMixActive) => {
+        socket
+            .to(channelName)
+            .emit("igoven-audioMixing-client", audioMixActive);
+    });
+
+    /////////////////////////////////////////////////////
 
     socket.on("disconnect", (reason) => {
         for (let channel in socket.channels) {
@@ -301,6 +319,10 @@ io.sockets.on("connection", (socket) => {
         log.debug("connected peers grp by Peer Address ", peers);
 
         socket.in(config.channel).emit("input_address", config.link);
+    });
+
+    socket.on("web-origin-info", (channelName, tabURL, iframeInit) => {
+        socket.to(channelName).emit("web-remote-info", tabURL, iframeInit);
     });
 
     socket.on("join-whiteboard", (channelName) => {
