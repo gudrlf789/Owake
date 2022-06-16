@@ -40,16 +40,17 @@
 
                 function checkUserId(userNameSession) {
                     // 공백체크
-                    const pattern_empty = /\s/g;
-                    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+                    let pattern_empty = /\s/g;
+                    //  영문체크
+                    let check_eng = /[a-zA-Z]/;
                     // 특수문자 체크
-                    const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+                    let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
 
                     if (
                         userNameSession === "" || userNameSession === null ||
                         userNameSession.match(pattern_empty) ||
                         pattern_spc.test(userNameSession) ||
-                        korean.test(userNameSession)
+                        !check_eng.test(userNameSession)
                     ) {
                         return false;
                     } else {

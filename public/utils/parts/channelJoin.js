@@ -9,7 +9,7 @@ $("#channelPublicJoin").on("shown.bs.modal", (e) => {
     }
 });
 
-$("#channelPublicJoin").on('hidden.bs.modal', (e) => {
+$("#channelPublicJoin").on("hidden.bs.modal", (e) => {
     $("#public-nickName").val("");
     $("#public-password").val("");
     passwordChecked.value = "off";
@@ -20,8 +20,7 @@ passwordChecked.addEventListener("input", (e) => {
     if (passwordChecked.checked) {
         joinPasswordContainer.hidden = false;
         e.currentTarget.value = "on";
-    }
-    else {
+    } else {
         joinPasswordContainer.hidden = true;
         e.currentTarget.value = "off";
     }
@@ -30,12 +29,15 @@ passwordChecked.addEventListener("input", (e) => {
 function checkUserId(userId) {
     // 공백체크
     let pattern_empty = /\s/g;
+    // 영문체크
+    let check_eng = /[a-zA-Z]/;
     // 특수문자 체크
     let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
     if (
         userId === "" ||
         userId.match(pattern_empty) ||
-        pattern_spc.test(userId)
+        pattern_spc.test(userId) ||
+        !check_eng.test(userId)
     ) {
         return false;
     } else {
