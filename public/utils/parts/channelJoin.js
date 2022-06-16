@@ -1,10 +1,12 @@
 const passwordChecked = document.querySelector("#passwordSwitchChecked");
-const joinPasswordContainer = document.querySelector("#join-password-container");
+const joinPasswordContainer = document.querySelector(
+    "#join-password-container"
+);
 
-$("#channelPublicJoin").on('shown.bs.modal', (e) => {
-    if($("#public-governType").val() === "WE") {
+$("#channelPublicJoin").on("shown.bs.modal", (e) => {
+    if ($("#public-governType").val() === "WE") {
         passwordChecked.setAttribute("disabled", true);
-    }else {
+    } else {
         passwordChecked.removeAttribute("disabled");
     }
 });
@@ -13,8 +15,7 @@ passwordChecked.addEventListener("input", () => {
     if (passwordChecked.checked) {
         joinPasswordContainer.hidden = false;
         passwordChecked.value = "on";
-    }
-    else {
+    } else {
         joinPasswordContainer.hidden = true;
         passwordChecked.value = "off";
     }
@@ -23,12 +24,17 @@ passwordChecked.addEventListener("input", () => {
 function checkUserId(userId) {
     // 공백체크
     let pattern_empty = /\s/g;
+    //  영문체크
+    let check_eng = /[a-zA-Z]/;
     // 특수문자 체크
     let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+
     if (
         userId === "" ||
+        userId === null ||
         userId.match(pattern_empty) ||
-        pattern_spc.test(userId)
+        pattern_spc.test(userId) ||
+        !check_eng.test(userId)
     ) {
         return false;
     } else {
@@ -47,14 +53,14 @@ function enrollUserNameOnChannel(userId, channelName, channelType, governType) {
     //문자 공백 제거
     userId = userId.replace(/\s/gi, "");
 
-    if(!governType) governType = "WE";
+    if (!governType) governType = "WE";
 
     const reqData = {
         channelType: channelType,
         channelName: channelName,
         userId: userId,
     };
-    
+
     axios.post("/channel/enrollUserNameOnChannel", reqData).then((res) => {
         if (res.data.success) {
             window.sessionStorage.setItem("channel", channelName);
@@ -68,13 +74,12 @@ function enrollUserNameOnChannel(userId, channelName, channelType, governType) {
 }
 
 function checkHostUser(userId, userPassword, adminId, adminPassword) {
-
-    if(userId === adminId && userPassword === adminPassword){
+    if (userId === adminId && userPassword === adminPassword) {
         return true;
-    }else{
+    } else {
         return false;
     }
-};
+}
 
 /**
  * @anthor 박형길
@@ -91,7 +96,7 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
         channelName: channelName,
         userId: userId,
     };
-    
+
     axios.post("/channel/info", reqData).then((res) => {
         if (res.data.success) {
             const result = res.data.channelInfo.userNames.filter(
@@ -101,16 +106,35 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
             if (result.length > 0) {
                 alert("Duplicate username exists");
             } else {
-                if(passwordChecked.value === "on") {
-                    if(checkHostUser(userId, userPassword, res.data.channelInfo.adminId, res.data.channelInfo.adminPassword)){
+                if (passwordChecked.value === "on") {
+                    if (
+                        checkHostUser(
+                            userId,
+                            userPassword,
+                            res.data.channelInfo.adminId,
+                            res.data.channelInfo.adminPassword
+                        )
+                    ) {
                         window.sessionStorage.setItem("isHost", "Y");
-                        enrollUserNameOnChannel(userId, channelName, channelType, res.data.channelInfo.governType);
-                    }else {
-                        alert("Wrong adminId or password. please check your adminId or password again");
+                        enrollUserNameOnChannel(
+                            userId,
+                            channelName,
+                            channelType,
+                            res.data.channelInfo.governType
+                        );
+                    } else {
+                        alert(
+                            "Wrong adminId or password. please check your adminId or password again"
+                        );
                     }
-                }else{
+                } else {
                     window.sessionStorage.setItem("isHost", "N");
-                    enrollUserNameOnChannel(userId, channelName, channelType, res.data.channelInfo.governType);
+                    enrollUserNameOnChannel(
+                        userId,
+                        channelName,
+                        channelType,
+                        res.data.channelInfo.governType
+                    );
                 }
             }
         } else {
