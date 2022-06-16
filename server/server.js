@@ -127,12 +127,13 @@ app.get("/:channelName/:channelType/:governType", (req, res) => {
             channelType: req.params.channelType,
             appID,
         });
+    }else {
+        res.render("igovern-channel", {
+            channelName: req.params.channelName,
+            channelType: req.params.channelType,
+            appID,
+        });
     }
-    res.render("igovern-channel", {
-        channelName: req.params.channelName,
-        channelType: req.params.channelType,
-        appID,
-    });
 });
 
 app.get("/all", (req, res, next) => {
@@ -211,10 +212,10 @@ io.sockets.on("connection", (socket) => {
 
     socket.on(
         "igoven-choice-host-media",
-        (channelName, fileType, choiceFile) => {
+        (channelName, fileType, choiceFile, originUser) => {
             socket
                 .to(channelName)
-                .emit("igoven-play-host-media", fileType, choiceFile);
+                .emit("igoven-play-host-media", fileType, choiceFile, originUser);
         }
     );
 

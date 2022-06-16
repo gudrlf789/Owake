@@ -1,7 +1,5 @@
-const passwordChecked = document.querySelector("#passwordSwitchChecked");
-const joinPasswordContainer = document.querySelector(
-    "#join-password-container"
-);
+let passwordChecked = document.querySelector("#passwordSwitchChecked");
+let joinPasswordContainer = document.querySelector("#join-password-container");
 
 $("#channelPublicJoin").on("shown.bs.modal", (e) => {
     if ($("#public-governType").val() === "WE") {
@@ -11,13 +9,21 @@ $("#channelPublicJoin").on("shown.bs.modal", (e) => {
     }
 });
 
-passwordChecked.addEventListener("input", () => {
+$("#channelPublicJoin").on('hidden.bs.modal', (e) => {
+    $("#public-nickName").val("");
+    $("#public-password").val("");
+    passwordChecked.value = "off";
+    joinPasswordContainer.hidden = true;
+});
+
+passwordChecked.addEventListener("input", (e) => {
     if (passwordChecked.checked) {
         joinPasswordContainer.hidden = false;
-        passwordChecked.value = "on";
-    } else {
+        e.currentTarget.value = "on";
+    }
+    else {
         joinPasswordContainer.hidden = true;
-        passwordChecked.value = "off";
+        e.currentTarget.value = "off";
     }
 });
 
