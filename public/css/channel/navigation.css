@@ -130,6 +130,9 @@
     .sub__options {
         justify-content: flex-start;
     }
+    .swiper-wrapper {
+        justify-content: center;
+    }
 }
 
 @media (max-width: 768px) {
