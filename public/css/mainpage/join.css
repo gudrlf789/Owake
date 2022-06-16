@@ -58,6 +58,10 @@
     background-color: var(--input-form-color);
 }
 
+.form-floating {
+    width: 100%;
+}
+
 .join-content-footer-container {
     display: flex;
     justify-content: space-between;
