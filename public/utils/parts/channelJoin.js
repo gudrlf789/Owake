@@ -33,15 +33,19 @@ function checkUserId(userId) {
     let pattern_empty = /\s/g;
     // 영문체크
     let check_eng = /[a-zA-Z]/;
+    /// 숫자체크
+    let check_number = /\d/;
     // 특수문자 체크
     let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
 
     if (
         userId === "" ||
+        userId === undefined ||
         userId === null ||
         userId.match(pattern_empty) ||
         pattern_spc.test(userId) ||
-        !check_eng.test(userId)
+        !check_eng.test(userId) ||
+        !check_number.test(userId)
     ) {
         return false;
     } else {

@@ -39,19 +39,23 @@
                  * 공백, 특수문자, 한글 체크
                  */
 
-                function checkUserId(userNameSession) {
+                function checkUserId(userId) {
                     // 공백체크
                     let pattern_empty = /\s/g;
                     //  영문체크
                     let check_eng = /[a-zA-Z]/;
+                    /// 숫자체크
+                    let check_number = /\d/;
                     // 특수문자 체크
                     let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
-
                     if (
-                        userNameSession === "" || userNameSession === null ||
-                        userNameSession.match(pattern_empty) ||
-                        pattern_spc.test(userNameSession) ||
-                        !check_eng.test(userNameSession)
+                        userId === "" ||
+                        userId === undefined ||
+                        userId === null ||
+                        userId.match(pattern_empty) ||
+                        pattern_spc.test(userId) ||
+                        !check_eng.test(userId) ||
+                        !check_number.test(userId)
                     ) {
                         return false;
                     } else {
@@ -75,7 +79,7 @@
                         channelName: channelName
                     };
 
-                    let userNameSession = window.prompt("Enter the name (Please enter in English only)");
+                    let userNameSession = window.prompt("Enter the name (Please enter in English and Numbers only)");
 
                     if (!checkUserId(userNameSession)) {
                         alert(
