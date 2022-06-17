@@ -41,8 +41,7 @@ function checkUserId(userId) {
         userId === null ||
         userId.match(pattern_empty) ||
         pattern_spc.test(userId) ||
-        !check_eng.test(userId) ||
-        !check_number.test(userId)
+        !(check_eng.test(userId) || check_number.test(userId))
     ) {
         return false;
     } else {
