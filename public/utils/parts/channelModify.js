@@ -136,3 +136,18 @@ function channelUpdateFunc(data) {
         }
     });
 }
+
+$("#channelUpdateModal").on("hidden.bs.modal", (e) => {
+    let channelInput = document
+        .querySelector("#channelUpdateModal")
+        .querySelector(".channel-info-container")
+        .querySelectorAll("input");
+    let channelTextArea = document
+        .querySelector("#channelUpdateModal")
+        .querySelector(".channel-info-container")
+        .querySelector("textarea");
+    for (let i = 0; i < channelInput.length; i++) {
+        channelInput[i].value = "";
+        channelTextArea.value = "";
+    }
+});

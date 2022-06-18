@@ -65,17 +65,6 @@ export const momentShareFunc1 = () => {
 
     momentShareArea1.append(navContainer1, momentContainer1);
 
-    momentTabArea1.style.setProperty("height", "auto");
-    momentTabArea1.style.setProperty("width", "100%");
-    momentTabArea1.style.setProperty("padding", "5px");
-    momentTabArea1.style.setProperty("border", "0.1px solid #000");
-    momentTabArea1.style.setProperty("display", "-webkit-box");
-    momentTabArea1.style.setProperty("align-items", "center");
-    momentTabArea1.style.setProperty("overflow-x", "auto");
-    momentTabArea1.style.setProperty("position", "absolute");
-    momentTabArea1.style.setProperty("z-index", "5");
-    momentTabArea1.style.setProperty("bottom", "35px");
-
     momentShareBtn1.addEventListener("click", (e) => {
         momentShareActive = !momentShareActive;
         momentShareActive ? momentShareEnable() : momentShareDisable();
