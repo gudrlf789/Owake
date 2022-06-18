@@ -1,5 +1,7 @@
-let passwordChecked = document.querySelector("#passwordSwitchChecked");
-let joinPasswordContainer = document.querySelector("#join-password-container");
+const passwordChecked = document.querySelector("#passwordSwitchChecked");
+const joinPasswordContainer = document.querySelector(
+    "#join-password-container"
+);
 
 $("#channelPublicJoin").on("shown.bs.modal", (e) => {
     if ($("#public-governType").val() === "WE") {
@@ -35,6 +37,7 @@ function checkUserId(userId) {
     let check_number = /\d/;
     // 특수문자 체크
     let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+
     if (
         userId === "" ||
         userId === undefined ||
