@@ -8,6 +8,22 @@
                 <h3 class="channel-content-title mb-0">Update a Channel</h2>
             </div>
 
+            <div class="channel-type-options-container p-5 pt-0 pb-3">
+                <div class="channel-options-container">
+                    <label class="content-label h5" for="check-igovern">I govern</label>
+                    <input class="form-check-input" id="check-igovern" type="checkbox" name="channelGovernType"
+                        value="I" checked="true">
+                    <i class="fa-solid fa-circle-question" id="i_govern_help"></i>
+                </div>
+
+                <div class="channel-options-container">
+                    <label class="content-label h5" for="check-wegovern">We govern</label>
+                    <input class="form-check-input" id="check-wegovern" type="checkbox" name="channelGovernType"
+                        value="WE">
+                    <i class="fa-solid fa-circle-question" id="we_govern_help"></i>
+                </div>
+            </div>
+
             <section class="modal-body p-5 pt-0 pb-0 content-body-container">
                 <!-- Hidden Key Value -->
                 <div class="col-sm" hidden="true">
@@ -73,6 +89,133 @@
                     <div class="channel-info channel-description">
                         <label for="">Description</label>
                         <textarea id="public_channel-description" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <section class="p-5 pt-0 pb-3 content-options-check-container">
+                <div class="left-options">
+                    <div class="cam-check check-option">
+
+                        <div class="check-img">
+                            <img src="svg/cam.svg" alt="Cam">
+                            <label class="font" for="">Camera</label>
+                        </div>
+
+                        <div class="cam-checkbox check-option">
+                            <input class="form-check-input" id="cam-check" type="checkbox" checked="true"
+                                disabled="true">
+                        </div>
+                    </div>
+
+                    <div class="mic-check check-option">
+                        <div class="check-img">
+                            <img src="svg/mic.svg" alt="Mic">
+                            <label class="font">Microphone</label>
+                        </div>
+                        <div class="mic-checkbox check-option">
+                            <input class="form-check-input" id="mic-check" type="checkbox" checked="true"
+                                disabled="true">
+                        </div>
+                    </div>
+
+                    <div class="file-check check-option">
+                        <div class="check-img">
+                            <img src="svg/file.svg" alt="File">
+                            <label class="font">File Sharing</label>
+                        </div>
+
+                        <div class="file-checkbox check-option">
+                            <input class="form-check-input" id="file-check" type="checkbox" checked="true"
+                                disabled="true">
+                        </div>
+                    </div>
+
+                    <div class="verifi-check check-option">
+                        <div class="check-img">
+                            <img src="svg/identifire.svg" alt="Verification">
+                            <label class="font">Verification</label>
+                        </div>
+
+                        <div class="verifi-checkbox check-option">
+                            <input class="form-check-input" id="verifi-check" type="checkbox" checked="true"
+                                disabled="true">
+                        </div>
+                    </div>
+
+                    <div class="screen-check check-option">
+
+                        <div class="check-img">
+                            <img src="svg/screen.svg" alt="Screen Share">
+                            <label class="font">Screen sharing</label>
+                        </div>
+
+                        <div class="screen-checkbox check-option">
+                            <input class="form-check-input" id="screen-check" type="checkbox" checked="true"
+                                disabled="true">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-options">
+                    <div class="web-check check-option">
+
+                        <div class="check-img">
+                            <img src="svg/web.svg" alt="Web Share">
+                            <label class="font">Web Sharing</label>
+                        </div>
+
+                        <div class="web-checkbox check-option">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
+                        </div>
+
+                    </div>
+
+                    <div class="contents-check check-option">
+                        <div class="check-img">
+                            <img src="svg/media.svg" alt="Contents Share">
+                            <label class="font">Contents sharing</label>
+                        </div>
+
+                        <div class="contents-checkbox check-option">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
+                        </div>
+
+                    </div>
+
+                    <div class="pdf-check check-option">
+                        <div class="check-img">
+                            <img src="svg/pdf.svg" alt="PDF Share">
+                            <label class="font">PDF sharing</label>
+                        </div>
+
+                        <div class="pdf-checkbox check-option">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
+                        </div>
+
+                    </div>
+
+                    <div class="white-check check-option">
+                        <div class="check-img">
+                            <img src="svg/whiteboard.svg" alt="White Board">
+                            <label class="font">White board</label>
+                        </div>
+
+                        <div class="white-checkbox check-option">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
+                        </div>
+                    </div>
+
+                    <div class="chat-check check-option">
+                        <div class="check-img">
+                            <img src="svg/chat.svg" alt="Chat">
+                            <label class="font">Chat</label>
+                        </div>
+
+                        <div class="chat-checkbox check-option">
+                            <input class="form-check-input" type="checkbox" checked="true" disabled="true">
+                        </div>
+
                     </div>
                 </div>
             </section>
