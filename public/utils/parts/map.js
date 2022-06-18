@@ -63,9 +63,6 @@ function mapWrite() {
 
 socket.on("receive-point", (params) => {
     console.log(params.peerID, params.point);
-
-    // popup = markerCard(params.peerID);
-    // marker = new L.Marker(params.point).addTo(map).bindPopup(popup);
 });
 
 socket.on("Recipients", (params) => {
