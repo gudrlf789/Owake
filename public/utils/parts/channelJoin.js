@@ -1,29 +1,60 @@
-const passwordChecked = document.querySelector("#passwordSwitchChecked");
-const joinPasswordContainer = document.querySelector(
-    "#join-password-container"
+const publicPasswordChecked = document.querySelector(".public-governor-toggle");
+const privatePasswordChecked = document.querySelector(
+    ".private-governor-toggle"
 );
+const publicJoinPasswordContainer = document.querySelector(
+    "#publicJoin-password-container"
+);
+const privateJoinPasswordContainer = document.querySelector(
+    "#privateJoin-password-container"
+);
+
+$("#channelPrivateJoin").on("shown.bs.modal", (e) => {
+    if ($("#private-governType").val() === "WE") {
+        privatePasswordChecked.setAttribute("disabled", true);
+    } else {
+        privatePasswordChecked.removeAttribute("disabled");
+    }
+});
+
+$("#channelPrivateJoin").on("hidden.bs.modal", (e) => {
+    $("#private-nickName").val("");
+    $("#private-password").val("");
+    privatePasswordChecked.value = "off";
+    privateJoinPasswordContainer.hidden = true;
+});
 
 $("#channelPublicJoin").on("shown.bs.modal", (e) => {
     if ($("#public-governType").val() === "WE") {
-        passwordChecked.setAttribute("disabled", true);
+        publicPasswordChecked.setAttribute("disabled", true);
     } else {
-        passwordChecked.removeAttribute("disabled");
+        publicPasswordChecked.removeAttribute("disabled");
     }
 });
 
 $("#channelPublicJoin").on("hidden.bs.modal", (e) => {
     $("#public-nickName").val("");
     $("#public-password").val("");
-    passwordChecked.value = "off";
-    joinPasswordContainer.hidden = true;
+    publicPasswordChecked.value = "off";
+    publicJoinPasswordContainer.hidden = true;
 });
 
-passwordChecked.addEventListener("input", (e) => {
-    if (passwordChecked.checked) {
-        joinPasswordContainer.hidden = false;
+publicPasswordChecked.addEventListener("input", (e) => {
+    if (publicPasswordChecked.checked) {
+        publicJoinPasswordContainer.hidden = false;
         e.currentTarget.value = "on";
     } else {
-        joinPasswordContainer.hidden = true;
+        publicJoinPasswordContainer.hidden = true;
+        e.currentTarget.value = "off";
+    }
+});
+
+privatePasswordChecked.addEventListener("input", (e) => {
+    if (privatePasswordChecked.checked) {
+        privateJoinPasswordContainer.hidden = false;
+        e.currentTarget.value = "on";
+    } else {
+        privateJoinPasswordContainer.hidden = true;
         e.currentTarget.value = "off";
     }
 });
@@ -116,7 +147,10 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
             if (result.length > 0) {
                 alert("Duplicate username exists");
             } else {
-                if (passwordChecked.value === "on") {
+                if (
+                    privatePasswordChecked.value === "on" ||
+                    publicPasswordChecked.value === "on"
+                ) {
                     if (
                         checkHostUser(
                             userId,
