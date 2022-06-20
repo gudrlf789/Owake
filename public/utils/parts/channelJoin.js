@@ -1,7 +1,22 @@
-const passwordChecked = document.querySelector("#passwordSwitchChecked");
+const passwordChecked = document.querySelector(".governor-toggle");
 const joinPasswordContainer = document.querySelector(
     "#join-password-container"
 );
+
+$("#channelPrivateJoin").on("shown.bs.modal", (e) => {
+    if ($("#private-governType").val() === "WE") {
+        passwordChecked.setAttribute("disabled", true);
+    } else {
+        passwordChecked.removeAttribute("disabled");
+    }
+});
+
+$("#channelPrivateJoin").on("hidden.bs.modal", (e) => {
+    $("#private-nickName").val("");
+    $("#private-password").val("");
+    passwordChecked.value = "off";
+    joinPasswordContainer.hidden = true;
+});
 
 $("#channelPublicJoin").on("shown.bs.modal", (e) => {
     if ($("#public-governType").val() === "WE") {
