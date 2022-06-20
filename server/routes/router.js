@@ -213,7 +213,7 @@ router.post("/update", upload.single("image"), async (req, res) => {
     const docName =
         bodyData.channelName.replace(/\s/gi, "") + bodyData.channelType;
     const imageUpdateYN = bodyData.imageName.indexOf(bodyData.adminId);
-
+    
     fileName = bodyData.imageName;
 
     firebaseCollection
@@ -221,6 +221,7 @@ router.post("/update", upload.single("image"), async (req, res) => {
         .update({
             channelPassword: bodyData.channelPassword,
             channelCategory: bodyData.channelCategory,
+            governType: bodyData.governType,
             imageName:
                 imageUpdateYN < 0
                     ? bodyData.adminId + "_" + nowDate + "_" + fileName
