@@ -8,7 +8,7 @@ function realUpdateChannel() {
 
     fileSelect = $(`#update_file_thumnail`)[0].files[0];
 
-    const formData = new FormData();
+    let formData = new FormData();
 
     if (fileSelect) {
         fileName = fileSelect.name;
@@ -47,33 +47,81 @@ function realUpdateChannel() {
     }
 }
 
+function channelAdminPasswordSame() {
+    const adminPassword = $("#update_adminPassword").val();
+    const adminPasswordConfirm = $("#update_adminPassword_confirm").val();
+
+    if(adminPassword !== adminPasswordConfirm) {
+        alert("Check your admin password again");
+        $("#update_adminPassword_confirm").val("");
+        return;
+    }
+    updateChannelAction();
+};
+
+function channelPasswordSame() {
+    const updatePassword = $("#update_channelPassword").val();
+    const updatePasswordConfirm = $("#update_channelPassword_confirm").val();
+
+    if(updatePassword !== updatePasswordConfirm){
+        alert("Check your password again");
+        $("#update_channelPassword_confirm").val("");
+        return;
+    }
+    channelAdminPasswordSame()
+};
+
 $("#updateBtn").click((e) => {
     // From channelCreate
     if (fileSizeCheck("update") === false) {
         return alert("Please check the file size (2MB or less)");
     } else {
-        updateChannelAction();
+        if($("input:radio[name=update_password]:checked").val() === "Y"){
+            channelPasswordSame();
+        }else{
+            channelAdminPasswordSame();
+        }
+    }
+});
+
+$("input:checkbox[name=channelUpdateGovernType]").change((e) => {
+    if (e.target.id === "check-update-igovern") {
+        $("#check-update-wegovern").prop("checked", false);
+    } else {
+        $("#check-update-igovern").prop("checked", false);
     }
 });
 
 $("input:radio[name=update_password]").change((e) => {
     if (e.currentTarget.value == "Y") {
         $("#update_channelPassword").attr("disabled", false);
+        $("#update_channelPassword_confirm").attr("disabled", false);
     } else {
         $("#update_channelPassword").attr("disabled", true);
+        $("#update_channelPassword_confirm").attr("disabled", true);
         $("#update_channelPassword").val("");
+        $("#update_channelPassword_confirm").val("");
     }
 });
 
 $("#update_file_thumnail").change((e) => {
-    $("#update_upload").val(e.currentTarget.files[0].name);
+    $("#update_upload").text(e.currentTarget.files[0].name);
+});
+
+$("#update_file_thumnail").focus((e) => {
+    e.currentTarget.classList.add("has-focus");
+});
+
+$("#update_file_thumnail").blur((e) => {
+    e.currentTarget.classList.remove("has-focus");
 });
 
 function updateChannelAction() {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const reqData = {
         channelName: $(`#update_channelName`).val(),
-        channelType: $("input:radio[name=update_channelType]:checked").val(),
+        //channelType: $("input:radio[name=update_channelType]:checked").val(),
+        channelType: "Public",
     };
 
     if (!korean.test($(`#update_adminId`).val())) {
@@ -104,13 +152,14 @@ function formDataFunc(data) {
     data.append("adminPassword", $(`#update_adminPassword`).val());
     data.append(
         "channelType",
-        $("input:radio[name=update_channelType]:checked").val()
+        //$("input:radio[name=update_channelType]:checked").val()
+        "Public"
     );
+    data.append("governType", $("input:checkbox[name=channelUpdateGovernType]:checked").val());
     data.append("channelName", $(`#update_channelName`).val());
     data.append("channelPassword", $(`#update_channelPassword`).val());
-    data.append("channelCategory", $(`#update_theme-category`).val());
+    data.append("channelCategory", "");
     data.append("channelDescription", $(`#update_channel-description`).val());
-
     return data;
 }
 
@@ -121,11 +170,13 @@ function channelUpdateFunc(data) {
             $("#channelUpdateModal").modal("hide");
             $(`#update_adminId`).val("");
             $(`#update_adminPassword`).val("");
+            $(`#update_adminPassword_confirm`).val("");
             $(`#update_channelName`).val("");
             $(`#update_channelPassword`).val("");
-            $(`#update_theme-category`).val("News");
+            $(`#update_channelPassword_confirm`).val("");
+            //$(`#update_theme-category`).val("News");
             $("#update_file_thumnail").val("");
-            $("#update_upload").val("");
+            $("#update_upload").val("Attach a channel image");
             $(`#update_channel-description`).val("");
 
             selectOptionsChannel();
