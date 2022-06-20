@@ -321,7 +321,7 @@ export const pdfFunc = (pdfShareSocket) => {
                 document.getElementById("pdf-page-number").value = desiredPage;
                 render();
                 if (checkIsHost()) {
-                    pdfSocket.emit(
+                    pdfShareSocket.emit(
                         "pdf-origin-pageNumber",
                         channelName,
                         desiredPage,
@@ -389,7 +389,7 @@ export const pdfFunc = (pdfShareSocket) => {
         }
     });
 
-    pdfSocket.on("pdf-remote-pageNumber", (desiredPage, playingFile) => {
+    pdfShareSocket.on("pdf-remote-pageNumber", (desiredPage, playingFile) => {
         if (choiceFile === playingFile) {
             myState.currentPage = desiredPage;
             pdfPageNumber.value = desiredPage;
