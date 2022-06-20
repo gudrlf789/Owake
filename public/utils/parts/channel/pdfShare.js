@@ -36,11 +36,18 @@ export const pdfFunc = () => {
 
     const pdfPageControls = document.createElement("div");
     const pdfPageNext = document.createElement("button");
+    const pdfPageNumber = document.createElement("input");
     const pdfPagePrevious = document.createElement("button");
+
     pdfPageControls.id = "pdf-page-controls";
     pdfPageNext.id = "pdf-page-next";
     pdfPageNext.innerText = "Next";
     pdfPageNext.className = "btn btn-primary btn-sm";
+
+    pdfPageNumber.id = "pdf-page-number";
+    pdfPageNumber.type = "number";
+    pdfPageNumber.value = 0;
+
     pdfPagePrevious.id = "pdf-page-previous";
     pdfPagePrevious.innerText = "Previos";
     pdfPagePrevious.className = "btn btn-secondary btn-sm";
@@ -62,6 +69,7 @@ export const pdfFunc = () => {
     pdfSearchContainer.append(pdfSearchInput, pdfTabArea);
 
     pdfPageControls.append(pdfPagePrevious);
+    pdfPageControls.append(pdfPageNumber);
     pdfPageControls.append(pdfPageNext);
 
     pdfShareArea.append(pdfNavContainer);
@@ -119,6 +127,7 @@ export const pdfFunc = () => {
             .promise.then(
                 (pdf) => {
                     myState.pdf = pdf;
+                    pdfPageNumber.value = 1;
                     render();
                     $("#spinnerModal").modal("hide");
                 },
@@ -239,6 +248,7 @@ export const pdfFunc = () => {
                     }
 
                     myState.pdf = null;
+                    pdfPageNumber.value = 0;
                     clearCanvas();
                 } else {
                     alert(res.data.deleteResult);
@@ -255,6 +265,7 @@ export const pdfFunc = () => {
             return;
         }
         myState.currentPage += 1;
+        document.getElementById("pdf-page-number").value = myState.currentPage;
         render();
         if (originUser === userName) {
             pdfSocket.emit(
@@ -272,6 +283,7 @@ export const pdfFunc = () => {
             return;
         }
         myState.currentPage -= 1;
+        document.getElementById("pdf-page-number").value = myState.currentPage;
         render();
         if (originUser === userName) {
             pdfSocket.emit(
@@ -280,6 +292,30 @@ export const pdfFunc = () => {
                 myState.currentPage,
                 choiceFile
             );
+        }
+    });
+
+    $(document).on("keypress", "#pdf-page-number", (e) => {
+        const code = (e.keyCode ? e.keyCode : e.which);
+
+        if(code == 13) {
+            const desiredPage = document.getElementById('pdf-page-number').valueAsNumber;
+                              
+            if(desiredPage >= 1 && desiredPage <= myState.pdf._pdfInfo.numPages) {
+                myState.currentPage = desiredPage;
+                document.getElementById("pdf-page-number").value = desiredPage;
+                render();
+                if (originUser === userName) {
+                    pdfSocket.emit(
+                        "pdf-origin-pageNumber",
+                        channelName,
+                        desiredPage,
+                        choiceFile
+                    );
+                }
+            }else{
+                alert(`This pdf page is from 1page to ${myState.pdf._pdfInfo.numPages}page`);
+            }
         }
     });
 
@@ -338,6 +374,14 @@ export const pdfFunc = () => {
         }
     });
 
+    pdfSocket.on("pdf-remote-pageNumber", (desiredPage, playingFile) => {
+        if (choiceFile === playingFile) {
+            myState.currentPage = desiredPage;
+            pdfPageNumber.value = desiredPage;
+            render();
+        }
+    });
+
     pdfSocket.on("scroll-remote-pdf", (originTop, originLeft, playingFile) => {
         const pdfShareMain = document.getElementById("pdfShare-main");
         if (choiceFile === playingFile) {
@@ -358,6 +402,7 @@ export const pdfFunc = () => {
             }
         }
 
+        pdfPageNumber.value = 0;
         clearCanvas();
     });
 };
