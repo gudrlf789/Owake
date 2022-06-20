@@ -458,6 +458,12 @@ io.sockets.on("connection", (socket) => {
             .emit("pdf-remote-previous", previousPage, fileName);
     });
 
+    socket.on("pdf-origin-pageNumber", (channelName, desiredPage, fileName) => {
+        socket
+            .to(channelName)
+            .emit("pdf-remote-pageNumber", desiredPage, fileName);
+    });
+
     socket.on(
         "scroll-origin-pdf",
         (channelName, originTop, originLeft, fileName) => {
