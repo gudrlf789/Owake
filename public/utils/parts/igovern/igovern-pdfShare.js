@@ -282,6 +282,7 @@ export const pdfFunc = (pdfShareSocket) => {
             return;
         }
         myState.currentPage += 1;
+        document.getElementById("pdf-page-number").value = myState.currentPage;
         render();
         if (checkIsHost()) {
             pdfShareSocket.emit(
@@ -299,6 +300,7 @@ export const pdfFunc = (pdfShareSocket) => {
             return;
         }
         myState.currentPage -= 1;
+        document.getElementById("pdf-page-number").value = myState.currentPage;
         render();
         if (checkIsHost()) {
             pdfShareSocket.emit(
@@ -378,6 +380,7 @@ export const pdfFunc = (pdfShareSocket) => {
     pdfShareSocket.on("pdf-remote-next", (nextPage, playingFile) => {
         if (choiceFile === playingFile) {
             myState.currentPage = nextPage;
+            pdfPageNumber.value = nextPage;
             render();
         }
     });
@@ -385,6 +388,7 @@ export const pdfFunc = (pdfShareSocket) => {
     pdfShareSocket.on("pdf-remote-previous", (previousPage, playingFile) => {
         if (choiceFile === playingFile) {
             myState.currentPage = previousPage;
+            pdfPageNumber.value = previousPage;
             render();
         }
     });
