@@ -363,6 +363,7 @@ export const pdfFunc = () => {
     pdfSocket.on("pdf-remote-next", (nextPage, playingFile) => {
         if (choiceFile === playingFile) {
             myState.currentPage = nextPage;
+            pdfPageNumber.value = nextPage;
             render();
         }
     });
@@ -370,6 +371,7 @@ export const pdfFunc = () => {
     pdfSocket.on("pdf-remote-previous", (previousPage, playingFile) => {
         if (choiceFile === playingFile) {
             myState.currentPage = previousPage;
+            pdfPageNumber.value = previousPage;
             render();
         }
     });
