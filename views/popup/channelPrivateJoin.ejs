@@ -4,7 +4,7 @@
         <div class="content-container modal-content rounded-4 shadow">
             <div class="modal-header p-5 pb-4 border-bottom-0">
                 <!-- <h5 class="modal-title">Modal title</h5> -->
-                <h4 class="channel-content-title fw-bold mb-0">Private owake world</h4>
+                <h4 class="channel-content-title fw-bold mb-0">Welcome to the world</h4>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -24,22 +24,36 @@
 
                 <div class="private-input-container">
                     <div class="form-floating mb-3">
-                        <input type="email" class="input-form form-control rounded-3" id="private-nickName">
-                        <label class="label-font" for="floatingInput">Enter your name</label>
+                        <input type="text" class="input-form form-control rounded-3" id="private-nickName"
+                            placeholder="English & Numbers">
+                        <label class="join-label-font" for="floatingInput">English & Numbers</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="password" class="input-form form-control rounded-3" id="private-roomPassword">
-                        <label class="label-font" for="floatingPassword">Enter world password</label>
+                        <input type="password" class="input-form form-control rounded-3" id="private-roomPassword"
+                            placeholder="Enter world password">
+                        <label class="join-label-font" for="floatingPassword">Enter world password</label>
                     </div>
                 </div>
             </div>
 
             <section class="governor-section p-5 pt-0">
-                <div class="select-governor-toggle">
+                <!-- <div class="select-governor-toggle">
                     <label class="content-label" for="">Governor</label>
                     <div class="form-check form-switch">
                         <input class="form-check-input private-governor-toggle" type="checkbox" role="switch"
                             value="off">
+                    </div>
+                </div> -->
+
+                <div class="select-governor-toggle">
+                    <label class="content-label" for="">Participant</label>
+                    <div class="form-check">
+                        <input class="form-check-input private-participant-toggle" type="checkbox" value="off" checked>
+                    </div>
+
+                    <label class="content-label" for="">Governor</label>
+                    <div class="form-check">
+                        <input class="form-check-input private-governor-toggle" type="checkbox" value="off">
                     </div>
                 </div>
 

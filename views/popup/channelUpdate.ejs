@@ -52,10 +52,10 @@
                         <div class="channel-info channel-password-checkbox">
                             <label for="">Yes</label>
                             <input type="radio" id="password_use_yes" name="update_password" class="form-check-input"
-                                checked="true" value="Y">
+                                value="Y">
                             <label for="">No</label>
                             <input type="radio" id="password_use_no" name="update_password" class="form-check-input"
-                                value="N">
+                                value="N" checked>
                         </div>
                     </div>
 
@@ -64,15 +64,23 @@
                         <input type="password" placeholder="Confirm" id="update_channelPassword_confirm">
                     </div>
 
+                    <p class="font" style="font-size:.7rem; margin-top : 1rem; margin-bottom: 1rem;">Please write a
+                        combination of English
+                        (uppercase,
+                        lowercase),
+                        special
+                        characters, and
+                        numbers. Password string length is from 6 to 16.</p>
+
                     <div class="channel-info admin-id">
-                        <label for="">Admin ID</label>
+                        <label for="">Governor ID</label>
                         <input type="text" id="update_adminId">
                     </div>
 
                     <div class="channel-info admin-password">
-                        <label class="update-admin-label" for="">Admin Password</label>
+                        <label class="update-admin-label" for="">Governor Password</label>
                         <div class="password-container update-password">
-                            <input type="password" id="update_adminPassword" placeholder="Admin Password">
+                            <input type="password" id="update_adminPassword" placeholder="Governor Password">
                             <input type="password" id="update_adminPassword_confirm" placeholder="Confirm">
                         </div>
                     </div>
