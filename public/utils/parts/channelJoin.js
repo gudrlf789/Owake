@@ -25,6 +25,7 @@ $("#channelPrivateJoin").on("shown.bs.modal", (e) => {
 $("#channelPrivateJoin").on("hidden.bs.modal", (e) => {
     $("#private-nickName").val("");
     $("#private-password").val("");
+    $("#private-roomPassword").val("");
     privateGovernorChecked.value = "off";
     privateJoinPasswordContainer.hidden = true;
 });
@@ -40,6 +41,7 @@ $("#channelPublicJoin").on("shown.bs.modal", (e) => {
 $("#channelPublicJoin").on("hidden.bs.modal", (e) => {
     $("#public-nickName").val("");
     $("#public-password").val("");
+    $("#public-roomPassword").val("");
     publicGovernorChecked.value = "off";
     publicJoinPasswordContainer.hidden = true;
 });
