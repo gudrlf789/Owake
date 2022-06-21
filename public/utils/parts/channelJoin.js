@@ -54,7 +54,14 @@ publicGovernorChecked.addEventListener("input", (e) => {
     } else {
         publicJoinPasswordContainer.hidden = true;
         e.currentTarget.value = "off";
-        publicParticipant.checked = true;
+    }
+});
+
+publicParticipant.addEventListener("input", (e) => {
+    if (publicParticipant.checked) {
+        publicGovernorChecked.checked = false;
+        publicJoinPasswordContainer.hidden = true;
+        e.currentTarget.value = "off";
     }
 });
 
@@ -67,6 +74,14 @@ privateGovernorChecked.addEventListener("input", (e) => {
         privateJoinPasswordContainer.hidden = true;
         e.currentTarget.value = "off";
         privateParticipant.checked = true;
+    }
+});
+
+privateParticipant.addEventListener("input", (e) => {
+    if (privateParticipant.checked) {
+        privateGovernorChecked.checked = false;
+        privateJoinPasswordContainer.hidden = true;
+        e.currentTarget.value = "off";
     }
 });
 
@@ -159,8 +174,8 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
                 alert("Duplicate username exists");
             } else {
                 if (
-                    privatePasswordChecked.value === "on" ||
-                    publicPasswordChecked.value === "on"
+                    privateGovernorChecked.value === "on" ||
+                    publicGovernorChecked.value === "on"
                 ) {
                     if (
                         checkHostUser(
