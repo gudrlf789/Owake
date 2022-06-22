@@ -1,6 +1,7 @@
 :root {
     --area-color: #888888;
-    --tab-color: #fff;
+    --tab-font-color: #fff;
+    --tab-bg-color: #282832;
     --tab-hover: #282832;
 }
 
@@ -109,11 +110,34 @@
 #momentTabArea1 {
     height: auto;
     width: 100%;
+    background: var(--tab-bg-color);
     padding: 5px;
     border: 0.1px solid rgb(0, 0, 0);
-    display: -webkit-box;
+    display: flex;
     align-items: center;
     overflow-x: auto;
+}
+
+#momentTab {
+    margin: 0.4rem;
+    padding: 0.2rem;
+    background: #888;
+    color: var(--tab-font-color);
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 10rem;
+    text-align: center;
+}
+
+.momentTabCtr {
+    display: flex;
+    align-items: center;
+    background: #888;
+    border-radius: 8px;
+    margin-right: 0.2rem;
+    margin-left: 0.2rem;
 }
 
 #searchContainer1 {
