@@ -139,9 +139,16 @@ export const whiteBoardFunc = (whiteBoardSocket) => {
 
         function clearAll() {
             canvas.width = canvas.width;
+            if(checkIsHost()){
+                whiteBoardSocket.emit("igoven-whiteBoard-clearAll", channelName);
+            }
         }
 
         whiteBoardSocket.on("drawing", onDrawingEvent);
+
+        whiteBoardSocket.on("igoven-whiteBoard-clearAll-client", () => {
+            clearAll();
+        });
 
         window.addEventListener("resize", onResize, false);
 
@@ -173,18 +180,6 @@ export const whiteBoardFunc = (whiteBoardSocket) => {
                 },
                 window.sessionStorage.getItem("channel")
             );
-        }
-
-        function checkIphoneMobile() {
-            const checkIphone = navigator.userAgent.toLowerCase();
-
-            if (checkIphone.indexOf("iphone") > -1) {
-                alert(
-                    "We are sorry for that iPhone users can't draw freely on the whiteboard yet."
-                );
-                return false;
-            }
-            return true;
         }
 
         function onMouseDown(e) {
