@@ -158,7 +158,7 @@ function checkHostUser(userId, userPassword, adminId, adminPassword) {
 function checkDuplicateUserNameOnChannel(userId, channelName, channelType, channelPassword) {
     let userPassword;
 
-    if(channelPassword !== ""){
+    if(channelPassword === ""){
         userPassword = $("#public-password").val();
     }else{
         userPassword = $("#private-roomPassword").val();
