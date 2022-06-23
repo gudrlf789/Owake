@@ -142,7 +142,7 @@ function channelListLoad(data) {
                 `<input type='hidden' value="${data.governType}" >` +
                 "</div>" +
                 "<a href='#' class='thumbnail channel-thumnail'>" +
-                `<img src='${data.imageName}' alt='' class='thumbnail-image'>` +
+                `<img src='${data.imageName}' alt='' class='thumbnail-image loading="lazy"'>` +
                 "</a>" +
                 "<div class='content-bottom-section'>" +
                 `${
