@@ -435,7 +435,7 @@ router.post(
     async (req, res) => {
         const formData = new FormData();
 
-        fs.readFile("./server/contents/" + req.file.filename, (err, data) => {
+        fs.readFile(`./server/contents/${req.body.channelName}/${req.body.userName}/${req.file.filename}`, (err, data) => {
             formData.append("fileInput", data, {
                 filename: req.file.originalname,
             });
@@ -452,7 +452,7 @@ router.post(
                     }
                 )
                 .then((result) => {
-                    fs.unlinkSync("./server/contents/" + req.file.originalname);
+                    fs.unlinkSync(`./server/contents/${req.body.channelName}/${req.body.userName}/${req.file.filename}`);
                     return res.json({
                         hashCode: result.data.output.file_hash,
                     });

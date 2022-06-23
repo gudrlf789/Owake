@@ -88,9 +88,14 @@ export const fileHash = (fileHashSocket) => {
 
     function makeFileToHash(data, textHtml) {
         if (formData.has("fileInput")) {
+            //channelName 삭제를 안해서 채널이름, 채널이름 에러가 발생했었음
+            formData.delete("userName");
+            formData.delete("channelName");
             formData.delete("fileInput");
         }
         
+        formData.append("userName", userName);
+        formData.append("channelName", channelName);
         formData.append("fileInput", data);
 
         axios
