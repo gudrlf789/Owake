@@ -2,9 +2,6 @@ let channelContainer = $(".channel-box-container");
 let partnerChannelContainer = $(".partner-channel-container");
 let selectOptions = document.querySelector(".search-select");
 
-const publicPasswordForm = document.querySelector(".public-password-form");
-const publicPasswordLabel = document.querySelector(".public-password-label");
-
 function checkPassword(channelName, channelPassword, channelType, governType) {
     if (channelPassword !== "") {
         $("#private-channelName").val(channelName);
