@@ -25,6 +25,7 @@
 
 .public-input-container {
     display: flex;
+    flex-direction: column;
 }
 
 .private-input-container {

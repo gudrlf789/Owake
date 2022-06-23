@@ -2,18 +2,28 @@ let channelContainer = $(".channel-box-container");
 let partnerChannelContainer = $(".partner-channel-container");
 let selectOptions = document.querySelector(".search-select");
 
+const publicPasswordForm = document.querySelector(".public-password-form");
+const publicPasswordLabel = document.querySelector(".public-password-label");
+
 function checkPassword(channelName, channelPassword, channelType, governType) {
     if (channelPassword !== "") {
         $("#private-channelName").val(channelName);
         $("#private-passwordChecking").val(channelPassword);
         $("#private-channelType").val(channelType);
         $("#private-governType").val(governType);
-        $("#channelPrivateJoin").modal();
+        // $("#channelPrivateJoin").modal();
+        $("#channelPublicJoin").modal();
+
+        publicPasswordForm.hidden = false;
+        publicPasswordLabel.hidden = false;
     } else {
         $("#public-channelName").val(channelName);
         $("#public-channelType").val(channelType);
         $("#public-governType").val(governType);
         $("#channelPublicJoin").modal();
+
+        publicPasswordForm.hidden = true;
+        publicPasswordLabel.hidden = true;
     }
 }
 
