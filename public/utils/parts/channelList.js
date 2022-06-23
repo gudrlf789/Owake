@@ -11,19 +11,12 @@ function checkPassword(channelName, channelPassword, channelType, governType) {
         $("#private-passwordChecking").val(channelPassword);
         $("#private-channelType").val(channelType);
         $("#private-governType").val(governType);
-        // $("#channelPrivateJoin").modal();
-        $("#channelPublicJoin").modal();
-
-        publicPasswordForm.hidden = false;
-        publicPasswordLabel.hidden = false;
+        $("#channelPrivateJoin").modal();
     } else {
         $("#public-channelName").val(channelName);
         $("#public-channelType").val(channelType);
         $("#public-governType").val(governType);
         $("#channelPublicJoin").modal();
-
-        publicPasswordForm.hidden = true;
-        publicPasswordLabel.hidden = true;
     }
 }
 
@@ -110,9 +103,9 @@ $(document).on("click", "#channelDeleteBtn", (e) => {
     $("#delete_channelName").val(channelName);
     $("#delete_imageName").val(imageName);
 
-    if(channelPassword === ""){
+    if (channelPassword === "") {
         $("#delete-channelPassword").attr("disabled", true);
-    }else{
+    } else {
         $("#delete-channelPassword").attr("disabled", false);
     }
 });

@@ -3,42 +3,41 @@
     <div class="modal-dialog" role="document">
         <div class="content-container modal-content rounded-4 shadow">
             <div class="modal-header p-5 pb-4 border-bottom-0">
-                <!-- <h5 class="modal-title">Modal title</h5> -->
                 <h4 class="channel-content-title fw-bold mb-0">Welcome to the world</h4>
                 <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
                     aria-label="Close"></button>
             </div>
 
-            <div class="modal-body p-5 pt-0 content-body-container">
+            <div class="modal-body p-5 pt-0 join-content-body-container">
 
                 <div class="col-sm" hidden="true">
                     <input id="public-channelName" type="hidden" />
-                    <input id="public-passwordChecking" type="hidden" />
                     <input id="public-channelType" type="hidden" />
                     <input id="public-governType" type="hidden" />
                 </div>
 
-                <div class="input-label-container">
-                    <label class="content-label mb-3 public-name-label" for="public-nickName">Name</label>
-                    <label class="content-label mb-3 public-password-label" for="public-roomPassword">Password</label>
-                </div>
-
                 <div class="public-input-container">
-                    <div class="form-floating mb-3 public-name-form">
-                        <input type="text" class="input-form form-control rounded-3" id="public-nickName"
-                            placeholder="English & Numbers">
-                        <label class="join-label-font" for="floatingInput">English & Numbers</label>
+                    <div class="input-label-container">
+                        <label class="content-label mb-3" for="">Name</label>
                     </div>
-                    <div class="form-floating mb-3 public-password-form">
-                        <input type="password" class="input-form form-control rounded-3" id="public-roomPassword"
-                            placeholder="Enter world password">
-                        <label class="join-label-font" for="floatingPassword">Enter world password</label>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="input-form form-control rounded-3" id="public-nickName"
+                            placeholder="English & Numbers only">
+                        <label class="join-label-font" for="public-nickName">English & Numbers</label>
                     </div>
                 </div>
-            </div>
 
-            <section class="governor-section p-5 pt-0">
+                <!-- <div class="select-governor-toggle">
+                    <label class="content-label" for="">Governor</label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input public-governor-toggle" type="checkbox" role="switch"
+                            value="off">
+                    </div>
+                </div> -->
+
                 <div class="select-governor-toggle">
+
                     <label class="content-label" for="">Participant</label>
                     <div class="form-check">
                         <input class="form-check-input public-participant-toggle" type="checkbox" value="off" checked>
@@ -63,9 +62,10 @@
                         </label>
                     </div>
                 </div>
-            </section>
 
-            <div class="modal-footer pt-3 content-footer-container">
+            </div>
+
+            <div class="modal-footer pt-3 join-content-footer-container">
                 <div class="logo-container">
                     <img src="mainpage/logo.png" alt="">
                 </div>
