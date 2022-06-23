@@ -1,5 +1,5 @@
 import { deviceScan } from "./igovern-deviceScan.js";
-import { channelName } from "./igovern-sessionStorage.js";
+import { channelName, userName } from "./igovern-sessionStorage.js";
 import { checkIsHost } from "./igovern-checkIsHost.js";
 
 /**

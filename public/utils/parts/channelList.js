@@ -99,6 +99,9 @@ $(document).on("click", "#channelDeleteBtn", (e) => {
     const channelName =
         e.currentTarget.parentNode.parentNode.parentNode.parentNode
             .childNodes[0].children[1].value;
+    const channelPassword =
+        e.currentTarget.parentNode.parentNode.parentNode.parentNode
+            .childNodes[0].children[2].value;
     const imageName =
         e.currentTarget.parentNode.parentNode.parentNode.parentNode
             .childNodes[0].children[3].value;
@@ -106,6 +109,12 @@ $(document).on("click", "#channelDeleteBtn", (e) => {
     $("#delete_channelType").val(channelType);
     $("#delete_channelName").val(channelName);
     $("#delete_imageName").val(imageName);
+
+    if(channelPassword === ""){
+        $("#delete-channelPassword").attr("disabled", true);
+    }else{
+        $("#delete-channelPassword").attr("disabled", false);
+    }
 });
 
 const callChannelList = () => {

@@ -66,8 +66,21 @@ function checkIdentityPassword(typeFlag) {
     const confirmPassword = $(`#${typeFlag}_channelPassword_confirm`).val();
 
     if (password !== confirmPassword) {
-        alert("The passwords are not the same");
+        alert("The channel passwords are not the same");
         $(`${typeFlag}_channelPassword_confirm`).focus();
+        return false;
+    }
+
+    return true;
+}
+
+function checkIdentityAdminPassword(typeFlag) {
+    const adminPassword = $(`#${typeFlag}_adminPassword`).val();
+    const adminConfirmPassword = $(`#${typeFlag}_adminPassword_confirm`).val();
+
+    if (adminPassword !== adminConfirmPassword) {
+        alert("The Governor passwords are not the same");
+        $(`${typeFlag}_adminPassword_confirm`).focus();
         return false;
     }
 
@@ -94,6 +107,7 @@ function createChannelData(typeFlag) {
     }
 
     if (!checkIdentityPassword(typeFlag)) return;
+    if (!checkIdentityAdminPassword(typeFlag)) return;
 
     new Compressor(fileSelect, {
         quality: 0.2,
