@@ -245,6 +245,14 @@
     right: 0;
 }
 
+.public-password-input {
+    width: 100%;
+}
+
+.governor-password-input {
+    flex-direction: column;
+}
+
 @media (max-width: 768px) {
     .content-label {
         font-size: 1rem;
