@@ -169,7 +169,7 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType, chann
         channelName: channelName,
         userId: userId,
     };
-    debugger;
+
     axios.post("/channel/info", reqData).then((res) => {
         if (res.data.success) {
             const result = res.data.channelInfo.userNames.filter(
@@ -321,7 +321,6 @@ function privateChannelJoinAction() {
                 "Please enter a valid user name (no spaces and special characters)"
             );
         } else {
-            debugger;
             checkKorean(userId, channelName, channelType, checkingPassword);
         }
     }
@@ -347,6 +346,6 @@ function publicChannelJoinAction() {
             "Please enter a valid user name (no spaces and special characters)"
         );
     } else {
-        checkKorean(userId, channelName, channelType, channelPassword);
+        checkKorean(userId, channelName, channelType, "");
     }
 }
