@@ -174,7 +174,7 @@ function createChannelData(typeFlag) {
                     }
                 });
             } else {
-                alert("You can only type AdminId and channelName in English.");
+                alert("You can only type Governor Id and channelName in English.");
                 afterAction(typeFlag);
             }
         },
