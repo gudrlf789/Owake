@@ -243,6 +243,12 @@ io.sockets.on("connection", (socket) => {
             .emit("igoven-whiteBoard-client", whiteBoardBtnActive);
     });
 
+    socket.on("igoven-whiteBoard-clearAll", (channelName) => {
+        socket
+            .to(channelName)
+            .emit("igoven-whiteBoard-clearAll-client");
+    });
+
     socket.on("igoven-audioMixing", (channelName, audioMixActive) => {
         socket
             .to(channelName)
