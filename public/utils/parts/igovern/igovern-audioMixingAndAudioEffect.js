@@ -11,9 +11,9 @@ import { checkIsHost } from "./igovern-checkIsHost.js";
 import { localTracks, client } from "../../igovern-RtcClient.js";
 
 const audioMixBtn = document.querySelector("#audioMixBtn");
-const playButton = document.querySelector(".audioPlay");
+const playButton = document.querySelector(".audio-play");
 const stopAudioMixingBtn = document.querySelector("#stop-audio-mixing");
-const audioBarAndProgressBtn = document.querySelector(".audio-bar .progress");
+// const audioBarAndProgressBtn = document.querySelectorAll(".audio-bar.progress");
 const volume = document.querySelector("#volume");
 const localMixingBtn = document.querySelector("#local-audio-mixing");
 
@@ -26,43 +26,50 @@ let audioMixing = {
 };
 
 export const audioMixingAndAudioEffect = (audioMixingSocket) => {
-
     //모달 닫을때 호스트 일때만 동시에 닫음
-    $("#audioMixModal").on('hidden.bs.modal', (e) => {
+    $("#audioMixModal").on("hidden.bs.modal", (e) => {
         audioMixActive = !audioMixActive;
 
-        if(checkIsHost()) {
+        if (checkIsHost()) {
             audioMixingSocketEvent(audioMixActive);
         }
     });
 
     audioMixingSocket.on("igoven-audioMixing-client", (audioMixActive) => {
         //audioMixActive ? audioMixingEnable() : audioMixingDisable();
-        audioMixActive ? $("#audioMixModal").modal("show") : $("#audioMixModal").modal("hide")
+        audioMixActive
+            ? $("#audioMixModal").modal("show")
+            : $("#audioMixModal").modal("hide");
     });
 
     function audioMixingSocketEvent(audioMixActive) {
         //audioMixActive ? audioMixingEnable() : audioMixingDisable();
-        audioMixingSocket.emit("igoven-audioMixing", channelName, audioMixActive);
-    };
+        audioMixingSocket.emit(
+            "igoven-audioMixing",
+            channelName,
+            audioMixActive
+        );
+    }
 
     audioMixBtn.addEventListener("click", (e) => {
         audioMixActive = !audioMixActive;
 
-        if(checkIsHost()) {
+        if (checkIsHost()) {
             audioMixBtn.setAttribute("data-target", "#audioMixModal");
             audioMixingSocketEvent(audioMixActive);
-        }else {
+        } else {
             audioMixBtn.setAttribute("data-target", "#");
             alert("Host Only");
         }
     });
 
     stopAudioMixingBtn.addEventListener("click", stopAudioMixing, false);
-    audioBarAndProgressBtn.addEventListener("click", (e) => {
-        setAudioMixingPosition(e.offsetX);
-        return false;
-    });
+
+    // audioBarAndProgressBtn.addEventListener("click", (e) => {
+    //     setAudioMixingPosition(e.offsetX);
+    //     return false;
+    // });
+
     volume.addEventListener("click", (e) => {
         setVolume(volume.value);
     });
@@ -125,7 +132,7 @@ async function startAudioMixing(file) {
 
         audioMixing.duration = localTracks.audioMixingTrack.duration;
         $(".audio-duration").text(toMMSS(audioMixing.duration));
-        $(".audioPlay").toggleClass("active", true);
+        $(".audio-play").toggleClass("active", true);
         setAudioMixingProgress();
         audioMixing.state = "PLAYING";
         console.log("start audio mixing");
@@ -146,21 +153,21 @@ function stopAudioMixing() {
     $(".progress-bar").css("width", "0%");
     $(".audio-current-time").text(toMMSS(0));
     $(".audio-duration").text(toMMSS(0));
-    $(".audioPlay").toggleClass("active", false);
+    $(".audio-play").toggleClass("active", false);
     cancelAnimationFrame(audioMixingProgressAnimation);
     console.log("stop audio mixing");
 }
 
 function toggleAudioMixing() {
     if (audioMixing.state === "PAUSE") {
-        $(".audioPlay").toggleClass("active", true);
+        $(".audio-play").toggleClass("active", true);
 
         // resume audio mixing
         localTracks.audioMixingTrack.resumeProcessAudioBuffer();
 
         audioMixing.state = "PLAYING";
     } else {
-        $(".audioPlay").toggleClass("active", false);
+        $(".audio-play").toggleClass("active", false);
 
         // pause audio mixing
         localTracks.audioMixingTrack.pauseProcessAudioBuffer();
@@ -179,20 +186,6 @@ function setAudioMixingProgress() {
         `${(currentTime / audioMixing.duration) * 100}%`
     );
     $(".audio-current-time").text(toMMSS(currentTime));
-}
-
-// use buffer source audio track to play effect.
-async function playEffect(cycle, options) {
-    // if the published track will not be used, you had better unpublish it
-    if (localTracks.audioEffectTrack) {
-        await client.unpublish(localTracks.audioEffectTrack);
-    }
-    localTracks.audioEffectTrack = await AgoraRTC.createBufferSourceAudioTrack(
-        options
-    );
-    await client.publish(localTracks.audioEffectTrack);
-    localTracks.audioEffectTrack.play();
-    localTracks.audioEffectTrack.startProcessAudioBuffer({ cycle });
 }
 
 // calculate the MM:SS format from millisecond

@@ -52,7 +52,7 @@ function channelAdminPasswordSame() {
     const adminPasswordConfirm = $("#update_adminPassword_confirm").val();
 
     if(adminPassword !== adminPasswordConfirm) {
-        alert("Check your Governor password again");
+        alert("Check your admin password again");
         $("#update_adminPassword_confirm").val("");
         return;
     }
@@ -135,7 +135,7 @@ function updateChannelAction() {
                 ) {
                     realUpdateChannel();
                 } else {
-                    alert("Governor Id or Governor Password is wrong");
+                    alert("Admin Id or Admin Password is wrong");
                 }
             } else {
                 alert(res.data.error);
