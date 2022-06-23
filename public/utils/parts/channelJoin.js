@@ -156,8 +156,13 @@ function checkHostUser(userId, userPassword, adminId, adminPassword) {
  * 유저 이름 중복 체크
  */
 function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
-    //const userPassword = $("#public-password").val();
-    const userPassword = $("#private-roomPassword").val();
+    let userPassword;
+    
+    if(channelType === "Public"){
+        userPassword = $("#public-password").val();
+    }else{
+        userPassword = $("#private-roomPassword").val();
+    }
 
     const reqData = {
         channelType: channelType,
