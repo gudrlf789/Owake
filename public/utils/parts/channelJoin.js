@@ -200,7 +200,7 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
                         );
                     } else {
                         alert(
-                            "Wrong Governor Id or password. please check your Governor Id or password again"
+                            "Wrong adminId or password. please check your adminId or password again"
                         );
                     }
                 } else {
@@ -261,7 +261,7 @@ function channelJoinAction() {
                         res.data.channelInfo.adminPassword !==
                             reqData.adminPassword
                     ) {
-                        alert("Check user name or Governor password");
+                        alert("Check user name or admin password");
                     } else {
                         checkKorean(
                             reqData.userId,
