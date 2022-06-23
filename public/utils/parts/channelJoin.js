@@ -156,8 +156,7 @@ function checkHostUser(userId, userPassword, adminId, adminPassword) {
  * 유저 이름 중복 체크
  */
 function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
-    //const userPassword = $("#public-password").val();
-    const userPassword = $("#private-roomPassword").val();
+    const userPassword = $("#public-password").val();
 
     const reqData = {
         channelType: channelType,
@@ -195,7 +194,7 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
                         );
                     } else {
                         alert(
-                            "Wrong Governor Id or password. please check your Governor Id or password again"
+                            "Wrong adminId or password. please check your adminId or password again"
                         );
                     }
                 } else {
@@ -256,7 +255,7 @@ function channelJoinAction() {
                         res.data.channelInfo.adminPassword !==
                             reqData.adminPassword
                     ) {
-                        alert("Check user name or Governor password");
+                        alert("Check user name or admin password");
                     } else {
                         checkKorean(
                             reqData.userId,
