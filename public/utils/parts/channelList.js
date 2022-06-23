@@ -2,9 +2,6 @@ let channelContainer = $(".channel-box-container");
 let partnerChannelContainer = $(".partner-channel-container");
 let selectOptions = document.querySelector(".search-select");
 
-const publicPasswordForm = document.querySelector(".public-password-form");
-const publicPasswordLabel = document.querySelector(".public-password-label");
-
 function checkPassword(channelName, channelPassword, channelType, governType) {
     if (channelPassword !== "") {
         $("#private-channelName").val(channelName);
@@ -12,15 +9,11 @@ function checkPassword(channelName, channelPassword, channelType, governType) {
         $("#private-channelType").val(channelType);
         $("#private-governType").val(governType);
         $("#channelPrivateJoin").modal();
-        
     } else {
         $("#public-channelName").val(channelName);
         $("#public-channelType").val(channelType);
         $("#public-governType").val(governType);
         $("#channelPublicJoin").modal();
-
-        publicPasswordForm.hidden = true;
-        publicPasswordLabel.hidden = true;
     }
 }
 
@@ -107,9 +100,9 @@ $(document).on("click", "#channelDeleteBtn", (e) => {
     $("#delete_channelName").val(channelName);
     $("#delete_imageName").val(imageName);
 
-    if(channelPassword === ""){
+    if (channelPassword === "") {
         $("#delete-channelPassword").attr("disabled", true);
-    }else{
+    } else {
         $("#delete-channelPassword").attr("disabled", false);
     }
 });
