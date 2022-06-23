@@ -155,10 +155,10 @@ function checkHostUser(userId, userPassword, adminId, adminPassword) {
  * @descrption
  * 유저 이름 중복 체크
  */
-function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
+function checkDuplicateUserNameOnChannel(userId, channelName, channelType, channelPassword) {
     let userPassword;
-    
-    if(channelType === "Public"){
+
+    if(channelPassword !== ""){
         userPassword = $("#public-password").val();
     }else{
         userPassword = $("#private-roomPassword").val();
@@ -169,7 +169,7 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
         channelName: channelName,
         userId: userId,
     };
-
+    debugger;
     axios.post("/channel/info", reqData).then((res) => {
         if (res.data.success) {
             const result = res.data.channelInfo.userNames.filter(
@@ -219,11 +219,11 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType) {
     });
 }
 
-function checkKorean(userId, channelName, channelType) {
+function checkKorean(userId, channelName, channelType, channelPassword) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
     if (!korean.test(userId)) {
-        checkDuplicateUserNameOnChannel(userId, channelName, channelType);
+        checkDuplicateUserNameOnChannel(userId, channelName, channelType, channelPassword);
     } else {
         alert("You can only type User Name in English.");
         return;
@@ -266,7 +266,8 @@ function channelJoinAction() {
                         checkKorean(
                             reqData.userId,
                             reqData.channelName,
-                            res.data.channelInfo.channelType
+                            res.data.channelInfo.channelType,
+                            res.data.channelInfo.channelPassword
                         );
                     }
                     break;
@@ -281,7 +282,8 @@ function channelJoinAction() {
                         checkKorean(
                             reqData.userId,
                             reqData.channelName,
-                            res.data.channelInfo.channelType
+                            res.data.channelInfo.channelType,
+                            res.data.channelInfo.channelPassword
                         );
                     }
                     break;
@@ -319,7 +321,8 @@ function privateChannelJoinAction() {
                 "Please enter a valid user name (no spaces and special characters)"
             );
         } else {
-            checkKorean(userId, channelName, channelType);
+            debugger;
+            checkKorean(userId, channelName, channelType, checkingPassword);
         }
     }
 }
@@ -344,6 +347,6 @@ function publicChannelJoinAction() {
             "Please enter a valid user name (no spaces and special characters)"
         );
     } else {
-        checkKorean(userId, channelName, channelType);
+        checkKorean(userId, channelName, channelType, channelPassword);
     }
 }

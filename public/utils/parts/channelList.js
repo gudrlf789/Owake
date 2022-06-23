@@ -11,11 +11,8 @@ function checkPassword(channelName, channelPassword, channelType, governType) {
         $("#private-passwordChecking").val(channelPassword);
         $("#private-channelType").val(channelType);
         $("#private-governType").val(governType);
-        // $("#channelPrivateJoin").modal();
-        $("#channelPublicJoin").modal();
-
-        publicPasswordForm.hidden = false;
-        publicPasswordLabel.hidden = false;
+        $("#channelPrivateJoin").modal();
+        
     } else {
         $("#public-channelName").val(channelName);
         $("#public-channelType").val(channelType);
