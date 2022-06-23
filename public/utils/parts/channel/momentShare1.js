@@ -275,7 +275,7 @@ export const momentShareFunc1 = () => {
         const momentTabCtr = document.createElement("div");
 
         momentTab.id = "momentTab";
-        momentTabClose.classList.add("btn-close");
+        momentTabClose.classList.add("btn-close btn-close-white");
         momentTabClose.setAttribute("aria-label", "Close");
         momentTabClose.id = "momentTabClose";
         momentTabCtr.className = "momentTabCtr";
