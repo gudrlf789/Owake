@@ -48,7 +48,7 @@ export const contentFunc = (contentShareSocket) => {
     contentShare.frameborder = "0";
 
     contentTabArea.style.setProperty("height", "100%");
-    contentTabArea.style.setProperty("background", "#fff");
+    contentTabArea.style.setProperty("background", "#282832");
     contentTabArea.style.setProperty("border", "2px solid #000");
     contentTabArea.style.setProperty("display", "-webkit-box");
     contentTabArea.style.setProperty("align-items", "center");
@@ -78,13 +78,15 @@ export const contentFunc = (contentShareSocket) => {
 
     function createContentTab(userName, fileType, fileName) {
         const html = `
-            <span class="middleContainerBtn" name="${userName}_${fileName}"
-            style="margin: 0.4rem; padding: 0.2rem; background: #182843; color: #fff; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">
-                <input type="hidden" value=${fileType}>
-                <span style="background: #182843; color: white;">${userName}-${fileName}</span>
-            </span>
-            <div class="closeContent" name="${userName}_${fileName}">
-                <i class="fas fa-times"></i>
+            <div class="contentTab">
+                <span class="middleContainerBtn" name="${userName}_${fileName}"
+                style="margin: 0.4rem; padding: 0.2rem; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center;">
+                    <input type="hidden" value=${fileType}>
+                    <span>${userName}-${fileName}</span>
+                </span>
+                <div class="closeContent" name="${userName}_${fileName}">
+                    <i class="fas fa-times"></i>
+                </div>
             </div>
         `;
 
