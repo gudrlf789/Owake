@@ -155,12 +155,17 @@ function checkHostUser(userId, userPassword, adminId, adminPassword) {
  * @descrption
  * 유저 이름 중복 체크
  */
-function checkDuplicateUserNameOnChannel(userId, channelName, channelType, channelPassword) {
+function checkDuplicateUserNameOnChannel(
+    userId,
+    channelName,
+    channelType,
+    channelPassword
+) {
     let userPassword;
 
     if(channelPassword === ""){
         userPassword = $("#public-password").val();
-    }else{
+    } else {
         userPassword = $("#private-roomPassword").val();
     }
 
@@ -200,7 +205,7 @@ function checkDuplicateUserNameOnChannel(userId, channelName, channelType, chann
                         );
                     } else {
                         alert(
-                            "Wrong adminId or password. please check your adminId or password again"
+                            "Wrong Governor Name or Password. please check your Governor Name or Password again"
                         );
                     }
                 } else {
@@ -223,7 +228,12 @@ function checkKorean(userId, channelName, channelType, channelPassword) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
     if (!korean.test(userId)) {
-        checkDuplicateUserNameOnChannel(userId, channelName, channelType, channelPassword);
+        checkDuplicateUserNameOnChannel(
+            userId,
+            channelName,
+            channelType,
+            channelPassword
+        );
     } else {
         alert("You can only type User Name in English.");
         return;
