@@ -33,10 +33,10 @@ $("#channelDelete-btn").click((e) => {
     axios.post("/channel/info", reqData).then((res) => {
       if(res.data.success){
         if(res.data.channelInfo.adminId !== $("#delete_adminId").val()){
-          alert("Admin Id is wrong");
+          alert("Governor Id is wrong");
           $("#delete_adminId").val("");
         }else if(res.data.channelInfo.adminPassword !== $("#delete_adminPassword").val()){
-          alert("Admin Password is wrong");
+          alert("Governor Password is wrong");
           $("#delete_adminPassword").val("");
         }else if(res.data.channelInfo.channelPassword !== $("#delete-channelPassword").val()){
           alert("Channel Password is wrong");
@@ -47,6 +47,6 @@ $("#channelDelete-btn").click((e) => {
       }
     });
   }else{
-    alert("You can only type AdminId and channelName in English.");
+    alert("You can only type Governor Id and channelName in English.");
   }
 });
