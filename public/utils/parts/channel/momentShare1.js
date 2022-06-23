@@ -271,24 +271,26 @@ export const momentShareFunc1 = () => {
      */
     function createMomentTabFunc(url) {
         const momentTab = document.createElement("span");
+        const momentTabClose = document.createElement("button");
+        const momentTabCtr = document.createElement("div");
 
         momentTab.id = "momentTab";
-        momentTab.style.setProperty("margin", "0.4rem");
-        momentTab.style.setProperty("padding", "0.2rem");
-        momentTab.style.setProperty("background", "#182843");
-        momentTab.style.setProperty("color", "#fff");
-        momentTab.style.setProperty("cursor", "pointer");
-        momentTab.style.setProperty("white-space", "nowrap");
-        momentTab.style.setProperty("overflow", "hidden");
-        momentTab.style.setProperty("text-overflow", "ellipsis");
-        momentTab.style.setProperty("width", "10rem");
-        momentTab.style.setProperty("text-align", "center");
+        momentTabClose.classList.add("btn-close", "btn-close-white");
+        momentTabClose.setAttribute("aria-label", "Close");
+        momentTabClose.id = "momentTabClose";
+        momentTabCtr.className = "momentTabCtr";
+
+        momentTabCtr.append(momentTab, momentTabClose);
 
         if (url !== null || url !== "" || url !== undefined) {
             momentTab.textContent = url;
-            momentTabArea1.append(momentTab);
+            momentTabArea1.append(momentTabCtr);
         }
     }
+
+    $(document).on(event, "#momentTabClose", (e) => {
+        e.target.parentNode.remove();
+    });
 
     // Tab Click Event 함수
     $(document).on(event, "#momentTab", (e) => {

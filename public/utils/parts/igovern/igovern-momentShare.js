@@ -82,15 +82,19 @@ export const momentShareFunc = (momentShareSocket) => {
 
     function momentShareSocketEvent(momentShareActive) {
         momentShareActive ? momentShareEnable() : momentShareDisable();
-        momentShareSocket.emit("igoven-momentShare", channelName, momentShareActive);
-    };
+        momentShareSocket.emit(
+            "igoven-momentShare",
+            channelName,
+            momentShareActive
+        );
+    }
 
     momentShareBtn1.addEventListener("click", (e) => {
         momentShareActive = !momentShareActive;
 
-        if(checkIsHost()){
+        if (checkIsHost()) {
             momentShareSocketEvent(momentShareActive);
-        }else {
+        } else {
             alert("Host Only");
         }
     });
@@ -294,28 +298,26 @@ export const momentShareFunc = (momentShareSocket) => {
      */
     function createMomentTabFunc(url) {
         const momentTab = document.createElement("span");
+        const momentTabClose = document.createElement("button");
+        const momentTabCtr = document.createElement("div");
 
         momentTab.id = "momentTab";
-        momentTab.style.setProperty("margin", "0.4rem");
-        momentTab.style.setProperty("padding", "0.2rem");
-        momentTab.style.setProperty("background", "#182843");
-        momentTab.style.setProperty("color", "#fff");
-        momentTab.style.setProperty("cursor", "pointer");
-        momentTab.style.setProperty("white-space", "nowrap");
-        momentTab.style.setProperty("overflow", "hidden");
-        momentTab.style.setProperty("text-overflow", "ellipsis");
-        momentTab.style.setProperty("width", "10rem");
-        momentTab.style.setProperty("text-align", "center");
+        momentTabClose.classList.add("btn-close", "btn-close-white");
+        momentTabClose.setAttribute("aria-label", "Close");
+        momentTabClose.id = "momentTabClose";
+        momentTabCtr.className = "momentTabCtr";
+
+        momentTabCtr.append(momentTab, momentTabClose);
 
         if (url !== null || url !== "" || url !== undefined) {
             momentTab.textContent = url;
-            momentTabArea1.append(momentTab);
+            momentTabArea1.append(momentTabCtr);
         }
     }
 
-    function hostTransferWeb(tabURL, iframeInit) {
-        
-    }
+    $(document).on(event, "#momentTabClose", (e) => {
+        e.target.parentNode.remove();
+    });
 
     // Tab Click Event 함수
     // 테스트
@@ -331,15 +333,24 @@ export const momentShareFunc = (momentShareSocket) => {
             ) {
                 iframeInit = true;
 
-                if(checkIsHost()){
-                    momentShareSocket.emit("web-origin-info",channelName, tabURL, iframeInit);
+                if (checkIsHost()) {
+                    momentShareSocket.emit(
+                        "web-origin-info",
+                        channelName,
+                        tabURL,
+                        iframeInit
+                    );
                 }
                 webShareContainerLoad(tabURL, iframeInit);
-                
             } else {
                 iframeInit = false;
-                if(checkIsHost()){
-                    momentShareSocket.emit("web-origin-info",channelName, tabURL, iframeInit);
+                if (checkIsHost()) {
+                    momentShareSocket.emit(
+                        "web-origin-info",
+                        channelName,
+                        tabURL,
+                        iframeInit
+                    );
                 }
                 webShareContainerLoad(tabURL, iframeInit);
             }
