@@ -42,6 +42,15 @@ export const audioMixingAndAudioEffect = (audioMixingSocket) => {
             : $("#audioMixModal").modal("hide");
     });
 
+    function audioMixingSocketEvent(audioMixActive) {
+        //audioMixActive ? audioMixingEnable() : audioMixingDisable();
+        audioMixingSocket.emit(
+            "igoven-audioMixing",
+            channelName,
+            audioMixActive
+        );
+    }
+
     audioMixBtn.addEventListener("click", (e) => {
         audioMixActive = !audioMixActive;
 
@@ -83,11 +92,6 @@ export const audioMixingAndAudioEffect = (audioMixingSocket) => {
         return false;
     });
 };
-
-function audioMixingSocketEvent(audioMixActive) {
-    //audioMixActive ? audioMixingEnable() : audioMixingDisable();
-    audioMixingSocket.emit("igoven-audioMixing", channelName, audioMixActive);
-}
 
 function setAudioMixingPosition(clickPosX) {
     if (audioMixing.state === "IDLE" || audioMixing.state === "LOADING") return;
