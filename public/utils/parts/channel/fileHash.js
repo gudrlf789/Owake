@@ -96,13 +96,18 @@ export const fileHash = () => {
                 }
             })
             .then((res) => {
-                hashSocket.emit(
-                    "submit_hash",
-                    res.data.hashCode,
-                    textHtml.id,
-                    channelName
-                );
-                textHtml.value = res.data.hashCode;
+                if(res.data.hashCode){
+                    hashSocket.emit(
+                        "submit_hash",
+                        res.data.hashCode,
+                        textHtml.id,
+                        channelName
+                    );
+                    
+                    textHtml.value = res.data.hashCode;
+                }else{
+                    alert("Error " + res.data.error.message);
+                }
             })
             .catch((err) => {
                 alert("Error occur");

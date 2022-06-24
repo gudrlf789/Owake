@@ -107,14 +107,18 @@ export const fileHash = (fileHashSocket) => {
                 maxBodyLength: Infinity,
             })
             .then((res) => {
-                fileHashSocket.emit(
-                    "submit_hash",
-                    res.data.hashCode,
-                    textHtml.id,
-                    channelName
-                );
-               
-                textHtml.value = res.data.hashCode;
+                if(res.data.hashCode){
+                    fileHashSocket.emit(
+                        "submit_hash",
+                        res.data.hashCode,
+                        textHtml.id,
+                        channelName
+                    );
+
+                    textHtml.value = res.data.hashCode;
+                }else{
+                    alert("Error " + res.data.error.message);
+                }
             })
             .catch((err) => {
                 alert("Error occur");
