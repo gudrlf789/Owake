@@ -93,9 +93,7 @@ export const fileHash = () => {
             .post("/channel/hashFile", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                },
-                maxContentLength: Infinity,
-                maxBodyLength: Infinity,
+                }
             })
             .then((res) => {
                 hashSocket.emit(
