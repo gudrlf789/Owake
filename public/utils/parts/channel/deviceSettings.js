@@ -67,7 +67,7 @@ let videoProfiles = [
 export const recodingDeviceCtrl = () => {
     getDeviceFunc();
     cameraSwitchFunc();
-    videoResolutionCtrlFunc();
+    // videoResolutionCtrlFunc();
 
     deviceSettingBtn.addEventListener("click", handlerDeviceSetting, false);
 };
