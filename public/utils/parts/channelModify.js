@@ -175,6 +175,18 @@ function channelUpdateFunc(data) {
     });
 }
 
+$("#channelUpdateModal").on("shown.bs.modal", (e) => {
+    const checkChannlePassword = $("input:radio[name=update_password]:checked").val();
+
+    if(checkChannlePassword === "N"){
+        $("#update_channelPassword").attr("disabled", true);
+        $("#update_channelPassword_confirm").attr("disabled", true);
+    }else {
+        $("#update_channelPassword").attr("disabled", false);
+        $("#update_channelPassword_confirm").attr("disabled", false);
+    }
+});
+
 $("#channelUpdateModal").on("hidden.bs.modal", (e) => {
     let channelInput = document
         .querySelector("#channelUpdateModal")
