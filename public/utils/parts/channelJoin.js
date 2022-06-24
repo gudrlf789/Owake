@@ -14,6 +14,8 @@ const privateJoinPasswordContainer = document.querySelector(
     "#privateJoin-password-container"
 );
 
+const joinGovernorPassword = document.querySelector(".join-governor-password");
+
 $("#channelPrivateJoin").on("shown.bs.modal", (e) => {
     if ($("#private-governType").val() === "WE") {
         privateGovernorChecked.setAttribute("disabled", true);
@@ -50,10 +52,13 @@ publicGovernorChecked.addEventListener("input", (e) => {
     if (publicGovernorChecked.checked) {
         publicJoinPasswordContainer.hidden = false;
         e.currentTarget.value = "on";
+        publicParticipant.value = "off";
         publicParticipant.checked = false;
     } else {
         publicJoinPasswordContainer.hidden = true;
         e.currentTarget.value = "off";
+        publicParticipant.value = "on";
+        joinGovernorPassword.value = "";
     }
 });
 
@@ -61,7 +66,9 @@ publicParticipant.addEventListener("input", (e) => {
     if (publicParticipant.checked) {
         publicGovernorChecked.checked = false;
         publicJoinPasswordContainer.hidden = true;
-        e.currentTarget.value = "off";
+        e.currentTarget.value = "on";
+        publicGovernorChecked.value = "off";
+        joinGovernorPassword.value = "";
     }
 });
 
@@ -69,11 +76,13 @@ privateGovernorChecked.addEventListener("input", (e) => {
     if (privateGovernorChecked.checked) {
         privateJoinPasswordContainer.hidden = false;
         e.currentTarget.value = "on";
+        privateParticipant.value = "off";
         privateParticipant.checked = false;
     } else {
         privateJoinPasswordContainer.hidden = true;
         e.currentTarget.value = "off";
-        privateParticipant.checked = true;
+        privateParticipant.value = "on";
+        joinGovernorPassword.value = "";
     }
 });
 
@@ -81,7 +90,9 @@ privateParticipant.addEventListener("input", (e) => {
     if (privateParticipant.checked) {
         privateGovernorChecked.checked = false;
         privateJoinPasswordContainer.hidden = true;
-        e.currentTarget.value = "off";
+        e.currentTarget.value = "on";
+        privateGovernorChecked.value = "off";
+        joinGovernorPassword.value = "";
     }
 });
 
@@ -163,7 +174,7 @@ function checkDuplicateUserNameOnChannel(
 ) {
     let userPassword;
 
-    if(channelPassword === ""){
+    if (channelPassword === "") {
         userPassword = $("#public-password").val();
     } else {
         userPassword = $("#private-roomPassword").val();
