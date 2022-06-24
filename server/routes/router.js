@@ -449,7 +449,9 @@ router.post(
                             ...formData.getHeaders(),
                             Authorization: "Bearer " + jwt,
                         },
-                    }
+                        maxContentLength: Infinity,
+                        maxBodyLength: Infinity
+                    },
                 )
                 .then((result) => {
                     fs.unlinkSync(`./server/contents/${req.body.channelName}/${req.body.userName}/${req.file.filename}`);
