@@ -63,18 +63,21 @@ export const pdfFunc = (pdfShareSocket) => {
     pdfSearchContainer.id = "pdfSearchContainer";
     pdfSearchInput.id = "pdfSearchInput";
 
-    pdfNavContainer.append(pdfSearchContainer);
-    pdfSearchContainer.append(pdfSearchInput, pdfTabArea);
-
     pdfPageControls.append(pdfPagePrevious);
     pdfPageControls.append(pdfPageNumber);
     pdfPageControls.append(pdfPageNext);
 
+    pdfNavContainer.append(pdfPageControls, pdfSearchContainer);
+    pdfSearchContainer.append(pdfSearchInput, pdfTabArea);
+
     pdfShareArea.append(pdfNavContainer);
     pdfShareArea.append(pdfShare);
-    pdfShareArea.append(pdfPageControls);
+    // pdfShareArea.append(pdfPageControls);
     pdfShare.append(pdfRender);
     pdfShare.frameborder = "0";
+
+    pdfPageNumber.style.setProperty("width", "3rem");
+    pdfPageNumber.style.setProperty("text-align", "center");
 
     pdfTabArea.style.setProperty("background", "#282832");
     pdfTabArea.style.setProperty("border", "0.1px solid #000");

@@ -65,18 +65,21 @@ export const pdfFunc = () => {
     pdfSearchContainer.id = "pdfSearchContainer";
     pdfSearchInput.id = "pdfSearchInput";
 
-    pdfNavContainer.append(pdfSearchContainer);
-    pdfSearchContainer.append(pdfSearchInput, pdfTabArea);
-
     pdfPageControls.append(pdfPagePrevious);
     pdfPageControls.append(pdfPageNumber);
     pdfPageControls.append(pdfPageNext);
 
+    pdfNavContainer.append(pdfPageControls, pdfSearchContainer);
+    pdfSearchContainer.append(pdfSearchInput, pdfTabArea);
+
     pdfShareArea.append(pdfNavContainer);
     pdfShareArea.append(pdfShare);
-    pdfShareArea.append(pdfPageControls);
+    // pdfShareArea.append(pdfPageControls);
     pdfShare.append(pdfRender);
     pdfShare.frameborder = "0";
+
+    pdfPageNumber.style.setProperty("width", "3rem");
+    pdfPageNumber.style.setProperty("text-align", "center");
 
     pdfTabArea.style.setProperty("background", "#282832");
     pdfTabArea.style.setProperty("border", "0.1px solid #000");
@@ -123,7 +126,9 @@ export const pdfFunc = () => {
         });
 
         pdfjsLib
-            .getDocument(`/channel/downloadPdf?fileName=${fileName}&channelName=${channelName}&userName=${originUser}`)
+            .getDocument(
+                `/channel/downloadPdf?fileName=${fileName}&channelName=${channelName}&userName=${originUser}`
+            )
             .promise.then(
                 (pdf) => {
                     myState.pdf = pdf;
@@ -296,12 +301,16 @@ export const pdfFunc = () => {
     });
 
     $(document).on("keypress", "#pdf-page-number", (e) => {
-        const code = (e.keyCode ? e.keyCode : e.which);
+        const code = e.keyCode ? e.keyCode : e.which;
 
-        if(code == 13) {
-            const desiredPage = document.getElementById('pdf-page-number').valueAsNumber;
-                              
-            if(desiredPage >= 1 && desiredPage <= myState.pdf._pdfInfo.numPages) {
+        if (code == 13) {
+            const desiredPage =
+                document.getElementById("pdf-page-number").valueAsNumber;
+
+            if (
+                desiredPage >= 1 &&
+                desiredPage <= myState.pdf._pdfInfo.numPages
+            ) {
                 myState.currentPage = desiredPage;
                 document.getElementById("pdf-page-number").value = desiredPage;
                 render();
@@ -313,8 +322,10 @@ export const pdfFunc = () => {
                         choiceFile
                     );
                 }
-            }else{
-                alert(`This pdf page is from 1page to ${myState.pdf._pdfInfo.numPages}page`);
+            } else {
+                alert(
+                    `This pdf page is from 1page to ${myState.pdf._pdfInfo.numPages}page`
+                );
             }
         }
     });
