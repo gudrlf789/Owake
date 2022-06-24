@@ -47,18 +47,6 @@ function realUpdateChannel() {
     }
 }
 
-function channelAdminPasswordSame() {
-    const adminPassword = $("#update_adminPassword").val();
-    const adminPasswordConfirm = $("#update_adminPassword_confirm").val();
-
-    if(adminPassword !== adminPasswordConfirm) {
-        alert("Check your admin password again");
-        $("#update_adminPassword_confirm").val("");
-        return;
-    }
-    updateChannelAction();
-};
-
 function channelPasswordSame() {
     const updatePassword = $("#update_channelPassword").val();
     const updatePasswordConfirm = $("#update_channelPassword_confirm").val();
@@ -68,7 +56,7 @@ function channelPasswordSame() {
         $("#update_channelPassword_confirm").val("");
         return;
     }
-    channelAdminPasswordSame()
+    updateChannelAction();
 };
 
 $("#updateBtn").click((e) => {
@@ -170,7 +158,6 @@ function channelUpdateFunc(data) {
             $("#channelUpdateModal").modal("hide");
             $(`#update_adminId`).val("");
             $(`#update_adminPassword`).val("");
-            $(`#update_adminPassword_confirm`).val("");
             $(`#update_channelName`).val("");
             $(`#update_channelPassword`).val("");
             $(`#update_channelPassword_confirm`).val("");

@@ -2,12 +2,12 @@ function realDeleteChannel(reqData) {
   axios.post("/channel/delete", reqData).then((res) => {
     if (res.data.success) {
       alert("The channel has been successfully deleted");
-      $("#channelDeleteModal").modal("hide");
       $("#delete_adminId").val("");
       $("#delete_adminPassword").val("");
       $("#delete_channelType").val(),
       $("#delete_channelName").val("");
-      $("#delete_channelPassword").val("");
+      $("#delete-channelPassword").val("");
+      $("#channelDeleteModal").modal("hide");
 
       selectOptionsChannel();
     }else{
