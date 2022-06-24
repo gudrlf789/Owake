@@ -117,7 +117,7 @@ export const fileHash = (fileHashSocket) => {
 
                     textHtml.value = res.data.hashCode;
                 }else{
-                    alert("Error " + res.data.error.message);
+                    alert("Sorry. It's not available for the moment.");
                 }
             })
             .catch((err) => {
