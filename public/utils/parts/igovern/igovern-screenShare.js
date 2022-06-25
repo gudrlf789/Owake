@@ -1,5 +1,4 @@
 import { userName } from "./igovern-sessionStorage.js";
-import { checkIsHost } from "./igovern-checkIsHost.js";
 
 /**
  * @author 박형길
@@ -21,11 +20,6 @@ import { checkIsHost } from "./igovern-checkIsHost.js";
  };
  
  async function screenShareJoin() {
-    if(!checkIsHost()) {
-        alert("Host Only");
-        return;
-    }
-
      if (openYN !== "N") {
          return alert("Please close screen share which is opened");
      }
