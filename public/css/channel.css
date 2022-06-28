@@ -224,7 +224,6 @@ html {
 
 #remote-playerlist > div {
     border: 0.1px solid #fff;
-    /* border-radius: 20px; */
     width: 230px;
     height: 230px;
 }
@@ -237,12 +236,10 @@ html {
 .player > div {
     width: 100%;
     height: 100%;
-    /* border-radius: 20px; */
 }
 
 #remote__videoBox > div {
     border: 2px solid #fff;
-    /* border-radius: 20px; */
 }
 
 video {
@@ -328,10 +325,6 @@ video:hover {
         display: flex;
         margin-left: 0;
         margin-bottom: 0;
-    }
-
-    #remote-playerlist > div {
-        /* width: 130px;*/
     }
 
     #local__video__container {
