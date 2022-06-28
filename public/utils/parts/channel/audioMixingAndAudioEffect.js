@@ -49,6 +49,17 @@ export const audioMixingAndAudioEffect = () => {
         toggleAudioMixing();
         return false;
     });
+
+    const audioMixBtn = document.querySelector(".fa-music");
+
+    $('#audioMixModal').on('show.bs.modal', (e) => {
+        audioMixBtn.style.setProperty("color", "#e07478");
+    })
+    $('#audioMixModal').on('hidden.bs.modal', (e) => {
+        audioMixBtn.style.setProperty("color", "#fff");
+    })
+    
+
 };
 
 function setAudioMixingPosition(clickPosX) {

@@ -119,7 +119,7 @@ app.get("/map", (req, res, next) => {
 });
 
 app.get("/:channelName/:channelType/:governType", (req, res) => {
-    let appID = "b11ab973693e46b78b73e55aae3a6a11";
+    let appID = "50b9cd9de2d54849a139e3db52e7928a";
 
     if (req.params.governType === "WE") {
         res.render("channel", {
