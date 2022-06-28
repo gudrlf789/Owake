@@ -42,4 +42,5 @@ $(() => {
     copyInfo();
     fileDelivery();
     audioMixingAndAudioEffect();
+    gridView();
 });

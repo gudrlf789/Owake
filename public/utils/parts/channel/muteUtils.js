@@ -9,7 +9,6 @@
  */
 
 import { localTracks, totalUsers, options } from "../../rtcClient.js";
-import { deviceScan } from "./deviceScan.js";
 
 const videoIcon = document.getElementById("videoIcon");
 const audioIcon = document.getElementById("audioIcon");
@@ -20,8 +19,6 @@ const videoBtn = document.querySelector("#muteVideo");
 audioIcon.style.setProperty("color", "#e07478");
 videoIcon.style.setProperty("color", "#e07478");
 
-let event = deviceScan();
-
 let localTrackState = {
     videoTrackMuted: false,
     audioTrackMuted: false,
@@ -30,7 +27,11 @@ let localTrackState = {
 export const muteUtilsFunc = () => {
     
     let muteInterval = setInterval(() => {
-        if(localTracks.audioTrack.length !== 0 && localTracks.videoTrack.length !== 0) {
+
+        let trackLengthCheck = localTracks.audioTrack.length !== 0 && localTracks.videoTrack.length !== 0;
+        let trackNullCheck = localTracks.audioTrack !== null && localTracks.videoTrack !== null;
+
+        if(trackLengthCheck && trackNullCheck) {
             muteStart();
             clearInterval(muteInterval);
         }
