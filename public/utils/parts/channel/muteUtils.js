@@ -28,16 +28,14 @@ let localTrackState = {
 };
 
 export const muteUtilsFunc = () => {
-    $(async () => {
-        setTimeout(() => {
+    
+    let muteInterval = setInterval(() => {
+        if(localTracks.audioTrack.length !== 0 && localTracks.videoTrack.length !== 0) {
             muteStart();
-        }, 3000);
-    });
-
-    function muteStart() {
-        muteVideo();
-        muteAudio();
-    }
+            clearInterval(muteInterval);
+        }
+    }, 500);
+    
 
     audioBtn.addEventListener("click", (e) => {
         if (!localTrackState.audioTrackMuted) {
@@ -59,6 +57,11 @@ export const muteUtilsFunc = () => {
         }
     });
 };
+
+function muteStart() {
+    muteVideo();
+    muteAudio();
+}
 
 async function muteAudio() {
     if (!localTracks.audioTrack) return;

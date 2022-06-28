@@ -139,7 +139,7 @@ async function join() {
     );
 
     // // 오디오 디바이스가 없을시
-    if (checkDeskTopAudio.length != 0) {
+    if (checkDeskTopAudio.length !== 0) {
         localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack(
             MicrophoneAudioTrackInitConfig
         );
@@ -238,9 +238,6 @@ async function leave() {
     window.sessionStorage.clear();
 
     $("#local-player-name").text("");
-    $("#join").attr("disabled", false);
-    $("#leave").attr("disabled", true);
-
     window.location.replace("/");
 }
 
