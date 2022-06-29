@@ -25,18 +25,14 @@ let localTrackState = {
 };
 
 export const muteUtilsFunc = () => {
-    
-    let muteInterval = setInterval(() => {
-
-        let trackLengthCheck = localTracks.audioTrack.length !== 0 && localTracks.videoTrack.length !== 0;
-        let trackNullCheck = localTracks.audioTrack !== null && localTracks.videoTrack !== null;
-
-        if(trackLengthCheck && trackNullCheck) {
-            muteStart();
-            clearInterval(muteInterval);
-        }
-    }, 500);
-    
+    if (localTracks.audioTrack === null && localTracks.videoTrack === null) {
+        let muteInterval = setInterval(() => {
+            if (localTracks.audioTrack !== null && localTracks.videoTrack !== null) {
+                muteStart();
+                clearInterval(muteInterval);
+            }
+        }, 100);
+    }
 
     audioBtn.addEventListener("click", (e) => {
         if (!localTrackState.audioTrackMuted) {

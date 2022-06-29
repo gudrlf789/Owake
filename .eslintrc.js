@@ -1,5 +1,6 @@
 module.exports = {
-    extends: "standard",
+    extends: ["plugin:prettier/recommended"],
+    plugins: ["prettier"],
     env: {
         browser: true,
         es2021: true,
