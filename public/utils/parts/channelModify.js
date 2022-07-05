@@ -59,6 +59,18 @@ function channelPasswordSame() {
     updateChannelAction();
 };
 
+function channelAdminPasswordSame() {
+    const adminPassword = $("#update_adminPassword").val();
+    const adminPasswordConfirm = $("#update_adminPassword_confirm").val();
+
+    if(adminPassword !== adminPasswordConfirm) {
+        alert("Check your admin password again");
+        $("#update_adminPassword_confirm").val("");
+        return;
+    }
+    updateChannelAction();
+};
+
 $("#updateBtn").click((e) => {
     // From channelCreate
     if (fileSizeCheck("update") === false) {
