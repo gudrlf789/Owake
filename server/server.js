@@ -171,7 +171,7 @@ app.get("/requestURL", (req, res, next) => {
  * FileShare Socket 추가
  */
 
-io.sockets.on("connection", (socket) => {
+io.sockets.on("connect", (socket) => {
     // io.on("connection", (socket) => {
     socket.channels = {};
     sockets[socket.id] = socket;

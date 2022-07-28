@@ -9,6 +9,5 @@
 
 export const socketInitFunc = () => {
     const socket = io.connect("/");
-
     return socket;
 };
