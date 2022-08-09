@@ -1,3 +1,17 @@
+import { browserCheck } from "./browserEvent.js";
+import { socketInitFunc } from "./socket.js";
+
+/**
+ * @author 전형동
+ * @version 1.0
+ * @data 2022.08.09
+ * @description
+ * STT + Translator 제작 중
+ */
+
+let speechSocket = socketInitFunc();
+let speechChannel = sessionStorage.getItem("channel");
+
 export const speechTextBox = () => {
     let speechTranslateBtn = document.querySelector("#speechTranslateBtn");
     let btnActivate = false;
@@ -8,23 +22,10 @@ export const speechTextBox = () => {
     });
 };
 
-function browserCheck() {
-    const agent = window.navigator.userAgent.toLowerCase();
-
-    if (
-        (agent.indexOf("chrome") > -1 && !!window.chrome) ||
-        agent.indexOf("edg/") > -1 ||
-        agent.indexOf("edge") > -1 ||
-        agent.indexOf("safari") > -1
-    ) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 function speechTextBoxEnable() {
     if (browserCheck()) {
+        speechSocket.emit("speech-on", speechChannel);
+
         let subtitle = receiveText();
 
         let videoContainers;
@@ -63,7 +64,9 @@ function receiveText(text) {
     let textBoxElement = `
         <div id="speechTextBox" class="card card-${peerId}">
             <div class="card-body">
-                <p class="subtitle">${text === undefined ? "" : text}</p>
+                <p class="subtitle">${
+                    text === undefined ? "Please Speech" : text
+                }</p>
                 <div class="speech__micBtn">
                     <i class="fas fa-microphone-alt"></i>
                 </div>
@@ -113,6 +116,8 @@ function handleSpeechRecognition() {
 
         subtitleText.innerText = text;
         cardBody.scrollTop = cardBody.scrollHeight;
+
+        speechSocket.emit("speech-send", speechChannel, text);
     });
 
     recognition.addEventListener("end", () => {
@@ -137,3 +142,7 @@ function handleSpeechRecognition() {
         console.log(`Additional information: ${event.message}`);
     };
 }
+
+speechSocket.on("speech-receive", (params) => {
+    console.log("speech-receive ::::", params);
+});

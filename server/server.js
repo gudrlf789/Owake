@@ -127,7 +127,7 @@ app.get("/:channelName/:channelType/:governType", (req, res) => {
             channelType: req.params.channelType,
             appID,
         });
-    }else {
+    } else {
         res.render("igovern-channel", {
             channelName: req.params.channelName,
             channelType: req.params.channelType,
@@ -215,7 +215,12 @@ io.sockets.on("connect", (socket) => {
         (channelName, fileType, choiceFile, originUser) => {
             socket
                 .to(channelName)
-                .emit("igoven-play-host-media", fileType, choiceFile, originUser);
+                .emit(
+                    "igoven-play-host-media",
+                    fileType,
+                    choiceFile,
+                    originUser
+                );
         }
     );
 
@@ -244,9 +249,7 @@ io.sockets.on("connect", (socket) => {
     });
 
     socket.on("igoven-whiteBoard-clearAll", (channelName) => {
-        socket
-            .to(channelName)
-            .emit("igoven-whiteBoard-clearAll-client");
+        socket.to(channelName).emit("igoven-whiteBoard-clearAll-client");
     });
 
     socket.on("igoven-audioMixing", (channelName, audioMixActive) => {
@@ -481,6 +484,20 @@ io.sockets.on("connect", (socket) => {
 
     socket.on("leave-pdf", (channelName) => {
         socket.leave(channelName);
+    });
+
+    /**
+     * STT Translator Communication
+     */
+
+    socket.on("speech-on", (channel) => {
+        console.log("speech-Socket-on!")
+        socket.join(channel);
+    });
+
+    socket.on("speech-send", (channel, text) => {
+        console.log(channel);
+        socket.in(channel).emit("speech-receive", text);
     });
 
     /**

@@ -2,6 +2,30 @@ export const browserEvent = () => {
     browserClose();
 };
 
+/**
+ * @anthor 전형동
+ * @date 2022.08.09
+ * @version 1.0
+ * @descrption
+ * 브라우저 이름과 버전 체크 함수
+ */
+
+export function browserCheck() {
+    let result = bowser.getParser(window.navigator.userAgent);
+    console.log(result.parsedResult.browser.name);
+    console.log(result.parsedResult.browser.version);
+
+    if (
+        result.parsedResult.browser.name.includes("Chrome") ||
+        result.parsedResult.browser.name.includes("Edge") ||
+        result.parsedResult.browser.name.includes("Safari")
+    ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function browserClose() {
     /**
      * @anthor 박형길
