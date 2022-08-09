@@ -13,6 +13,7 @@
 @import "./channel/identifire.css";
 @import "./channel/settings.css";
 @import "./channel/audioMix.css";
+@import "./channel/speechTextBox.css";
 
 @font-face {
     font-family: "NEXON Lv2 Gothic";
@@ -229,6 +230,7 @@ html {
 }
 
 .player {
+    position : relative;
     width: 100%;
     height: 100%;
 }

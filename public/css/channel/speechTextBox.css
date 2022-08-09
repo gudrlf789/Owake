@@ -1,0 +1,30 @@
+#speechTextBox {
+    position: absolute;
+    width: 100% !important;
+    height: 5rem;
+    bottom: 0;
+}
+
+#speechTextBox .card-body {
+    display : flex;
+    justify-content : space-between;   
+    overflow : auto;
+}
+
+#speechTextBox .card-body > p {
+    margin-bottom : 0;
+    padding : 1rem;
+}
+
+#speechTextBox .speech__micBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+}
+
+#speechTextBox .speech__micBtn > i {
+    font-size : 1.5rem;
+}
