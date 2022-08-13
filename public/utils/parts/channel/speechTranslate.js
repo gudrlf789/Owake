@@ -159,7 +159,7 @@ async function handleSpeechRecognition() {
 
     recognition.addEventListener("end", () => {
         console.log("recognition End Event!");
-        recognition.abort();
+        recognition.start();
     });
 
     function speechEnable(elem) {
@@ -218,8 +218,6 @@ async function getLangs() {
 
 async function translateAPI(text, active) {
     active = true;
-    console.log("Translate 진입 : ", text);
-
     if (active === true) {
         const res = await fetch(
             "https://translate.argosopentech.com/translate",
@@ -250,6 +248,7 @@ async function translateAPI(text, active) {
 
         active = false;
     } else {
+        active = false;
         console.log("Not Translate!!");
     }
 }
