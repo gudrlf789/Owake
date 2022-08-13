@@ -130,9 +130,8 @@ async function handleSpeechRecognition() {
     const speechRecognitionEvent =
         window.SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
 
-    const recognition = new window.SpeechRecognition();
+    const recognition = new SpeechRecognition();
 
-    let subtitleText = document.querySelector(".subtitle");
     let cardBody = document.querySelector(".card-body");
     let text;
 
@@ -151,9 +150,11 @@ async function handleSpeechRecognition() {
 
         // subtitleText.innerText = text;
 
-        if (e.results[0].isFinal) {
-            translateAPI(text, translateActivate);
-        }
+        translateAPI(text, translateActivate);
+
+        // if (e.results[0].isFinal) {
+        //     translateAPI(text, translateActivate);
+        // }
         cardBody.scrollTop = cardBody.scrollHeight;
     });
 
