@@ -1,5 +1,8 @@
 #speechTextBox {
     position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     width: 100% !important;
     height: 5rem;
     bottom: 0;
@@ -8,15 +11,15 @@
 #speechTextBox .card-body {
     display : flex;
     justify-content : space-between;   
+    align-items : center;
     overflow : auto;
 }
 
 #speechTextBox .card-body > p {
     margin-bottom : 0;
-    padding : 1rem;
 }
 
-#speechTextBox .speech__micBtn {
+#speechTextBox .speech-micBtn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,6 +28,16 @@
     cursor: pointer;
 }
 
-#speechTextBox .speech__micBtn > i {
+#speechTextBox .speech-micBtn > i {
     font-size : 1.5rem;
+}
+
+#speechTextBox .card-options {
+    display: flex;
+    margin-right: 10px;
+}
+
+#speechTextBox .card-options select{ 
+    margin-right : 5px;
+    margin-left : 5px;
 }

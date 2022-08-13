@@ -20,6 +20,9 @@ const selectVideo = document.querySelector("video");
 localVideoBox.id = "local__videoBox";
 localVideoBox.className = "player";
 
+let userId = sessionStorage.getItem("uid");
+let channel = sessionStorage.getItem("channel");
+
 if (selectVideo) {
     selectVideo.setAttribute("playsinline", "playsinline");
     selectVideo.muted = true;
@@ -107,8 +110,8 @@ mobileLeave.addEventListener("click", leaveBtnFunc, false);
 function leaveBtnFunc(e) {
     const reqData = {
         channelType: window.sessionStorage.getItem("channelType"),
-        channelName: window.sessionStorage.getItem("channel"),
-        userId: window.sessionStorage.getItem("uid"),
+        channelName: channel,
+        userId: userId,
     };
 
     axios.post("/channel/removeUserNameOnChannel", reqData).then((res) => {
@@ -121,8 +124,8 @@ function leaveBtnFunc(e) {
 }
 
 async function join() {
-    options.uid = window.sessionStorage.getItem("uid");
-    options.channel = window.sessionStorage.getItem("channel");
+    options.uid = userId;
+    options.channel = channel;
 
     client.on("user-published", handleUserPublished);
     client.on("user-joined", handleUserJoined);
@@ -212,6 +215,7 @@ async function join() {
     } else {
         alert("인식된 디바이스가 아무것도 없음");
     }
+
     videoTransformAction();
 }
 
@@ -304,7 +308,6 @@ async function subscribe(user, mediaType) {
 
         handlerRemoteDisplaySize();
         window.addEventListener("resize", handlerRemoteDisplaySize, false);
-
         usersActive(remoteActive);
     } catch (error) {
         console.log("Permission Error!! ", error);
