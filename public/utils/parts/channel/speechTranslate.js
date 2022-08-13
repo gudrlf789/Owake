@@ -58,11 +58,11 @@ async function speechTextBoxEnable() {
         // }, 1000);
 
         createSpeechTextBox();
-        speechSocket.emit("subTitleBox-enable", {
-            peer: userId,
-            channel: channel,
-            subtitleStatus: subtitleBoxActivate,
-        });
+        // speechSocket.emit("subTitleBox-enable", {
+        //     peer: userId,
+        //     channel: channel,
+        //     subtitleStatus: subtitleBoxActivate,
+        // });
 
         await handleSpeechRecognition();
     } else {
@@ -87,13 +87,13 @@ function speechTextBoxDisable() {
         box.remove();
     });
 
-    speechSocket.emit("subTitleBox-disable", {
-        peer: userId,
-        channel: channel,
-        subtitleStatus: subtitleBoxActivate,
-    });
+    // speechSocket.emit("subTitleBox-disable", {
+    //     peer: userId,
+    //     channel: channel,
+    //     subtitleStatus: subtitleBoxActivate,
+    // });
 
-    // speechSocket.emit("speech-leave", { peer: userId, channel: channel });
+    speechSocket.emit("speech-leave", { peer: userId, channel: channel });
 }
 
 function receiveText() {
@@ -160,7 +160,7 @@ async function handleSpeechRecognition() {
 
     recognition.addEventListener("end", () => {
         console.log("recognition End Event!");
-        recognition.start();
+        recognition.abort();
     });
 
     function speechEnable(elem) {
@@ -281,10 +281,4 @@ function appendData(d, elem) {
 speechSocket.on("speech-receive", (params) => {
     let subtitleText = document.querySelector(".subtitle");
     subtitleText.innerText = params.text;
-});
-
-speechSocket.on("subtitle-box-on", (params) => {});
-
-speechSocket.on("subtitle-box-off", (params) => {
-    console.log(params);
 });

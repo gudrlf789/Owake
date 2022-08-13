@@ -490,26 +490,26 @@ io.sockets.on("connect", (socket) => {
      * STT Translator Communication
      */
 
-    // socket.on("speech-leave", (config) => {
-    //     console.log(`${config.peer} Speech-Socket-OFF!`);
-    //     socket.leave(config.channel);
-    // });
-
     socket.on("speech-join", (params) => {
         console.log(`Speech-Socket Channel-Join: ${JSON.stringify(params)}`);
         socket.join(params.channel);
     });
 
-    socket.on("subTitleBox-enable", (params) => {
-        console.log("subTitleBox-enable", params);
-        socket.in(params.channel).emit("subtitle-box-on", params);
+    socket.on("speech-leave", (params) => {
+        console.log(`${params.peer} Speech-Socket-OFF!`);
+        socket.leave(params.channel);
     });
 
-    socket.on("subTitleBox-disable", (params) => {
-        console.log("subTitleBox-disable", params);
-        socket.leave(params.channel);
-        socket.in(params.channel).emit("subtitle-box-off", params);
-    });
+    // socket.on("subTitleBox-enable", (params) => {
+    //     console.log("subTitleBox-enable", params);
+    //     socket.in(params.channel).emit("subtitle-box-on", params);
+    // });
+
+    // socket.on("subTitleBox-disable", (params) => {
+    //     console.log("subTitleBox-disable", params);
+    //     socket.leave(params.channel);
+    //     socket.in(params.channel).emit("subtitle-box-off", params);
+    // });
 
     socket.on("speech-send", (params) => {
         socket.in(params.channel).emit("speech-receive", params);
