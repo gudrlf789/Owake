@@ -17,6 +17,7 @@
 
 #speechTextBox .card-body > p {
     margin-bottom : 0;
+    flex : 0.5;
 }
 
 #speechTextBox .speech-micBtn {
@@ -41,3 +42,4 @@
     margin-right : 5px;
     margin-left : 5px;
 }
+

@@ -3,10 +3,10 @@ import { socketInitFunc } from "./socket.js";
 
 /**
  * @author 전형동
- * @version 1.0
- * @data 2022.08.09
+ * @version 1.1
+ * @data 2022.08.17
  * @description
- * STT + Translator 제작 중
+ * STT + Translator 제작 완료
  */
 
 let speechSocket = socketInitFunc();
@@ -15,6 +15,7 @@ let channel = sessionStorage.getItem("channel");
 let subtitleBoxActivate = false;
 let speechActivate = false;
 let translateActivate = false;
+let micOnOff = false;
 
 export const speechTextBox = () => {
     let speechTranslateBtn = document.querySelector("#speechTranslateBtn");
@@ -39,30 +40,7 @@ async function speechTextBoxEnable() {
     if (browserCheck()) {
         speechSocket.emit("speech-join", { peer: userId, channel: channel });
         subtitleBoxActivate = true;
-        // let videoContainers;
-        // let videoLoading = setInterval(() => {
-        //     videoContainers = document.querySelectorAll(".player");
-        //     if (videoContainers.length !== 0) {
-        //         clearInterval(videoLoading);
-
-        //         for (let i = 0; i < videoContainers.length; i++) {
-        //             videoContainers[i].insertAdjacentHTML(
-        //                 "beforeend",
-        //                 subtitle
-        //             );
-        //         }
-
-        //         handleSpeechRecognition();
-        //     }
-        //     console.log(videoContainers);
-        // }, 1000);
-
         createSpeechTextBox();
-        // speechSocket.emit("subTitleBox-enable", {
-        //     peer: userId,
-        //     channel: channel,
-        //     subtitleStatus: subtitleBoxActivate,
-        // });
 
         await handleSpeechRecognition();
     } else {
@@ -77,6 +55,7 @@ function createSpeechTextBox() {
     let videoBox = document.querySelector("#local__videoBox");
     videoBox.insertAdjacentHTML("beforeend", subtitle);
     getLangs();
+    createSubTitle();
 }
 
 function speechTextBoxDisable() {
@@ -87,12 +66,6 @@ function speechTextBoxDisable() {
         box.remove();
     });
 
-    // speechSocket.emit("subTitleBox-disable", {
-    //     peer: userId,
-    //     channel: channel,
-    //     subtitleStatus: subtitleBoxActivate,
-    // });
-
     speechSocket.emit("speech-leave", { peer: userId, channel: channel });
 }
 
@@ -100,23 +73,33 @@ function receiveText() {
     let textBoxElement = `
         <div id="speechTextBox" class="card card-${userId}">
             <div class="card-body">
-                <p class="subtitle">Please Speech...</p>
             </div>
             <div class="card-options">
                 <div class="speech-micBtn">
                     <i class="fas fa-microphone-alt"></i>
                 </div>
                 <select class="lang send-speech-lang"></select>
-                <select class="lang receive-speech-lang" id="receive__Lang"></select>
+                <select class="lang receive-speech-lang"></select>
             </div>
         </div>
-    `;
-
+        `;
     return textBoxElement;
 }
 
+function createSubTitle() {
+    let selectCardBody = document.querySelector(".card-body");
+    let originalLang = document.createElement("p");
+    let translateLang = document.createElement("p");
+
+    originalLang.id = "originalLang";
+    translateLang.id = "translateLang";
+
+    originalLang.innerHTML = `Original Speech`;
+    translateLang.innerHTML = `Translate Speech`;
+    selectCardBody.append(originalLang, translateLang);
+}
+
 async function handleSpeechRecognition() {
-    let micOnOff = false;
     let micBtn = document.querySelector(".speech-micBtn");
     micBtn.addEventListener("click", (e) => {
         micOnOff = !micOnOff;
@@ -133,12 +116,11 @@ async function handleSpeechRecognition() {
     const recognition = new SpeechRecognition();
 
     let cardBody = document.querySelector(".card-body");
+    let subTitleText = document.getElementById("originalLang");
     let text;
 
     recognition.continuous = true;
     recognition.interimResults = true;
-    // recognition.lang = 'ja-JP'
-    // recognition.lang = 'en-US'
     recognition.lang = getSendValue();
     recognition.maxAlternatives = 1;
 
@@ -148,23 +130,24 @@ async function handleSpeechRecognition() {
             .map((result) => result.transcript)
             .join("");
 
-        // subtitleText.innerText = text;
+        subTitleText.innerText = text;
 
-        translateAPI(text, translateActivate);
-
-        // if (e.results[0].isFinal) {
-        //     translateAPI(text, translateActivate);
-        // }
+        if (e.results[0].isFinal) {
+            translateAPI(text, translateActivate);
+        }
         cardBody.scrollTop = cardBody.scrollHeight;
     });
 
     recognition.addEventListener("end", () => {
+        speechActivate = false;
+        micOnOff = false;
         console.log("recognition End Event!");
         recognition.abort();
+        let micIcon = document.querySelector(".fa-microphone-alt");
+        micIcon.style.setProperty("color", "black");
     });
 
     function speechEnable(elem) {
-        speechActivate = true;
         elem.style.setProperty("color", "red");
         console.log("recognition On Event!");
 
@@ -178,7 +161,6 @@ async function handleSpeechRecognition() {
     }
 
     function speechDisable(elem) {
-        speechActivate = false;
         elem.style.setProperty("color", "black");
         console.log("recognition OFF Event!");
 
@@ -238,8 +220,8 @@ async function translateAPI(text, active) {
         let data = await res.json();
         console.log(data);
 
-        let subtitleText = document.querySelector(".subtitle");
-        subtitleText.innerText = data.translatedText;
+        let subTitleText = document.querySelector("#translateLang");
+        subTitleText.innerText = data.translatedText;
 
         speechSocket.emit("speech-send", {
             peer: userId,
@@ -261,7 +243,7 @@ function getSendValue() {
 }
 
 function getReceiveValue() {
-    let val = document.getElementById(`receive__Lang`).value;
+    let val = document.querySelector(".receive-speech-lang").value;
     localStorage.setItem(`receiveLang`, JSON.stringify(val));
     return val;
 }
