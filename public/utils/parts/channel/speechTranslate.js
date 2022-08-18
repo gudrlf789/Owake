@@ -220,13 +220,14 @@ async function translateAPI(text, active) {
         let data = await res.json();
         console.log(data);
 
-        let subTitleText = document.querySelector("#translateLang");
+        let subTitleText = document.getElementById("translateLang");
         subTitleText.innerText = data.translatedText;
 
         speechSocket.emit("speech-send", {
             peer: userId,
             channel: channel,
-            text: data.translatedText,
+            original_text: text,
+            translate_text: data.translatedText,
         });
 
         active = false;
@@ -261,6 +262,9 @@ function appendData(d, elem) {
 //   Receive Socket Data
 
 speechSocket.on("speech-receive", (params) => {
-    let subtitleText = document.querySelector(".subtitle");
-    subtitleText.innerText = params.text;
+    let originalLang = document.getElementById("originalLang");
+    let translateLang = document.getElementById("translateLang");
+
+    originalLang.innerHTML = params.original_text;
+    translateLang.innerHTML = params.translate_text;
 });
