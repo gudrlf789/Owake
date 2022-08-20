@@ -21,7 +21,6 @@ import { fileHash } from "./parts/channel/fileHash.js";
 import { contentFunc } from "./parts/channel/content.js";
 import { pdfFunc } from "./parts/channel/pdfShare.js";
 import { audioMixingAndAudioEffect } from "./parts/channel/audioMixingAndAudioEffect.js";
-import { speechTextBox } from "./parts/channel/speechTranslate.js";
 
 $(() => {
     channelFirstSpinnerDeleteFunc();
@@ -44,5 +43,4 @@ $(() => {
     fileDelivery();
     audioMixingAndAudioEffect();
     // gridView();
-    speechTextBox();
 });

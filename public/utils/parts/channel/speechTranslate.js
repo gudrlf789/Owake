@@ -17,15 +17,46 @@ let speechActivate = false;
 let translateActivate = false;
 let micOnOff = false;
 
-export const speechTextBox = () => {
-    let speechTranslateBtn = document.querySelector("#speechTranslateBtn");
-    let btnActivate = false;
+export const selectSTTNavigate = (mic) => {
+    let selectOptions = `
+    <div class="selectMicCard card" style="width: 18rem;">
+        <button type="button" class="btn-close" aria-label="Close"></button>
+        <ul class="selectMicOptions card-body">
+            <li>Speech Translate ON</li>
+            <li>Speech Translate OFF</li>
+        </ul>
+    </div>`;
+    let videoBox = document.querySelector("#local__videoBox");
 
-    speechTranslateBtn.addEventListener("click", () => {
-        btnActivate = !btnActivate;
-        btnActivate ? speechTextBoxEnable() : speechTextBoxDisable();
+    if (mic === false) {
+        videoBox.insertAdjacentHTML("beforeend", selectOptions);
+        let closeBtn = document.querySelector(".selectMicCard > .btn-close");
+        closeBtn.addEventListener("click", () => {
+            let selectMicCard = document.querySelector(".selectMicCard");
+            if (selectMicCard) {
+                selectMicCard.remove();
+            }
+        });
+    }
+
+    let speechOnBtn = document.querySelectorAll(
+        ".selectMicCard > .selectMicOptions > li"
+    )[0];
+    let speechOffBtn = document.querySelectorAll(
+        ".selectMicCard > .selectMicOptions > li"
+    )[1];
+
+    speechOnBtn.addEventListener("click", () => {
+        speechTextBoxEnable();
+        selectLang();
     });
 
+    speechOffBtn.addEventListener("click", () => {
+        speechTextBoxDisable();
+    });
+};
+
+function selectLang() {
     if (subtitleBoxActivate) {
         document
             .querySelector(".send-speech-lang")
@@ -34,7 +65,7 @@ export const speechTextBox = () => {
             .querySelector(".receive-speech-lang")
             .addEventListener("change", getReceiveValue);
     }
-};
+}
 
 async function speechTextBoxEnable() {
     if (browserCheck()) {
@@ -87,7 +118,7 @@ function receiveText() {
 }
 
 function createSubTitle() {
-    let selectCardBody = document.querySelector(".card-body");
+    let selectCardBody = document.querySelector("#speechTextBox > .card-body");
     let originalLang = document.createElement("p");
     let translateLang = document.createElement("p");
 

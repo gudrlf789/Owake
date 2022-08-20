@@ -9,6 +9,7 @@
  */
 
 import { localTracks, totalUsers, options } from "../../rtcClient.js";
+import { selectSTTNavigate } from "./speechTranslate.js";
 
 const videoIcon = document.getElementById("videoIcon");
 const audioIcon = document.getElementById("audioIcon");
@@ -27,7 +28,10 @@ let localTrackState = {
 export const muteUtilsFunc = () => {
     if (localTracks.audioTrack === null && localTracks.videoTrack === null) {
         let muteInterval = setInterval(() => {
-            if (localTracks.audioTrack !== null && localTracks.videoTrack !== null) {
+            if (
+                localTracks.audioTrack !== null &&
+                localTracks.videoTrack !== null
+            ) {
                 muteStart();
                 clearInterval(muteInterval);
             }
@@ -40,6 +44,7 @@ export const muteUtilsFunc = () => {
             alert("audio mute activation");
         } else {
             unmuteAudio();
+            selectSTTNavigate(localTrackState.audioTrackMuted);
             alert("audio unmute activation");
         }
     });

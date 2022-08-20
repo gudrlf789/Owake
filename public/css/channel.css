@@ -282,6 +282,26 @@ video:hover {
     display: none;
 }
 
+.selectMicCard {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    height : auto !important;
+}
+
+.selectMicCard ul {
+    list-style: none;
+    margin-bottom : 0;
+}
+
+.selectMicCard > .btn-close {
+    position: absolute;
+    right: 0;
+}
+
 @media (max-width: 768px) {
     #remote__video__container {
         height: min-content;
