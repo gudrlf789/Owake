@@ -43,3 +43,10 @@
     margin-left : 5px;
 }
 
+.selectMicOptions > li {
+    cursor : pointer;
+}
+
+.selectMicOptions > li:hover {
+    color : red;
+}

@@ -16,6 +16,7 @@ let subtitleBoxActivate = false;
 let speechActivate = false;
 let translateActivate = false;
 let micOnOff = false;
+let selectMicCard;
 
 export const selectSTTNavigate = (mic) => {
     let selectOptions = `
@@ -32,7 +33,7 @@ export const selectSTTNavigate = (mic) => {
         videoBox.insertAdjacentHTML("beforeend", selectOptions);
         let closeBtn = document.querySelector(".selectMicCard > .btn-close");
         closeBtn.addEventListener("click", () => {
-            let selectMicCard = document.querySelector(".selectMicCard");
+            selectMicCard = document.querySelector(".selectMicCard");
             if (selectMicCard) {
                 selectMicCard.remove();
             }
@@ -49,10 +50,18 @@ export const selectSTTNavigate = (mic) => {
     speechOnBtn.addEventListener("click", () => {
         speechTextBoxEnable();
         selectLang();
+        selectMicCard = document.querySelector(".selectMicCard");
+        if (selectMicCard) {
+            selectMicCard.remove();
+        }
     });
 
     speechOffBtn.addEventListener("click", () => {
         speechTextBoxDisable();
+        selectMicCard = document.querySelector(".selectMicCard");
+        if (selectMicCard) {
+            selectMicCard.remove();
+        }
     });
 };
 
