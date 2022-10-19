@@ -65,6 +65,9 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
     const channelDescription =
         e.currentTarget.parentNode.parentNode.parentNode.parentNode
             .childNodes[0].children[5].value;
+    const governType =
+            e.currentTarget.parentNode.parentNode.parentNode.parentNode
+                .childNodes[0].children[6].value;
 
     $("#update_channelName").val(channelName);
     $("#update_upload").val(imageName);
@@ -77,6 +80,14 @@ $(document).on("click", "#channelUpdateBtn", (e) => {
     } else {
         $("#update_private").attr("checked", false);
         $("#update_public").attr("checked", true);
+    }
+
+    if (governType === "WE") {
+        $("#check-update-wegovern").attr("checked", true);
+        $("#check-update-igovern").attr("checked", false);
+    } else {
+        $("#check-update-wegovern").attr("checked", false);
+        $("#check-update-igovern").attr("checked", true);
     }
 
     $("#channelUpdateModal").modal();
