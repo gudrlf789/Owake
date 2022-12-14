@@ -414,7 +414,7 @@ router.post("/jwt", async (req, res) => {
     bodyData.password = process.env.trustOsPassword;
 
     axios
-        .post("https://pro.virtualtrust.io/cert/login", bodyData)
+        .post("https://lab.trustos.telefonicatech.com/cert/login", bodyData)
         .then((result) => {
             jwt = result.data.message;
             return res.json({
@@ -442,7 +442,7 @@ router.post(
 
             axios
                 .post(
-                    "https://pro.virtualtrust.io/cert/certificate/file/hash",
+                    "https://lab.trustos.telefonicatech.com/cert/certificate/file/hash",
                     formData,
                     {
                         headers: {
